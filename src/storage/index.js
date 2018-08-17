@@ -52,7 +52,7 @@ export default {
       return r
     }
 
-    if ( storageN ) {
+    if (storageN) {
       try {
         return testStorage(storage(storageN))
       } catch (err) {

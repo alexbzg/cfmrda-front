@@ -5,13 +5,13 @@ export const API_URL = '/aiohttp/'
 export default {
 
   onError (error) {
-    var e = {status: 0}
+    let e = {status: 0, log: ''}
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
-      console.log(error.response.data)
-      console.log(error.response.status)
-      console.log(error.response.headers)
+      e.log = error.response.data + '\n'
+        + error.response.status + '\n'
+        + error.response.headers
       if (error.response.status === 400) {
         e.status = 400
         e.message = error.response.data
@@ -20,12 +20,16 @@ export default {
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
-      console.log(error.request)
+      e.log = error.request
     } else {
       // Something happened in setting up the request that triggered an Error
-      console.log('Error', error.message)
+      e.log = error.message
     }
-    console.log(error.config)
+    e.log += '\n' + error.config
+    if (process.env.NODE_ENV !== 'production') {
+      // eslint-disable-next-line
+      console.log(e.log)
+    }
     throw e
   },
 
@@ -43,7 +47,7 @@ export default {
   },
 
   login (data) {
-    return post ('login', data)
+    return this.post ('login', data)
       .then(response => {
         return response.data
       })
