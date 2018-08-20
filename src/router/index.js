@@ -1,13 +1,21 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from './../components/Login'
 
 Vue.use(Router)
+
+import Login from './../components/Login'
+import Upload from './../components/Upload'
 
 const router = new Router({
   routes: [
     { path: '/',
-      redirect: '/stations'
+      redirect: '/'
+    },
+    {
+      path: '/upload',
+      name: 'Upload',
+      component: Upload,
+      props: true
     },
     {
       path: '/login',

@@ -15,7 +15,8 @@ export const LOGIN_ACTION = 'login'
 
 export default new Vuex.Store({
   state: {
-    user: null
+    user: null,
+    remember: true
   },
   getters: {
     userCallsign: state => {
@@ -31,13 +32,18 @@ export default new Vuex.Store({
     },
     [SET_USER_MUTATION] (state, payload) {
       state.user = payload.user
-      storage.save(STORAGE_KEY_USER, state.user,
-        state.user.remember ? 'local' : 'session')
+      storage.remove(STORAGE_KEY_USER, state.remember ? 'local' : 'session')
+      if (payload.user) {
+        storage.save(STORAGE_KEY_USER, state.user,
+          payload.remember ? 'local' : 'session')
+        state.remember = payload.remember
+      }
     }
   },
   actions: {
-    [LOGIN_ACTION] ({ commit }) {
-      api.login(user => commit(SET_USER_MUTATION, {user: user}))
+    [LOGIN_ACTION] ({ commit }, data) {
+      return api.login(data.login)
+        .then(user => commit(SET_USER_MUTATION, {user: user, remember: data.remember}))
     }
   },
   strict: process.env.NODE_ENV !== 'production'

@@ -1,24 +1,42 @@
 <template>
   <div id="app">
+    <div id="top">
+        <a href="/"><img id="logo" src="images/cfmrda_logo.png" border="0" /></a>
+
+        <div id="top_menu" >
+            <span id="callsign" v-if="userCallsign">{{userCallsign}}</span>  
+            <router-link to="/upload">Загрузить ADIF</router-link>
+            <router-link to="/contact">Контакты</router-link>
+            <router-link to="/login" v-if="!userCallsign">Войти</router-link>
+            <a @click="logout()" v-else>Выйти</a>
+       </div>
+    </div>
+
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
+import './style.css'
+
+import {SET_USER_MUTATION} from './store'
 
 export default {
   name: 'app',
   components: {
+  },
+  computed: {
+    ...mapGetters(['userCallsign'])
+  },
+  methods: {
+    logout () {
+        this.$store.commit(SET_USER_MUTATION, {user: null})
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
