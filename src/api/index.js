@@ -53,6 +53,14 @@ export default {
       })
       .catch(e => {
         alert(e.message)
+        throw e
+      })
+  },
+
+  getSchemas () {
+    return this.get('/json/schemas.json')
+      .then(response => {
+        return response.data
       })
   }
 

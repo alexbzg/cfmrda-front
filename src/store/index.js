@@ -3,19 +3,25 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+import Ajv from 'ajv'
+const ajv = new Ajv({allErrors: true})
+
 import storage from '../storage'
 import api from '../api'
 
 const STORAGE_KEY_USER = 'user'
 
-export const USER_INIT_MUTATION = 'userInit'
+const USER_INIT_MUTATION = 'userInit'
 export const SET_USER_MUTATION = 'setUser'
+const SET_VALIDATORS_MUTATION = 'setSchemas'
 
 export const LOGIN_ACTION = 'login'
+const LOAD_SCHEMAS_ACTION = 'loadSchemas'
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
     user: null,
+    validators: null,
     remember: true
   },
   getters: {
@@ -24,6 +30,10 @@ export default new Vuex.Store({
     },
     userEmailConfirmed: state => {
       return state.user ? state.user.email_confirmed : null
+    },
+    validate: (state) => (name, data, callback) => { 
+      const valid = state.validators[name](data)
+      callback(valid, state.validators[name].errors)
     }
   },
   mutations: {
@@ -38,13 +48,29 @@ export default new Vuex.Store({
           payload.remember ? 'local' : 'session')
         state.remember = payload.remember
       }
+    },
+    [SET_VALIDATORS_MUTATION] (state, payload) {
+      state.validators = {}
+      for (const name of Object.keys(payload.schemas)) {
+        state.validators[name] = ajv.compile(payload.schemas[name])
+      }
     }
   },
   actions: {
     [LOGIN_ACTION] ({ commit }, data) {
       return api.login(data.login)
         .then(user => commit(SET_USER_MUTATION, {user: user, remember: data.remember}))
+    },
+    [LOAD_SCHEMAS_ACTION] ({ commit }) {
+      api.getSchemas() 
+        .then(schemas => commit(SET_VALIDATORS_MUTATION, {schemas: schemas}))
     }
+    
   },
   strict: process.env.NODE_ENV !== 'production'
 })
+
+store.commit(USER_INIT_MUTATION)
+store.dispatch(LOAD_SCHEMAS_ACTION)
+
+export default store

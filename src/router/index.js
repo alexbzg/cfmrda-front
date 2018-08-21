@@ -5,11 +5,14 @@ Vue.use(Router)
 
 import Login from './../components/Login'
 import Upload from './../components/Upload'
+import Index from './../components/Index'
 
 const router = new Router({
   routes: [
     { path: '/',
-      redirect: '/'
+      name: 'Index',
+      component: Index,
+      props: true
     },
     {
       path: '/upload',

@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <div id="top">
-        <a href="/"><img id="logo" src="images/cfmrda_logo.png" border="0" /></a>
+        <router-link to="/"><img id="logo" src="images/cfmrda_logo.png" border="0" /></router-link>
 
         <div id="top_menu" >
             <span id="callsign" v-if="userCallsign">{{userCallsign}}</span>  
-            <router-link to="/upload">Загрузить ADIF</router-link>
+            <router-link to="/upload" v-if="userCallsign">Загрузить ADIF</router-link>
             <router-link to="/contact">Контакты</router-link>
             <router-link to="/login" v-if="!userCallsign">Войти</router-link>
             <a @click="logout()" v-else>Выйти</a>
@@ -32,11 +32,14 @@ export default {
   },
   methods: {
     logout () {
-        this.$store.commit(SET_USER_MUTATION, {user: null})
+      this.$store.commit(SET_USER_MUTATION, {user: null})
     }
   }
 }
 </script>
 
 <style>
+    input.error {
+        background-color: #ff111188;
+    }
 </style>
