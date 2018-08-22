@@ -2,7 +2,7 @@
     <div class="list list_small">
         <div id="login_register">
 
-            <vue-recaptcha v-if="login.register"
+            <vue-recaptcha v-if="mode === 'register' || mode === 'passwordRequest'"
                 ref="recaptcha"
                 @verify="onRecaptchaVerify"
                 @expired="onRecaptchaExpired"
@@ -15,11 +15,13 @@
                 :class="{error: validationErrors.callsign}"
                 @change="callsignChange()"/>
             <br/>
-            <b>Пароль</b> <span class="note">(минимум 8 символов)</span><br/>
-            <input type="password" name="password_input" id="password_input" 
-                :class="{error: validationErrors.password}"
-                v-model="login.password"><br/>
-            <div id="register" v-if="login.register">
+            <template v-if="mode !== 'passwordRequest'">
+                <b>Пароль</b> <span class="note">(минимум 8 символов)</span><br/>
+                <input type="password" name="password_input" id="password_input" 
+                    :class="{error: validationErrors.password}"
+                    v-model="login.password"><br/>
+            </template>
+            <div id="register" v-if="mode === 'register'">
                 <b>Email</b><br/>
                 <span class="note_red">
                     Email должен быть <b>обязательно</b> тем, с которым вы зарегистрированы на 
@@ -31,16 +33,22 @@
                     :class="{error: validationErrors.email}"
                     v-model.trim="login.email"><br/>
             </div>
-            <input type="checkbox" name="remember_input" id="remember_input" 
-                v-model="remember"> Запомнить меня<br/>
+            <template v-if="mode == 'login' || mode == 'register'">
+                <input type="checkbox" name="remember_input" id="remember_input" 
+                    v-model="remember"> Запомнить меня<br/>
+            </template>
             <input type="button" name="login_btn" id="login1_btn" 
-                :value="login.register ? 'Зарегистрироваться' : 'Войти'" class="btn"
+                value="Отправить" class="btn"
                 :disabled="pending || !loginValidated" @click="loginClick()"/>
-            <div id="login_bottom">
-                <a id="pass_recovery" href="#">Восстановить пароль</a>
+            <div id="login_bottom" v-if="mode !== 'passwordChange'">
+                <a id="pass_recovery" href="#" 
+                    @click="mode = (mode === 'passwordRequest' ? 'login' : 'passwordRequest')">
+                    {{mode === 'passwordRequest' ? 'Вход/Регистрация' : 'Восстановление пароля'}}
+                </a>
                 <input type="button" name="register_btn" id="login2_btn" 
-                    :value="login.register ? 'Войти' : 'Зарегистрироваться'" class="btn"
-                    @click='login.register = !login.register'/>
+                    v-if="mode !== 'passwordRequest'"
+                    :value="mode === 'register' ? 'Вход' : 'Регистрация'" class="btn"
+                    @click="mode = mode === 'register' ? 'login' : 'register'"/>
             </div>
         </div>
     </div>
@@ -62,16 +70,19 @@ export default {
   components: {VueRecaptcha},
   mixins: [VueVuelidateJsonschema.mixin],
   data () {
-    return {
-      login: {
+    const login = {
         callsign: null,
         password: null,
         email: null,
-        register: false,
+        token: this.$route.query.token,
         recaptcha: null
-      },
+    }
+    const mode = login.token ? 'passwordChange' : 'login'    
+    return {
+      login: login,
       remember: true,
       pending: false,
+      mode: mode,
       validationErrors: {}
     }
   },
@@ -90,10 +101,20 @@ export default {
   methods: {
     doLogin() {
       this.pending = true
-      this.$store.dispatch(LOGIN_ACTION, {login: this.login, remember: this.remember})
-        .then(() => this.$router.push('/upload'))
+      const data = {...this.login, mode: this.mode}
+      this.$store.dispatch(LOGIN_ACTION, {login: data, remember: this.remember})
+        .then(() => {
+          if (this.mode === 'passwordRequest') {
+            alert('На ваш адрес электронной почты было отправлено письмо с инструкциями.')
+          } else {
+            if (this.mode === 'passwordChange') {
+              alert('Ваш пароль был изменен.')
+            }
+            this.$router.push('/')
+          }
+        })
         .catch(() => { 
-          if (this.login.register) {
+          if (this.mode === 'register' || this.mode === 'passwordRequest') {
             this.resetRecaptcha()
           }
         })
@@ -102,8 +123,7 @@ export default {
         })
     },
     validateLogin() {
-      const schema = this.login.register ? 'register' : 'login'
-      this.$store.getters.validate(schema, this.login, this.validateCallback)
+      this.$store.getters.validate(this.mode, this.login, this.validateCallback)
     },
     validateCallback (valid, errors) {
       this.$set(this, 'validationErrors', {})
@@ -144,6 +164,14 @@ export default {
     login: {
       handler: function () { this.validateLogin() },
       deep: true
+    },
+    mode: {
+      handler: function () {
+        const vm = this
+        vm.$nextTick(function () {
+          vm.validateLogin()
+        })
+      }
     }
   }
 }

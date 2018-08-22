@@ -59,7 +59,11 @@ const store = new Vuex.Store({
   actions: {
     [LOGIN_ACTION] ({ commit }, data) {
       return api.login(data.login)
-        .then(user => commit(SET_USER_MUTATION, {user: user, remember: data.remember}))
+        .then(user => {
+          if (data.login.mode === 'login' || data.login.mode === 'register') {
+            commit(SET_USER_MUTATION, {user: user, remember: data.remember})
+          }
+        })
     },
     [LOAD_SCHEMAS_ACTION] ({ commit }) {
       api.getSchemas() 
