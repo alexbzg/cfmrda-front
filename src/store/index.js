@@ -7,7 +7,7 @@ import Ajv from 'ajv'
 const ajv = new Ajv({allErrors: true})
 
 import storage from '../storage'
-import api from '../api'
+import { getSchemas } from '../api'
 
 const STORAGE_KEY_USER = 'user'
 
@@ -57,19 +57,10 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    [LOGIN_ACTION] ({ commit }, data) {
-      return api.login(data.login)
-        .then(user => {
-          if (data.login.mode === 'login' || data.login.mode === 'register') {
-            commit(SET_USER_MUTATION, {user: user, remember: data.remember})
-          }
-        })
-    },
     [LOAD_SCHEMAS_ACTION] ({ commit }) {
-      api.getSchemas() 
+      getSchemas() 
         .then(schemas => commit(SET_VALIDATORS_MUTATION, {schemas: schemas}))
     }
-    
   },
   strict: process.env.NODE_ENV !== 'production'
 })

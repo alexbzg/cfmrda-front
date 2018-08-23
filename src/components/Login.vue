@@ -40,6 +40,7 @@
             <input type="button" name="login_btn" id="login1_btn" 
                 value="Отправить" class="btn"
                 :disabled="pending || !loginValidated" @click="loginClick()"/>
+            <div v-if="message" id="message" v-html="message"></div>
             <div id="login_bottom" v-if="mode !== 'passwordChange'">
                 <a id="pass_recovery" href="#" 
                     @click="mode = (mode === 'passwordRequest' ? 'login' : 'passwordRequest')">
@@ -61,7 +62,9 @@ import _ from 'underscore'
 import VueRecaptcha from 'vue-recaptcha'
 import VueVuelidateJsonschema from 'vue-vuelidate-jsonschema'
 
-import {LOGIN_ACTION} from '../store'
+import {login as api_login} from '../api'
+
+import {SET_USER_MUTATION} from '../store'
 import {RECAPTCHA_SITE_KEY} from '../consts'
 
 export default {
@@ -83,7 +86,8 @@ export default {
       remember: true,
       pending: false,
       mode: mode,
-      validationErrors: {}
+      validationErrors: {},
+      message: null
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -101,21 +105,27 @@ export default {
   methods: {
     doLogin() {
       this.pending = true
+      this.message = null
       const data = {...this.login, mode: this.mode}
-      this.$store.dispatch(LOGIN_ACTION, {login: data, remember: this.remember})
-        .then(() => {
-          if (this.mode === 'passwordRequest') {
-            alert('На ваш адрес электронной почты было отправлено письмо с инструкциями.')
-          } else {
-            if (this.mode === 'passwordChange') {
-              alert('Ваш пароль был изменен.')
-            }
-            this.$router.push('/')
+
+      api_login(data)
+        .then((user) => {
+          if (this.mode === 'login') {
+            this.$store.commit(SET_USER_MUTATION, {user: user, remember: this.remember})
+          } else if (this.mode === 'passwordRequest') {
+            this.message = 'На ваш адрес электронной почты было отправлено письмо с инструкциями.'
+          } else if (this.mode === 'passwordChange') {
+              this.message = 'Ваш пароль был изменен.'
+          } else if (this.mode === 'register') {
+              this.message = 'Для завершения регистрации необходимо подтвердиь адрес элетронной почты. Вам было отправлeно письмо с инструкциями.'
           }
         })
-        .catch(() => { 
+        .catch((e) => { 
           if (this.mode === 'register' || this.mode === 'passwordRequest') {
             this.resetRecaptcha()
+          }
+          if (e.status === 400) {
+            this.message = e.message
           }
         })
         .finally(() => { 

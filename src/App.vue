@@ -8,7 +8,7 @@
             <router-link to="/upload" v-if="userCallsign">Загрузить ADIF</router-link>
             <router-link to="/contact">Контакты</router-link>
             <router-link to="/login" v-if="!userCallsign">Войти</router-link>
-            <a @click="logout()" v-else>Выйти</a>
+            <a @click="logout()" v-else id="logout_link">Выйти</a>
        </div>
     </div>
 
@@ -40,6 +40,6 @@ export default {
 
 <style>
     input.error {
-        background-color: #ff111188;
+        background-color: #ff111133;
     }
 </style>
