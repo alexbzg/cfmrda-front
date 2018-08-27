@@ -50,7 +50,17 @@ a#logout_link{
 	cursor: pointer;
 }
 
+#message{
+	width: 500px;
+    margin: -50px auto 100px auto;
+    padding: 10px;
+    text-align: center;
+    background-color: #ff4949;
+    color: #fff;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Параметры тени */
+    border: 1px solid #fafbb8;
 
+}
 
 
 

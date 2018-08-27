@@ -10,17 +10,21 @@
                 :sitekey="$options.RECAPTCHA_SITE_KEY">
             </vue-recaptcha>
 
-            <b>Позывной</b><br/>
-            <input type="text" name="callsign_input" id="callsign_input" v-model.trim="login.callsign" 
-                :class="{error: validationErrors.callsign}"
-                @change="callsignChange()"/>
-            <br/>
+            <template v-if="mode !== 'passwordChange'">
+                <b>Позывной</b><br/>
+                <input type="text" name="callsign_input" id="callsign_input" v-model.trim="login.callsign" 
+                    :class="{error: validationErrors.callsign}"
+                    @change="callsignChange()"/>
+                <br/>
+            </template>
+
             <template v-if="mode !== 'passwordRequest'">
                 <b>Пароль</b> <span class="note">(минимум 8 символов)</span><br/>
                 <input type="password" name="password_input" id="password_input" 
                     :class="{error: validationErrors.password}"
                     v-model="login.password"><br/>
             </template>
+
             <div id="register" v-if="mode === 'register'">
                 <b>Email</b><br/>
                 <span class="note_red">
@@ -33,7 +37,8 @@
                     :class="{error: validationErrors.email}"
                     v-model.trim="login.email"><br/>
             </div>
-            <template v-if="mode == 'login' || mode == 'register'">
+
+            <template v-if="mode == 'login'">
                 <input type="checkbox" name="remember_input" id="remember_input" 
                     v-model="remember"> Запомнить меня<br/>
             </template>
@@ -60,7 +65,6 @@
 import _ from 'underscore'
 
 import VueRecaptcha from 'vue-recaptcha'
-import VueVuelidateJsonschema from 'vue-vuelidate-jsonschema'
 
 import {login as api_login} from '../api'
 
@@ -71,21 +75,19 @@ export default {
   RECAPTCHA_SITE_KEY: RECAPTCHA_SITE_KEY,
   name: 'login',
   components: {VueRecaptcha},
-  mixins: [VueVuelidateJsonschema.mixin],
   data () {
-    const login = {
+    const token = this.$route.query.token
+    return {
+      login:  {
         callsign: null,
         password: null,
         email: null,
-        token: this.$route.query.token,
+        token: token,
         recaptcha: null
-    }
-    const mode = login.token ? 'passwordChange' : 'login'    
-    return {
-      login: login,
+      },
       remember: true,
       pending: false,
-      mode: mode,
+      mode: token ? 'passwordChange' : 'login',
       validationErrors: {},
       message: null
     }
@@ -93,7 +95,7 @@ export default {
   beforeRouteEnter (to, from, next) {
     next(vm => {
       if (vm.$store.getters.userCallsign) {
-        vm.$router.push( '/upload' )
+        vm.$router.push('/')
       }
     })
   },
@@ -112,12 +114,14 @@ export default {
         .then((user) => {
           if (this.mode === 'login') {
             this.$store.commit(SET_USER_MUTATION, {user: user, remember: this.remember})
+            this.$router.push('/')
           } else if (this.mode === 'passwordRequest') {
             this.message = 'На ваш адрес электронной почты было отправлено письмо с инструкциями.'
           } else if (this.mode === 'passwordChange') {
               this.message = 'Ваш пароль был изменен.'
+              this.mode = 'login'
           } else if (this.mode === 'register') {
-              this.message = 'Для завершения регистрации необходимо подтвердиь адрес элетронной почты. Вам было отправлeно письмо с инструкциями.'
+              this.message = 'Для завершения регистрации необходимо подтвердить адрес элетронной почты. Вам было отправлeно письмо с инструкциями.'
           }
         })
         .catch((e) => { 
