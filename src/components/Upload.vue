@@ -1,15 +1,16 @@
 <template>
     <div class="list list_small">
       <div id="upload">
+
         <div id="upload_form">
           <span class="red">Загружать файлы ADI необходимо только <b>раздельно</b> по каждому RDA-району!</span><br/><br/>
-          <b>Позывной RDA экспедиции</b><br/>
-          <input type="text" name="callsign_input" id="callsign_input"><br/>
           <b>RDA район</b><br/>
           <input type="text" name="rda_input" id="rda_input"><br/>
+          <b>Позывной RDA экспедиции</b><br/>
+          <input type="text" name="callsign_input" id="callsign_input"><br/>
           <input type="button" name="upload_btn" id="upload_btn" value="Загрузить новый ADI файл" class="btn"><br/>
         </div> 
-
+<!--
         <div id="uploading_info">
           Идёт загрузка файла...<br/>
           <img id="uploading" src="images/spinner.gif" border="0" />
@@ -28,6 +29,7 @@
           <span>Нет, есть ошибка.</span> Удалить.<br/>
           <input type="button" name="login_btn" id="ok_btn" value="OK" class="btn">
         </div>
+-->
       </div>
     </div>   
 </template>

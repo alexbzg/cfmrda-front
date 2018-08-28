@@ -6,6 +6,7 @@ Vue.use(Router)
 import Login from './../components/Login'
 import Upload from './../components/Upload'
 import Index from './../components/Index'
+import Contact from './../components/Contact'
 
 const router = new Router({
   routes: [
@@ -18,6 +19,12 @@ const router = new Router({
       path: '/upload',
       name: 'Upload',
       component: Upload,
+      props: true
+    },
+    {
+      path: '/contact',
+      name: 'Contact',
+      component: Contact,
       props: true
     },
     {

@@ -28,8 +28,8 @@ const store = new Vuex.Store({
     userCallsign: state => {
       return state.user ? state.user.callsign : null
     },
-    userEmailConfirmed: state => {
-      return state.user ? state.user.email_confirmed : null
+    userToken: state => {
+      return state.user ? state.user.token : null
     },
     validate: (state) => (name, data, callback) => { 
       const valid = state.validators[name](data)

@@ -44,8 +44,8 @@
             </template>
             <input type="button" name="login_btn" id="login1_btn" 
                 value="Отправить" class="btn"
-                :disabled="pending || !loginValidated" @click="loginClick()"/>
-            <div v-if="message" id="message" v-html="message"></div>
+                :disabled="pending || !validated" @click="loginClick()"/>
+            <div v-if="response" id="message" v-html="response"></div>
             <div id="login_bottom" v-if="mode !== 'passwordChange'">
                 <a id="pass_recovery" href="#" 
                     @click="mode = (mode === 'passwordRequest' ? 'login' : 'passwordRequest')">
@@ -64,17 +64,15 @@
 <script>
 import _ from 'underscore'
 
-import VueRecaptcha from 'vue-recaptcha'
-
 import {login as api_login} from '../api'
+import validationMixin from '../validation-mixin'
+import recaptchaMixin from '../recaptcha-mixin'
 
 import {SET_USER_MUTATION} from '../store'
-import {RECAPTCHA_SITE_KEY} from '../consts'
 
 export default {
-  RECAPTCHA_SITE_KEY: RECAPTCHA_SITE_KEY,
   name: 'login',
-  components: {VueRecaptcha},
+  mixins: [validationMixin, recaptchaMixin],
   data () {
     const token = this.$route.query.token
     return {
@@ -88,8 +86,7 @@ export default {
       remember: true,
       pending: false,
       mode: token ? 'passwordChange' : 'login',
-      validationErrors: {},
-      message: null
+      response: null
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -100,14 +97,13 @@ export default {
     })
   },
   mounted () {
-    this.$nextTick(function () {
-      this.validateLogin()
-    })
+    this.validationData = this.login
+    this.validationSchema = this.mode
   },
   methods: {
     doLogin() {
       this.pending = true
-      this.message = null
+      this.response = null
       const data = {...this.login, mode: this.mode}
 
       api_login(data)
@@ -116,12 +112,12 @@ export default {
             this.$store.commit(SET_USER_MUTATION, {user: user, remember: this.remember})
             this.$router.push('/')
           } else if (this.mode === 'passwordRequest') {
-            this.message = 'На ваш адрес электронной почты было отправлено письмо с инструкциями.'
+            this.response = 'На ваш адрес электронной почты было отправлено письмо с инструкциями.'
           } else if (this.mode === 'passwordChange') {
-              this.message = 'Ваш пароль был изменен.'
+              this.response = 'Ваш пароль был изменен.'
               this.mode = 'login'
           } else if (this.mode === 'register') {
-              this.message = 'Для завершения регистрации необходимо подтвердить адрес элетронной почты. Вам было отправлeно письмо с инструкциями.'
+              this.response = 'Для завершения регистрации необходимо подтвердить адрес элетронной почты. Вам было отправлeно письмо с инструкциями.'
           }
         })
         .catch((e) => { 
@@ -129,30 +125,12 @@ export default {
             this.resetRecaptcha()
           }
           if (e.status === 400) {
-            this.message = e.message
+            this.response = e.message
           }
         })
         .finally(() => { 
           this.pending = false 
         })
-    },
-    validateLogin() {
-      this.$store.getters.validate(this.mode, this.login, this.validateCallback)
-    },
-    validateCallback (valid, errors) {
-      this.$set(this, 'validationErrors', {})
-      if (!valid) {
-        for (const item of errors) {
-          this.$set(this.validationErrors, item.dataPath.substr(1), item.message)
-        }
-        if (this.validationErrors.recaptcha) {
-          this.$refs.recaptcha.execute()
-        }
-      }
-    },
-    resetRecaptcha () {
-      this.$set(this.login, 'recaptcha', null)
-      this.$refs.recaptcha.reset()
     },
     loginClick: _.debounce(function () {
       this.doLogin()
@@ -161,31 +139,11 @@ export default {
       if (this.login.callsign !== this.login.callsign.toUpperCase()) {
         this.login.callsign = this.login.callsign.toUpperCase()
       }
-    },
-    onRecaptchaVerify (response) {
-      this.$set(this.login, 'recaptcha', response)
-    },
-    onRecaptchaExpired () {
-      this.login.recaptcha = null
-    }
-  },
-  computed: {
-    loginValidated() {
-      return _.isEmpty(this.validationErrors)
     }
   },
   watch: {
-    login: {
-      handler: function () { this.validateLogin() },
-      deep: true
-    },
-    mode: {
-      handler: function () {
-        const vm = this
-        vm.$nextTick(function () {
-          vm.validateLogin()
-        })
-      }
+    mode: function (newVal) {
+      this.validationSchema = newVal
     }
   }
 }

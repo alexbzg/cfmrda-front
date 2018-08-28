@@ -31,12 +31,12 @@ function onError (error) {
   throw e
 }
 
-export function  post (URL, data) {
+export function post (URL, data) {
   return axios.post(API_URL + URL, data)
     .catch(onError)
 }
 
-export function  get (URL) {
+export function get (URL) {
   if (!URL.startsWith('/')) {
     URL = window.location.pathname + '/' + URL
   }
@@ -44,7 +44,7 @@ export function  get (URL) {
     .catch(onError)
 }
 
-export function  login (data) {
+export function login (data) {
   return post ('login', data)
     .then(response => {
       return response.data
@@ -54,7 +54,17 @@ export function  login (data) {
     })
 }
 
-export function  getSchemas () {
+export function contactSupport (data) {
+  return post('contact_support', data)
+    .then(response => {
+      return response.data
+    })
+    .catch(e => {
+      throw e
+    })
+}
+
+export function getSchemas () {
   return get('/json/schemas.json')
     .then(response => {
       return response.data
