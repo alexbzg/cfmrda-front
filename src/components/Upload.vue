@@ -6,10 +6,11 @@
           <span class="red">Загружать файлы ADI необходимо только <b>раздельно</b> по каждому RDA-району!</span><br/><br/>
           <b>RDA район</b><br/>
           <input type="text" name="rda_input" id="rda_input" v-model.trim="adif.rda" 
-            @change="capitalize(adif, 'rda')"><br/>
+                @change="capitalize(adif, 'rda')" :class="{error: validationErrors.rda}"><br/>
           <b>Позывной RDA экспедиции</b><br/>
           <input type="text" name="callsign_input" id="callsign_input" v-model.trim="adif.stationCallsign"
-            @change="capitalize(adif, 'stationCallsign')"><br/>
+                @change="capitalize(adif, 'stationCallsign')" :class="{error: validationErrors.stationCallsign}">
+          <br/>
           <input type="file" id="adif_file" style="display:none" @change="adifFileChange"/>
           <label for="adif_file" name="upload_btn" id="upload_btn" value="Загрузить новый ADI файл" class="btn"
             /><br/>
@@ -56,7 +57,7 @@ export default {
   data () {
     const adif = {
         rda: null,
-        station_callsign: storage.load(STORAGE_KEY_STATION_CALLSIGN),
+        stationCallsign: storage.load(STORAGE_KEY_STATION_CALLSIGN),
         file: null,
         token: this.$store.getters.userToken
     }
