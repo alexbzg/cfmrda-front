@@ -1,6 +1,6 @@
 <template>
-    <div class="list">
-
+    <div class="list list_small">
+      <div id="contact">
         <vue-recaptcha v-if="!msg.token"
             ref="recaptcha"
             @verify="onRecaptchaVerify"
@@ -12,11 +12,13 @@
         <input type="text" v-model.trim="msg.email" v-if="!msg.token" placeholder="Ваш e-mail"
             id="email_input" :class="{error: validationErrors.email}"/><br/>
         <textarea v-model="msg.text" placeholder="Ваше сообщение" id="text_area"
-            :class="{error: validationErrors.text}"></textarea>
-        <input type="button" value="Отправить" :disabled="!pending && validated" @click="sendClick()"
-            id="send_button">
+            :class="{error: validationErrors.text}"></textarea><br/>
+        <input type="button" value="Отправить" :disabled="pending || !validated" @click="sendClick()"
+            id="send_button" class="btn">
+
         <div v-if="response" id="message" v-html="response"></div>
     </div>
+  </div>
 </template>
 
 <script>

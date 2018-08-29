@@ -215,6 +215,27 @@ a#logout_link{
 
 
 
+/*                          C O N T A C T              */
+
+
+#contact{
+	text-align: center;
+}
+#contact textarea, #contact input#email_input{
+	width: 70%;
+	margin-bottom: 20px;
+	font-weight: bold;
+	background-color: #fff;
+}
+#contact textarea{
+	height: 100px;
+}
+#contact input#send_button{
+	width: 70%;
+	margin: 20px auto 100px auto;
+}
+
+
 
 
 

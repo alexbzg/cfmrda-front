@@ -44,24 +44,27 @@ export function get (URL) {
     .catch(onError)
 }
 
-export function login (data) {
-  return post ('login', data)
+function dataPost(url, data) {
+  return post (url, data)
     .then(response => {
       return response.data
-    })
-    .catch(e => {
-      throw e
     })
 }
 
+export function login (data) {
+  return dataPost('login', data)
+}
+
 export function contactSupport (data) {
-  return post('contact_support', data)
-    .then(response => {
-      return response.data
-    })
-    .catch(e => {
-      throw e
-    })
+  return dataPost('contact_support', data)
+}
+
+export function uploadADIF (data) {
+  return dataPost('upload_adif', data)
+}
+
+export function commitADIF (data) {
+  return dataPost('commit_adif', data)
 }
 
 export function getSchemas () {

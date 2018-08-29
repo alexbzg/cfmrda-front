@@ -14,7 +14,7 @@
                 <b>Позывной</b><br/>
                 <input type="text" name="callsign_input" id="callsign_input" v-model.trim="login.callsign" 
                     :class="{error: validationErrors.callsign}"
-                    @change="callsignChange()"/>
+                    @change="capitalize(login, 'callsign')"/>
                 <br/>
             </template>
 
@@ -67,12 +67,13 @@ import _ from 'underscore'
 import {login as api_login} from '../api'
 import validationMixin from '../validation-mixin'
 import recaptchaMixin from '../recaptcha-mixin'
+import capitalizeMixin from '../capitalize-mixin'
 
 import {SET_USER_MUTATION} from '../store'
 
 export default {
   name: 'login',
-  mixins: [validationMixin, recaptchaMixin],
+  mixins: [validationMixin, recaptchaMixin, capitalizeMixin],
   data () {
     const token = this.$route.query.token
     return {
@@ -134,12 +135,7 @@ export default {
     },
     loginClick: _.debounce(function () {
       this.doLogin()
-    }, 300, true),
-    callsignChange () {
-      if (this.login.callsign !== this.login.callsign.toUpperCase()) {
-        this.login.callsign = this.login.callsign.toUpperCase()
-      }
-    }
+    }, 300, true)
   },
   watch: {
     mode: function (newVal) {
