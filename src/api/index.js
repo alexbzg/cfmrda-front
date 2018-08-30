@@ -3,7 +3,7 @@ import axios from 'axios'
 export const API_URL = '/aiohttp/'
 
 function onError (error) {
-  let e = {status: 0, log: ''}
+  let e = {status: 0, log: '', message: 'Ошибка сервера. Пожалуйста, повторите операцию позднее.'}
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
@@ -60,11 +60,7 @@ export function contactSupport (data) {
 }
 
 export function uploadADIF (data) {
-  return dataPost('upload_adif', data)
-}
-
-export function commitADIF (data) {
-  return dataPost('commit_adif', data)
+  return dataPost('adif', data)
 }
 
 export function getSchemas () {

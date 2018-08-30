@@ -1,19 +1,29 @@
 <template>
     <div class="list list_small">
       <div id="upload">
-
+        <span class="red">Загружать файлы ADI необходимо <b>раздельно</b> по каждому RDA-району!</span>
+        <br/>
+        <br/>
         <div id="upload_form">
-          <span class="red">Загружать файлы ADI необходимо только <b>раздельно</b> по каждому RDA-району!</span><br/><br/>
-          <b>RDA район</b><br/>
-          <input type="text" name="rda_input" id="rda_input" v-model.trim="adif.rda" 
-                @change="capitalize(adif, 'rda')" :class="{error: validationErrors.rda}"><br/>
-          <b>Позывной RDA экспедиции</b><br/>
-          <input type="text" name="callsign_input" id="callsign_input" v-model.trim="adif.stationCallsign"
-                @change="capitalize(adif, 'stationCallsign')" :class="{error: validationErrors.stationCallsign}">
+          <input type="file" id="adif_file" style="display: none;" @change="adifFileChange" />
+          <label  for="adif_file">
+            <div class="btn" id="file_btn">Выбрать ADI файл для загрузки</div>
+          </label>
           <br/>
-          <input type="file" id="adif_file" style="display:none" @change="adifFileChange"/>
-          <label for="adif_file" name="upload_btn" id="upload_btn" value="Загрузить новый ADI файл" class="btn"
-            /><br/>
+          <b>Файл:</b> <span id="file_name">{{adif.fileName ? adif.fileName : '...'}}</span>
+          <br/>
+          <b>RDA район:</b> <input type="text" name="rda_input" id="rda_input" v-model.trim="adif.rda" 
+                @change="capitalize(adif, 'rda')" :class="{error: validationErrors.rda}">
+          <br/>
+          <b>Позывной RDA активатора: </b> 
+          <input type="text" name="callsign_input" id="callsign_input" 
+                v-model.trim="adif.stationCallsign" @change="capitalize(adif, 'stationCallsign')" 
+                :class="{error: validationErrors.stationCallsign}">
+          <div id="ok_check" v-if="validated">
+              <input type="checkbox" name="ok_check" v-model="check"/> Да, всё верно.
+          </div>
+          <input type="button" name="upload_btn" id="upload_btn" v-if="check"
+            value="Загрузить файл в базу данных CFMRDA" class="btn" @click="uploadADIF">
         </div> 
 
         <div id="uploading_info" v-if="pending">
@@ -21,35 +31,22 @@
           <img id="uploading" src="images/spinner.gif" border="0" />
         </div>
 
-        <div id="message" v-if="response.error" v-bind="response.error"></div>
-
-        <div id="check_upload" v-if="response.data">
-          <p>
-            <u>Проверьте правильность информации</u>:<br/>
-            Позывной: <span>{{response.data.stationCallsign}}</span><br/>
-            RDA-район: <span>{{response.data.rda}}</span><br/>
-            Файл: <span>{{response.data.filename}}</span>
-          </p>
-          <input type="radio" name="ok_del_input" id="ok_input" v-model="check.result" value="true"> 
-          <span>Да, всё верно</span> 
-          <input type="radio" name="ok_del_input" id="del_input" v-model="check.result" value="false"> 
-          <span>Нет, есть ошибка.</span> Удалить.<br/>
-          <input type="button" name="login_btn" id="ok_btn" value="OK" class="btn" @click="commitClick()">
-        </div>
+        <div id="message" v-if="response" v-html="response" :class="{success: success}"
+            style="margin: 30px auto 0 auto;"></div>
+        
       </div>
     </div>   
 </template>
 
 <script>
-import _ from 'underscore'
-
 import storage from '../storage'
-import {uploadADIF, commitADIF} from '../api'
+import {uploadADIF as apiUploadADIF} from '../api'
 
 import validationMixin from '../validation-mixin'
 import capitalizeMixin from '../capitalize-mixin'
 
 const STORAGE_KEY_STATION_CALLSIGN = 'station_callsign'
+const reRDA = /[a-z][a-z]-\d\d/i
 
 export default {
   mixins: [validationMixin, capitalizeMixin],
@@ -59,22 +56,17 @@ export default {
         rda: null,
         stationCallsign: storage.load(STORAGE_KEY_STATION_CALLSIGN),
         file: null,
-        token: this.$store.getters.userToken
+        token: this.$store.getters.userToken,
+        fileName: null
     }
     return {
       pending: false,
-      commitPending: false,
-      response: {
-        error: null,
-        data: null
-      },
-      check: {
-        result: true,
-        fileId: null
-      },
+      response: null,
       adif: adif,
       validationSchema: 'adif',
-      validationData: adif
+      validationData: adif,
+      check: false,
+      success: false
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -93,22 +85,32 @@ export default {
       }
       const reader = new FileReader()
       const vm = this
+      vm.adif.fileName = files[0].name
+      const rda = vm.adif.fileName.match(reRDA) 
+      if (rda) {
+        vm.adif.rda = rda[0].toUpperCase()        
+      }
 
       reader.onload = function (e) {
-        vm.pending = true
         vm.adif.file = e.target.result
-        uploadADIF(vm.adif)
-          .then(() => {})
-          .finally(() => { vm.pending = false })
       }
       reader.readAsDataURL(files[0])
+    },
+    uploadADIF () {
+      storage.save(STORAGE_KEY_STATION_CALLSIGN, this.adif.stationCallsign, 'local')
+      this.pending = true
+      this.response = null
+      this.success = false
+      this.check = false
+      apiUploadADIF(this.adif)
+        .then(() => { 
+          this.adif.rda = null
+          this.response = 'Файл был загружен успешно.'
+          this.success = true
+        })
+        .catch((e) => { this.response = e.message })
+        .finally((r) => { this.pending = false })
     }
-  },
-  commitClick: _.debounce(function () {
-    this.commit()
-  }, 300, true),
-  commit () {
-    commitADIF(this.check)
   }
 }
 </script>

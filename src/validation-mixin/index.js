@@ -5,7 +5,7 @@ export default {
     return {
       validationData: {},
       validationSchema: null,
-      validationErrors: {}
+      validationErrors: { dumbField: 1 }
     }
   },
   methods: {

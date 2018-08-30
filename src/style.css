@@ -58,8 +58,11 @@ a#logout_link{
     background-color: #ff4949;
     color: #fff;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Параметры тени */
-    border: 1px solid #fafbb8;
-
+    border: 1px solid #f7fb1e;
+}
+#message.success{
+    background-color: #089D0B;
+    border-color: #eee;
 }
 
 
@@ -165,50 +168,54 @@ a#logout_link{
 #upload{
 	text-align: center;
 	color: #777;
+	padding: 10px 0 100px 0;
 }
-#upload input#callsign_input{
+#upload_form {
 	width: 70%;
-	margin-bottom: 20px;
+	margin: 0 auto;
+	text-align: left;
+	line-height: 2.5em;
+}
+#upload #file_btn{
+	line-height: 1.2em;
+}
+#upload #file_name{
+	margin-left: 10px;
 	font-weight: bold;
+	color: #333;
 }
 #upload input#rda_input{
 	width: 100px;
-	margin-bottom: 20px;
+	margin-left: 10px;
 	font-weight: bold;
+	color: #333;
 }
-#upload input#upload_btn{
-	width: 70%;
-	margin: 20px auto 100px auto;
+#upload_form input#callsign_input{
+	width: 250px;
+	margin-left: 10px;
+	font-weight: bold;
+	color: #333;
 }
-#upload input#ok_btn{
-	width: 70%;
-	margin: 20px auto 100px auto;
-}
-
-#uploading_info{
+#upload #ok_check{
 	margin: 20px auto;
-}
-
-
-#check_upload span{
-	color: #000;
+	text-align: center;
+	color: #900;
 	font-weight: bold;
 }
-#check_upload p{
-	width: 70%;
-	margin: 0 auto 20px auto;
-	text-align: left;
-	line-height: 2em;
-}
-#upload input#del_input{
-	margin-left: 50px;
+#upload #ok_check input{
+	margin-right: 10px;
 }
 
 
-
-
-
-
+#upload input#upload_btn{
+	width: 100%;
+	margin: 0 auto;
+}
+#uploading_info{
+	margin-top: 50px;
+	font-weight: bold;
+	color: #333;
+}
 
 
 
