@@ -1,29 +1,56 @@
 <template>
     <div class="list list_small">
       <div id="upload">
-        <span class="red">Загружать файлы ADI необходимо <b>раздельно</b> по каждому RDA-району!</span>
-        <br/>
-        <br/>
-        <div id="upload_form">
-          <input type="file" id="adif_file" style="display: none;" @change="adifFileChange" />
+        <div id="upload_rules" @click="showInfo = !showInfo">Правила загрузки ADI файлов</div>
+            <ul id="upload_info" v-if="showInfo">
+              <li>Один файл - один RDA район.</li>
+              <li>Можно выбирать и загружать сразу несколько ADI файлов.</li>
+              <li>Если название файла будет начинаться с RDA района (<i>например, BU-10.adi или KR-03_R7AB.adi</i>), то RDA район в поле ввода будет вставлен автоматически.</li>
+              <li>Если активатор работал из RDA района разными позывными (<i>например, .../P и .../M</i>), то можно отметить "Брать позывной активатора..." и написать название ПОЛЯ в ADI файле, из которого будет браться позывной активатора для каждого QSO.</li>
+          </ul>
+
+        <div id="upload_form" v-if="!pending">
+          <input type="file" id="adif_file" style="display: none;" @change="adifFileChange" 
+            multiple/>
           <label  for="adif_file">
-            <div class="btn" id="file_btn">Выбрать ADI файл для загрузки</div>
+            <div class="btn" id="file_btn">Выбрать один или несколько ADI файлов для загрузки</div>
           </label>
           <br/>
-          <b>Файл:</b> <span id="file_name">{{adif.fileName ? adif.fileName : '...'}}</span>
-          <br/>
-          <b>RDA район:</b> <input type="text" name="rda_input" id="rda_input" v-model.trim="adif.rda" 
-                @change="capitalize(adif, 'rda')" :class="{error: validationErrors.rda}">
-          <br/>
-          <b>Позывной RDA активатора: </b> 
+          <b>Позывной RDA активатора</b><br/>
           <input type="text" name="callsign_input" id="callsign_input" 
-                v-model.trim="adif.stationCallsign" @change="capitalize(adif, 'stationCallsign')" 
-                :class="{error: validationErrors.stationCallsign}">
+                v-model.trim="adif.stationCallsign" 
+                @change="capitalize(adif, 'stationCallsign')" 
+                :class="{error: !adif.stationCallsignFieldEnable && validationErrors.stationCallsign}"
+                :disabled="adif.stationCallsignFieldEnable"/><br/>
+          <span id="activator_check">
+              <input type="checkbox" name="activator_check" v-model="adif.stationCallsignFieldEnable"
+                @change="stationCallsignTypeChange"/> 
+              Брать позывной активатора в ADI файле из поля 
+              <input type="text" name="callsign_field" id="callsign_field" 
+                v-model="adif.stationCallsignField"
+                @change="capitalize(adif, 'stationCallsignField')"
+                :class="{error: adif.stationCallsignFieldEnable && validationErrors.stationCallsignField}"
+                :disabled="!adif.stationCallsignFieldEnable"/>
+          </span>
+          <br/>
+          <table id="upload_files">
+            <tr>
+              <td class="top file">Файл</td>
+              <td class="top rda_input">RDA</td>
+            </tr>
+            <tr v-for="(file, index) in adif.files">
+              <td class="file">{{file.name}}</td>
+              <td class="rda_input"><input type="text" name="rda_input" id="rda_input" v-model.trim="file.rda" 
+                @change="capitalize(adif.files[index], 'rda')" 
+                :class="{error: validationErrors['files['+index+'].rda']}"></td>
+            </tr>
+          </table>
+          <br/>
           <div id="ok_check" v-if="validated">
               <input type="checkbox" name="ok_check" v-model="check"/> Да, всё верно.
           </div>
           <input type="button" name="upload_btn" id="upload_btn" v-if="check"
-            value="Загрузить файл в базу данных CFMRDA" class="btn" @click="uploadADIF">
+            value="Загрузить в базу данных CFMRDA" class="btn" @click="uploadADIF">
         </div> 
 
         <div id="uploading_info" v-if="pending">
@@ -45,21 +72,28 @@ import {uploadADIF as apiUploadADIF} from '../api'
 import validationMixin from '../validation-mixin'
 import capitalizeMixin from '../capitalize-mixin'
 
-const STORAGE_KEY_STATION_CALLSIGN = 'station_callsign'
+const STORAGE_KEY_STATION_CALLSIGN_SETTINGS = 'station_callsign_settings'
+const DEF_STATION_CALLSIGN_FIELD = 'STATION_CALLSIGN'
 const reRDA = /[a-z][a-z]-\d\d/i
 
 export default {
   mixins: [validationMixin, capitalizeMixin],
   name: 'upload',
   data () {
+    const stationCallsignSettings = this.loadStationCallsignSettings
     const adif = {
         rda: null,
-        stationCallsign: storage.load(STORAGE_KEY_STATION_CALLSIGN),
-        file: null,
+        stationCallsignFieldEnable: stationCallsignSettings.fieldEnable,
+        stationCallsign: stationCallsignSettings.fieldEnable ?
+            null : stationCallsignSettings.callsign,
+        stationCallsignField: stationCallsignSettings.fieldEnable ?
+            stationCallsignSettings.field : null,
+        files: [],
         token: this.$store.getters.userToken,
         fileName: null
     }
     return {
+      showInfo: false,
       pending: false,
       response: null,
       adif: adif,
@@ -77,27 +111,43 @@ export default {
     })
   },
   methods: {
+    loadStationCallsignSettings () {
+      return storage.load(STORAGE_KEY_STATION_CALLSIGN_SETTINGS) ||
+        {fieldEnable: false, callsign: null, field: null}
+    },
     adifFileChange (e) {
       const files = e.target.files || e.dataTransfer.files
       // const el = e.target
       if (!files.length) {
         return
       }
-      const reader = new FileReader()
-      const vm = this
-      vm.adif.fileName = files[0].name
-      const rda = vm.adif.fileName.match(reRDA) 
-      if (rda) {
-        vm.adif.rda = rda[0].toUpperCase()        
-      }
+      this.adif.files = []  
 
-      reader.onload = function (e) {
-        vm.adif.file = e.target.result
+      for (let i = 0; i < files.length; i++) {
+        const idx = i
+        const reader = new FileReader()
+        const vm = this
+        const file = {name: files[i].name}
+        const rda = file.name.match(reRDA) 
+        file.rda = rda ? rda[0].toUpperCase() : ''
+        this.adif.files.push(file)
+
+        reader.onload = function (e) {
+          file.file = e.target.result
+          vm.validate()
+        }
+        reader.readAsDataURL(files[i])
       }
-      reader.readAsDataURL(files[0])
     },
     uploadADIF () {
-      storage.save(STORAGE_KEY_STATION_CALLSIGN, this.adif.stationCallsign, 'local')
+      const stationCallsignSettings = this.loadStationCallsignSettings()
+      if (this.adif.stationCallsignFieldEnable) {
+        stationCallsignSettings.field = this.adif.stationCallsignField
+      } else {
+        stationCallsignSettings.callsign = this.adif.stationCallsign
+      }
+      stationCallsignSettings.fieldEnable = this.adif.stationCallsignFieldEnable
+      storage.save(STORAGE_KEY_STATION_CALLSIGN, stationCallsignSettings, 'local')
       this.pending = true
       this.response = null
       this.success = false
@@ -110,6 +160,16 @@ export default {
         })
         .catch((e) => { this.response = e.message })
         .finally((r) => { this.pending = false })
+    },
+    stationCallsignTypeChange () {
+      const savedSettings = this.loadStationCallsignSettings()
+      if (this.adif.stationCallsignFieldEnable) {
+        this.adif.stationCallsignField = savedSettings.field || DEF_STATION_CALLSIGN_FIELD
+        this.adif.stationCallsign = null
+      } else {
+        this.adif.stationCallsignField = null
+        this.adif.stationCallsign = savedSettings.callsign
+     }
     }
   }
 }
