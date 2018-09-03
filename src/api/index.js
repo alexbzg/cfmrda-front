@@ -70,3 +70,10 @@ export function getSchemas () {
     })
 }
 
+export function getRDAValues () {
+  return get('/json/rdaValues.json')
+    .then(response => {
+      return response.data
+    })
+}
+

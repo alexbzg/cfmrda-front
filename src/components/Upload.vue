@@ -10,8 +10,8 @@
           </ul>
 
         <div id="upload_form" v-if="!pending">
-          <input type="file" id="adif_file" style="display: none;" @change="adifFileChange" 
-            multiple/>
+          <input type="file" id="adif_file" style="display: none;" @change="adifFileChange"
+            accept=".adi,.adif" multiple/>
           <label  for="adif_file">
             <div class="btn" id="file_btn">Выбрать один или несколько ADI файлов для загрузки</div>
           </label>
@@ -58,8 +58,23 @@
           <img id="uploading" src="images/spinner.gif" border="0" />
         </div>
 
-        <div id="message" v-if="response" v-html="response" :class="{success: success}"
-            style="margin: 30px auto 0 auto;"></div>
+        <div id="response" v-if="response.message || response.errors">
+            <div id="message" v-if="response.message" v-html="response.message"
+                :class="{'success': response.success}">
+            </div>
+            <table id="errors" v-if="response.errors">
+                <tr>
+                    <td class="top file">Файл</td>
+                    <td class="top rda">RDA</td>
+                    <td class="top error">Ошибка</td>
+                </tr>
+                <tr v-for="error in response.errors">
+                    <td class="file">{{error.filename}}</td>
+                    <td class="rda">{{error.rda}}</td>
+                    <td class="error">{{error.message}}</td>
+               </tr>
+            </table>
+        </div>
         
       </div>
     </div>   
@@ -67,20 +82,23 @@
 
 <script>
 import storage from '../storage'
-import {uploadADIF as apiUploadADIF} from '../api'
+import {uploadADIF as apiUploadADIF, getRDAValues} from '../api'
 
 import validationMixin from '../validation-mixin'
 import capitalizeMixin from '../capitalize-mixin'
 
 const STORAGE_KEY_STATION_CALLSIGN_SETTINGS = 'station_callsign_settings'
 const DEF_STATION_CALLSIGN_FIELD = 'STATION_CALLSIGN'
-const reRDA = /[a-z][a-z]-\d\d/i
+const reRDA = /([a-z][a-z])[- ]?(\d\d)/gi
 
 export default {
   mixins: [validationMixin, capitalizeMixin],
   name: 'upload',
   data () {
-    const stationCallsignSettings = this.loadStationCallsignSettings
+    getRDAValues()
+      .then((data) => { this.RDAValues = data })
+     
+    const stationCallsignSettings = this.loadStationCallsignSettings()
     const adif = {
         rda: null,
         stationCallsignFieldEnable: stationCallsignSettings.fieldEnable,
@@ -95,12 +113,15 @@ export default {
     return {
       showInfo: false,
       pending: false,
-      response: null,
+      response: {
+        message: null,
+        errors: null,
+        success: false
+      },
       adif: adif,
       validationSchema: 'adif',
       validationData: adif,
       check: false,
-      success: false
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -115,9 +136,14 @@ export default {
       return storage.load(STORAGE_KEY_STATION_CALLSIGN_SETTINGS) ||
         {fieldEnable: false, callsign: null, field: null}
     },
+    clearResponse() {
+      this.response.message = null
+      this.response.errors = null
+      this.response.success = false
+    },
     adifFileChange (e) {
+      this.clearResponse()
       const files = e.target.files || e.dataTransfer.files
-      // const el = e.target
       if (!files.length) {
         return
       }
@@ -128,8 +154,15 @@ export default {
         const reader = new FileReader()
         const vm = this
         const file = {name: files[i].name}
-        const rda = file.name.match(reRDA) 
-        file.rda = rda ? rda[0].toUpperCase() : ''
+        let rdaMatch = null
+        while ((rdaMatch = reRDA.exec(file.name)) !== null) {
+          let rda = (rdaMatch[1] + '-' + rdaMatch[2]).toUpperCase()
+          // eslint-ignore-next-line
+          if (this.RDAValues.includes(rda)) {
+            file.rda = rda
+            break
+          }
+        }
         this.adif.files.push(file)
 
         reader.onload = function (e) {
@@ -147,19 +180,26 @@ export default {
         stationCallsignSettings.callsign = this.adif.stationCallsign
       }
       stationCallsignSettings.fieldEnable = this.adif.stationCallsignFieldEnable
-      storage.save(STORAGE_KEY_STATION_CALLSIGN, stationCallsignSettings, 'local')
+      storage.save(STORAGE_KEY_STATION_CALLSIGN_SETTINGS, stationCallsignSettings, 'local')
       this.pending = true
-      this.response = null
-      this.success = false
       this.check = false
       apiUploadADIF(this.adif)
-        .then(() => { 
-          this.adif.rda = null
-          this.response = 'Файл был загружен успешно.'
-          this.success = true
+        .then((response) => { 
+          if (response.filesLoaded) {
+            this.response.message = 'Успешно загружено файлов: ' + response.filesLoaded
+            this.response.success = true
+          }
+          if (response.errors.length) {
+            this.response.errors = response.errors
+          }
         })
-        .catch((e) => { this.response = e.message })
-        .finally((r) => { this.pending = false })
+        .catch((e) => {
+          this.response.message = e.message
+        })
+        .finally((r) => {
+          this.adif.files = []
+          this.pending = false
+        })
     },
     stationCallsignTypeChange () {
       const savedSettings = this.loadStationCallsignSettings()

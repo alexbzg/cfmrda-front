@@ -52,7 +52,7 @@ a#logout_link{
 
 #message{
 	width: 500px;
-    margin: -50px auto 100px auto;
+    margin: 0px auto 100px auto;
     padding: 10px;
     text-align: center;
     background-color: #ff4949;
@@ -264,6 +264,56 @@ table#upload_files td.rda_input{
 #upload #upload_info li{
 	margin-bottom: 10px;
 }
+
+
+
+
+table#errors{
+	margin: 30px auto 0px auto;
+	border-collapse: collapse;
+}
+table#errors td{
+	padding: 10px 15px;
+	text-align: left;
+	border: 1px solid #fbd0d0;
+	color: #333;
+}
+table#errors td.top{
+	background-color: #fbe1e1;
+	font-weight: bold;
+}
+table#errors td.file{
+	font-weight: bold;
+	color: #333;
+}
+table#errors td.rda{
+	text-align: center;
+}
+table#errors td.error{
+	color: red;
+}
+table#errors td.top.error{
+	color: #333;
+	text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
