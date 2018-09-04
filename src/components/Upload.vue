@@ -89,7 +89,7 @@ import capitalizeMixin from '../capitalize-mixin'
 
 const STORAGE_KEY_STATION_CALLSIGN_SETTINGS = 'station_callsign_settings'
 const DEF_STATION_CALLSIGN_FIELD = 'STATION_CALLSIGN'
-const reRDA = /([a-z][a-z])[- ]?(\d\d)/gi
+const reRDA = /([a-z][a-z])[-_ ]?(\d\d)/gi
 
 export default {
   mixins: [validationMixin, capitalizeMixin],
