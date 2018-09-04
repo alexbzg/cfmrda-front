@@ -16,7 +16,7 @@
             <div class="btn" id="file_btn">Выбрать один или несколько ADI файлов для загрузки</div>
           </label>
           <br/>
-          <b>Позывной RDA активатора</b><br/>
+          Позывной RDA активатора
           <input type="text" name="callsign_input" id="callsign_input" 
                 v-model.trim="adif.stationCallsign" 
                 @change="capitalize(adif, 'stationCallsign')" 
@@ -25,7 +25,7 @@
           <span id="activator_check">
               <input type="checkbox" name="activator_check" v-model="adif.stationCallsignFieldEnable"
                 @change="stationCallsignTypeChange"/> 
-              Брать позывной активатора в ADI файле из поля 
+              Брать позывной активатора в ADI файле из поля
               <input type="text" name="callsign_field" id="callsign_field" 
                 v-model="adif.stationCallsignField"
                 @change="capitalize(adif, 'stationCallsignField')"
