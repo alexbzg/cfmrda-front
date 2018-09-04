@@ -153,13 +153,13 @@ export default {
         const idx = i
         const reader = new FileReader()
         const vm = this
-        const file = {name: files[i].name}
+        const file = {name: files[i].name, rda: null}
         let rdaMatch = null
         while ((rdaMatch = reRDA.exec(file.name)) !== null) {
           let rda = (rdaMatch[1] + '-' + rdaMatch[2]).toUpperCase()
-          // eslint-ignore-next-line
           if (this.RDAValues.includes(rda)) {
             file.rda = rda
+            reRDA.lastIndex = 0
             break
           }
         }
