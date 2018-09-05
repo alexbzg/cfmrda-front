@@ -38,7 +38,7 @@
               <td class="top file">Файл</td>
               <td class="top rda_input">RDA</td>
             </tr>
-            <tr v-for="(file, index) in adif.files">
+            <tr v-for="(file, index) in adif.files" :key="index">
               <td class="file">{{file.name}}</td>
               <td class="rda_input"><input type="text" name="rda_input" id="rda_input" v-model.trim="file.rda" 
                 @change="capitalize(adif.files[index], 'rda')" 
@@ -68,7 +68,7 @@
                     <td class="top rda">RDA</td>
                     <td class="top error">Ошибка</td>
                 </tr>
-                <tr v-for="error in response.errors">
+                <tr v-for="(error, index) in response.errors" :key="index">
                     <td class="file">{{error.filename}}</td>
                     <td class="rda">{{error.rda}}</td>
                     <td class="error">{{error.message}}</td>
@@ -150,7 +150,6 @@ export default {
       this.adif.files = []  
 
       for (let i = 0; i < files.length; i++) {
-        const idx = i
         const reader = new FileReader()
         const vm = this
         const file = {name: files[i].name, rda: null}
@@ -196,7 +195,7 @@ export default {
         .catch((e) => {
           this.response.message = e.message
         })
-        .finally((r) => {
+        .finally(() => {
           this.adif.files = []
           this.pending = false
         })

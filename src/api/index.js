@@ -77,3 +77,11 @@ export function getRDAValues () {
     })
 }
 
+export function getRankings () {
+  return get('/json/rankings.json')
+    .then(response => {
+      return response.data
+    })
+}
+
+

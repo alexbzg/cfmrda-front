@@ -491,15 +491,22 @@ table#rda_qso td.uploader{
 
 
 table.top_100{
-	margin: 0 auto 20px auto;
+	width: 95%;
+	margin: 0 auto 50px auto;
 	border-collapse: collapse;
 }
 table.top_100 td{
-	padding: 10px;
-	text-align: center;
+	padding: 5px 0px 5px 10px;
+	width: 10%;
+	vertical-align: middle;
 }
-table.top_100 td span{
-	font-size: 12px;
+table.top_100 td.selected{
+	font-weight: bold;
+	color: #900;
+	background-color: #f5fd74;
+}
+table.top_100 td span.rank{
+	font-size: 11px;
 	color: #555;
 }
 .select_view .band{
