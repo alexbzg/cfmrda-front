@@ -439,39 +439,56 @@ table#rda_table .cfm{
 
 
 
-table#rda_qso{
+table#stat1rda_hunter{
 	width: 600px;
 	margin: 20px auto;
 	border-collapse: collapse;
 	box-shadow: 3px 3px 6px rgba(0,0,0,0.2);
 }
-table#rda_qso td{
-	padding: 10px;
+table#stat1rda_hunter td, table#stat1rda_activator td{
+	padding: 5px 10px;
 	text-align: center;
 	font-size: 16px;
 	color: #000;
 	vertical-align: top;
 	border: 1px solid #dfedfd;
 }
-table#rda_qso td.top{
+table#stat1rda_hunter td.top, table#stat1rda_activator td.top{
 	background-color: #EDF3FA;
 	font-weight: bold;
 	vertical-align: middle;
 }
-table#rda_qso td.rda_top{
+table#stat1rda_hunter td.rda_top, table#stat1rda_activator td.rda_top{
 	font-size: 24px;
 	font-weight: bold;
 	background-color: #ffffca;
 }
-table#rda_qso td.call{
+table#stat1rda_hunter td#hunter_activator, table#stat1rda_activator td#hunter_activator{
+	font-size: 14px;
+	background-color: #6180e3;
+	font-weight: bold;
+	color: #fff;
+	padding: 0;
+}
+table#stat1rda_hunter td.call, table#stat1rda_activator td.call{
 	font-weight: bold;
 }
-table#rda_qso td.uploader{
+table#stat1rda_hunter td.uploader, table#stat1rda_activator td.uploader{
 	width: 80px;
 	font-size: 12px;
 	padding: 0;
 	vertical-align: middle;
 }
+
+
+
+table#stat1rda_activator{
+	width: 400px;
+	margin: 20px auto;
+	border-collapse: collapse;
+	box-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+}
+
 
 
 
@@ -502,8 +519,9 @@ table.top_100 td{
 }
 table.top_100 td.selected{
 	font-weight: bold;
-	color: #900;
-	background-color: #f5fd74;
+	color: #a00;
+	background-color: #ffffca;
+	box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
 }
 table.top_100 td span.rank{
 	font-size: 11px;

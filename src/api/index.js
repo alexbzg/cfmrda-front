@@ -84,4 +84,16 @@ export function getRankings () {
     })
 }
 
+export function getFullRDA () {
+  return get('/json/rda.json')
+    .then(response => {
+      return response.data
+    })
+}
 
+export function getHunterDetails (callsign) {
+  return get('/json/hunters/' + callsign + '.json')
+    .then(response => {
+      return response.data
+    })
+}
