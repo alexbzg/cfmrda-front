@@ -145,6 +145,6 @@
             "required":["stationCallsignField"]
         }
     ],
-    "required": ["token", "files", "rda", "stationCallsignFieldEnable"]
+    "required": ["token", "files", "stationCallsignFieldEnable"]
 }
 }
