@@ -372,7 +372,7 @@ table#check_call input#check_call_input{
 table#summary{
 	margin: 0 auto 20px auto;
 	border-collapse: collapse;
-	box-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+	box-shadow: 3px 3px 10px rgba(0,0,0,0.3);
 }
 table#summary td{
 	padding: 10px 15px;
@@ -400,6 +400,22 @@ table#summary td.selected{
 	background-color: #ffffca; 
 	font-weight: bold;
 }
+
+
+span.show_details{
+	display: block;
+	text-align: center;
+	color: #009;
+	text-decoration: underline;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+
+
+
+
+
 
 
 
