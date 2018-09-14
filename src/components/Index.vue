@@ -3,25 +3,41 @@
         <div class="list">
             <table id="check_call">
                 <tr>
+                <td class="btn_space"></td>
                 <td>
                     <input type="text" name="check_call_input" id="check_call_input" 
                         v-model="callsign" @change="callsignChange()">
                 </td>
-                <td>
+                <td class="btn_space">
                     <input type="button" name="check_call_btn" value="OK" class="btn"
-                        @click="loadHunter()" :disabled="!callsignValid">
+                        @click="loadHunter()">
                 </td>
                 </tr>
                 <tr>
-                <td>ваш позывной</td><td></td>
+                    <td></td><td>позывной</td><td></td>
                 </tr>
             </table>
 
-            <table id="summary" v-if="callsignValid">
+            <div id="callsign_error" v-if="callsignError">
+                Позывной не найден
+            </div>
+
+            <div id="callsign_select_mode">
+                <table id="select_mode">
+                    <tr>
+                        <td class="selected">Все</td>
+                        <td>CW</td>
+                        <td>SSB</td>
+                        <td>DIG</td>
+                    </tr>
+                </table>
+            </div>
+
+            <table id="summary" v-if="selectedHunter">
                 <tr>
                     <td style="border: none;"></td>
                     <td class="summ top" :class="{selected: detailsType == 'total'}"
-                        @click="detailsType = 'total'">Общий</td>
+                        @click="detailsType = 'total'">Все</td>
                     <td class="band top" :class="{selected: detailsType == band}"
                         v-for="(band, index) in $options.bands" :key="index" 
                         @click="detailsType = band">{{band}}</td>
@@ -29,7 +45,7 @@
                         @click="detailsType = 'bandsSum'">Сумма</td>
                 </tr>
                 <tr>
-                    <td style="border: none;">CFM RDAs</td>
+                    <td style="border: none;">AutoCFM RDAs</td>
                     <td :class="{selected: detailsType == 'total'}">
                         {{selectedHunter.total.count}}
                     </td>
@@ -40,7 +56,7 @@
                         {{selectedHunter.bandsSum.count}}</td>
                 </tr>
                 <tr>
-                    <td style="border: none;">Место в рейтинге</td>
+                    <td style="border: none;">В рейтинге Охотников</td>
                     <td :class="{selected: detailsType == 'total'}">
                         {{selectedHunter.total.rank}}
                     </td>
@@ -55,7 +71,7 @@
 
             <span class="show_details" @click="showDetails = !showDetails" 
                 v-if="(hunterDetails.hunter || hunterDetails.activator) && rda">
-                {{showDetails ? 'Скрыть' : 'Подробнее'}}
+                {{showDetails ? 'Свернуть' : 'Подробно по RDA районам для ' + callsign}}
             </span>
 
             <table id="rda_table" v-if="showDetails">
@@ -64,12 +80,13 @@
                         <td class="rda_letters">{{group.group}}</td>
                         <td>
                             <div v-for="(val, idxVal) in group.values" :key="idxVal" class="rda" 
-                                :class="{cfm: rdaCfm[val.value]}" @click="activeValue = val">
+                                :class="{cfm: rdaCfm[val.value]}" 
+                                @click="activeValue === val ? activeValue = null : activeValue = val">
                                 {{val.displayValue}}
                             </div>
                         </td>
                     </tr>
-                    <tr v-if="activeValue && activeValue.group === group.group"
+                    <tr v-if="activeValue && activeValue.group === group.group && (hunterItems || activatorItems)"
                         :key="idxGr + '-actVal'">
                         <td colspan="2">
                             <table id="stat1rda_hunter" v-if="hunterItems">
@@ -125,11 +142,11 @@
 
 
     <rank-table title="TOP 100 - Охотники за RDA районами" :rank-data="rankData.hunters"
-        :callsign="callsign"/>
+        :callsign="callsign" @callsign-click="callsignClick"/>
 
 
     <rank-table title="TOP 100 - Активаторы RDA районов" :rank-data="rankData.activators"
-        :callsign="callsign"/>
+        :callsign="callsign" @callsign-click="callsignClick"/>
 
     </div>
 </template>
@@ -154,6 +171,7 @@ export default {
       .then((data) => {this.rda = data})      
     return {
       callsign: null,
+      callsignError: false,
       callsignValid: false,
       rankData: {},
       rda: {},
@@ -162,10 +180,15 @@ export default {
         activator: null
       },
       activeValue: null,
-      selectedHunter: {},
+      selectedHunter: null,
       detailsType: null,
       showDetails: false,
       message: null
+    }
+  },
+  beforeDestroy () {
+    if (this.$callsignErrorTimeout) {
+      clearTimeout(this.$callsignErrorTimeout)
     }
   },
   methods: {
@@ -173,29 +196,41 @@ export default {
       if (this.callsignValid) {
         this.hunterDetails.hunter = null
         this.hunterDetails.activator = null
+        this.showDetails = false
+        this.selectedHunter = null
         getHunterDetails(this.callsign)
           .then((data) => {
             this.hunterDetails.hunter = data
+            this.selectedHunter = {'bands':{}}
+            this.getSelectedHunterRank('total')
+            this.getSelectedHunterRank('bandsSum')
+            for (const band of this.$options.bands) {
+              this.getSelectedHunterRank(band, true)
+            }
+            if (!this.detailsType) {
+              this.detailsType = 'total'
+            }
           })
-          .catch(() => {this.message = 'Позывной не найден.'})
+          .catch(() => {
+              this.callsignError = true
+              this.$callsignErrorTimeout =
+                setTimeout(() => { this.callsignError = false }, 10000)
+          })
       }
+    },
+    callsignClick (callsign) {
+      this.callsign = callsign
+      this.callsignValid = true
+      this.loadHunter()
     },
     callsignChange () {
       let csMatch = null
       this.callsignValid = false
       if ((csMatch = reStripCallsign.exec(this.callsign)) !== null) {
         this.callsign = csMatch[0]
+        reStripCallsign.lastIndex = 0
         this.capitalize(this, 'callsign')
         this.callsignValid = true        
-        this.selectedHunter = {'bands':{}}
-        this.getSelectedHunterRank('total')
-        this.getSelectedHunterRank('bandsSum')
-        for (const band of this.$options.bands) {
-          this.getSelectedHunterRank(band, true)
-        }
-        if (!this.detailsType) {
-          this.detailsType = 'total'
-        }
       }
     },
     getSelectedHunterRank (rankType, isBand) {

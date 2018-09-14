@@ -109,6 +109,7 @@ a#logout_link{
 	padding: 20px;
 	background-color: #fff;
 	box-shadow: 3px 3px 6px rgba(0,0,0,0.3); /* Параметры тени */
+	text-align: center;
 }
 .list_small{
 	width: 800px;
@@ -366,13 +367,51 @@ table#check_call input#check_call_input{
 	font-size: 24px;
 	padding: 0;
 }
+table#check_call td.btn_space{
+	width: 100px;
+}
 
+
+#callsign_select_mode{
+	width: 1100px;
+	margin: 0 auto;
+}
+table#select_mode{
+	float: right;
+	margin: 0 0 10px 0; 
+ 	border-collapse: collapse;
+}
+table#select_mode td{
+	padding: 5px 20px;
+	text-align: center;
+	border: 1px solid #dfedfd;
+	color: #009;
+	background-color: #EDF3FA;
+	font-weight: bold;
+	text-decoration: underline;
+	cursor: pointer;
+}
+table#select_mode td.selected{
+	background-color: #ffffca; 
+}
+
+
+#callsign_error{
+	width: 250px;
+	margin: 0 auto 30px auto;
+	padding: 10px 20px;
+	box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+	background-color: #ff4949;
+	border: 1px solid #ffffca;
+	color: #fff;
+	text-align: center;
+}
 
 
 table#summary{
+	width: 1100px;
 	margin: 0 auto 20px auto;
 	border-collapse: collapse;
-	box-shadow: 3px 3px 10px rgba(0,0,0,0.3);
 }
 table#summary td{
 	padding: 10px 15px;
@@ -409,6 +448,7 @@ span.show_details{
 	text-decoration: underline;
 	font-weight: bold;
 	cursor: pointer;
+	padding: 20px 0;
 }
 
 
@@ -532,6 +572,7 @@ table.top_100 td{
 	padding: 5px 0px 5px 10px;
 	width: 10%;
 	vertical-align: middle;
+	text-align: left;
 }
 table.top_100 td.selected{
 	font-weight: bold;
@@ -543,23 +584,35 @@ table.top_100 td span.rank{
 	font-size: 11px;
 	color: #555;
 }
-.select_view .band{
-	display: inline-block;
-	width: 70px;
+
+table.top_100 td span.callsign{
 	cursor: pointer;
-	color: #009;
-	text-decoration: underline;
 }
-.select_view .selected{
-	font-weight: bold;
+
+
+
+
+table.select_view{
+	display: inline-block;
+	margin: 0 0 20px 0; 
+ 	border-collapse: collapse;
 }
-.select_view{
+table.select_view td{
+	padding: 5px 20px;
 	text-align: center;
-	margin-bottom: 20px;
+	border: 1px solid #dfedfd;
+	color: #009;
+	background-color: #EDF3FA;
+	font-weight: bold;
+	text-decoration: underline;
+	cursor: pointer;
 }
-
-
-
+table.select_view td.selected{
+	background-color: #ffffca; 
+}
+table.select_view_mode{
+	margin-left: 50px; 
+}
 
 
 

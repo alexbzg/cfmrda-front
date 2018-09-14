@@ -158,10 +158,10 @@ export default {
           let rda = (rdaMatch[1] + '-' + rdaMatch[2]).toUpperCase()
           if (this.RDAValues.includes(rda)) {
             file.rda = rda
-            reRDA.lastIndex = 0
             break
           }
         }
+        reRDA.lastIndex = 0
         this.adif.files.push(file)
 
         reader.onload = function (e) {

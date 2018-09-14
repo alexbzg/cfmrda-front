@@ -1,19 +1,34 @@
 <template>
     <div class="list" v-if="rankData">
         <h4>{{title}}</h4>
-        <div class="select_view">
-            <div class="band" :class="{selected: activeType === 'total'}" 
-                @click="activeType = 'total'">Общий</div>            
-            <div class="band" v-for="(band, index) in $options.bands" :key="index" 
+
+        <table class="select_view">
+          <tr>
+            <td class="band" :class="{selected: activeType === 'total'}" 
+                @click="activeType = 'total'">Все</td>            
+            <td class="band" v-for="(band, index) in $options.bands" :key="index" 
                 :class="{selected: activeType === band}" 
-                @click="activeType = band">{{band}}</div>
-            <div class="band" :class="{selected: activeType === 'bandsSum'}" 
-                @click="activeType = 'bandsSum'">Сумма</div>            
-       </div>
+                @click="activeType = band">{{band}}</td>
+            <td class="band" :class="{selected: activeType === 'bandsSum'}" 
+                @click="activeType = 'bandsSum'">Сумма</td>   
+          </tr>         
+       </table> 
+
+       <table class="select_view select_view_mode">
+          <tr>
+            <td class="selected">Все</td>
+            <td>CW</td>
+            <td>SSB</td>
+            <td>DIG</td>
+          </tr>
+        </table>
+
+
        <table class="top_100">
             <tr v-for="(row, rowIndex) in rows[activeType]" :key="rowIndex">
                 <td v-for="(item, itemIndex) in row" :key="itemIndex"
-                    :class="{'selected': item && item.callsign === callsign}">
+                    :class="{'selected': item && item.callsign === callsign}"
+                    @click="$emit('callsign-click', item.callsign)">
                     <span class="rank" v-if="item">{{item.rank}}.</span>
                     <span class="callsign">
                         {{item ? item.callsign : '&nbsp;'}}
