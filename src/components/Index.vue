@@ -22,48 +22,40 @@
                 Позывной не найден
             </div>
 
-            <div id="callsign_select_mode">
-                <table id="select_mode">
-                    <tr>
-                        <td class="selected">Все</td>
-                        <td>CW</td>
-                        <td>SSB</td>
-                        <td>DIG</td>
-                    </tr>
-                </table>
-            </div>
+            <mode-switch @mode-change="modeChange" v-if="hunterData">
+            </mode-switch>
 
-            <table id="summary" v-if="selectedHunter">
+            <table id="summary" v-if="hunterData">
                 <tr>
                     <td style="border: none;"></td>
-                    <td class="summ top" :class="{selected: detailsType == 'total'}"
-                        @click="detailsType = 'total'">Все</td>
-                    <td class="band top" :class="{selected: detailsType == band}"
-                        v-for="(band, index) in $options.bands" :key="index" 
-                        @click="detailsType = band">{{band}}</td>
-                    <td class="summ top" :class="{selected: detailsType == 'bandsSum'}"
-                        @click="detailsType = 'bandsSum'">Сумма</td>
+                    <td class="summ top" :class="{selected: band === 'total'}"
+                        @click="band = 'total'">Все</td>
+                    <td class="band top" :class="{selected: _band === band}"
+                        v-for="(_band, index) in $options.bands" :key="index" 
+                        @click="band = _band">{{band}}</td>
+                    <td class="summ top" :class="{selected: band === 'bandsSum'}"
+                        @click="band = 'bandsSum'">Сумма</td>
                 </tr>
                 <tr>
                     <td style="border: none;">AutoCFM RDAs</td>
-                    <td :class="{selected: detailsType == 'total'}">
+                    <td :class="{selected: band === 'total'}">
                         {{selectedHunter.total.count}}
                     </td>
-                    <td :class="{selected: detailsType == band}"
-                        v-for="(band, index) in $options.bands" :key="index">
+                    <td :class="{selected: _band == band}"
+                        v-for="(_band, index) in $options.bands" :key="index">
                         {{selectedHunter.bands[band].count}}</td>
-                    <td :class="{selected: detailsType == 'bandsSum'}">
+                    <td :class="{selected: band == 'bandsSum'}">
                         {{selectedHunter.bandsSum.count}}</td>
                 </tr>
                 <tr>
                     <td style="border: none;">В рейтинге Охотников</td>
-                    <td :class="{selected: detailsType == 'total'}">
+                    <td :class="{selected: band == 'total'}">
                         {{selectedHunter.total.rank}}
                     </td>
-                    <td :class="{selected: detailsType == band}"
+                    <td :class="{selected: band == band}"
                         v-for="(band, index) in $options.bands" :key="index">
                         {{selectedHunter.bands[band].rank}}</td>
-                    <td :class="{selected: detailsType == 'bandsSum'}">
+                    <td :class="{selected: band == 'bandsSum'}">
                         {{selectedHunter.bandsSum.rank}}</td>
                 </tr>
             </table>
@@ -81,12 +73,12 @@
                         <td>
                             <div v-for="(val, idxVal) in group.values" :key="idxVal" class="rda" 
                                 :class="{cfm: rdaCfm[val.value]}" 
-                                @click="activeValue === val ? activeValue = null : activeValue = val">
+                                @click="rdaValue === val ? rdaValue = null : rdaValue = val">
                                 {{val.displayValue}}
                             </div>
                         </td>
                     </tr>
-                    <tr v-if="activeValue && activeValue.group === group.group && (hunterItems || activatorItems)"
+                    <tr v-if="rdaValue && rdaValue.group === group.group && (hunterItems || activatorItems)"
                         :key="idxGr + '-actVal'">
                         <td colspan="2">
                             <table id="stat1rda_hunter" v-if="hunterItems">
@@ -94,7 +86,7 @@
                                     <td id="hunter_activator" colspan="5">RDA охотник</td>
                                 </tr>
                                 <tr>
-                                    <td class="rda_top">{{activeValue.value}}</td>
+                                    <td class="rda_top">{{rdaValue.value}}</td>
                                     <td class="time top">GMT</td>
                                     <td class="band top">МГц</td>
                                     <td class="call top">CFM QSO</td>
@@ -175,13 +167,10 @@ export default {
       callsignValid: false,
       rankData: {},
       rda: {},
-      hunterDetails: { 
-        hunter: null,
-        activator: null
-      },
-      activeValue: null,
-      selectedHunter: null,
-      detailsType: null,
+      hunterData: null,
+      band: 'total',
+      mode: 'total'.
+      rdaValue: null,
       showDetails: false,
       message: null
     }
@@ -194,21 +183,13 @@ export default {
   methods: {
     loadHunter () {
       if (this.callsignValid) {
-        this.hunterDetails.hunter = null
-        this.hunterDetails.activator = null
         this.showDetails = false
         this.selectedHunter = null
         getHunterDetails(this.callsign)
           .then((data) => {
-            this.hunterDetails.hunter = data
-            this.selectedHunter = {'bands':{}}
-            this.getSelectedHunterRank('total')
-            this.getSelectedHunterRank('bandsSum')
-            for (const band of this.$options.bands) {
-              this.getSelectedHunterRank(band, true)
-            }
-            if (!this.detailsType) {
-              this.detailsType = 'total'
+            this.hunterDetails = data
+            if (!this.band) {
+              this.band = 'total'
             }
           })
           .catch(() => {
@@ -250,16 +231,16 @@ export default {
   },
   computed: {
     isBand () {
-      return this.detailsType !== 'total' && this.detailsType !== 'bandsSum'
+      return this.band !== 'total' && this.band !== 'bandsSum'
     },
     rdaCfm () {
       const r ={}
-      if (!this.detailsType || !this.hunterDetails.hunter) {
+      if (!this.band || !this.hunterDetails.hunter) {
         return r
       }
       for (const rda in this.hunterDetails.hunter) {
         if (this.isBand) {
-          if (this.hunterDetails.hunter[rda][this.detailsType]) {
+          if (this.hunterDetails.hunter[rda][this.band]) {
             r[rda] = true
           }
         } else {
@@ -269,13 +250,13 @@ export default {
       return r
     },
     hunterItems () {
-      if (this.activeValue && this.hunterDetails.hunter[this.activeValue.value]) {
+      if (this.rdaValue && this.hunterDetails.hunter[this.rdaValue.value]) {
         if (this.isBand) {
-          return this.hunterDetails.hunter[this.activeValue.value][this.detailsType]
+          return this.hunterDetails.hunter[this.rdaValue.value][this.band]
         } else {
           let r = []
-          for (const band in this.hunterDetails.hunter[this.activeValue.value]) {
-            r = r.concat(this.hunterDetails.hunter[this.activeValue.value][band])
+          for (const band in this.hunterDetails.hunter[this.rdaValue.value]) {
+            r = r.concat(this.hunterDetails.hunter[this.rdaValue.value][band])
           }
           return r
         }

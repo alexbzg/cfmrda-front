@@ -4,28 +4,21 @@
 
         <table class="select_view">
           <tr>
-            <td class="band" :class="{selected: activeType === 'total'}" 
-                @click="activeType = 'total'">Все</td>            
-            <td class="band" v-for="(band, index) in $options.bands" :key="index" 
-                :class="{selected: activeType === band}" 
-                @click="activeType = band">{{band}}</td>
-            <td class="band" :class="{selected: activeType === 'bandsSum'}" 
-                @click="activeType = 'bandsSum'">Сумма</td>   
+            <td class="band" :class="{selected: band === 'total'}" 
+                @click="band = 'total'">Все</td>            
+            <td class="band" v-for="(_band, index) in $options.BANDS" :key="index" 
+                :class="{selected: _band === band}" 
+                @click="band = _band">{{_band}}</td>
+            <td class="band" :class="{selected: band === 'bandsSum'}" 
+                @click="band = 'bandsSum'">Сумма</td>   
           </tr>         
        </table> 
 
-       <table class="select_view select_view_mode">
-          <tr>
-            <td class="selected">Все</td>
-            <td>CW</td>
-            <td>SSB</td>
-            <td>DIG</td>
-          </tr>
-        </table>
-
+       <mode-switch @mode-change="modeChange">
+       </mode-switch>
 
        <table class="top_100">
-            <tr v-for="(row, rowIndex) in rows[activeType]" :key="rowIndex">
+            <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
                 <td v-for="(item, itemIndex) in row" :key="itemIndex"
                     :class="{'selected': item && item.callsign === callsign}"
                     @click="$emit('callsign-click', item.callsign)">
@@ -41,45 +34,46 @@
 
 <script>
 import {orderedBands} from '../ham-radio'
+import ModeSwitch from './ModeSwitch.vue'
+import RankDataMixin from '../rank-data-mixin'
 
 const ROWS_COUNT = 10
 const COLUMNS_COUNT = 10
 
 export default {
-  bands: orderedBands(),
+  BANDS: orderedBands(),
   name: 'rankTable',
+  components: {ModeSwitch},
+  mixins: [RankDataMixin],
   props: ['rankData', 'callsign', 'title'],
   data () {
     return {
-      rows: {},
-      activeType: null
+      mode: 'total',
+      band: 'total'
     }
   },
   methods: {
-    splitRows (activeType) {
-      const rows = []
-      const topCount = Math.min(ROWS_COUNT*COLUMNS_COUNT, activeType.length)
-      const rowCount = Math.min(ROWS_COUNT, topCount)
-      for (let rc = 0; rc < rowCount; rc++) {
-        const row = []
-        for (let cc = 0; cc < COLUMNS_COUNT; cc++) {
-          const idx = rc + cc*COLUMNS_COUNT
-          row.push(idx < topCount ? activeType[idx] : null)
-        }
-        rows.push(row)
-      }
-      return rows
+    modeChange (mode) {
+      this.mode = mode
     }
   },
-  watch: {
-    rankData (newVal) {
-      this.rows = {}
-      this.$set(this.rows, 'total', this.splitRows(newVal.total))
-      for (const band in newVal.bands) {
-        this.$set(this.rows, band, this.splitRows(newVal.bands[band]))
+  computed: {
+    rows () {
+      const rows = []
+      const data = this.getModeBand(this.rankData, this.mode, this.band)
+      if (data) {
+        const topCount = Math.min(ROWS_COUNT*COLUMNS_COUNT, data.length)
+        const rowCount = Math.min(ROWS_COUNT, topCount)
+        for (let rc = 0; rc < rowCount; rc++) {
+          const row = []
+          for (let cc = 0; cc < COLUMNS_COUNT; cc++) {
+            const idx = rc + cc*COLUMNS_COUNT
+            row.push(idx < topCount ? data[idx] : null)
+          }
+          rows.push(row)
+        }
       }
-      this.$set(this.rows, 'bandsSum', this.splitRows(newVal.bandsSum))
-      this.activeType = 'total'
+      return rows
     }
   }
 }

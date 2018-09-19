@@ -92,7 +92,7 @@ export function getFullRDA () {
 }
 
 export function getHunterDetails (callsign) {
-  return get('/json/hunters/' + callsign + '.json')
+  return get(API_URL + 'hunter/' + callsign)
     .then(response => {
       return response.data
     })

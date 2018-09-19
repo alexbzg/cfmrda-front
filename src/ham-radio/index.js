@@ -5,3 +5,5 @@ export function orderedBands() {
         return Number(a) - Number(b)
       })
 }
+
+export const MODES = ['CW', 'SSB', 'DIGI']
