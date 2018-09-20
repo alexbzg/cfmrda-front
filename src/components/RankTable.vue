@@ -34,6 +34,7 @@
 
 <script>
 import {orderedBands} from '../ham-radio'
+
 import ModeSwitch from './ModeSwitch.vue'
 import RankDataMixin from '../rank-data-mixin'
 

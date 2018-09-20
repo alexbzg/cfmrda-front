@@ -22,48 +22,50 @@
                 Позывной не найден
             </div>
 
-            <mode-switch @mode-change="modeChange" v-if="hunterData">
-            </mode-switch>
+            <div id="mode_switch">
+                <mode-switch @mode-change="modeChange" v-if="hunterData">
+                </mode-switch>
+            </div>
 
-            <table id="summary" v-if="hunterData">
+            <table id="summary" v-if="hunterRank">
                 <tr>
                     <td style="border: none;"></td>
                     <td class="summ top" :class="{selected: band === 'total'}"
                         @click="band = 'total'">Все</td>
                     <td class="band top" :class="{selected: _band === band}"
-                        v-for="(_band, index) in $options.bands" :key="index" 
-                        @click="band = _band">{{band}}</td>
+                        v-for="(_band, index) in $options.BANDS" :key="index" 
+                        @click="band = _band">{{_band}}</td>
                     <td class="summ top" :class="{selected: band === 'bandsSum'}"
                         @click="band = 'bandsSum'">Сумма</td>
                 </tr>
                 <tr>
                     <td style="border: none;">AutoCFM RDAs</td>
                     <td :class="{selected: band === 'total'}">
-                        {{selectedHunter.total.count}}
+                        {{hunterRank.total.count}}
                     </td>
-                    <td :class="{selected: _band == band}"
-                        v-for="(_band, index) in $options.bands" :key="index">
-                        {{selectedHunter.bands[band].count}}</td>
-                    <td :class="{selected: band == 'bandsSum'}">
-                        {{selectedHunter.bandsSum.count}}</td>
+                    <td :class="{selected: band === _band}"
+                        v-for="(_band, index) in $options.BANDS" :key="index">
+                        {{hunterRank.bands[_band].count}}</td>
+                    <td :class="{selected: band === 'bandsSum'}">
+                        {{hunterRank.bandsSum.count}}</td>
                 </tr>
                 <tr>
                     <td style="border: none;">В рейтинге Охотников</td>
-                    <td :class="{selected: band == 'total'}">
-                        {{selectedHunter.total.rank}}
+                    <td :class="{selected: band === 'total'}">
+                        {{hunterRank.total.rank}}
                     </td>
-                    <td :class="{selected: band == band}"
-                        v-for="(band, index) in $options.bands" :key="index">
-                        {{selectedHunter.bands[band].rank}}</td>
-                    <td :class="{selected: band == 'bandsSum'}">
-                        {{selectedHunter.bandsSum.rank}}</td>
+                    <td :class="{selected: band === _band}"
+                        v-for="(_band, index) in $options.BANDS" :key="index">
+                        {{hunterRank.bands[_band].rank}}</td>
+                    <td :class="{selected: band === 'bandsSum'}">
+                        {{hunterRank.bandsSum.rank}}</td>
                 </tr>
             </table>
 
 
             <span class="show_details" @click="showDetails = !showDetails" 
-                v-if="(hunterDetails.hunter || hunterDetails.activator) && rda">
-                {{showDetails ? 'Свернуть' : 'Подробно по RDA районам для ' + callsign}}
+                v-if="hunterData">
+                {{showDetails ? 'Свернуть' : 'Подробно по RDA районам для ' + callsignValid}}
             </span>
 
             <table id="rda_table" v-if="showDetails">
@@ -78,10 +80,10 @@
                             </div>
                         </td>
                     </tr>
-                    <tr v-if="rdaValue && rdaValue.group === group.group && (hunterItems || activatorItems)"
+                    <tr v-if="rdaValue && rdaValue.group === group.group && (rdaQso.hunter || rdaQso.activator)"
                         :key="idxGr + '-actVal'">
                         <td colspan="2">
-                            <table id="stat1rda_hunter" v-if="hunterItems">
+                            <table id="stat1rda_hunter" v-if="rdaQso.hunter">
                                 <tr>
                                     <td id="hunter_activator" colspan="5">RDA охотник</td>
                                 </tr>
@@ -92,7 +94,7 @@
                                     <td class="call top">CFM QSO</td>
                                     <td class="uploader top">Загрузил</td>
                                 </tr>
-                                <tr v-for="(item, idxIt) in hunterItems" :key="idxIt">
+                                <tr v-for="(item, idxIt) in rdaQso.hunter" :key="idxIt">
                                     <td class="date">{{item.date}}</td>
                                     <td class="time">{{item.time}}</td>
                                     <td class="band">{{item.band}}</td>
@@ -101,27 +103,21 @@
                                 </tr>
                             </table>
 
-                            <table id="stat1rda_activator" v-if="activatorItems">
+                            <table id="stat1rda_activator" v-if="rdaQso.activator">
                                 <tr>
                                     <td id="hunter_activator" colspan="5">RDA активатор</td>
                                 </tr>
                                 <tr>
-                                    <td class="rda_top">AL-15</td>
+                                    <td class="rda_top">{{rdaValue.value}}</td>
                                     <td class="band top">МГц</td>
                                     <td class="call top">QSOs</td>
                                     <td class="uploader top">Загрузил</td>
                                 </tr>
-                                <tr>
-                                    <td class="date">12 july 1996</td>
-                                    <td class="band">1.8</td>
-                                    <td class="call">53</td>
-                                    <td class="uploader">R7DA</td>
-                                </tr>
-                                <tr>
-                                    <td class="date">23 sept 2015</td>
-                                    <td class="band">1.8</td>
-                                    <td class="call">75</td>
-                                    <td class="uploader">R7DA</td>
+                                <tr v-for="(item, idxIt) in rdaQso.activator" :key="idxIt">
+                                    <td class="date">{{item.date}}</td>
+                                    <td class="band">{{item.band}}</td>
+                                    <td class="call">{{item.count}}</td>
+                                    <td class="uploader">{{item.uploader}}</td>
                                 </tr>
                             </table>
                         </td>
@@ -134,46 +130,56 @@
 
 
     <rank-table title="TOP 100 - Охотники за RDA районами" :rank-data="rankData.hunters"
-        :callsign="callsign" @callsign-click="callsignClick"/>
+        :callsign="callsignValid" @callsign-click="callsignClick"/>
 
 
     <rank-table title="TOP 100 - Активаторы RDA районов" :rank-data="rankData.activators"
-        :callsign="callsign" @callsign-click="callsignClick"/>
+        :callsign="callsignValid" @callsign-click="callsignClick"/>
 
     </div>
 </template>
 
 <script>
 import {getRankings, getHunterDetails, getFullRDA} from '../api'
+import storage from '../storage'
+
 import capitalizeMixin from '../capitalize-mixin'
+import rankDataMixin from '../rank-data-mixin'
+
 import RankTable from './RankTable.vue'
+import ModeSwitch from './ModeSwitch.vue'
 import {orderedBands} from '../ham-radio'
 
 const reStripCallsign = /\d*[A-Z]+\d+[A-Z]+/i
+const STORAGE_KEY_CALLSIGN = 'hunter_callsign'
 
 export default {
-  bands: orderedBands(),
+  BANDS: orderedBands(),
   name: 'index',
-  mixins: [capitalizeMixin],
-  components: {RankTable},
+  mixins: [capitalizeMixin, rankDataMixin],
+  components: {RankTable, ModeSwitch},
   data () {
     getRankings() 
       .then((data) => {this.rankData = data})
     getFullRDA()
       .then((data) => {this.rda = data})      
+    const callsign = storage.load(STORAGE_KEY_CALLSIGN)
     return {
-      callsign: null,
+      callsign: callsign,
       callsignError: false,
-      callsignValid: false,
+      callsignValid: callsign,
       rankData: {},
       rda: {},
       hunterData: null,
       band: 'total',
-      mode: 'total'.
+      mode: 'total',
       rdaValue: null,
       showDetails: false,
       message: null
     }
+  },
+  mounted () {
+    this.loadHunter()
   },
   beforeDestroy () {
     if (this.$callsignErrorTimeout) {
@@ -181,27 +187,31 @@ export default {
     }
   },
   methods: {
+    setCallsignValid () {
+      storage.save(STORAGE_KEY_CALLSIGN, this.callsign, 'local')
+      this.callsignValid = this.callsign
+    },
     loadHunter () {
       if (this.callsignValid) {
         this.showDetails = false
-        this.selectedHunter = null
+        this.callsignError = false
         getHunterDetails(this.callsign)
           .then((data) => {
-            this.hunterDetails = data
-            if (!this.band) {
-              this.band = 'total'
-            }
-          })
-          .catch(() => {
+            this.hunterData = data
+            if (!data) {
               this.callsignError = true
               this.$callsignErrorTimeout =
                 setTimeout(() => { this.callsignError = false }, 10000)
+            }
           })
       }
     },
+    modeChange (mode) {
+      this.mode = mode
+    },
     callsignClick (callsign) {
       this.callsign = callsign
-      this.callsignValid = true
+      this.setCallsignValid()
       this.loadHunter()
     },
     callsignChange () {
@@ -211,61 +221,87 @@ export default {
         this.callsign = csMatch[0]
         reStripCallsign.lastIndex = 0
         this.capitalize(this, 'callsign')
-        this.callsignValid = true        
+        this.setCallsignValid()
       }
     },
-    getSelectedHunterRank (rankType, isBand) {
-      const rankData = isBand ? this.rankData.hunters.bands[rankType] : this.rankData.hunters[rankType]
+    getHunterRank (band) {
+      const rankData = this.getModeBand(this.rankData.hunters, this.mode, band)
       let rank = {rank: '-', count: 0}
       let found = null
       if (rankData && (found = rankData.find((item) =>
-        {return item.callsign === this.callsign}))) {
+        {return item.callsign === this.callsignValid}))) {
         rank = found
       }
-      if (isBand) {
-        this.selectedHunter.bands[rankType] = rank
-      } else {
-        this.selectedHunter[rankType] = rank
-      }
+      return rank
     }
   },
   computed: {
-    isBand () {
-      return this.band !== 'total' && this.band !== 'bandsSum'
+    qsoFilter () {
+      const allModes = this.isMeta(this.mode)
+      const allBands = this.isMeta(this.band)
+      return (qso) => {
+        return (allModes || qso.mode === this.mode) &&
+            (allBands || qso.band === this.band)
+      }
+    },
+    hunterRank () {
+      if (this.callsignValid && this.rankData.hunters) {
+        const r = {'total': null, 'bandsSum': null}
+        for (const type in r) {
+            r[type] = this.getHunterRank(type)
+        }
+        r.bands = {}
+        for (const band of this.$options.BANDS) {
+            r.bands[band] = this.getHunterRank(band)
+        }
+        return r
+      } else {
+        return null
+      }
     },
     rdaCfm () {
       const r ={}
-      if (!this.band || !this.hunterDetails.hunter) {
-        return r
-      }
-      for (const rda in this.hunterDetails.hunter) {
-        if (this.isBand) {
-          if (this.hunterDetails.hunter[rda][this.band]) {
-            r[rda] = true
+      if (this.hunterData) {
+        for (const rda in this.hunterData) {
+          if (this.hunterData[rda].hunter) {
+            for (const qso of this.hunterData[rda].hunter) {
+              if (this.qsoFilter(qso)) {
+                r[rda] = true
+                break
+              }
+            }
           }
-        } else {
-            r[rda] = true
+          if (!r[rda] && this.hunterData[rda].activator) {
+            let count = 0
+            for (const qsos of this.hunterData[rda].activator) {
+              if (this.qsoFilter(qsos)) {
+                count += qsos.count
+                if (count > 99) {
+                  r[rda] = true
+                  break
+                }
+              }
+            }
+          }
         }
       }
       return r
     },
-    hunterItems () {
-      if (this.rdaValue && this.hunterDetails.hunter[this.rdaValue.value]) {
-        if (this.isBand) {
-          return this.hunterDetails.hunter[this.rdaValue.value][this.band]
-        } else {
-          let r = []
-          for (const band in this.hunterDetails.hunter[this.rdaValue.value]) {
-            r = r.concat(this.hunterDetails.hunter[this.rdaValue.value][band])
+    rdaQso () {
+      const r = {hunter: null, activator: null}
+      if (this.rdaValue && this.hunterData[this.rdaValue.value]) {
+        const data = this.hunterData[this.rdaValue.value]
+        for (const type in r) {
+          if (type in data) {
+            const qso = data[type].filter(this.qsoFilter)
+            if (qso.length) {
+              r[type] = qso
+            }
           }
-          return r
         }
       }
-    },
-    activatorItems () {
-      return false
+      return r
     }
-
   }
 }
 </script>

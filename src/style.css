@@ -396,6 +396,11 @@ table#select_mode td.selected{
 }
 
 
+
+
+
+
+
 #callsign_error{
 	width: 250px;
 	margin: 0 auto 30px auto;
@@ -614,6 +619,14 @@ table.select_view_mode{
 	margin-left: 50px; 
 }
 
+#mode_switch{
+	width: 1100px;
+	margin: 0 auto;
+	text-align: right;
+}
+#mode_switch table.select_view{
+	margin: 0; 
+}
 
 
 
