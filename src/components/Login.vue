@@ -43,7 +43,7 @@
                     v-model="remember"> Запомнить меня<br/>
             </template>
             <input type="button" name="login_btn" id="login1_btn" 
-                value="Отправить" class="btn"
+                value="OK" class="btn"
                 :disabled="pending || !validated" @click="loginClick()"/>
             <div v-if="response" id="message" v-html="response"></div>
             <div id="login_bottom" v-if="mode !== 'passwordChange'">

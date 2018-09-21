@@ -424,6 +424,9 @@ table#summary td{
 	border: 1px solid #dfedfd;
 	color: #333;
 }
+table#summary tr.top_row td{
+	border-top: 3px solid #dfedfd;
+}
 table#summary td.top{
 	background-color: #EDF3FA;
 	font-weight: bold;

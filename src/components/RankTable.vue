@@ -24,7 +24,7 @@
                     @click="$emit('callsign-click', item.callsign)">
                     <span class="rank" v-if="item">{{item.rank}}.</span>
                     <span class="callsign">
-                        {{item ? item.callsign : '&nbsp;'}}
+                        {{item ? replace0(item.callsign) : '&nbsp;'}}
                     </span>
                 </td>
             </tr>
@@ -36,7 +36,8 @@
 import {orderedBands} from '../ham-radio'
 
 import ModeSwitch from './ModeSwitch.vue'
-import RankDataMixin from '../rank-data-mixin'
+import rankDataMixin from '../rank-data-mixin'
+import replaceZerosMixin from '../replace-zeros-mixin'
 
 const ROWS_COUNT = 10
 const COLUMNS_COUNT = 10
@@ -45,7 +46,7 @@ export default {
   BANDS: orderedBands(),
   name: 'rankTable',
   components: {ModeSwitch},
-  mixins: [RankDataMixin],
+  mixins: [rankDataMixin, replaceZerosMixin],
   props: ['rankData', 'callsign', 'title'],
   data () {
     return {

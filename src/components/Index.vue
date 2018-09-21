@@ -27,7 +27,7 @@
                 </mode-switch>
             </div>
 
-            <table id="summary" v-if="hunterRank">
+            <table id="summary" v-if="hunterRank.hunter && hunterRank.hunter.total">
                 <tr>
                     <td style="border: none;"></td>
                     <td class="summ top" :class="{selected: band === 'total'}"
@@ -38,34 +38,59 @@
                     <td class="summ top" :class="{selected: band === 'bandsSum'}"
                         @click="band = 'bandsSum'">Сумма</td>
                 </tr>
-                <tr>
+                <tr class="top_row">
                     <td style="border: none;">AutoCFM RDAs</td>
                     <td :class="{selected: band === 'total'}">
-                        {{hunterRank.total.count}}
+                        {{hunterRank.hunter.total.count}}
                     </td>
                     <td :class="{selected: band === _band}"
                         v-for="(_band, index) in $options.BANDS" :key="index">
-                        {{hunterRank.bands[_band].count}}</td>
+                        {{hunterRank.hunter.bands[_band].count}}</td>
                     <td :class="{selected: band === 'bandsSum'}">
-                        {{hunterRank.bandsSum.count}}</td>
+                        {{hunterRank.hunter.bandsSum.count}}</td>
                 </tr>
                 <tr>
-                    <td style="border: none;">В рейтинге Охотников</td>
+                    <td style="border: none;">Место в рейтинге Охотников</td>
                     <td :class="{selected: band === 'total'}">
-                        {{hunterRank.total.rank}}
+                        {{hunterRank.hunter.total.rank}}
                     </td>
                     <td :class="{selected: band === _band}"
                         v-for="(_band, index) in $options.BANDS" :key="index">
-                        {{hunterRank.bands[_band].rank}}</td>
+                        {{hunterRank.hunter.bands[_band].rank}}</td>
                     <td :class="{selected: band === 'bandsSum'}">
-                        {{hunterRank.bandsSum.rank}}</td>
+                        {{hunterRank.hunter.bandsSum.rank}}</td>
                 </tr>
+                <template v-if="hunterRank.activator.total.count">
+                    <tr class="top_row">
+                        <td style="border: none;">Активировано RDAs</td>
+                        <td :class="{selected: band === 'total'}">
+                            {{hunterRank.activator.total.count}}
+                        </td>
+                        <td :class="{selected: band === _band}"
+                            v-for="(_band, index) in $options.BANDS" :key="index">
+                            {{hunterRank.activator.bands[_band].count}}</td>
+                        <td :class="{selected: band === 'bandsSum'}">
+                            {{hunterRank.activator.bandsSum.count}}</td>
+                    </tr>
+                    <tr>
+                        <td style="border: none;">Место в рейтинге Активаторов</td>
+                        <td :class="{selected: band === 'total'}">
+                            {{hunterRank.activator.total.rank}}
+                        </td>
+                        <td :class="{selected: band === _band}"
+                            v-for="(_band, index) in $options.BANDS" :key="index">
+                            {{hunterRank.activator.bands[_band].rank}}</td>
+                        <td :class="{selected: band === 'bandsSum'}">
+                            {{hunterRank.activator.bandsSum.rank}}</td>
+                    </tr>
+                </template>
+
             </table>
 
 
             <span class="show_details" @click="showDetails = !showDetails" 
                 v-if="hunterData">
-                {{showDetails ? 'Свернуть' : 'Подробно по RDA районам для ' + callsignValid}}
+                {{showDetails ? 'Свернуть' : 'Подробно по RDA районам для ' + replace0(callsignValid)}}
             </span>
 
             <table id="rda_table" v-if="showDetails">
@@ -145,6 +170,7 @@ import storage from '../storage'
 
 import capitalizeMixin from '../capitalize-mixin'
 import rankDataMixin from '../rank-data-mixin'
+import replaceZerosMixin from '../replace-zeros-mixin'
 
 import RankTable from './RankTable.vue'
 import ModeSwitch from './ModeSwitch.vue'
@@ -156,7 +182,7 @@ const STORAGE_KEY_CALLSIGN = 'hunter_callsign'
 export default {
   BANDS: orderedBands(),
   name: 'index',
-  mixins: [capitalizeMixin, rankDataMixin],
+  mixins: [capitalizeMixin, rankDataMixin, replaceZerosMixin],
   components: {RankTable, ModeSwitch},
   data () {
     getRankings() 
@@ -224,8 +250,8 @@ export default {
         this.setCallsignValid()
       }
     },
-    getHunterRank (band) {
-      const rankData = this.getModeBand(this.rankData.hunters, this.mode, band)
+    getHunterRank (data, band) {
+      const rankData = this.getModeBand(data, this.mode, band)
       let rank = {rank: '-', count: 0}
       let found = null
       if (rankData && (found = rankData.find((item) =>
@@ -245,19 +271,21 @@ export default {
       }
     },
     hunterRank () {
-      if (this.callsignValid && this.rankData.hunters) {
-        const r = {'total': null, 'bandsSum': null}
-        for (const type in r) {
-            r[type] = this.getHunterRank(type)
+      const r = {hunter: null, activator: null}
+      for (const type in r) {
+        const data = this.rankData[type + 's']
+        if (this.callsignValid && data) {
+          r[type] = {'total': null, 'bandsSum': null}
+          for (const band in r[type]) {
+            r[type][band] = this.getHunterRank(data, band)
+          }
+          r[type].bands = {}
+          for (const band of this.$options.BANDS) {
+            r[type].bands[band] = this.getHunterRank(data, band)
+          }
         }
-        r.bands = {}
-        for (const band of this.$options.BANDS) {
-            r.bands[band] = this.getHunterRank(band)
-        }
-        return r
-      } else {
-        return null
       }
+      return r
     },
     rdaCfm () {
       const r ={}
