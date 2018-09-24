@@ -1,21 +1,12 @@
 <template>
     <div class="list" v-if="rankData">
-        <h4>{{title}}</h4>
 
-        <table class="select_view">
-          <tr>
-            <td class="band" :class="{selected: band === 'total'}" 
-                @click="band = 'total'">Все</td>            
-            <td class="band" v-for="(_band, index) in $options.BANDS" :key="index" 
-                :class="{selected: _band === band}" 
-                @click="band = _band">{{_band}}</td>
-            <td class="band" :class="{selected: band === 'bandsSum'}" 
-                @click="band = 'bandsSum'">Сумма</td>   
-          </tr>         
-       </table> 
+        <h4>AutoCFM RDA TOP {{$options.ROWS_COUNT * $options.COLUMNS_COUNT}}</h4>
 
-       <mode-switch @mode-change="modeChange">
-       </mode-switch>
+            <table class="select_view">
+                <selector @selector-change="selectorChange">
+                </selector>
+            </table>
 
        <table class="top_100">
             <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
@@ -33,9 +24,7 @@
 </template>
 
 <script>
-import {orderedBands} from '../ham-radio'
-
-import ModeSwitch from './ModeSwitch.vue'
+import Selector from './Selector.vue'
 import rankDataMixin from '../rank-data-mixin'
 import replaceZerosMixin from '../replace-zeros-mixin'
 
@@ -43,36 +32,40 @@ const ROWS_COUNT = 10
 const COLUMNS_COUNT = 10
 
 export default {
-  BANDS: orderedBands(),
+  ROWS_COUNT: ROWS_COUNT,
+  COLUMNS_COUNT: COLUMNS_COUNT,
   name: 'rankTable',
-  components: {ModeSwitch},
+  components: {Selector},
   mixins: [rankDataMixin, replaceZerosMixin],
-  props: ['rankData', 'callsign', 'title'],
+  props: ['rankData', 'callsign'],
   data () {
     return {
+      role: 'hunter',
       mode: 'total',
       band: 'total'
     }
   },
   methods: {
-    modeChange (mode) {
-      this.mode = mode
+    selectorChange (type, value) {
+      this[type] = value
     }
   },
   computed: {
     rows () {
       const rows = []
-      const data = this.getModeBand(this.rankData, this.mode, this.band)
-      if (data) {
-        const topCount = Math.min(ROWS_COUNT*COLUMNS_COUNT, data.length)
-        const rowCount = Math.min(ROWS_COUNT, topCount)
-        for (let rc = 0; rc < rowCount; rc++) {
-          const row = []
-          for (let cc = 0; cc < COLUMNS_COUNT; cc++) {
-            const idx = rc + cc*COLUMNS_COUNT
-            row.push(idx < topCount ? data[idx] : null)
+      if (this.rankData[this.role + 's']) {
+        const data = this.getModeBand(this.rankData[this.role + 's'], this.mode, this.band)
+        if (data) {
+          const topCount = Math.min(ROWS_COUNT*COLUMNS_COUNT, data.length)
+          const rowCount = Math.min(ROWS_COUNT, topCount)
+          for (let rc = 0; rc < rowCount; rc++) {
+            const row = []
+            for (let cc = 0; cc < COLUMNS_COUNT; cc++) {
+              const idx = rc + cc*COLUMNS_COUNT
+              row.push(idx < topCount ? data[idx] : null)
+            }
+            rows.push(row)
           }
-          rows.push(row)
         }
       }
       return rows

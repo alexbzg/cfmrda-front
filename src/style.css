@@ -43,6 +43,8 @@ input, button, textarea, select{
 }
 h4{
 	text-align: center;
+	font-size: 24px;
+	margin: 10px 0 20px 0;
 }
 
 a#logout_link{
@@ -413,40 +415,60 @@ table#select_mode td.selected{
 }
 
 
-table#summary{
-	width: 1100px;
-	margin: 0 auto 20px auto;
-	border-collapse: collapse;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*                                                   S E L E C T     V I E W              */
+
+
+
+table.select_view{
+	margin: 0 auto;
+ 	border-collapse: collapse;
 }
-table#summary td{
-	padding: 10px 15px;
+table.select_view td{
+	padding: 7px 25px;
 	text-align: center;
-	border: 1px solid #dfedfd;
 	color: #333;
+	border: 1px solid #dfedfd;
 }
-table#summary tr.top_row td{
-	border-top: 3px solid #dfedfd;
-}
-table#summary td.top{
+table.select_view td.menu{
+	font-weight: bold;	
+	color: #009;
 	background-color: #EDF3FA;
-	font-weight: bold;
-}
-table#summary td.band{
-	width: 40px;
-	color: #009;
 	text-decoration: underline;
 	cursor: pointer;
 }
-table#summary td.summ{
-	width: 60px;
-	color: #009;
-	text-decoration: underline;
-	cursor: pointer;
-}
-table#summary td.selected{
+table.select_view td.selected{
 	background-color: #ffffca; 
 	font-weight: bold;
 }
+table.select_view td.no_border{
+	border: none;
+}
+table.select_view td.separator{
+	border: none;
+	padding: 0;
+	height: 7px;
+}
+
+
+
+
+
+
+
 
 
 span.show_details{
@@ -495,7 +517,12 @@ table#rda_table .rda{
 	text-align: center;
 }
 table#rda_table .cfm{
-	background-color: #8ddb9b;
+	background-color: #63fb7e;
+	color: #333;
+	cursor: pointer;
+}
+table#rda_table .partial{
+	background-color: #3cfaff;
 	color: #333;
 	cursor: pointer;
 }
@@ -570,10 +597,9 @@ table#stat1rda_activator{
 
 
 
-
 table.top_100{
 	width: 95%;
-	margin: 0 auto 50px auto;
+	margin: 20px auto 50px auto;
 	border-collapse: collapse;
 }
 table.top_100 td{
@@ -596,44 +622,6 @@ table.top_100 td span.rank{
 table.top_100 td span.callsign{
 	cursor: pointer;
 }
-
-
-
-
-table.select_view{
-	display: inline-block;
-	margin: 0 0 20px 0; 
- 	border-collapse: collapse;
-}
-table.select_view td{
-	padding: 5px 20px;
-	text-align: center;
-	border: 1px solid #dfedfd;
-	color: #009;
-	background-color: #EDF3FA;
-	font-weight: bold;
-	text-decoration: underline;
-	cursor: pointer;
-}
-table.select_view td.selected{
-	background-color: #ffffca; 
-}
-table.select_view_mode{
-	margin-left: 50px; 
-}
-
-#mode_switch{
-	width: 1100px;
-	margin: 0 auto;
-	text-align: right;
-}
-#mode_switch table.select_view{
-	margin: 0; 
-}
-
-
-
-
 
 
 

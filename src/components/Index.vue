@@ -22,71 +22,34 @@
                 Позывной не найден
             </div>
 
-            <div id="mode_switch">
-                <mode-switch @mode-change="modeChange" v-if="hunterData">
-                </mode-switch>
-            </div>
-
-            <table id="summary" v-if="hunterRank.hunter && hunterRank.hunter.total">
-                <tr>
-                    <td style="border: none;"></td>
-                    <td class="summ top" :class="{selected: band === 'total'}"
-                        @click="band = 'total'">Все</td>
-                    <td class="band top" :class="{selected: _band === band}"
-                        v-for="(_band, index) in $options.BANDS" :key="index" 
-                        @click="band = _band">{{_band}}</td>
-                    <td class="summ top" :class="{selected: band === 'bandsSum'}"
-                        @click="band = 'bandsSum'">Сумма</td>
-                </tr>
-                <tr class="top_row">
-                    <td style="border: none;">AutoCFM RDAs</td>
-                    <td :class="{selected: band === 'total'}">
-                        {{hunterRank.hunter.total.count}}
-                    </td>
-                    <td :class="{selected: band === _band}"
-                        v-for="(_band, index) in $options.BANDS" :key="index">
-                        {{hunterRank.hunter.bands[_band].count}}</td>
-                    <td :class="{selected: band === 'bandsSum'}">
-                        {{hunterRank.hunter.bandsSum.count}}</td>
-                </tr>
-                <tr>
-                    <td style="border: none;">Место в рейтинге Охотников</td>
-                    <td :class="{selected: band === 'total'}">
-                        {{hunterRank.hunter.total.rank}}
-                    </td>
-                    <td :class="{selected: band === _band}"
-                        v-for="(_band, index) in $options.BANDS" :key="index">
-                        {{hunterRank.hunter.bands[_band].rank}}</td>
-                    <td :class="{selected: band === 'bandsSum'}">
-                        {{hunterRank.hunter.bandsSum.rank}}</td>
-                </tr>
-                <template v-if="hunterRank.activator.total.count">
-                    <tr class="top_row">
-                        <td style="border: none;">Активировано RDAs</td>
+            <table class="select_view">
+                <selector @selector-change="selectorChange">
+                </selector>
+                <tbody v-if="hunterRank && hunterRank.total.count">
+                    <tr>
+                        <td class="no_border">AutoCFM RDAs</td>
                         <td :class="{selected: band === 'total'}">
-                            {{hunterRank.activator.total.count}}
+                            {{hunterRank.total.count}}
                         </td>
                         <td :class="{selected: band === _band}"
                             v-for="(_band, index) in $options.BANDS" :key="index">
-                            {{hunterRank.activator.bands[_band].count}}</td>
+                            {{hunterRank.bands[_band].count}}</td>
                         <td :class="{selected: band === 'bandsSum'}">
-                            {{hunterRank.activator.bandsSum.count}}</td>
+                            {{hunterRank.bandsSum.count}}</td>
                     </tr>
                     <tr>
-                        <td style="border: none;">Место в рейтинге Активаторов</td>
+                        <td class="no_border">Место в рейтинге</td>
                         <td :class="{selected: band === 'total'}">
-                            {{hunterRank.activator.total.rank}}
+                            {{hunterRank.total.rank}}
                         </td>
                         <td :class="{selected: band === _band}"
                             v-for="(_band, index) in $options.BANDS" :key="index">
-                            {{hunterRank.activator.bands[_band].rank}}</td>
+                            {{hunterRank.bands[_band].rank}}</td>
                         <td :class="{selected: band === 'bandsSum'}">
-                            {{hunterRank.activator.bandsSum.rank}}</td>
+                            {{hunterRank.bandsSum.rank}}</td>
                     </tr>
-                </template>
-
+                </tbody>
             </table>
-
 
             <span class="show_details" @click="showDetails = !showDetails" 
                 v-if="hunterData">
@@ -99,7 +62,8 @@
                         <td class="rda_letters">{{group.group}}</td>
                         <td>
                             <div v-for="(val, idxVal) in group.values" :key="idxVal" class="rda" 
-                                :class="{cfm: rdaCfm[val.value]}" 
+                                :class="{cfm: rdaCfm[val.value] === 'cfm', 
+                                    partial: rdaCfm[val.value] === 'partial'}" 
                                 @click="rdaValue === val ? rdaValue = null : rdaValue = val">
                                 {{val.displayValue}}
                             </div>
@@ -108,7 +72,7 @@
                     <tr v-if="rdaValue && rdaValue.group === group.group && (rdaQso.hunter || rdaQso.activator)"
                         :key="idxGr + '-actVal'">
                         <td colspan="2">
-                            <table id="stat1rda_hunter" v-if="rdaQso.hunter">
+                            <table id="stat1rda_hunter" v-if="role === 'hunter' && rdaQso.hunter">
                                 <tr>
                                     <td id="hunter_activator" colspan="5">RDA охотник</td>
                                 </tr>
@@ -154,12 +118,7 @@
 
 
 
-    <rank-table title="TOP 100 - Охотники за RDA районами" :rank-data="rankData.hunters"
-        :callsign="callsignValid" @callsign-click="callsignClick"/>
-
-
-    <rank-table title="TOP 100 - Активаторы RDA районов" :rank-data="rankData.activators"
-        :callsign="callsignValid" @callsign-click="callsignClick"/>
+    <rank-table :rank-data="rankData" :callsign="callsignValid" @callsign-click="callsignClick"/>
 
     </div>
 </template>
@@ -173,7 +132,7 @@ import rankDataMixin from '../rank-data-mixin'
 import replaceZerosMixin from '../replace-zeros-mixin'
 
 import RankTable from './RankTable.vue'
-import ModeSwitch from './ModeSwitch.vue'
+import Selector from './Selector.vue'
 import {orderedBands} from '../ham-radio'
 
 const reStripCallsign = /\d*[A-Z]+\d+[A-Z]+/i
@@ -183,7 +142,7 @@ export default {
   BANDS: orderedBands(),
   name: 'index',
   mixins: [capitalizeMixin, rankDataMixin, replaceZerosMixin],
-  components: {RankTable, ModeSwitch},
+  components: {RankTable, Selector},
   data () {
     getRankings() 
       .then((data) => {this.rankData = data})
@@ -197,6 +156,7 @@ export default {
       rankData: {},
       rda: {},
       hunterData: null,
+      role: 'hunter',
       band: 'total',
       mode: 'total',
       rdaValue: null,
@@ -232,8 +192,8 @@ export default {
           })
       }
     },
-    modeChange (mode) {
-      this.mode = mode
+    selectorChange(type, value) {
+      this[type] = value
     },
     callsignClick (callsign) {
       this.callsign = callsign
@@ -271,31 +231,32 @@ export default {
       }
     },
     hunterRank () {
-      const r = {hunter: null, activator: null}
-      for (const type in r) {
-        const data = this.rankData[type + 's']
-        if (this.callsignValid && data) {
-          r[type] = {'total': null, 'bandsSum': null}
-          for (const band in r[type]) {
-            r[type][band] = this.getHunterRank(data, band)
-          }
-          r[type].bands = {}
-          for (const band of this.$options.BANDS) {
-            r[type].bands[band] = this.getHunterRank(data, band)
-          }
+      const data = this.rankData[this.role + 's']
+      if (this.callsignValid && data) {
+        const r = {'total': null, 'bandsSum': null}
+        for (const band in r) {
+          r[band] = this.getHunterRank(data, band)
         }
+        r.bands = {}
+        for (const band of this.$options.BANDS) {
+          r.bands[band] = this.getHunterRank(data, band)
+        }
+        return r
+      } else {
+        return null
       }
-      return r
     },
     rdaCfm () {
       const r ={}
-      if (this.hunterData) {
+      if (this.hunterData) {        
         for (const rda in this.hunterData) {
-          if (this.hunterData[rda].hunter) {
-            for (const qso of this.hunterData[rda].hunter) {
-              if (this.qsoFilter(qso)) {
-                r[rda] = true
-                break
+          if (this.role === 'hunter') {
+            if (this.hunterData[rda].hunter) {
+              for (const qso of this.hunterData[rda].hunter) {
+                if (this.qsoFilter(qso)) {
+                  r[rda] = 'cfm'
+                  break
+                }
               }
             }
           }
@@ -305,10 +266,13 @@ export default {
               if (this.qsoFilter(qsos)) {
                 count += qsos.count
                 if (count > 99) {
-                  r[rda] = true
+                  r[rda] = 'cfm'
                   break
                 }
               }
+            }
+            if (!r[rda] && this.role === 'activator' && count > 0) {
+              r[rda] = 'partial'
             }
           }
         }

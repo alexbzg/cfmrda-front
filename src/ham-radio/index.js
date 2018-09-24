@@ -7,3 +7,4 @@ export function orderedBands() {
 }
 
 export const MODES = ['CW', 'SSB', 'DIGI']
+export const ROLES = {hunter: 'Охотник', activator: 'Активатор'}
