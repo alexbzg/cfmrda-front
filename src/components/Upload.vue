@@ -4,9 +4,10 @@
         <div id="upload_rules" @click="showInfo = !showInfo">Правила загрузки ADI файлов</div>
             <ul id="upload_info" v-if="showInfo">
               <li>Один файл - один RDA район.</li>
-              <li>Можно выбирать и загружать сразу несколько ADI файлов.</li>
-              <li>Если название файла будет начинаться с RDA района (<i>например, BU-10.adi или KR-03_R7AB.adi</i>), то RDA район в поле ввода будет вставлен автоматически.</li>
-              <li>Если активатор работал из RDA района разными позывными (<i>например, .../P и .../M</i>), то можно отметить "Брать позывной активатора..." и написать название ПОЛЯ в ADI файле, из которого будет браться позывной активатора для каждого QSO.</li>
+              <li><b>Можно</b> выбирать и загружать <b>сразу несколько</b> ADI файлов.</li>
+              <li>Если <b>название файла</b> будет начинаться с RDA района (<i>например, BU-10.adi или KR-03_R7AB.adi</i>), то RDA район в поле ввода будет вставлен автоматически.</li>
+              <li>Если <b>активатор</b> работал из RDA района <b>разными позывными</b> (<i>например, .../P и .../M</i>), то можно отметить "Брать позывной активатора..." и написать название ПОЛЯ в ADI файле, из которого будет браться позывной активатора для каждого QSO.</li>
+              <li>Если <b>активатор</b> работал из RDA района <b>коллективным позывным</b> (<i>например, позывным R7AB работали операторы R7DA и R7TU</i>), то можно отметить "Также подтвердить..." и написать позывные операторов коллективной станции, чтобы проведенные QSO им также пошли в зачёт.</li>
           </ul>
 
         <div id="upload_form" v-if="!pending">
@@ -31,6 +32,11 @@
                 @change="capitalize(adif, 'stationCallsignField')"
                 :class="{error: adif.stationCallsignFieldEnable && validationErrors.stationCallsignField}"
                 :disabled="!adif.stationCallsignFieldEnable"/>
+          </span><br/>
+          <span id="operators_check">
+              <input type="checkbox" name="operators_check" disabled /> 
+              Также подтвердить загружаемые RDA районы операторам коллективной станции:<br/>
+              <input type="text" name="operators_callsigns" id="operators_callsigns" disabled />
           </span>
           <br/>
           <table id="upload_files">

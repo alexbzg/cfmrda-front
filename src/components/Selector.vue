@@ -8,7 +8,7 @@
             </td>
             <td class="no_border" colspan="3"> </td>
             <td class="menu" :class="{selected: mode === 'total'}" 
-                @click="select('mode', 'total')">Все</td>
+                @click="select('mode', 'total')">Mix</td>
             <td class="menu" v-for="(_mode, idx) in $options.MODES" :key="idx"
                 @click="select('mode', _mode)" :class="{selected: mode === _mode}">{{_mode}}</td>
         </tr>
@@ -18,12 +18,12 @@
         <tr>
             <td class="no_border"></td>
             <td class="menu" :class="{selected: band === 'total'}" 
-                @click="select('band', 'total')">Все</td>            
+                @click="select('band', 'total')">All RDA</td>            
             <td class="menu" v-for="(_band, index) in $options.BANDS" :key="index" 
                 :class="{selected: _band === band}" 
                 @click="select('band',_band)">{{_band}}</td>
             <td class="menu" :class="{selected: band === 'bandsSum'}" 
-                @click="select('band', 'bandsSum')">Сумма</td>   
+                @click="select('band', 'bandsSum')">All bands</td>   
         </tr>
     </tbody>
 </template>

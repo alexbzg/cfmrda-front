@@ -22,10 +22,10 @@
                 Позывной не найден
             </div>
 
-            <table class="select_view">
+            <table class="select_view" v-if="callsignValid && hunterData">
                 <selector @selector-change="selectorChange">
                 </selector>
-                <tbody v-if="hunterRank && hunterRank.total.count">
+                <tbody>
                     <tr>
                         <td class="no_border">AutoCFM RDAs</td>
                         <td :class="{selected: band === 'total'}">
@@ -52,7 +52,7 @@
             </table>
 
             <span class="show_details" @click="showDetails = !showDetails" 
-                v-if="hunterData">
+                v-if="callsignValid && hunterData">
                 {{showDetails ? 'Свернуть' : 'Подробно по RDA районам для ' + replace0(callsignValid)}}
             </span>
 
@@ -186,6 +186,7 @@ export default {
             this.hunterData = data
             if (!data) {
               this.callsignError = true
+              this.callsignValid = null
               this.$callsignErrorTimeout =
                 setTimeout(() => { this.callsignError = false }, 10000)
             }
@@ -211,12 +212,14 @@ export default {
       }
     },
     getHunterRank (data, band) {
-      const rankData = this.getModeBand(data, this.mode, band)
       let rank = {rank: '-', count: 0}
-      let found = null
-      if (rankData && (found = rankData.find((item) =>
-        {return item.callsign === this.callsignValid}))) {
-        rank = found
+      if (data) {
+        const rankData = this.getModeBand(data, this.mode, band)
+        let found = null
+        if (rankData && (found = rankData.find((item) =>
+          {return item.callsign === this.callsignValid}))) {
+          rank = found
+        }
       }
       return rank
     }
@@ -232,7 +235,7 @@ export default {
     },
     hunterRank () {
       const data = this.rankData[this.role + 's']
-      if (this.callsignValid && data) {
+      if (this.callsignValid) {
         const r = {'total': null, 'bandsSum': null}
         for (const band in r) {
           r[band] = this.getHunterRank(data, band)

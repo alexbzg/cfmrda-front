@@ -227,6 +227,19 @@ table#upload_files td.rda_input{
 	font-weight: bold;
 	color: #333;
 }
+#upload_form input#operators_callsigns{
+	width: 80%;
+	font-weight: bold;
+	color: #333;
+}
+#upload_form span#operators_check{
+	display: block;
+	margin: 15px 0 0 0;
+}
+
+
+
+
 #upload #ok_check{
 	margin: 20px auto;
 	text-align: center;
@@ -446,7 +459,7 @@ table.select_view td{
 table.select_view td.menu{
 	font-weight: bold;	
 	color: #009;
-	background-color: #EDF3FA;
+	background-color: #e7f2ff;
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -545,7 +558,7 @@ table#stat1rda_hunter td, table#stat1rda_activator td{
 	border: 1px solid #dfedfd;
 }
 table#stat1rda_hunter td.top, table#stat1rda_activator td.top{
-	background-color: #EDF3FA;
+	background-color: #e7f2ff;
 	font-weight: bold;
 	vertical-align: middle;
 }
@@ -622,6 +635,110 @@ table.top_100 td span.rank{
 table.top_100 td span.callsign{
 	cursor: pointer;
 }
+
+
+
+
+
+
+
+
+/*                            =============    A D M I N   ================             */
+
+table#admin{
+	margin: 20px auto;
+ 	border-collapse: collapse;
+}
+table#admin td{
+	padding: 7px 5px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+}
+table#admin a{
+	color: #009;
+}
+table#admin tr#search td{
+	padding: 15px 5px;
+}
+table#admin td.menu{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+table#admin td.allow{
+	width: 70px;
+	padding: 7px 0;
+	font-size: 12px;	
+}
+table#admin td.rda input, table#admin td.rda{
+	width: 70px;
+	font-weight: bold;
+}
+table#admin td.callsign input, table#admin td.callsign, table#admin td.uploader input, table#admin td.uploader{
+	width: 150px;
+	font-weight: bold;
+}
+table#admin td.qsos{
+	width: 70px;
+}
+table#admin td.period, table#admin td.upload_date{
+	width: 200px;
+	font-size: 12px;
+	line-height: 14px;
+}
+.del_btn{
+	background-color: #FF4500;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*                            =============    R D A   L O G    ================             */
+
+table#rda_log{
+	margin: 20px auto;
+ 	border-collapse: collapse;
+}
+table#rda_log td{
+	padding: 7px 25px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+}
+table#rda_log td.menu{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
