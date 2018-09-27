@@ -654,6 +654,7 @@ table#admin td{
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
+	vertical-align: middle;
 }
 table#admin a{
 	color: #009;
@@ -681,10 +682,23 @@ table#admin td.callsign input, table#admin td.callsign, table#admin td.uploader 
 table#admin td.qsos{
 	width: 70px;
 }
-table#admin td.period, table#admin td.upload_date{
+table#admin td.period{
 	width: 200px;
 	font-size: 12px;
 	line-height: 14px;
+}
+table#admin td.upload_date{
+	width: 200px;
+}
+table#admin td.search_result{
+	padding: 1px;
+	border: none;
+	height: 50px;
+	text-align: right;
+	vertical-align: bottom;
+}
+table#admin td.search_result img, table#admin td.del img{
+	cursor: pointer;
 }
 .del_btn{
 	background-color: #FF4500;
@@ -728,6 +742,9 @@ table#rda_log td.menu{
 
 
 
+#ya_informer{
+	text-align: center;
+}
 
 
 

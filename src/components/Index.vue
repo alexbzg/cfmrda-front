@@ -33,7 +33,7 @@
                         </td>
                         <td :class="{selected: band === _band}"
                             v-for="(_band, index) in $options.BANDS" :key="index">
-                            {{hunterRank.bands[_band].count}}</td>
+                            {{hunterRank[_band].count}}</td>
                         <td :class="{selected: band === 'bandsSum'}">
                             {{hunterRank.bandsSum.count}}</td>
                     </tr>
@@ -44,7 +44,7 @@
                         </td>
                         <td :class="{selected: band === _band}"
                             v-for="(_band, index) in $options.BANDS" :key="index">
-                            {{hunterRank.bands[_band].rank}}</td>
+                            {{hunterRank[_band].rank}}</td>
                         <td :class="{selected: band === 'bandsSum'}">
                             {{hunterRank.bandsSum.rank}}</td>
                     </tr>
@@ -210,18 +210,6 @@ export default {
         this.capitalize(this, 'callsign')
         this.setCallsignValid()
       }
-    },
-    getHunterRank (data, band) {
-      let rank = {rank: '-', count: 0}
-      if (data) {
-        const rankData = this.getModeBand(data, this.mode, band)
-        let found = null
-        if (rankData && (found = rankData.find((item) =>
-          {return item.callsign === this.callsignValid}))) {
-          rank = found
-        }
-      }
-      return rank
     }
   },
   computed: {
@@ -234,28 +222,35 @@ export default {
       }
     },
     hunterRank () {
-      const data = this.rankData[this.role + 's']
-      if (this.callsignValid) {
-        const r = {'total': null, 'bandsSum': null}
-        for (const band in r) {
-          r[band] = this.getHunterRank(data, band)
-        }
-        r.bands = {}
-        for (const band of this.$options.BANDS) {
-          r.bands[band] = this.getHunterRank(data, band)
-        }
-        return r
-      } else {
-        return null
+      function emptyField () {
+        return {count: 0, rank: '-' }
       }
+      const r = {'total': emptyField(), 'bandsSum': emptyField()}
+      if (this.hunterData && this.hunterData.rank && this.hunterData.rank[this.role] &&
+        this.hunterData.rank[this.role][this.mode]) {
+        const data = this.hunterData.rank[this.role][this.mode]
+        for (const field in r) {
+            if (data[field]) {
+            r[field] = data[field][0]
+            }
+        }
+        for (const band of this.$options.BANDS) {
+            r[band] = data[band] ? data[band][0] : emptyField()
+        }
+      } else {
+        for (const band of this.$options.BANDS) {
+            r[band] = emptyField()
+        }
+      }
+      return r
     },
     rdaCfm () {
       const r ={}
       if (this.hunterData) {        
-        for (const rda in this.hunterData) {
+        for (const rda in this.hunterData.qso) {
           if (this.role === 'hunter') {
-            if (this.hunterData[rda].hunter) {
-              for (const qso of this.hunterData[rda].hunter) {
+            if (this.hunterData.qso[rda].hunter) {
+              for (const qso of this.hunterData.qso[rda].hunter) {
                 if (this.qsoFilter(qso)) {
                   r[rda] = 'cfm'
                   break
@@ -263,9 +258,9 @@ export default {
               }
             }
           }
-          if (!r[rda] && this.hunterData[rda].activator) {
+          if (!r[rda] && this.hunterData.qso[rda].activator) {
             let count = 0
-            for (const qsos of this.hunterData[rda].activator) {
+            for (const qsos of this.hunterData.qso[rda].activator) {
               if (this.qsoFilter(qsos)) {
                 count += qsos.count
                 if (count > 99) {
@@ -284,8 +279,8 @@ export default {
     },
     rdaQso () {
       const r = {hunter: null, activator: null}
-      if (this.rdaValue && this.hunterData[this.rdaValue.value]) {
-        const data = this.hunterData[this.rdaValue.value]
+      if (this.rdaValue && this.hunterData.qso[this.rdaValue.value]) {
+        const data = this.hunterData.qso[this.rdaValue.value]
         for (const type in r) {
           if (type in data) {
             const qso = data[type].filter(this.qsoFilter)

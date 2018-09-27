@@ -53,19 +53,18 @@ export default {
   computed: {
     rows () {
       const rows = []
-      if (this.rankData[this.role + 's']) {
-        const data = this.getModeBand(this.rankData[this.role + 's'], this.mode, this.band)
-        if (data) {
-          const topCount = Math.min(ROWS_COUNT*COLUMNS_COUNT, data.length)
-          const rowCount = Math.min(ROWS_COUNT, topCount)
-          for (let rc = 0; rc < rowCount; rc++) {
-            const row = []
-            for (let cc = 0; cc < COLUMNS_COUNT; cc++) {
-              const idx = rc + cc*COLUMNS_COUNT
-              row.push(idx < topCount ? data[idx] : null)
-            }
-            rows.push(row)
+      if (this.rankData[this.role] && this.rankData[this.role] && this.rankData[this.role][this.mode] &&
+        this.rankData[this.role][this.mode][this.band]) {
+        const data = this.rankData[this.role][this.mode][this.band]
+        const topCount = Math.min(ROWS_COUNT*COLUMNS_COUNT, data.length)
+        const rowCount = Math.min(ROWS_COUNT, topCount)
+        for (let rc = 0; rc < rowCount; rc++) {
+          const row = []
+          for (let cc = 0; cc < COLUMNS_COUNT; cc++) {
+            const idx = rc + cc*COLUMNS_COUNT
+            row.push(idx < topCount ? data[idx] : null)
           }
+          rows.push(row)
         }
       }
       return rows
