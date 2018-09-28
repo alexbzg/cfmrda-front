@@ -15,8 +15,12 @@ export default {
     validateCallback (valid, errors) {
       this.$set(this, 'validationErrors', {})
       if (!valid) {
+          /*
         for (const item of errors) {
           this.$set(this.validationErrors, item.dataPath.substr(1), item.message)
+        }*/
+        for (const item of errors) {
+          this.$set(this.validationErrors, item.path, item.keyword)
         }
         if (this.validationErrors.recaptcha) {
           this.$refs.recaptcha.execute()

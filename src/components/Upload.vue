@@ -50,7 +50,7 @@
               <td class="file">{{file.name}}</td>
               <td class="rda_input"><input type="text" name="rda_input" id="rda_input" v-model.trim="file.rda" 
                 @change="capitalize(adif.files[index], 'rda')" 
-                :class="{error: validationErrors['files['+index+'].rda']}"></td>
+                :class="{error: validationErrors['files.'+index+'.rda']}"></td>
             </tr>
           </table>
           <br/>

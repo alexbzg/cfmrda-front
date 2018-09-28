@@ -2,9 +2,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-
+/*
 import Ajv from 'ajv'
 const ajv = new Ajv({allErrors: true})
+*/
+import jsen from 'jsen'
 
 import storage from '../storage'
 import { getSchemas } from '../api'
@@ -50,9 +52,15 @@ const store = new Vuex.Store({
       }
     },
     [SET_VALIDATORS_MUTATION] (state, payload) {
+        /*
       state.validators = {}
       for (const name of Object.keys(payload.schemas)) {
         state.validators[name] = ajv.compile(payload.schemas[name])
+      }
+      */
+      state.validators = {}
+      for (const name in payload.schemas) {
+        state.validators[name] = jsen(payload.schemas[name], {greedy: true})
       }
     }
   },
