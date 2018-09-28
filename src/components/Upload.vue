@@ -34,9 +34,11 @@
                 :disabled="!adif.stationCallsignFieldEnable"/>
           </span><br/>
           <span id="operators_check">
-              <input type="checkbox" name="operators_check" disabled /> 
+              <!--input type="checkbox" name="operators_check" disabled /--> 
               Также подтвердить загружаемые RDA районы операторам коллективной станции:<br/>
-              <input type="text" name="operators_callsigns" id="operators_callsigns" disabled />
+              <input type="text" name="operators_callsigns" id="operators_callsigns" 
+                @change="capitalize(adif, 'additionalActivators')"
+                v-model.trim="adif.additionalActivators"/>
           </span>
           <br/>
           <table id="upload_files">
@@ -112,6 +114,7 @@ export default {
             null : stationCallsignSettings.callsign,
         stationCallsignField: stationCallsignSettings.fieldEnable ?
             stationCallsignSettings.field : null,
+        additionalActivators: null,
         files: [],
         token: this.$store.getters.userToken,
         fileName: null
