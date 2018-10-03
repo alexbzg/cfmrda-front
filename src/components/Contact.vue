@@ -9,11 +9,11 @@
             :sitekey="$options.RECAPTCHA_SITE_KEY">
         </vue-recaptcha>
        
-        <input type="text" v-model.trim="msg.email" v-if="!msg.token" placeholder="Ваш e-mail"
+        <input type="text" v-model.trim="msg.email" v-if="!msg.token" placeholder="your e-mail"
             id="email_input" :class="{error: validationErrors.email}"/><br/>
-        <textarea v-model="msg.text" placeholder="Ваше сообщение" id="text_area"
+        <textarea v-model="msg.text" placeholder="your message" id="text_area"
             :class="{error: validationErrors.text}"></textarea><br/>
-        <input type="button" value="Отправить" :disabled="pending || !validated" @click="sendClick()"
+        <input type="button" value="OK" :disabled="pending || !validated" @click="sendClick()"
             id="send_button" class="btn">
 
         <div v-if="response" id="message" v-html="response"></div>

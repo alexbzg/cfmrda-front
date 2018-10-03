@@ -6,9 +6,10 @@
         <div id="top_menu" >
             <span id="callsign" v-if="userCallsign">{{userCallsign}}</span>  
             <router-link to="/upload" v-if="userCallsign">Загрузить ADIF</router-link>
-            <router-link to="/contact">Обратная связь</router-link>
-            <router-link to="/login" v-if="!userCallsign">Войти</router-link>
-            <a @click="logout()" v-else id="logout_link">Выйти</a>
+            <router-link to="/faq">FAQ</router-link>
+            <router-link to="/contact">Contact</router-link>
+            <router-link to="/login" v-if="!userCallsign">Login</router-link>
+            <a @click="logout()" v-else id="logout_link">Logout</a>
        </div>
     </div>
 
