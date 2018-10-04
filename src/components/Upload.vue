@@ -8,6 +8,7 @@
               <li>Если <b>название файла</b> будет начинаться с RDA района (<i>например, BU-10.adi или KR-03_R7AB.adi</i>), то RDA район в поле ввода будет вставлен автоматически.</li>
               <li>Если <b>активатор</b> работал из RDA района <b>разными позывными</b> (<i>например, .../P и .../M</i>), то можно отметить "Брать позывной активатора..." и написать название ПОЛЯ в ADI файле, из которого будет браться позывной активатора для каждого QSO.</li>
               <li>Если <b>активатор</b> работал из RDA района <b>коллективным позывным</b> (<i>например, позывным R7AB работали операторы R7DA и R7TU</i>), то можно отметить "Также подтвердить..." и написать позывные операторов коллективной станции, чтобы проведенные QSO им также пошли в зачёт.</li>
+              <li>Если у активатора есть <b>лог работы</b> его <b>старым позывным</b>, а зачёт должен пойти и за новый позывной (<i>например, новый позывной RU6K, а старые позывные - UU2JQ, EO2012JQ, UB2JQ, UB4JLF</i>), то при загрузке лога указать актуальный позывной на тот момент (<i>из примера - UU2JQ</i>) и также отметить "Также подтвердить..." и написать новый позывной (<i>из примера - RU6K</i>). Проведенные QSO пойдут в зачёт и новому позывному.</li>
           </ul>
 
         <div id="upload_form" v-if="!pending">
@@ -34,14 +35,16 @@
                 :disabled="!adif.stationCallsignFieldEnable"/>
           </span><br/>
           <span id="operators_check">
-              <!--input type="checkbox" name="operators_check" disabled /--> 
+              <input type="checkbox" name="operators_check" 
+                v-model="adif.additionalActivatorsEnable"/>
               Также подтвердить загружаемые RDA районы операторам коллективной станции:<br/>
               <input type="text" name="operators_callsigns" id="operators_callsigns" 
+                :disabled="!adif.additionalActivatorsEnable"
                 @change="capitalize(adif, 'additionalActivators')"
                 v-model.trim="adif.additionalActivators"/>
           </span>
           <br/>
-          <table id="upload_files">
+          <table id="upload_files" v-if="adif.files.length">
             <tr>
               <td class="top file">Файл</td>
               <td class="top rda_input">RDA</td>
@@ -114,6 +117,7 @@ export default {
             null : stationCallsignSettings.callsign,
         stationCallsignField: stationCallsignSettings.fieldEnable ?
             stationCallsignSettings.field : null,
+        additionalActivatorsEnable: false,
         additionalActivators: null,
         files: [],
         token: this.$store.getters.userToken,

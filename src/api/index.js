@@ -84,6 +84,21 @@ export function getRankings () {
     })
 }
 
+export function getRecentUploads () {
+  return get('/json/recent_uploads.json')
+    .then(response => {
+      return response.data
+    })
+}
+
+export function getMscData () {
+  return get('/json/msc.json')
+    .then(response => {
+      return response.data
+    })
+}
+
+
 export function getFullRDA () {
   return get('/json/rda.json')
     .then(response => {

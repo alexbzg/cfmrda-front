@@ -1,6 +1,7 @@
 <template>
     <div>
         <div class="list">
+            <div id="qso_in_database">{{parseInt(mscData.qsoCount).toLocaleString()}} QSO in our database</div>
             <table id="check_call">
                 <tr>
                 <td class="btn_space"></td>
@@ -14,12 +15,12 @@
                 </td>
                 </tr>
                 <tr>
-                    <td></td><td>позывной</td><td></td>
+                    <td></td><td>callsign</td><td></td>
                 </tr>
             </table>
 
             <div id="callsign_error" v-if="callsignError">
-                Позывной не найден
+                No callign in the database
             </div>
 
             <table class="select_view" v-if="callsignValid && hunterData">
@@ -74,14 +75,14 @@
                         <td colspan="2">
                             <table id="stat1rda_hunter" v-if="role === 'hunter' && rdaQso.hunter">
                                 <tr>
-                                    <td id="hunter_activator" colspan="5">RDA охотник</td>
+                                    <td id="hunter_activator" colspan="5">RDA hunter</td>
                                 </tr>
                                 <tr>
                                     <td class="rda_top">{{rdaValue.value}}</td>
                                     <td class="time top">GMT</td>
                                     <td class="band top">МГц</td>
                                     <td class="call top">CFM QSO</td>
-                                    <td class="uploader top">Загрузил</td>
+                                    <td class="uploader top">Uploader</td>
                                 </tr>
                                 <tr v-for="(item, idxIt) in rdaQso.hunter" :key="idxIt">
                                     <td class="date">{{item.date}}</td>
@@ -94,13 +95,13 @@
 
                             <table id="stat1rda_activator" v-if="rdaQso.activator">
                                 <tr>
-                                    <td id="hunter_activator" colspan="5">RDA активатор</td>
+                                    <td id="hunter_activator" colspan="5">RDA activator</td>
                                 </tr>
                                 <tr>
                                     <td class="rda_top">{{rdaValue.value}}</td>
                                     <td class="band top">МГц</td>
                                     <td class="call top">QSOs</td>
-                                    <td class="uploader top">Загрузил</td>
+                                    <td class="uploader top">Uploader</td>
                                 </tr>
                                 <tr v-for="(item, idxIt) in rdaQso.activator" :key="idxIt">
                                     <td class="date">{{item.date}}</td>
@@ -120,11 +121,37 @@
 
     <rank-table :rank-data="rankData" :callsign="callsignValid" @callsign-click="callsignClick"/>
 
+    <div class="list">
+      <h4>Last 20 uploads</h4>
+        <table id="last_uploads">
+            <tr>
+                <td class="uploaded menu">Uploaded</td>
+                <td class="activator menu">Activator</td>
+                <td class="rda menu">RDA</td>
+                <td class="period menu">Activation's period</td>
+            </tr>
+            <tr v-for="(item, idx) in recentUploads" :key="idx">
+                <td class="uploaded">{{item.tstamp}}</td>
+                <td class="activator">
+                    <span v-for="(activator, actIdx) in item.activators" :key="actIdx">
+                        {{activator}}
+                    </span>
+                </td>
+                <td class="rda">
+                    <span v-for="(rda, rdaIdx) in item.rda" :key="rdaIdx">
+                        {{rda}}
+                    </span>
+                </td>
+                <td class="period">{{item.dateStart}} -<br/>{{item.dateEnd}}</td>
+            </tr>
+        </table>
+    </div>
+
     </div>
 </template>
 
 <script>
-import {getRankings, getHunterDetails, getFullRDA} from '../api'
+import {getRankings, getHunterDetails, getFullRDA, getRecentUploads, getMscData} from '../api'
 import storage from '../storage'
 
 import capitalizeMixin from '../capitalize-mixin'
@@ -146,6 +173,10 @@ export default {
   data () {
     getRankings() 
       .then((data) => {this.rankData = data})
+    getRecentUploads() 
+      .then((data) => {this.recentUploads = data})
+    getMscData() 
+      .then((data) => {this.mscData = data})
     getFullRDA()
       .then((data) => {this.rda = data})      
     const callsign = storage.load(STORAGE_KEY_CALLSIGN)
@@ -155,6 +186,10 @@ export default {
       callsignValid: callsign,
       rankData: {},
       rda: {},
+      recentUploads: [],
+      mscData: {
+        qsoCount: null
+      },
       hunterData: null,
       role: 'hunter',
       band: 'total',

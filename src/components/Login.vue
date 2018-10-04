@@ -26,12 +26,11 @@
             </template>
 
             <div id="register" v-if="mode === 'register'">
+                <br/><span class="red"><b><u>Регистрация необходима только активаторам для загрузки логов!</u></b></span><br/><br/>
                 <b>Email</b><br/>
                 <span class="note_red">
-                    Email должен быть <b>обязательно</b> тем, с которым вы зарегистрированы на 
-                    <b>QRZ.com</b>!<br/>
-                    На этот email будет отправлено письмо с ссылкой.
-                    Кликните по ней для завершения регистрации.
+                    Email должен быть <b>обязательно</b> тем, который показывается на вашей странице на <b>QRZ.com</b>!<br/>
+                    На этот email будет отправлено письмо с ссылкой. Кликните по ней для завершения регистрации.
                 </span><br/>
                 <input type="text" name="email_input" id="email_input" 
                     :class="{error: validationErrors.email}"
@@ -119,6 +118,7 @@ export default {
               this.mode = 'login'
           } else if (this.mode === 'register') {
               this.response = 'Для завершения регистрации необходимо подтвердить адрес элетронной почты. Вам было отправлeно письмо с инструкциями.'
+              this.mode = 'login'
           }
         })
         .catch((e) => { 

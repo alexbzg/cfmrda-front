@@ -7,6 +7,7 @@ import Login from './../components/Login'
 import Upload from './../components/Upload'
 import Index from './../components/Index'
 import Contact from './../components/Contact'
+import Faq from './../components/Faq'
 
 const router = new Router({
   routes: [
@@ -26,6 +27,11 @@ const router = new Router({
       name: 'Contact',
       component: Contact,
       props: true
+    },
+    {
+      path: '/faq',
+      name: 'Faq',
+      component: Faq
     },
     {
       path: '/login',
