@@ -112,3 +112,10 @@ export function getHunterDetails (callsign) {
       return response.data
     })
 }
+
+export function getUpload (id) {
+  return get(API_URL + 'upload/' + id)
+    .then(response => {
+      return response.data
+    })
+}

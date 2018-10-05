@@ -586,11 +586,9 @@ table#stat1rda_hunter td#hunter_activator, table#stat1rda_activator td#hunter_ac
 	color: #fff;
 	padding: 0;
 }
-table#stat1rda_hunter td.call, table#stat1rda_activator td.call{
+table#stat1rda_hunter td.call a, table#stat1rda_activator td.call a{
 	font-weight: bold;
 	color: #009;
-	cursor: pointer;
-	text-decoration: underline;
 }
 table#stat1rda_hunter td.call.top, table#stat1rda_activator td.call.top{
 	font-weight: bold;
@@ -691,13 +689,11 @@ table#last_uploads td.activator{
 table#last_uploads td.activator span{
 	display: block;
 }
-table#last_uploads td.rda span{
+table#last_uploads td.rda a{
 	display: inline-block;
 	width: 60px;
 	text-align: center;
 	color: #009;
-	cursor: pointer;
-	text-decoration: underline;
 }
 table#last_uploads td.menu{
 	font-size: 16px;
@@ -842,6 +838,9 @@ table#rda_log td{
 table#rda_log td.menu{
 	font-weight: bold;	
 	background-color: #e7f2ff;
+}
+table#rda_log td.call{
+	font-weight: bold;	
 }
 
 
