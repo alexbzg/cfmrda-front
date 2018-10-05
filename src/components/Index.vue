@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="list">
-            <div id="qso_in_database">{{parseInt(mscData.qsoCount).toLocaleString()}} QSO in our database</div>
+        <div class="list list1">
+            <div id="qso_in_database"><span>{{parseInt(mscData.qsoCount).toLocaleString()}} QSO</span> in our database</div>
             <table id="check_call">
                 <tr>
                 <td class="btn_space"></td>
@@ -88,7 +88,11 @@
                                     <td class="date">{{item.date}}</td>
                                     <td class="time">{{item.time}}</td>
                                     <td class="band">{{item.band}}</td>
-                                    <td class="call">{{item.stationCallsign}}</td>
+                                    <td class="call">
+                                        <view-upload-link :id="item.uploadId">
+                                            {{item.stationCallsign}}
+                                        </view-upload-link>
+                                    </td>
                                     <td class="uploader">{{item.uploader}}</td>
                                 </tr>
                             </table>
@@ -106,7 +110,11 @@
                                 <tr v-for="(item, idxIt) in rdaQso.activator" :key="idxIt">
                                     <td class="date">{{item.date}}</td>
                                     <td class="band">{{item.band}}</td>
-                                    <td class="call">{{item.count}}</td>
+                                    <td class="call">
+                                         <view-upload-link :id="item.uploadId">
+                                            {{item.count}}
+                                        </view-upload-link>
+                                    </td>
                                     <td class="uploader">{{item.uploader}}</td>
                                 </tr>
                             </table>
@@ -122,13 +130,13 @@
     <rank-table :rank-data="rankData" :callsign="callsignValid" @callsign-click="callsignClick"/>
 
     <div class="list">
-      <h4>Last 20 uploads</h4>
+      <h4>Latest uploads</h4>
         <table id="last_uploads">
             <tr>
                 <td class="uploaded menu">Uploaded</td>
                 <td class="activator menu">Activator</td>
                 <td class="rda menu">RDA</td>
-                <td class="period menu">Activation's period</td>
+                <td class="period menu">Activation period</td>
             </tr>
             <tr v-for="(item, idx) in recentUploads" :key="idx">
                 <td class="uploaded">{{item.tstamp}}</td>
@@ -138,9 +146,10 @@
                     </span>
                 </td>
                 <td class="rda">
-                    <span v-for="(rda, rdaIdx) in item.rda" :key="rdaIdx">
-                        {{rda}}
-                    </span>
+                    <view-upload-link v-for="(rda, rdaIdx) in item.rda" :key="rdaIdx"
+                        :id="rda.id">
+                        {{rda.rda}}
+                    </view-upload-link>
                 </td>
                 <td class="period">{{item.dateStart}} -<br/>{{item.dateEnd}}</td>
             </tr>
@@ -160,6 +169,8 @@ import replaceZerosMixin from '../replace-zeros-mixin'
 
 import RankTable from './RankTable.vue'
 import Selector from './Selector.vue'
+import ViewUploadLink from './ViewUploadLink.vue'
+
 import {orderedBands} from '../ham-radio'
 
 const reStripCallsign = /\d*[A-Z]+\d+[A-Z]+/i
@@ -169,7 +180,7 @@ export default {
   BANDS: orderedBands(),
   name: 'index',
   mixins: [capitalizeMixin, rankDataMixin, replaceZerosMixin],
-  components: {RankTable, Selector},
+  components: {RankTable, Selector, ViewUploadLink},
   data () {
     getRankings() 
       .then((data) => {this.rankData = data})
