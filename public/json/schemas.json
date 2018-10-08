@@ -119,32 +119,34 @@
         "stationCallsignFieldEnable": {
         }
     },
-    "anyOf": [ 
-        { 
-            "properties": {
-                "stationCallsign": {
-                    "type": "string",
-                    "minLength": 3
+    "allOf": [
+        {"oneOf": [ 
+            { 
+                "properties": {
+                    "stationCallsign": {
+                        "type": "string",
+                        "minLength": 3
+                    },
+                    "stationCallsignFieldEnable": {
+                        "enum": [false]
+                    }
                 },
-                "stationCallsignFieldEnable": {
-                    "enum": [false]
-                }
+                "required":["stationCallsign"]
             },
-            "required":["stationCallsign"]
-        },
-        { 
-            "properties": {
-                "stationCallsignField": {
-                    "type": "string",
-                    "minLength": 3
-                },
-                "stationCallsignFieldEnable": {
-                    "enum": [true]
-                }
-            },                
-            "required":["stationCallsignField"]
-        }
-    ],
+            { 
+                "properties": {
+                    "stationCallsignField": {
+                        "type": "string",
+                        "minLength": 3
+                    },
+                    "stationCallsignFieldEnable": {
+                        "enum": [true]
+                    }
+                },                
+                "required":["stationCallsignField"]
+            }
+        ]}
+    ]
     "required": ["token", "files", "stationCallsignFieldEnable"]
 }
 }
