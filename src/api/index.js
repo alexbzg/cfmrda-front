@@ -63,13 +63,6 @@ export function uploadADIF (data) {
   return dataPost('adif', data)
 }
 
-export function getSchemas () {
-  return get('/json/schemas.json')
-    .then(response => {
-      return response.data
-    })
-}
-
 export function getRDAValues () {
   return get('/json/rdaValues.json')
     .then(response => {

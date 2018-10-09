@@ -136,7 +136,7 @@
                 <td class="uploaded menu">Uploaded</td>
                 <td class="activator menu">Activator</td>
                 <td class="rda menu">RDA</td>
-                <td class="period menu">Activation period</td>
+                <td class="uploader menu">Uploader</td>
             </tr>
             <tr v-for="(item, idx) in recentUploads" :key="idx">
                 <td class="uploaded">{{item.tstamp}}</td>
@@ -148,10 +148,12 @@
                 <td class="rda">
                     <view-upload-link v-for="(rda, rdaIdx) in item.rda" :key="rdaIdx"
                         :id="rda.id">
-                        {{rda.rda}}
+                        <span v-for="(rdaEntry, rdaEntryIdx) in rda.rda" :key="rdaEntryIdx">
+                            {{rdaEntry}}
+                        </span>
                     </view-upload-link>
                 </td>
-                <td class="period">{{item.dateStart}} -<br/>{{item.dateEnd}}</td>
+                <td class="uploader">{{item.uploader}}</td>
             </tr>
         </table>
     </div>
