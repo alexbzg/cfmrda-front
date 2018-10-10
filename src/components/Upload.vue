@@ -39,6 +39,7 @@
               Брать <i>RDA</i> активатора в ADI файле из поля
               <input type="text" name="rda_field" id="rda_field" v-model="adif.rdaField"
                 :class="{error: adif.rdaFieldEnable && validationErrors.rdaField}"
+                @change="capitalize(adif, 'rdaField')"
                 :disabled="!adif.rdaFieldEnable"/>
           </span><br/>
           <span id="operators_check">

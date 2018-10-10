@@ -678,10 +678,14 @@ table#last_uploads td{
 table#last_uploads a{
 	color: #009;
 }
-table#last_uploads td.uploaded, table#last_uploads td.period{
-	width: 170px;
-	font-size: 12px;
+table#last_uploads td.uploaded{
+	width: 180px;
 	color:#777;
+}
+table#last_uploads td.uploaded span{
+	color:#999;
+	font-size: 12px;
+	padding-left: 10px;
 }
 table#last_uploads td.activator{
 	width: 120px;
@@ -689,6 +693,9 @@ table#last_uploads td.activator{
 }
 table#last_uploads td.activator span{
 	display: block;
+}
+table#last_uploads td.uploader{
+	width: 120px;
 }
 table#last_uploads td.rda a{
 	display: inline-block;

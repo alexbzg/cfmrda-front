@@ -133,18 +133,12 @@
       <h4>Latest uploads</h4>
         <table id="last_uploads">
             <tr>
-                <td class="uploaded menu">Uploaded</td>
-                <td class="activator menu">Activator</td>
                 <td class="rda menu">RDA</td>
+                <td class="activator menu">Activator</td>
                 <td class="uploader menu">Uploader</td>
+                <td class="uploaded menu">Uploaded</td>
             </tr>
             <tr v-for="(item, idx) in recentUploads" :key="idx">
-                <td class="uploaded">{{item.tstamp}}</td>
-                <td class="activator">
-                    <span v-for="(activator, actIdx) in item.activators" :key="actIdx">
-                        {{activator}}
-                    </span>
-                </td>
                 <td class="rda">
                     <view-upload-link v-for="(rda, rdaIdx) in item.rda" :key="rdaIdx"
                         :id="rda.id">
@@ -153,7 +147,13 @@
                         </span>
                     </view-upload-link>
                 </td>
+                <td class="activator">
+                    <span v-for="(activator, actIdx) in item.activators" :key="actIdx">
+                        {{activator}}
+                    </span>
+                </td>
                 <td class="uploader">{{item.uploader}}</td>
+                <td class="uploaded">{{item.uploadDate}} <span>{{item.uploadTime}}</span></td>
             </tr>
         </table>
     </div>
