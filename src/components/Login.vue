@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import _ from 'underscore'
+import debounce from '../debounce'
 
 import {login as api_login} from '../api'
 import validationMixin from '../validation-mixin'
@@ -133,7 +133,7 @@ export default {
           this.pending = false 
         })
     },
-    loginClick: _.debounce(function () {
+    loginClick: debounce(function () {
       this.doLogin()
     }, 300, true)
   },

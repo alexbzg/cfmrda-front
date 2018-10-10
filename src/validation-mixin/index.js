@@ -1,8 +1,22 @@
-import _ from 'underscore'
-
 import jsen from 'jsen'
 
-import schemas from './schemas.json'
+import schemasTmplt from './schemas.json'
+import rdaShort from '../rdaShort.json'
+
+let schemasStr = JSON.stringify(schemasTmplt)
+
+const rdaValues = []
+
+for (const group of rdaShort) {
+  for (let c = 1; c <= group.last; c++) {
+    if ('skip' in group && group.skip.includes(c)) {
+      continue
+    }
+    rdaValues.push(group.group + '-' + (c < 10 ? '0' + c : c))
+  }
+}
+schemasStr = schemasStr.replace('"$rdaValues$"', JSON.stringify(rdaValues))
+const schemas = JSON.parse(schemasStr)
 
 const validators = {}
 for (const name in schemas) {
@@ -61,7 +75,7 @@ export default {
   },
   computed: {
     validated() {
-      return _.isEmpty(this.validationErrors)
+      return Object.keys(this.validationErrors).length === 0
     }
   }
 }

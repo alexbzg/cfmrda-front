@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import {getRankings, getHunterDetails, getFullRDA, getRecentUploads, getMscData} from '../api'
+import {getRankings, getHunterDetails, getRecentUploads, getMscData} from '../api'
 import storage from '../storage'
 
 import capitalizeMixin from '../capitalize-mixin'
@@ -178,6 +178,8 @@ import {orderedBands} from '../ham-radio'
 const reStripCallsign = /\d*[A-Z]+\d+[A-Z]+/i
 const STORAGE_KEY_CALLSIGN = 'hunter_callsign'
 
+import rdaShort from '../rdaShort.json'
+
 export default {
   BANDS: orderedBands(),
   name: 'index',
@@ -190,15 +192,32 @@ export default {
       .then((data) => {this.recentUploads = data})
     getMscData() 
       .then((data) => {this.mscData = data})
-    getFullRDA()
-      .then((data) => {this.rda = data})      
+
+    const rda = []
+    for (const group of rdaShort) {
+      const fullGroup = {group: group.group, values: []}
+      for (let c = 1; c <= group.last; c++) {
+        if ('skip' in group && group.skip.includes(c)) {
+          continue
+        }
+        const displayValue = c < 10 ? '0' + c : c
+        const value = {
+          value: group.group + '-' + displayValue,
+          group: group.group,
+          displayValue: displayValue
+        }
+        fullGroup.values.push(value)
+      }
+      rda.push(group)
+    }
+
     const callsign = storage.load(STORAGE_KEY_CALLSIGN)
     return {
       callsign: callsign,
       callsignError: false,
       callsignValid: callsign,
       rankData: {},
-      rda: {},
+      rda: rda,
       recentUploads: [],
       mscData: {
         qsoCount: null
