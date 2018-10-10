@@ -224,9 +224,10 @@ table#upload_files td.rda_input{
 	font-weight: bold;
 	color: #333;
 }
-#upload_form input#callsign_field{
+#upload_form input#callsign_field, #upload_form input#rda_field{
 	width: 200px;
 	margin-left: 10px;
+	margin-bottom: 15px;
 	font-weight: bold;
 	color: #333;
 }
@@ -237,7 +238,7 @@ table#upload_files td.rda_input{
 }
 #upload_form span#operators_check{
 	display: block;
-	margin: 15px 0 0 0;
+	margin: 0;
 }
 
 
@@ -282,7 +283,7 @@ table#upload_files td.rda_input{
 	line-height: 1.5em;
 }
 #upload #upload_info li{
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 }
 
 
@@ -677,10 +678,14 @@ table#last_uploads td{
 table#last_uploads a{
 	color: #009;
 }
-table#last_uploads td.uploaded, table#last_uploads td.period{
-	width: 170px;
-	font-size: 12px;
+table#last_uploads td.uploaded{
+	width: 180px;
 	color:#777;
+}
+table#last_uploads td.uploaded span{
+	color:#999;
+	font-size: 12px;
+	padding-left: 10px;
 }
 table#last_uploads td.activator{
 	width: 120px;
@@ -688,6 +693,9 @@ table#last_uploads td.activator{
 }
 table#last_uploads td.activator span{
 	display: block;
+}
+table#last_uploads td.uploader{
+	width: 120px;
 }
 table#last_uploads td.rda a{
 	display: inline-block;

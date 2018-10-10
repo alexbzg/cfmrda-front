@@ -1,5 +1,21 @@
 import _ from 'underscore'
 
+import jsen from 'jsen'
+
+import schemas from './schemas.json'
+
+const validators = {}
+for (const name in schemas) {
+  validators[name] = jsen(schemas[name], {greedy: true})
+}
+
+/*
+import validatorFunctions from './validators.json'
+const validators = {}
+for (const name in validatorFunctions) {
+
+}
+*/
 export default {
   data () {
     return {
@@ -10,7 +26,8 @@ export default {
   },
   methods: {
     validate() {
-      this.$store.getters.validate(this.validationSchema, this.validationData, this.validateCallback)
+      const valid = validators[this.validationSchema](this.validationData)
+      this.validateCallback(valid, validators[this.validationSchema].errors)
     },
     validateCallback (valid, errors) {
       this.$set(this, 'validationErrors', {})
