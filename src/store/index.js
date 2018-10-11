@@ -28,6 +28,9 @@ const store = new Vuex.Store({
     },
     userToken: state => {
       return state.user ? state.user.token : null
+    },
+    userAdmin: state => {
+      return state.user ? state.user.admin : false
     }
   },
   mutations: {

@@ -1,0 +1,183 @@
+{ 
+"login": {
+    "type": "object",
+    "properties": {
+        "callsign": { 
+            "type": "string",
+            "minLength": 3
+        },
+        "password": {
+            "type": "string",
+            "minLength": 8
+        }
+    },
+    "required": [ "callsign", "password" ]
+},
+"register": {
+    "type": "object",
+    "properties": {
+        "callsign": { 
+            "type": "string",
+            "minLength": 3
+        },
+        "password": {
+            "type": "string",
+            "minLength": 8
+        },
+        "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1
+        },
+        "recaptcha": {
+            "type": "string",
+            "minLength": 1
+        }
+    },
+    "required": [ "callsign", "password", "email", "recaptcha" ]
+},
+"passwordRequest": {
+    "type": "object",
+    "properties": {
+        "callsign": { 
+            "type": "string",
+            "minLength": 3
+        },
+        "recaptcha": {
+            "type": "string",
+            "minLength": 1
+        }
+    },
+    "required": [ "callsign", "recaptcha" ]
+},
+"passwordChange": {
+    "type": "object",
+    "properties": {
+        "token": { 
+            "type": "string",
+            "minLength": 3
+        },
+        "password": {
+            "type": "string",
+            "minLength": 8
+        }
+    },
+    "required": [ "token", "password" ]
+},
+"contactSupport": {
+    "type": "object",
+    "properties": {
+         "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1
+        },
+        "recaptcha": {
+            "type": "string",
+            "minLength": 1
+        },
+        "token": { 
+            "type": "string",
+            "minLength": 3
+        },
+         "text": { 
+            "type": "string",
+            "minLength": 20
+        }
+    },
+    "required": ["text"],
+    "anyOf": [
+        { "required": ["email", "recaptcha"] },
+        { "required": ["token"] }
+    ]
+},
+"adif": {
+    "type": "object",
+    "properties": {
+        "token": { 
+            "type": "string",
+            "minLength": 3
+        },
+        "files": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": { 
+                        "type": "string",
+                        "minLength": 3
+                    },
+                    "file": {}
+                },
+                "required": ["name", "file"]
+            },
+            "minItems": 1
+        },
+        "stationCallsignFieldEnable": {
+        }
+    },
+    "allOf": [
+        {"anyOf": [ 
+            { 
+                "properties": {
+                    "stationCallsign": {
+                        "type": "string",
+                        "minLength": 3
+                    },
+                    "stationCallsignFieldEnable": {
+                        "enum": [false]
+                    }
+                },
+                "required":["stationCallsign", "stationCallsignFieldEnable"]
+            },
+            { 
+                "properties": {
+                    "stationCallsignField": {
+                        "type": "string",
+                        "minLength": 3
+                    },
+                    "stationCallsignFieldEnable": {
+                        "enum": [true]
+                    }
+                },                
+                "required":["stationCallsignField", "stationCallsignFieldEnable"]
+            }
+        ]},
+        {"anyOf":[
+            {
+                "properties": {
+                    "rdaField":{
+                        "type": "string",
+                        "minLength": 3
+                    },
+                    "rdaFieldEnable": {
+                        "enum": [true]
+                    }
+                },
+                "required": ["rdaField", "rdaFieldEnable"]
+            },
+            {
+                "properties": {
+                    "rdaFieldEnable": {
+                        "enum": [false]
+                    },
+                    "files": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "rda": {
+                                    "enum": "$rdaValues$"
+                                }
+                            },
+                            "required": ["rda"]
+                        }
+                    }
+                },
+                "required": ["files", "rdaFieldEnable"]
+            }
+        ]}
+    ],
+    "required": ["token", "files", "stationCallsignFieldEnable"]
+}
+}

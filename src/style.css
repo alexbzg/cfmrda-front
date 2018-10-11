@@ -698,10 +698,13 @@ table#last_uploads td.uploader{
 	width: 120px;
 }
 table#last_uploads td.rda a{
+	color: #009;
+}
+table#last_uploads td.rda a span{
 	display: inline-block;
 	width: 60px;
 	text-align: center;
-	color: #009;
+	text-decoration: underline;
 }
 table#last_uploads td.menu{
 	font-size: 16px;
