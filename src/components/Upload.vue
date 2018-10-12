@@ -102,21 +102,19 @@
 
 <script>
 import storage from '../storage'
-import {uploadADIF as apiUploadADIF, getRDAValues} from '../api'
+import {uploadADIF as apiUploadADIF} from '../api'
+import {parseRDA} from '../ham-radio'
 
 import validationMixin from '../validation-mixin'
 import capitalizeMixin from '../capitalize-mixin'
 
 const STORAGE_KEY_STATION_CALLSIGN_SETTINGS = 'station_callsign_settings'
 const DEF_STATION_CALLSIGN_FIELD = 'STATION_CALLSIGN'
-const reRDA = /([a-z][a-z])[-_ ]?(\d\d)/gi
 
 export default {
   mixins: [validationMixin, capitalizeMixin],
   name: 'upload',
   data () {
-    getRDAValues()
-      .then((data) => { this.RDAValues = data })
      
     const stationCallsignSettings = this.loadStationCallsignSettings()
     const adif = {
@@ -176,16 +174,7 @@ export default {
       for (let i = 0; i < files.length; i++) {
         const reader = new FileReader()
         const vm = this
-        const file = {name: files[i].name, rda: null}
-        let rdaMatch = null
-        while ((rdaMatch = reRDA.exec(file.name)) !== null) {
-          let rda = (rdaMatch[1] + '-' + rdaMatch[2]).toUpperCase()
-          if (this.RDAValues.includes(rda)) {
-            file.rda = rda
-            break
-          }
-        }
-        reRDA.lastIndex = 0
+        const file = {name: files[i].name, rda: parseRDA(files[i].name)}
         this.adif.files.push(file)
 
         reader.onload = function (e) {

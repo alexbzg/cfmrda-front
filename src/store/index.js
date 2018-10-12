@@ -8,19 +8,21 @@ const ajv = new Ajv({allErrors: true})
 */
 
 import storage from '../storage'
+import {getUploads} from '../api'
 
 const STORAGE_KEY_USER = 'user'
 
 const USER_INIT_MUTATION = 'userInit'
+const SET_UPLOADS_MUTATION = 'setUploads'
 export const SET_USER_MUTATION = 'setUser'
 
-export const LOGIN_ACTION = 'login'
+export const GET_UPLOADS_ACTION = 'getUploads'
 
 const store = new Vuex.Store({
   state: {
     user: null,
-    validators: null,
-    remember: true
+    remember: true,
+    uploads: null
   },
   getters: {
     userCallsign: state => {
@@ -29,8 +31,11 @@ const store = new Vuex.Store({
     userToken: state => {
       return state.user ? state.user.token : null
     },
-    userAdmin: state => {
+    admin: state => {
       return state.user ? state.user.admin : false
+    },
+    uploads: state => {
+      return state.uploads
     }
   },
   mutations: {
@@ -45,9 +50,20 @@ const store = new Vuex.Store({
           payload.remember ? 'local' : 'session')
         state.remember = payload.remember
       }
+    },
+    [SET_UPLOADS_MUTATION] (state, uploads) {
+      state.uploads = uploads
     }
   },
   actions: {
+    [GET_UPLOADS_ACTION] ({state, commit}) {
+      if (state.user && state.user.token) {
+        getUploads(state.user.token)
+          .then((data) => {
+            commit(SET_UPLOADS_MUTATION, data)
+          })
+      }
+    }
   },
   strict: process.env.NODE_ENV !== 'production'
 })

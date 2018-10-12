@@ -1,21 +1,12 @@
 import jsen from 'jsen'
 
 import schemasTmplt from './schemas.json'
-import rdaShort from '../rdaShort.json'
 
 let schemasStr = JSON.stringify(schemasTmplt)
 
-const rdaValues = []
+import {rdaValues} from '../ham-radio'
 
-for (const group of rdaShort) {
-  for (let c = 1; c <= group.last; c++) {
-    if ('skip' in group && group.skip.includes(c)) {
-      continue
-    }
-    rdaValues.push(group.group + '-' + (c < 10 ? '0' + c : c))
-  }
-}
-schemasStr = schemasStr.replace('"$rdaValues$"', JSON.stringify(rdaValues))
+schemasStr = schemasStr.replace(/"\$rdaValues\$"/g, JSON.stringify(rdaValues))
 const schemas = JSON.parse(schemasStr)
 
 const validators = {}

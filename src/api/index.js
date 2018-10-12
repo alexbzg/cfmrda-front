@@ -51,6 +51,10 @@ function dataPost(url, data) {
     })
 }
 
+export function getUploads (token) {
+  return dataPost('user_uploads', {'token': token})
+}
+
 export function login (data) {
   return dataPost('login', data)
 }
