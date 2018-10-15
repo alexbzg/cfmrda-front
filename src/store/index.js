@@ -8,7 +8,7 @@ const ajv = new Ajv({allErrors: true})
 */
 
 import storage from '../storage'
-import {getUploads} from '../api'
+import {getUploads, manageUploads} from '../api'
 
 const STORAGE_KEY_USER = 'user'
 
@@ -35,7 +35,7 @@ const store = new Vuex.Store({
       return state.user ? state.user.admin : false
     },
     uploads: state => {
-      return state.uploads
+      return JSON.parse(JSON.stringify(state.uploads))
     }
   },
   mutations: {
@@ -56,12 +56,20 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    [GET_UPLOADS_ACTION] ({state, commit}) {
+    [GET_UPLOADS_ACTION] ({state, commit}, payload) {        
       if (state.user && state.user.token) {
-        getUploads(state.user.token)
-          .then((data) => {
-            commit(SET_UPLOADS_MUTATION, data)
-          })
+        const storeUploads = () => {
+          getUploads(state.user.token)
+            .then((data) => {
+              commit(SET_UPLOADS_MUTATION, data)
+            })
+        }
+        if (payload) {
+          payload.token = state.user.token
+          manageUploads(payload)
+            .then(() => {storeUploads()})
+        } else
+          storeUploads()
       }
     }
   },

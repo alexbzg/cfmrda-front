@@ -46,7 +46,14 @@
         <uploads-table :admin="admin" :uploads="uploads">
         </uploads-table>
     </table>
+
+    <div id="wait">
+      База данных обновляется. Подождите...<br/>
+      <img src="images/spinner.gif">
+    </div>
+
   </div>
+
 </template>
 <script>
 import {mapGetters} from 'vuex'

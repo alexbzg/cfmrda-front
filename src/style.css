@@ -823,6 +823,12 @@ table#admin td.search_result img, table#admin td.del img{
 	background-color: #FF4500;
 }
 
+#wait{
+	padding: 150px 0;
+	font-weight: bold;
+	text-align: center;
+	color: #900;
+}
 
 
 

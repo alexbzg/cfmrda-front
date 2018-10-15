@@ -8,7 +8,7 @@
         <tr v-for="upload in uploads" :key="upload.id">
             <td class="allow" v-if="admin">
                 <input type="checkbox" name="allow_check" id="allow_check" 
-                    v-model="upload.enabled" @change="changeEnabled(upload)">
+                    v-model="upload.enabled" @input="changeEnabled(upload)">
             </td>
             <td class="rda">
                 <a href="#">
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import {GET_UPLOADS_ACTION} from '../store'
+
 export default {
   name: 'UploadsTable',
   props: ['admin', 'uploads'],
@@ -42,10 +44,14 @@ export default {
   },
   methods: {
     changeEnabled (upload) {
-      return upload
+      this.$store.dispatch(GET_UPLOADS_ACTION,
+        {enabled: upload.enabled,
+        id: upload.id})
     },
     deleteUpload (upload) {
-      return upload
+      this.$store.dispatch(GET_UPLOADS_ACTION,
+        {delete: 1,
+        id: upload.id})
     }
   }
 }
