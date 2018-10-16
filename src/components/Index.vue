@@ -102,7 +102,7 @@
                                     <td id="hunter_activator" colspan="5">RDA activator</td>
                                 </tr>
                                 <tr>
-                                    <td class="rda_top">{{rdaValue.value}}</td>
+                                    <td class="rda_top">{{replace0(rdaValue.value)}}</td>
                                     <td class="band top">МГц</td>
                                     <td class="call top">QSOs</td>
                                     <td class="uploader top">Uploader</td>
@@ -143,16 +143,16 @@
                     <view-upload-link v-for="(rda, rdaIdx) in item.rda" :key="rdaIdx"
                         :id="rda.id">
                         <span v-for="(rdaEntry, rdaEntryIdx) in rda.rda" :key="rdaEntryIdx">
-                            {{rdaEntry}}
+                            {{replace0(rdaEntry)}}
                         </span>
                     </view-upload-link>
                 </td>
                 <td class="activator">
                     <span v-for="(activator, actIdx) in item.activators" :key="actIdx">
-                        {{activator}}
+                        {{replace0(activator)}}
                     </span>
                 </td>
-                <td class="uploader">{{item.uploader}}</td>
+                <td class="uploader">{{replace0(item.uploader)}}</td>
                 <td class="uploaded">{{item.uploadDate}} <span>{{item.uploadTime}}</span></td>
             </tr>
         </table>
@@ -182,7 +182,7 @@ import rdaShort from '../rdaShort.json'
 
 export default {
   BANDS: orderedBands(),
-  name: 'index',
+  name: 'Index',
   mixins: [capitalizeMixin, rankDataMixin, replaceZerosMixin],
   components: {RankTable, Selector, ViewUploadLink},
   data () {
@@ -208,7 +208,7 @@ export default {
         }
         fullGroup.values.push(value)
       }
-      rda.push(group)
+      rda.push(fullGroup)
     }
 
     const callsign = storage.load(STORAGE_KEY_CALLSIGN)

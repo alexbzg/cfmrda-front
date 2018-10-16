@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <table id="admin">
+    <table id="admin" v-show="!pending">
         <tr>
             <td class="menu allow" v-if="admin">Допущено</td>
             <td class="menu rda">RDA</td>
@@ -39,15 +39,17 @@
                     :disabled="!validated" @click="doSearch">
             </td>
         </tr>
-        <uploads-table :admin="admin" :uploads="searchResult" v-if="searchResult">
+        <uploads-table :admin="admin" :uploads="searchResult" v-if="searchResult" :pending="pending"
+            @edit-pending="editPending" @server-error="serverError">
             <img src="images/icon_close.png" title="Закрыть результаты поиска" 
                 @click="searchResult = null">
         </uploads-table>
-        <uploads-table :admin="admin" :uploads="uploads">
+        <uploads-table :admin="admin" :uploads="uploads" :pending="pending"
+            @edit-pending="editPending" @server-error="serverError">
         </uploads-table>
     </table>
 
-    <div id="wait">
+    <div id="wait" v-show="pending">
       База данных обновляется. Подождите...<br/>
       <img src="images/spinner.gif">
     </div>
@@ -81,6 +83,8 @@ export default {
       }
     return {
       search: search,
+      pending: false,
+      errorMessage: null,
       validationData: search,
       validationSchema: "uploadsSearch",
       showSearchResult: false,
@@ -109,6 +113,12 @@ export default {
             this.search.rda = rda
         }
       }
+    },
+    editPending (pending) {
+      this.pending = pending
+    },
+    serverError (e) {
+      this.errorMessage = e.message
     },
     doSearch () {
       this.searchResult = this.uploads.filter((upload) => {

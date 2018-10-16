@@ -14,7 +14,7 @@
                 <b>Позывной</b><br/>
                 <input type="text" name="callsign_input" id="callsign_input" v-model.trim="login.callsign" 
                     :class="{error: validationErrors.callsign}"
-                    @change="capitalize(login, 'callsign')"/>
+                    @input="capitalize(login, 'callsign')"/>
                 <br/>
             </template>
 

@@ -8,7 +8,7 @@
         <tr v-for="upload in uploads" :key="upload.id">
             <td class="allow" v-if="admin">
                 <input type="checkbox" name="allow_check" id="allow_check" 
-                    v-model="upload.enabled" @input="changeEnabled(upload)">
+                    v-model="upload.enabled" @change="changeEnabled(upload)">
             </td>
             <td class="rda">
                 <a href="#">
@@ -16,14 +16,14 @@
                 </a>
             </td>
             <td class="callsign">
-                <span v-for="(callsign, idx) in upload.stations" :key="idx">{{callsign}}</span>
+                <span v-for="(callsign, idx) in upload.stations" :key="idx">{{replace0(callsign)}}</span>
             </td>
             <td class="callsign">
-                <span v-for="(callsign, idx) in upload.activators" :key="idx">{{callsign}}</span>
+                <span v-for="(callsign, idx) in upload.activators" :key="idx">{{replace0(callsign)}}</span>
             </td>
             <td class="qsos">{{upload.qsoCount}}</td>
             <td class="period">{{upload.dateStart}} - {{upload.dateEnd}}</td>
-            <td class="uploader" v-if="admin">{{upload.uploader}}</td>
+            <td class="uploader" v-if="admin">{{replace0(upload.uploader)}}</td>
             <td class="upload_date">{{upload.uploadDate}}</td>
             <td class="del">
                 <img src="images/icon_delete.png" title="Удалить этот файл" @click="deleteUpload(upload)">
@@ -35,23 +35,41 @@
 <script>
 import {GET_UPLOADS_ACTION} from '../store'
 
+import ReplaceZerosMixin from '../replace-zeros-mixin'
+
 export default {
   name: 'UploadsTable',
-  props: ['admin', 'uploads'],
+  mixins: [ReplaceZerosMixin],
+  props: ['admin', 'uploads', 'pending'],
   data () {
     return {
     }
   },
   methods: {
+    editUploads (data) {
+      if (this.pending) 
+        return
+      this.$emit('edit-pending', false)
+      this.$emit('edit-pending', true)
+      this.$store.dispatch(GET_UPLOADS_ACTION, data)
+        .catch((e) => {
+          this.$emit('server-error', e)
+        })
+        .finally(() => {
+          this.$emit('edit-pending', false)
+        })
+    },
     changeEnabled (upload) {
-      this.$store.dispatch(GET_UPLOADS_ACTION,
+      this.editUploads(
         {enabled: upload.enabled,
         id: upload.id})
     },
     deleteUpload (upload) {
-      this.$store.dispatch(GET_UPLOADS_ACTION,
-        {delete: 1,
-        id: upload.id})
+      if (confirm("Вы действительно хотите удалить файл?")) {
+        this.editUploads(
+          {delete: 1,
+          id: upload.id})
+      }
     }
   }
 }

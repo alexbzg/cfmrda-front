@@ -66,10 +66,10 @@ const store = new Vuex.Store({
         }
         if (payload) {
           payload.token = state.user.token
-          manageUploads(payload)
+          return manageUploads(payload)
             .then(() => {storeUploads()})
         } else
-          storeUploads()
+          return storeUploads()
       }
     }
   },

@@ -13,8 +13,10 @@
             <a @click="logout()" v-else id="logout_link">Logout</a>
        </div>
     </div>
-
-    <router-view></router-view>
+    
+    <keep-alive :include="['ManageUploads', 'Index', 'Upload', 'Contact']">
+        <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 

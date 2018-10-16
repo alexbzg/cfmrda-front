@@ -21,7 +21,7 @@
           Позывной RDA активатора
           <input type="text" name="callsign_input" id="callsign_input" 
                 v-model.trim="adif.stationCallsign" 
-                @change="capitalize(adif, 'stationCallsign')" 
+                @input="capitalize(adif, 'stationCallsign')" 
                 :class="{error: !adif.stationCallsignFieldEnable && validationErrors.stationCallsign}"
                 :disabled="adif.stationCallsignFieldEnable"/><br/>
           <span id="activator_check">
@@ -30,7 +30,7 @@
               Брать <i>позывной</i> активатора в ADI файле из поля
               <input type="text" name="callsign_field" id="callsign_field" 
                 v-model="adif.stationCallsignField"
-                @change="capitalize(adif, 'stationCallsignField')"
+                @input="capitalize(adif, 'stationCallsignField')"
                 :class="{error: adif.stationCallsignFieldEnable && validationErrors.stationCallsignField}"
                 :disabled="!adif.stationCallsignFieldEnable"/>
           </span><br/>
@@ -39,7 +39,7 @@
               Брать <i>RDA</i> активатора в ADI файле из поля
               <input type="text" name="rda_field" id="rda_field" v-model="adif.rdaField"
                 :class="{error: adif.rdaFieldEnable && validationErrors.rdaField}"
-                @change="capitalize(adif, 'rdaField')"
+                @input="capitalize(adif, 'rdaField')"
                 :disabled="!adif.rdaFieldEnable"/>
           </span><br/>
           <span id="operators_check">
@@ -48,7 +48,7 @@
               <i>Также подтвердить</i> загружаемые RDA районы операторам коллективной станции:<br/>
               <input type="text" name="operators_callsigns" id="operators_callsigns" 
                 :disabled="!adif.additionalActivatorsEnable"
-                @change="capitalize(adif, 'additionalActivators')"
+                @input="capitalize(adif, 'additionalActivators')"
                 v-model.trim="adif.additionalActivators"/>
           </span>
           <br/>
@@ -60,7 +60,7 @@
             <tr v-for="(file, index) in adif.files" :key="index">
               <td class="file">{{file.name}}</td>
               <td class="rda_input"><input type="text" name="rda_input" id="rda_input" v-model.trim="file.rda" 
-                @change="capitalize(adif.files[index], 'rda')" 
+                @input="capitalize(adif.files[index], 'rda')" 
                 :disabled="adif.rdaFieldEnable"
                 :class="{error: !adif.rdaFieldEnable && validationErrors['files.'+index+'.rda']}"></td>
             </tr>
@@ -113,7 +113,7 @@ const DEF_STATION_CALLSIGN_FIELD = 'STATION_CALLSIGN'
 
 export default {
   mixins: [validationMixin, capitalizeMixin],
-  name: 'upload',
+  name: 'Upload',
   data () {
      
     const stationCallsignSettings = this.loadStationCallsignSettings()
