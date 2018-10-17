@@ -143,6 +143,21 @@ export default {
       this.errorMessage = e.message
     },
     doSearch () {
+      this.searchResult = this.uploads.filter((upload) => {
+        if (this.search.rda && this.search.rda.length && 
+            ((upload.rda && !upload.rda.includes(this.search.rda)) || !upload.rda))
+          return false
+        if (this.search.station && this.search.station.length &&
+            !this.searchCallsign(this.search.station, upload.stations))
+          return false
+        if (this.search.uploader && this.search.uploader.length &&
+            !this.searchCallsign(this.search.uploader, [upload.uploader]))
+          return false
+        if (this.search.uploadDate &&
+                Date.parse(this.search.uploadDate.toDateString()) != Date.parse(upload.uploadDate))
+          return false
+        return true
+      })
     }
   }
 }

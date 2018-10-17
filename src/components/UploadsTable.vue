@@ -8,7 +8,7 @@
         <tr v-for="upload in uploads" :key="upload.id">
             <td class="allow" v-if="admin">
                 <input type="checkbox" name="allow_check" id="allow_check" 
-                    v-model="upload.enabled" @change="changeEnabled(upload)">
+                    v-model="upload.enabled" @click="changeEnabled(upload, $event)">
             </td>
             <td class="rda">
                 <view-upload-link :id="upload.id">
@@ -62,10 +62,13 @@ export default {
           this.$emit('edit-pending', false)
         })
     },
-    changeEnabled (upload) {
-      this.editUploads(
-        {enabled: upload.enabled,
-        id: upload.id})
+    changeEnabled (upload, event) {
+      if (confirm("Вы действительно хотите изменить допуск файла?")) {
+        this.editUploads(
+          {enabled: !upload.enabled,
+          id: upload.id})
+      } else 
+        event.preventDefault()
     },
     deleteUpload (upload) {
       if (confirm("Вы действительно хотите удалить файл?")) {
