@@ -11,9 +11,9 @@
                     v-model="upload.enabled" @change="changeEnabled(upload)">
             </td>
             <td class="rda">
-                <a href="#">
+                <view-upload-link :id="upload.id">
                     <span v-for="(rda, idx) in upload.rda" :key="idx">{{rda}}</span>
-                </a>
+                </view-upload-link>
             </td>
             <td class="callsign">
                 <span v-for="(callsign, idx) in upload.stations" :key="idx">{{replace0(callsign)}}</span>
@@ -35,10 +35,13 @@
 <script>
 import {GET_UPLOADS_ACTION} from '../store'
 
+import ViewUploadLink from './ViewUploadLink.vue'
+
 import ReplaceZerosMixin from '../replace-zeros-mixin'
 
 export default {
   name: 'UploadsTable',
+  components: {ViewUploadLink},
   mixins: [ReplaceZerosMixin],
   props: ['admin', 'uploads', 'pending'],
   data () {
