@@ -122,7 +122,8 @@ export default {
     },
     doSearch () {
       this.searchResult = this.uploads.filter((upload) => {
-        if (this.search.rda && this.search.rda.length && !upload.rda.includes(this.search.rda))
+        if (this.search.rda && this.search.rda.length && 
+            ((upload.rda && !upload.rda.includes(this.search.rda)) || !upload.rda))
           return false
         if (this.search.station && this.search.station.length &&
             !this.searchCallsign(this.search.station, upload.stations))
