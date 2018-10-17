@@ -12,7 +12,7 @@
             <td class="menu upload_date">Дата загрузки</td>
             <td class="menu del"></td>
         </tr>
-        <tr id="search">
+        <tr id="search" @keyup.enter="showSearchResult = validated">
             <td class="allow" v-if="admin"></td>
             <td class="rda">
                 <input type="text" name="rda_input" id="rda_input" 
@@ -36,13 +36,13 @@
             </td>
             <td class="del">
                 <input type="button" name="search_btn" id="search_btn" value="Найти" class="btn"
-                    :disabled="!validated" @click="doSearch">
+                    :disabled="!validated" @click="showSearchResult = true">
             </td>
         </tr>
         <uploads-table :admin="admin" :uploads="searchResult" v-if="searchResult" :pending="pending"
             @edit-pending="editPending" @server-error="serverError">
             <img src="images/icon_close.png" title="Закрыть результаты поиска" 
-                @click="searchResult = null">
+                @click="showSearchResult = false">
         </uploads-table>
         <uploads-table :admin="admin" :uploads="uploads" :pending="pending"
             @edit-pending="editPending" @server-error="serverError">
@@ -87,20 +87,42 @@ export default {
       errorMessage: null,
       validationData: search,
       validationSchema: "uploadsSearch",
-      showSearchResult: false,
-      searchResult: null
+      showSearchResult: false
     }
   },
   computed: {
-    ...mapGetters(['admin', 'uploads'])
+    ...mapGetters(['admin', 'uploads']),
+    searchResult () {
+      if (this.showSearchResult && this.validated) 
+        return  this.uploads.filter((upload) => {
+          if (this.search.rda && this.search.rda.length && 
+            ((upload.rda && !upload.rda.includes(this.search.rda)) || !upload.rda))
+            return false
+          if (this.search.station && this.search.station.length &&
+            !this.searchCallsign(this.search.station, upload.stations))
+            return false
+          if (this.search.uploader && this.search.uploader.length &&
+            !this.searchCallsign(this.search.uploader, [upload.uploader]))
+            return false
+          if (this.search.uploadDate &&
+            Date.parse(this.search.uploadDate.toDateString()) != Date.parse(upload.uploadDate))
+            return false
+          return true
+        })
+      else
+        return null
+    }
   },
   methods: {
     searchCallsign (needle, hay) {
-      if (needle.includes('*')) {
-        const reSearch = new RegExp(needle.replace(/\//g, '\\/').replace(/\*/g,'.*'))
-        return hay.find((item) => { return reSearch.test(item) })
-      } else 
-        return hay.includes(needle)
+      if (hay) {
+        if (needle.includes('*')) {
+          const reSearch = new RegExp(needle.replace(/\//g, '\\/').replace(/\*/g,'.*'))
+          return hay.find((item) => { return reSearch.test(item) })
+        } else 
+          return hay.includes(needle)
+      } else
+        return false
     },
     searchFieldChange (field) {
       this.capitalize(this.search, field)
@@ -119,23 +141,6 @@ export default {
     },
     serverError (e) {
       this.errorMessage = e.message
-    },
-    doSearch () {
-      this.searchResult = this.uploads.filter((upload) => {
-        if (this.search.rda && this.search.rda.length && 
-            ((upload.rda && !upload.rda.includes(this.search.rda)) || !upload.rda))
-          return false
-        if (this.search.station && this.search.station.length &&
-            !this.searchCallsign(this.search.station, upload.stations))
-          return false
-        if (this.search.uploader && this.search.uploader.length &&
-            !this.searchCallsign(this.search.uploader, [upload.uploader]))
-          return false
-        if (this.search.uploadDate &&
-                Date.parse(this.search.uploadDate.toDateString()) != Date.parse(upload.uploadDate))
-          return false
-        return true
-      })
     }
   }
 }
