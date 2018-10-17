@@ -784,7 +784,7 @@ table#admin td.allow{
 	font-size: 12px;	
 }
 table#admin td.rda input, table#admin td.rda{
-	width: 70px;
+	width: 60px;
 	font-weight: bold;
 }
 table#admin td.rda span{
@@ -793,7 +793,7 @@ table#admin td.rda span{
 	text-decoration: underline;
 }
 table#admin td.callsign input, table#admin td.callsign, table#admin td.uploader input, table#admin td.uploader{
-	width: 150px;
+	width: 140px;
 	font-weight: bold;
 }
 table#admin td.callsign span{
@@ -805,9 +805,17 @@ table#admin td.qsos{
 }
 table#admin td.period{
 	width: 250px;
+	font-size: 14px;
 }
 table#admin td.upload_date input{
-	width: 150px;
+	width: 130px;
+}
+table#admin td.upload_date{
+	width: 140px;
+	text-align: center;
+}
+table#admin td.upload_date span{
+	font-weight: bold;
 }
 table#admin td.search_result{
 	padding: 1px;
