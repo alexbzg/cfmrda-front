@@ -4,10 +4,11 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 import Login from './../components/Login'
-import Upload from './../components/Upload'
 import Index from './../components/Index'
 import Contact from './../components/Contact'
 import Faq from './../components/Faq'
+const ManageUploads = () => import(/* webpackChunkName: "uploader" */ './../components/ManageUploads.vue')
+const Upload = () => import(/* webpackChunkName: "uploader" */ './../components/Upload.vue')
 
 const router = new Router({
   routes: [
@@ -32,6 +33,11 @@ const router = new Router({
       path: '/faq',
       name: 'Faq',
       component: Faq
+    },
+    {
+      path: '/manageUploads',
+      name: 'ManageUploads',
+      component: ManageUploads
     },
     {
       path: '/login',

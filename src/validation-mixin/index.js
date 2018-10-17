@@ -1,8 +1,13 @@
-import _ from 'underscore'
-
 import jsen from 'jsen'
 
-import schemas from './schemas.json'
+import schemasTmplt from './schemas.json'
+
+let schemasStr = JSON.stringify(schemasTmplt)
+
+import {rdaValues} from '../ham-radio'
+
+schemasStr = schemasStr.replace(/"\$rdaValues\$"/g, JSON.stringify(rdaValues))
+const schemas = JSON.parse(schemasStr)
 
 const validators = {}
 for (const name in schemas) {
@@ -61,7 +66,7 @@ export default {
   },
   computed: {
     validated() {
-      return _.isEmpty(this.validationErrors)
+      return Object.keys(this.validationErrors).length === 0
     }
   }
 }

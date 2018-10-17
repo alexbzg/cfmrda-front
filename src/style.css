@@ -698,10 +698,13 @@ table#last_uploads td.uploader{
 	width: 120px;
 }
 table#last_uploads td.rda a{
+	color: #009;
+}
+table#last_uploads td.rda a span{
 	display: inline-block;
 	width: 60px;
 	text-align: center;
-	color: #009;
+	text-decoration: underline;
 }
 table#last_uploads td.menu{
 	font-size: 16px;
@@ -759,7 +762,7 @@ table#admin{
  	border-collapse: collapse;
 }
 table#admin td{
-	padding: 7px 5px;
+	padding: 7px 10px;
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
@@ -784,20 +787,27 @@ table#admin td.rda input, table#admin td.rda{
 	width: 70px;
 	font-weight: bold;
 }
+table#admin td.rda span{
+	display: inline-block;
+	margin: 0 5px;
+	text-decoration: underline;
+}
 table#admin td.callsign input, table#admin td.callsign, table#admin td.uploader input, table#admin td.uploader{
 	width: 150px;
 	font-weight: bold;
+}
+table#admin td.callsign span{
+	display: inline-block;
+	margin: 0 5px;
 }
 table#admin td.qsos{
 	width: 70px;
 }
 table#admin td.period{
-	width: 200px;
-	font-size: 12px;
-	line-height: 14px;
+	width: 250px;
 }
-table#admin td.upload_date{
-	width: 200px;
+table#admin td.upload_date input{
+	width: 150px;
 }
 table#admin td.search_result{
 	padding: 1px;
@@ -813,6 +823,12 @@ table#admin td.search_result img, table#admin td.del img{
 	background-color: #FF4500;
 }
 
+#wait{
+	padding: 150px 0;
+	font-weight: bold;
+	text-align: center;
+	color: #900;
+}
 
 
 
@@ -901,6 +917,67 @@ table#rda_log td.call{
 	padding: 0 10px;
 	text-decoration: none;
 }
+
+
+
+
+
+
+
+
+
+table#cfm_qso_request{
+	margin: 30px auto 50px auto;
+ 	border-collapse: collapse;
+}
+table#cfm_qso_request td{
+	padding: 7px 10px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+	vertical-align: middle;
+}
+table#cfm_qso_request td.menu{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+table#cfm_qso_request td.no_border{
+	border: none;
+}
+table#cfm_qso_request td.rda_callsign_note{
+	height: 30px;
+	font-size: 12px;
+	color: #777;
+	padding-top: 0;
+	vertical-align: top;
+	border: none;
+}
+table#cfm_qso_request td.time input, table#cfm_qso_request td.band input, table#cfm_qso_request td.mode input, table#cfm_qso_request td.rda input{
+	width: 80px;
+}
+table#cfm_qso_request td.dx_rst input, table#cfm_qso_request td.my_rst input{
+	width: 50px;
+}
+table#cfm_qso_request td.add_line{
+	border: none;
+	height: 30px;
+	vertical-align: middle;
+	color: #009;
+	font-weight: bold;
+	text-decoration: underline;
+	cursor: pointer;
+}
+table#cfm_qso_request td.send_btn{
+	border: none;
+	height: 50px;
+	vertical-align: bottom;
+}
+
+
+
+
+
+
 
 
 

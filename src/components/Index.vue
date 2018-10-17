@@ -102,7 +102,7 @@
                                     <td id="hunter_activator" colspan="5">RDA activator</td>
                                 </tr>
                                 <tr>
-                                    <td class="rda_top">{{rdaValue.value}}</td>
+                                    <td class="rda_top">{{replace0(rdaValue.value)}}</td>
                                     <td class="band top">МГц</td>
                                     <td class="call top">QSOs</td>
                                     <td class="uploader top">Uploader</td>
@@ -143,16 +143,16 @@
                     <view-upload-link v-for="(rda, rdaIdx) in item.rda" :key="rdaIdx"
                         :id="rda.id">
                         <span v-for="(rdaEntry, rdaEntryIdx) in rda.rda" :key="rdaEntryIdx">
-                            {{rdaEntry}}
+                            {{replace0(rdaEntry)}}
                         </span>
                     </view-upload-link>
                 </td>
                 <td class="activator">
                     <span v-for="(activator, actIdx) in item.activators" :key="actIdx">
-                        {{activator}}
+                        {{replace0(activator)}}
                     </span>
                 </td>
-                <td class="uploader">{{item.uploader}}</td>
+                <td class="uploader">{{replace0(item.uploader)}}</td>
                 <td class="uploaded">{{item.uploadDate}} <span>{{item.uploadTime}}</span></td>
             </tr>
         </table>
@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import {getRankings, getHunterDetails, getFullRDA, getRecentUploads, getMscData} from '../api'
+import {getRankings, getHunterDetails, getRecentUploads, getMscData} from '../api'
 import storage from '../storage'
 
 import capitalizeMixin from '../capitalize-mixin'
@@ -178,9 +178,11 @@ import {orderedBands} from '../ham-radio'
 const reStripCallsign = /\d*[A-Z]+\d+[A-Z]+/i
 const STORAGE_KEY_CALLSIGN = 'hunter_callsign'
 
+import rdaShort from '../rdaShort.json'
+
 export default {
   BANDS: orderedBands(),
-  name: 'index',
+  name: 'Index',
   mixins: [capitalizeMixin, rankDataMixin, replaceZerosMixin],
   components: {RankTable, Selector, ViewUploadLink},
   data () {
@@ -190,15 +192,32 @@ export default {
       .then((data) => {this.recentUploads = data})
     getMscData() 
       .then((data) => {this.mscData = data})
-    getFullRDA()
-      .then((data) => {this.rda = data})      
+
+    const rda = []
+    for (const group of rdaShort) {
+      const fullGroup = {group: group.group, values: []}
+      for (let c = 1; c <= group.last; c++) {
+        if ('skip' in group && group.skip.includes(c)) {
+          continue
+        }
+        const displayValue = c < 10 ? '0' + c : c
+        const value = {
+          value: group.group + '-' + displayValue,
+          group: group.group,
+          displayValue: displayValue
+        }
+        fullGroup.values.push(value)
+      }
+      rda.push(fullGroup)
+    }
+
     const callsign = storage.load(STORAGE_KEY_CALLSIGN)
     return {
       callsign: callsign,
       callsignError: false,
       callsignValid: callsign,
       rankData: {},
-      rda: {},
+      rda: rda,
       recentUploads: [],
       mscData: {
         qsoCount: null

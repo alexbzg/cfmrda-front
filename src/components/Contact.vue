@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import _ from 'underscore'
+import debounce from '../debounce'
 
 import storage from '../storage'
 import {contactSupport} from '../api'
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
 
-    sendClick: _.debounce(function () {
+    sendClick: debounce(function () {
       this.send()
     }, 300, true),
 
