@@ -143,7 +143,7 @@
                     <view-upload-link v-for="(rda, rdaIdx) in item.rda" :key="rdaIdx"
                         :id="rda.id">
                         <span v-for="(rdaEntry, rdaEntryIdx) in rda.rda" :key="rdaEntryIdx">
-                            {{replace0(rdaEntry)}}
+                            {{rdaEntry}}
                         </span>
                     </view-upload-link>
                 </td>
