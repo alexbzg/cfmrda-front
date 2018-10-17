@@ -12,7 +12,7 @@
             <td class="menu upload_date">Дата загрузки</td>
             <td class="menu del"></td>
         </tr>
-        <tr id="search">
+        <tr id="search" @keyup.enter="showSearchResult = validated">
             <td class="allow" v-if="admin"></td>
             <td class="rda">
                 <input type="text" name="rda_input" id="rda_input" 
@@ -93,10 +93,10 @@ export default {
   computed: {
     ...mapGetters(['admin', 'uploads']),
     searchResult () {
-      if (this.showSearchResult && this.validated) {
-        return this.uploads.filter((upload) => {
-          if (this.search.rda && this.search.rda.length && upload.rda && 
-            !upload.rda.includes(this.search.rda))
+      if (this.showSearchResult && this.validated) 
+        return  this.uploads.filter((upload) => {
+          if (this.search.rda && this.search.rda.length && 
+            ((upload.rda && !upload.rda.includes(this.search.rda)) || !upload.rda))
             return false
           if (this.search.station && this.search.station.length &&
             !this.searchCallsign(this.search.station, upload.stations))
@@ -109,7 +109,7 @@ export default {
             return false
           return true
         })
-      } else 
+      else
         return null
     }
   },
@@ -141,23 +141,6 @@ export default {
     },
     serverError (e) {
       this.errorMessage = e.message
-    },
-    doSearch () {
-      this.searchResult = this.uploads.filter((upload) => {
-        if (this.search.rda && this.search.rda.length && 
-            ((upload.rda && !upload.rda.includes(this.search.rda)) || !upload.rda))
-          return false
-        if (this.search.station && this.search.station.length &&
-            !this.searchCallsign(this.search.station, upload.stations))
-          return false
-        if (this.search.uploader && this.search.uploader.length &&
-            !this.searchCallsign(this.search.uploader, [upload.uploader]))
-          return false
-        if (this.search.uploadDate &&
-                Date.parse(this.search.uploadDate.toDateString()) != Date.parse(upload.uploadDate))
-          return false
-        return true
-      })
     }
   }
 }
