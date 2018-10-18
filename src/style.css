@@ -933,13 +933,17 @@ table#rda_log td.call{
 
 
 
+/* ==========================================     C F M   Q S O   R E Q U E S T   ====================================================== */
+
+
+
 
 table#cfm_qso_request{
 	margin: 30px auto 50px auto;
  	border-collapse: collapse;
 }
 table#cfm_qso_request td{
-	padding: 7px 10px;
+	padding: 7px 7px;
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
@@ -960,11 +964,15 @@ table#cfm_qso_request td.rda_callsign_note{
 	vertical-align: top;
 	border: none;
 }
-table#cfm_qso_request td.time input, table#cfm_qso_request td.band input, table#cfm_qso_request td.mode input, table#cfm_qso_request td.rda input{
-	width: 80px;
+table#cfm_qso_request td.time input, table#cfm_qso_request td.rda input{
+	width: 60px;
 }
-table#cfm_qso_request td.dx_rst input, table#cfm_qso_request td.my_rst input{
+table#cfm_qso_request td.rda_rst input, table#cfm_qso_request td.my_rst input{
 	width: 50px;
+}
+table#cfm_qso_request td.rda_callsign input, table#cfm_qso_request td.my_callsign input{
+	width: 150px;
+	font-weight: bold;
 }
 table#cfm_qso_request td.add_line{
 	border: none;
@@ -985,7 +993,67 @@ table#cfm_qso_request td.send_btn{
 
 
 
+/* ==========================================     C F M   Q S O   ====================================================== */
 
+
+
+
+table#cfm_qso{
+	margin: 30px auto 100px auto;
+ 	border-collapse: collapse;
+}
+table#cfm_qso td{
+	padding: 10px 15px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+	vertical-align: middle;
+}
+table#cfm_qso td.menu{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+table#cfm_qso td.no_border{
+	border: none;
+}
+table#cfm_qso td.rda_callsign, table#cfm_qso td.my_callsign{
+	font-weight: bold;
+}
+table#cfm_qso td.cfm_btn{
+	border: none;
+	height: 70px;
+	vertical-align: bottom;
+}
+
+
+
+
+
+
+
+
+
+
+/* ==========================================     A W A R D S  ====================================================== */
+
+
+#list_menu span{
+	font-weight: bold;
+	color: #009;
+	cursor: pointer;
+	padding: 0 20px;
+	text-decoration: underline;
+}
+#awards{
+	width: 80%;
+	margin: 0 auto;
+	text-align: left;
+	text-indent: 2px;
+	line-height: 2em;
+}
+#awards_rules, #issued_awards, #application_status, #application_form{
+	margin: 50px auto 100px auto;
+}
 
 
 

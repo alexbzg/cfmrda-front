@@ -1,26 +1,11 @@
-import jsen from 'jsen'
+import createSchemas from './createSchemas.js'
 
-import schemasTmplt from './schemas.json'
-
-let schemasStr = JSON.stringify(schemasTmplt)
-
-import {rdaValues} from '../ham-radio'
-
-schemasStr = schemasStr.replace(/"\$rdaValues\$"/g, JSON.stringify(rdaValues))
-const schemas = JSON.parse(schemasStr)
-
+const schemas = createSchemas()
 const validators = {}
 for (const name in schemas) {
   validators[name] = jsen(schemas[name], {greedy: true})
 }
 
-/*
-import validatorFunctions from './validators.json'
-const validators = {}
-for (const name in validatorFunctions) {
-
-}
-*/
 export default {
   data () {
     return {
