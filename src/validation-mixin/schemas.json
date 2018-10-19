@@ -219,5 +219,45 @@
             {"properties": {"uploadDate": {"type": "null"}}}
         ]
     }
+},
+"cfmRequestQso": {
+    "type": "object",
+    "properties": {
+        "email": {
+            "type": "string",
+            "format": "email"
+        },
+        "correspondent": {
+            "type": "string",
+            "pattern": "^(:?[A-Z\\d]+\\/)?[A-Z]+\\d+[A-Z]+(:?\\/[A-Z\\d]+)*$"
+        },
+        "qso": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "callsign": {
+                        "type": "string",
+                        "pattern": "[A-Z]+\\d+[A-Z]+"
+                    },
+                    "stationCallsign": {
+                        "type": "string",
+                        "pattern": "(:?\\*|^(:?[A-Z\\d]+\\/)?[A-Z]+\\d+[A-Z]+(:?\\/[A-Z\\d]+)*$)"
+                    },
+                    "rda": {"enum": "$rdaValues$"},
+                    "band": {
+                        "enum": ["1.8", "3.5", "7", "10", "14", "18", "21", "24", "28"]
+                    },
+                    "mode": {
+                        "enum": ["CW", "SSB", "DIGI"]
+                    }
+                },
+                "required": ["callsign", "stationCallsign", "rda", "band", "mode", "tstamp", 
+                    "recRST", "sentRST"]
+            }
+        }
+    },
+    "required": ["email", "correspondent", "qso"]
 }
 }
