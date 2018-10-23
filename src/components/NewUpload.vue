@@ -1,5 +1,4 @@
 <template>
-    <div class="list list_small">
       <div id="upload">
         <div id="upload_rules" @click="showInfo = !showInfo">Правила загрузки ADI файлов</div>
             <ul id="upload_info" v-if="showInfo">
@@ -97,7 +96,6 @@
         </div>
         
       </div>
-    </div>   
 </template>
 
 <script>
@@ -115,7 +113,6 @@ export default {
   mixins: [validationMixin, capitalizeMixin],
   name: 'Upload',
   data () {
-     
     const stationCallsignSettings = this.loadStationCallsignSettings()
     const adif = {
         rda: null,

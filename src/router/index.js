@@ -7,27 +7,55 @@ import Login from './../components/Login'
 import Index from './../components/Index'
 import Contact from './../components/Contact'
 import Faq from './../components/Faq'
+import CFM from './../components/CFM'
+import EmailCFM from './../components/EmailCFM'
 const ManageUploads = () => import(/* webpackChunkName: "uploader" */ './../components/ManageUploads.vue')
-const Upload = () => import(/* webpackChunkName: "uploader" */ './../components/Upload.vue')
+const NewUpload = () => import(/* webpackChunkName: "uploader" */ './../components/NewUpload.vue')
+const Uploads = () => import(/* webpackChunkName: "uploader" */ './../components/Uploads.vue')
 
 const router = new Router({
   routes: [
     { path: '/',
       name: 'Index',
-      component: Index,
-      props: true
+      component: Index
+    },
+    { path: '/cfm',
+      name: 'CFM',
+      component: CFM,
+      chidren: [
+        {
+          path: 'email',
+          name: 'EmailCFM',
+          component: EmailCFM
+        }
+      ]
     },
     {
-      path: '/upload',
-      name: 'Upload',
-      component: Upload,
-      props: true
+      path: '/uploads',
+      name: 'Uploads',
+      component: Uploads,
+      children: [
+        {
+          path: 'new',
+          name: 'NewUpload',
+          component: NewUpload
+        },
+        {
+          path: 'manage',
+          name: 'ManageUploads',
+          component: ManageUploads
+        },
+        {
+          path: '',
+          name: 'NewUpload',
+          component: NewUpload
+        }
+      ]
     },
     {
       path: '/contact',
       name: 'Contact',
-      component: Contact,
-      props: true
+      component: Contact
     },
     {
       path: '/faq',
@@ -35,15 +63,9 @@ const router = new Router({
       component: Faq
     },
     {
-      path: '/manageUploads',
-      name: 'ManageUploads',
-      component: ManageUploads
-    },
-    {
       path: '/login',
       name: 'Login',
-      component: Login,
-      props: true
+      component: Login
     }
   ]
 })

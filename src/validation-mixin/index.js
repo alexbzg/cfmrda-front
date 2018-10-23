@@ -1,3 +1,5 @@
+import jsen from 'jsen'
+
 import createSchemas from './createSchemas.js'
 
 const schemas = createSchemas()

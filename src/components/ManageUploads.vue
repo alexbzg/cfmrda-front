@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div>
     <table id="admin" v-show="!pending">
         <tr>
             <td class="menu allow" v-if="admin">Допущено</td>

@@ -24,13 +24,11 @@
 <script>
 import debounce from '../debounce'
 
-import storage from '../storage'
+import storeEmail from '../store-email'
 import {contactSupport} from '../api'
 
 import validationMixin from '../validation-mixin'
 import recaptchaMixin from '../recaptcha-mixin'
-
-const STORAGE_KEY_EMAIL = 'contact_email'
 
 export default {
   mixins: [validationMixin, recaptchaMixin],
@@ -44,7 +42,7 @@ export default {
       msg.token = token
     } else {
       msg.recaptcha = null
-      msg.email = storage.load(STORAGE_KEY_EMAIL)
+      msg.email = storeEmail.load()
     }
     return { 
       msg: msg,
@@ -66,7 +64,7 @@ export default {
     send () {
 
       if (this.msg.email) {
-        storage.save(STORAGE_KEY_EMAIL, this.msg.email, 'local')
+        storeEmail.save(this.msg.email)
       }
       this.pending = true
       

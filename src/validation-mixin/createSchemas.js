@@ -1,5 +1,3 @@
-import jsen from 'jsen'
-
 import schemasTmplt from './schemas.json'
 
 import {rdaValues} from '../ham-radio'
