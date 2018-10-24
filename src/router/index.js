@@ -9,6 +9,8 @@ import Contact from './../components/Contact'
 import Faq from './../components/Faq'
 import CFM from './../components/CFM'
 import EmailCFM from './../components/EmailCFM'
+import PaperCFM from './../components/PaperCFM'
+
 const ManageUploads = () => import(/* webpackChunkName: "uploader" */ './../components/ManageUploads.vue')
 const NewUpload = () => import(/* webpackChunkName: "uploader" */ './../components/NewUpload.vue')
 const Uploads = () => import(/* webpackChunkName: "uploader" */ './../components/Uploads.vue')
@@ -20,11 +22,15 @@ const router = new Router({
       component: Index
     },
     { path: '/cfm',
-      name: 'CFM',
       component: CFM,
-      chidren: [
+      children: [
         {
-          path: 'email',
+          path: 'paper',
+          name: 'PaperCFM',
+          component: PaperCFM
+        },
+        {
+          path: '',
           name: 'EmailCFM',
           component: EmailCFM
         }
@@ -32,14 +38,8 @@ const router = new Router({
     },
     {
       path: '/uploads',
-      name: 'Uploads',
       component: Uploads,
       children: [
-        {
-          path: 'new',
-          name: 'NewUpload',
-          component: NewUpload
-        },
         {
           path: 'manage',
           name: 'ManageUploads',

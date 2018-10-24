@@ -41,6 +41,10 @@ input, button, textarea, select{
 	color: #900;
 	font-style: italic;
 }
+.grey_note{
+	color: #999;
+	font-size: 14px;
+}
 h4{
 	text-align: center;
 	font-size: 24px;
@@ -990,6 +994,14 @@ table#cfm_qso_request td.rda_callsign_note{
 	vertical-align: top;
 	border: none;
 }
+table#cfm_qso_request td.email input{
+	width: 300px;
+	text-align: center;
+	font-weight: bold;
+}
+table#cfm_qso_request td.email{
+	padding: 0;
+}
 table#cfm_qso_request td.time input, table#cfm_qso_request td.rda input{
 	width: 60px;
 }
@@ -1007,6 +1019,9 @@ table#cfm_qso_request td.add_line{
 	color: #009;
 	font-weight: bold;
 	text-decoration: underline;
+	cursor: pointer;
+}
+table#cfm_qso_request td.del{
 	cursor: pointer;
 }
 table#cfm_qso_request td.send_btn{
@@ -1249,27 +1264,42 @@ table#application_table td.award_title select{
 
 
 
-/*            СТАТУС         */
+/*    ====================================        С Т А Т У С  ==========================================       */
 
 
-#application_for{
-	font-weight: bold;
-	font-size: 18px;
-	text-decoration: underline;
-	margin-bottom: 20px;
+table.status{
+	margin: 0 auto;
+ 	border-collapse: collapse;
 }
-#status{
-	font-weight: bold;
+table.status td{
+	padding: 10px 20px;
+	color: #333;
+	border: 1px solid #dfedfd;
+	vertical-align: top;
+}
+table.status td.status_text{
 	color: #900;
-	font-size: 24px;
+	font-weight: bold;
+	background-color: #ffffca;
 }
-#status span{
-	font-weight: normal;
-	font-size: 16px;
+table.status td.app_text, table.status td.status_text{
+	text-align: left;
+	font-weight: bold;
+}
+table.status td.app_text.top, table.status td.status_text.top{
+	text-align: center;
+	background-color: #e7f2ff;
+	font-weight: bold;
 	color: #333;
 }
-
-
+table.status span{
+	display: block;
+	margin: 0 auto;
+}
+table.status td.date.top{
+	font-weight: bold;
+	background-color: #e7f2ff;
+}
 
 
 

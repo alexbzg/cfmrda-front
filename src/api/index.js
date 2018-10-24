@@ -55,6 +55,10 @@ export function manageUploads (data) {
   return dataPost('manage_uploads', data)
 }
 
+export function cfmRequestQso (data) {
+  return dataPost('cfm_request_qso', data)
+}
+
 export function getUploads (token) {
   return dataPost('user_uploads', {'token': token})
 }

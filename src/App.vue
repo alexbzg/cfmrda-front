@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style>
-    textarea.error, input.error {
+    textarea.error, input.error, select.error {
         background-color: #ff111133;
     }
 </style>

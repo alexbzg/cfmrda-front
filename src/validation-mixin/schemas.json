@@ -227,9 +227,13 @@
             "type": "string",
             "format": "email"
         },
-        "correspondent": {
+        "recaptcha": {
             "type": "string",
-            "pattern": "^(:?[A-Z\\d]+\\/)?[A-Z]+\\d+[A-Z]+(:?\\/[A-Z\\d]+)*$"
+            "minLength": 1
+        },
+        "token": { 
+            "type": "string",
+            "minLength": 3
         },
         "qso": {
             "type": "array",
@@ -246,6 +250,10 @@
                         "pattern": "(:?\\*|^(:?[A-Z\\d]+\\/)?[A-Z]+\\d+[A-Z]+(:?\\/[A-Z\\d]+)*$)"
                     },
                     "rda": {"enum": "$rdaValues$"},
+                    "time": {
+                        "type": "string",
+                        "pattern": "\\d\\d\\d\\d"
+                    },
                     "band": {
                         "enum": ["1.8", "3.5", "7", "10", "14", "18", "21", "24", "28"]
                     },
@@ -253,11 +261,16 @@
                         "enum": ["CW", "SSB", "DIGI"]
                     }
                 },
-                "required": ["callsign", "stationCallsign", "rda", "band", "mode", "tstamp", 
-                    "recRST", "sentRST"]
+                "required": ["callsign", "stationCallsign", "rda", "band", "mode", "date", 
+                    "time", "recRST", "sentRST"]
             }
         }
     },
-    "required": ["email", "correspondent", "qso"]
+    "required": ["qso"],
+    "anyOf": [
+        {"required": ["email", "recaptcha"]},
+        {"required": ["token"]}
+    ]
+
 }
 }

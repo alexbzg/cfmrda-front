@@ -11,13 +11,13 @@
         <p>Данные QSO будут отправлены корреспонденту по email, указанному им в профиле QRZ.com.<br/>Если корреспондент подтвердит QSO с вами, то подтвержденное QSO будет добавлено в базу CFMRDA.ru.</p>
         <p>The QSO data will be sent to the correspondent by the email specified by him in the QRZ.com profile.<br/>If the correspondent will confirm QSO with you the confirmed QSO will be added to the database of CFMRDA.ru.</p>
         <table id="cfm_qso_request">
-            <tr v-if="!userToken">
+            <tr>
                 <td colspan="10" class="no_border">
-                    <input type="text" name="email" id="email" 
+                    <input type="text" name="rda_callsign" id="rda_callsign" 
                         v-model="request.email" :class="{error: validationErrors.email}"/>
                 </td>
             </tr>
-            <tr v-if="!userToken">
+            <tr>
                 <td colspan="10" class="rda_callsign_note">Ваш email - Your email</td>
             </tr>
             <tr>
@@ -35,22 +35,18 @@
             <tr v-for="(qso, idx) in request.qso" :key="idx">
                 <td class="rda_callsign">
                     <input type="text" name="qso_rda_callsign" id="qso_rda_callsign"
-                        v-model="qso.callsign" v-capitalize
+                        v-model="qso.callsign" 
                         :class="{error:validationErrors['qso.' + idx + '.callsign']}">
                 </td>
                 <td class="rda">
-                    <rda-input type="text" name="qso_cfm_rda" id="qso_cfm_rda" v-model="qso.rda"
+                    <input type="text" name="qso_cfm_rda" id="qso_cfm_rda" v-model="qso.rda"
                         :class="{error:validationErrors['qso.' + idx + '.rda']}">
-                    </rda-input>
                 </td>
                 <td class="date">
-                    <datepicker v-model="qso.date" :input-class="{error: !qso.date}"></datepicker>
+                    <datepicker v-model="qso.date"></datepicker>
                 </td>
                 <td class="time">
-                    <the-mask mask="##:##" type="text" name="qso_time" id="qso_time" 
-                        placeholder="hh:mm" v-model="qso.time" 
-                        :class="{error: validationErrors['qso.' + idx + '.time']}">
-                    </the-mask>
+                    <input type="text" name="qso_time" id="qso_time" v-model="qso.time">
                 </td>
                 <td class="band">
                     <select v-model="qso.band" :class="{error: !qso.band}">
@@ -69,13 +65,11 @@
                 </td>
                 <td class="rda_rst">
                     <input type="text" name="qso_dx_rst" id="qso_dx_rst"
-                        v-model="qso.sentRST" 
-                        :class="{error: validationErrors['qso.' + idx + '.sentRST']}">
+                        v-model="qso.sentRST">
                 </td>
                 <td class="my_rst">
                     <input type="text" name="qso_my_rst" id="qso_my_rst"
-                        v-model="qso.recRST"
-                        :class="{error: validationErrors['qso.' + idx + '.recRST']}">
+                        v-model="qso.recRST">
                 </td>
                 <td class="del">
                     <img src="images/icon_delete.png" title="Удалить эту строку - Delete this line"
@@ -83,15 +77,15 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="10" class="add_line" @click="request.qso.push({})">
+                <td colspan="10" class="add_line" @click="addQso()">
                     Добавить ещё одну строку - Add one more line
                 </td>
             </tr>
             <tr>
                 <td colspan="10" class="send_btn">
                     <input type="button" name="send_btn" id="send_btn" 
-                        value="Отправить запрос на подтверждение QSO - 
-                            Send CFM QSO request"
+                        value="Отправить запрос DX1DX на подтверждение QSO - 
+                            Send the request to DX1DX for CFM QSO"
                         class="btn" :disabled="pending || !validated" 
                         @click="sendClick()">
                 </td>
@@ -107,12 +101,10 @@
 import {mapGetters} from 'vuex'
 
 import Datepicker from 'vuejs-datepicker'
-import {TheMask} from 'vue-the-mask'
 
 import validationMixin from '../validation-mixin'
+import capitalizeMixin from '../capitalize-mixin'
 import recaptchaMixin from '../recaptcha-mixin'
-
-import RdaInput from './RDAinput'
 
 import {orderedBands, MODES} from '../ham-radio'
 import storeEmail from '../store-email'
@@ -121,19 +113,15 @@ import {cfmRequestQso} from '../api'
 export default {
   BANDS: orderedBands(),
   MODES: MODES,
-  mixins: [validationMixin, recaptchaMixin],
-  components: {Datepicker, RdaInput, TheMask},
-  name: 'EmailCFM',
+  mixins: [validationMixin, recaptchaMixin, capitalizeMixin],
+  components: {Datepicker},
+  name: 'PaperCFM',
   data () {
-    const token = this.$store.getters.userToken
     const request = {
-      qso: [{}]
-    }
-    if (token)
-      request.token = token
-    else {
-      request.recaptcha = null
-      request.email = storeEmail.load()
+      email: storeEmail.load(),
+      correspondent: null,
+      token: this.userToken,
+      qso: []
     }
     return {
       request: request,
@@ -150,6 +138,7 @@ export default {
     this.validate()
   },
   methods: {
+
     sendClick () {
       this.pending = true
       if (this.request.email) {
@@ -158,7 +147,7 @@ export default {
       
       cfmRequestQso(this.qso)
         .then(() => {
-          this.response = 'Ваш запрос был отправлен. Your request was sent.'
+          this.response = 'Ваше запрос был отправлен. Your request was sent.'
           this.request.qso = []
         })
         .catch((e) => {
@@ -167,10 +156,6 @@ export default {
         .finally(() => {
           this.pending = false
         })
-    },
-    deleteQso (idx) {
-      if (confirm("Удалить строку? Do you really want to delete the line?"))
-        this.request.qso.splice(idx, 1)
     }
   }
 }
