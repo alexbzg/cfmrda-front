@@ -50,7 +50,9 @@ h4{
 	font-size: 24px;
 	margin: 10px 0 20px 0;
 }
-
+p{
+		text-indent: 2em;
+}
 a#logout_link{
 	text-decoration: underline;
 	cursor: pointer;
@@ -1083,8 +1085,6 @@ table#cfm_qso td.cfm_btn input{
 	width: 90%;
 	margin: 50px auto 100px auto;
 	text-align: left;
-	text-indent: 2px;
-	line-height: 2em;
 }
 
 

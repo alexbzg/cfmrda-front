@@ -118,6 +118,13 @@ export function getHunterDetails (callsign) {
     })
 }
 
+export function getCorrespondentEmail (callsign) {
+  return get(API_URL + 'correspondent_email/' + callsign)
+    .then(response => {
+      return response.data
+    })
+}
+
 export function getUpload (id) {
   return get(API_URL + 'upload/' + id)
     .then(response => {

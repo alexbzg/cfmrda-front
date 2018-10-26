@@ -8,11 +8,11 @@
             :sitekey="$options.RECAPTCHA_SITE_KEY">
         </vue-recaptcha>
 
-        <p>Данные QSO будут отправлены корреспонденту по email, указанному им в профиле QRZ.com.<br/>Если корреспондент подтвердит QSO с вами, то подтвержденное QSO будет добавлено в базу CFMRDA.ru.</p>
-        <p>The QSO data will be sent to the correspondent by the email specified by him in the QRZ.com profile.<br/>If the correspondent will confirm QSO with you the confirmed QSO will be added to the database of CFMRDA.ru.</p>
+        <p>Данные QSO будут отправлены корреспонденту по email, указанному в его профиле QRZ.com.<br/>Если корреспондент подтвердит QSO с вами, то подтвержденное QSO будет добавлено в базу CFMRDA.ru.</p>
+        <p class="grey_note">The QSO data will be sent to the correspondent by the email specified by him in the QRZ.com profile.<br/>If the correspondent will confirm QSO with you the confirmed QSO will be added to the database of CFMRDA.ru.</p>
         <table id="cfm_qso_request">
             <tr v-if="!userToken">
-                <td colspan="10" class="no_border">
+                <td colspan="10" class="no_border email">
                     <input type="text" name="email" id="email" 
                         v-model="request.email" :class="{error: validationErrors.email}"/>
                 </td>
@@ -35,8 +35,10 @@
             <tr v-for="(qso, idx) in request.qso" :key="idx">
                 <td class="rda_callsign">
                     <input type="text" name="qso_rda_callsign" id="qso_rda_callsign"
-                        v-model="qso.callsign" v-capitalize
-                        :class="{error:validationErrors['qso.' + idx + '.callsign']}">
+                        v-model="qso.stationCallsign" v-capitalize
+                        @change="checkCorrespondent(qso)"
+                        :class="{error:validationErrors['qso.' + idx + '.stationCallsign'] || 
+                        validationErrors['qso.' + idx + '.correspondentEmail']}">
                 </td>
                 <td class="rda">
                     <rda-input type="text" name="qso_cfm_rda" id="qso_cfm_rda" v-model="qso.rda"
@@ -64,8 +66,8 @@
                 </td>
                 <td class="my_callsign">
                     <input type="text" name="qso_my_callsign" id="qso_my_callsign"
-                        v-model="qso.stationCallsign" 
-                        :class="{error: validationErrors['qso.' + idx + '.stationCallsign']}">
+                        v-model="qso.callsign" v-capitalize  
+                        :class="{error: validationErrors['qso.' + idx + '.callsign']}">
                 </td>
                 <td class="rda_rst">
                     <input type="text" name="qso_dx_rst" id="qso_dx_rst"
@@ -99,7 +101,17 @@
                 
         </table>
        
-        <div v-if="response" id="message" v-html="response"></div>
+        <div v-if="requestError" id="message" v-html="requestError"></div>
+        <table id="status" v-if="response">
+            <tr>
+                <td class="top callsign">Correspondent</td>
+                <td class="top error">Status</td>
+            </tr>
+            <tr v-for="(error, callsign) in response" :key="callsign">
+                <td class="callsign">{{callsign}}</td>
+                <td :class="{error: error !== 'OK', success: error === 'OK'}">{{error}}</td>
+            </tr>
+        </table>
     </div>
 </template>
 
@@ -114,9 +126,9 @@ import recaptchaMixin from '../recaptcha-mixin'
 
 import RdaInput from './RDAinput'
 
-import {orderedBands, MODES} from '../ham-radio'
+import {orderedBands, MODES, stripCallsign} from '../ham-radio'
 import storeEmail from '../store-email'
-import {cfmRequestQso} from '../api'
+import {cfmRequestQso, getCorrespondentEmail} from '../api'
 
 export default {
   BANDS: orderedBands(),
@@ -140,7 +152,8 @@ export default {
       validationData: request,
       pending: false,
       validationSchema: 'cfmRequestQso',
-      response: null
+      response: null,
+      requestError: null
     }
   },
   computed: {
@@ -156,13 +169,13 @@ export default {
         storeEmail.save(this.request.email)
       }
       
-      cfmRequestQso(this.qso)
-        .then(() => {
-          this.response = 'Ваш запрос был отправлен. Your request was sent.'
+      cfmRequestQso(this.request)
+        .then((response) => {
+          this.response = response
           this.request.qso = []
         })
         .catch((e) => {
-          this.response = e.message
+          this.requestError = e.message
         })
         .finally(() => {
           this.pending = false
@@ -171,6 +184,24 @@ export default {
     deleteQso (idx) {
       if (confirm("Удалить строку? Do you really want to delete the line?"))
         this.request.qso.splice(idx, 1)
+    },
+    checkCorrespondent (qso) {
+      qso.correspondent = stripCallsign(qso.callsign)
+      if (qso.correspondent) {
+        const sameCallsignQso = this.request.qso.find((item) => {
+          return item !== qso && item.correspondent === qso.correspondent && item.email
+        })
+        if (sameCallsignQso)
+          qso.email = sameCallsignQso.email
+        else {
+          getCorrespondentEmail(qso.correspondent)
+            .then((data) => {
+              qso.email = data.email
+              if (!data.email)
+                qso.correspondentError = data.reason
+            })
+        }
+      }
     }
   }
 }
