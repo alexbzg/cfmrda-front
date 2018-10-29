@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import debounce from '../debounce'
+import {debounce} from '../utils'
 
 import {login as api_login} from '../api'
 import validationMixin from '../validation-mixin'

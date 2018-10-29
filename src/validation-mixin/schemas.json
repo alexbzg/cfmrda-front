@@ -259,10 +259,18 @@
                     },
                     "mode": {
                         "enum": ["CW", "SSB", "DIGI"]
+                    },
+                    "correspondent": {
+                        "type": "string",
+                        "pattern": "[A-Z]+\\d+[A-Z]+"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
                     }
                 },
                 "required": ["callsign", "stationCallsign", "rda", "band", "mode", "date", 
-                    "time", "recRST", "sentRST"]
+                    "time", "recRST", "sentRST", "correspondent", "email"]
             }
         }
     },

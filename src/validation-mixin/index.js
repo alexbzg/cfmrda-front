@@ -1,6 +1,7 @@
 import jsen from 'jsen'
 
 import createSchemas from './createSchemas.js'
+import {isEmpty} from '../utils'
 
 const schemas = createSchemas()
 const validators = {}
@@ -53,7 +54,7 @@ export default {
   },
   computed: {
     validated() {
-      return Object.keys(this.validationErrors).length === 0
+      return isEmpty(this.validationErrors)
     }
   }
 }

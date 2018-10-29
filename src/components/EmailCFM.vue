@@ -38,7 +38,10 @@
                         v-model="qso.stationCallsign" v-capitalize
                         @change="checkCorrespondent(qso)"
                         :class="{error:validationErrors['qso.' + idx + '.stationCallsign'] || 
-                        validationErrors['qso.' + idx + '.correspondentEmail']}">
+                        validationErrors['qso.' + idx + '.email']}"/>
+                    <img v-if="qso.correspondentError" 
+                         :src="'/images/icon_' + qso.correspondentError.icon + '.png'"
+                         :title="qso.correspondentError.message"/>
                 </td>
                 <td class="rda">
                     <rda-input type="text" name="qso_cfm_rda" id="qso_cfm_rda" v-model="qso.rda"
@@ -101,17 +104,7 @@
                 
         </table>
        
-        <div v-if="requestError" id="message" v-html="requestError"></div>
-        <table id="status" v-if="response">
-            <tr>
-                <td class="top callsign">Correspondent</td>
-                <td class="top error">Status</td>
-            </tr>
-            <tr v-for="(error, callsign) in response" :key="callsign">
-                <td class="callsign">{{callsign}}</td>
-                <td :class="{error: error !== 'OK', success: error === 'OK'}">{{error}}</td>
-            </tr>
-        </table>
+        <div v-if="response" id="message" :class="{succes: success}" v-html="response"></div>
     </div>
 </template>
 
@@ -129,6 +122,17 @@ import RdaInput from './RDAinput'
 import {orderedBands, MODES, stripCallsign} from '../ham-radio'
 import storeEmail from '../store-email'
 import {cfmRequestQso, getCorrespondentEmail} from '../api'
+
+const CORRESPONDENT_ERRORS = {
+  blacklist: {
+    message: 'Correspondent had disabled email CFM.',
+    icon: 'blacklist'
+  },
+  'not found': {
+    message: 'Correspondent\'s callsign or email is not registered on qrz.com',
+    icon: 'warning'
+  }
+}
 
 export default {
   BANDS: orderedBands(),
@@ -153,7 +157,7 @@ export default {
       pending: false,
       validationSchema: 'cfmRequestQso',
       response: null,
-      requestError: null
+      success: false
     }
   },
   computed: {
@@ -170,12 +174,15 @@ export default {
       }
       
       cfmRequestQso(this.request)
-        .then((response) => {
-          this.response = response
+        .then(() => {
+          this.response = "Ваш запрос будет отправлен корреспондентам в течение суток.<br/>" + 
+              "Your request will be sent to correspondents in 24 hours."
           this.request.qso = []
+          this.success = true
         })
         .catch((e) => {
           this.requestError = e.message
+          this.success = false
         })
         .finally(() => {
           this.pending = false
@@ -186,19 +193,20 @@ export default {
         this.request.qso.splice(idx, 1)
     },
     checkCorrespondent (qso) {
-      qso.correspondent = stripCallsign(qso.callsign)
+      qso.correspondent = stripCallsign(qso.stationCallsign)
       if (qso.correspondent) {
         const sameCallsignQso = this.request.qso.find((item) => {
-          return item !== qso && item.correspondent === qso.correspondent && item.email
+          return item !== qso && item.correspondent === qso.correspondent && 
+            (item.email || item.correspondentError)
         })
-        if (sameCallsignQso)
-          qso.email = sameCallsignQso.email
-        else {
+        if (sameCallsignQso) {
+          this.$set(qso, 'email', sameCallsignQso.email)
+          this.$set(qso, 'correspondentError', sameCallsignQso.correspondentError)
+        } else {
           getCorrespondentEmail(qso.correspondent)
             .then((data) => {
-              qso.email = data.email
-              if (!data.email)
-                qso.correspondentError = data.reason
+              this.$set(qso, 'email', data.email)
+              this.$set(qso, 'correspondentError', data.email ? null : CORRESPONDENT_ERRORS[data.reason])
             })
         }
       }

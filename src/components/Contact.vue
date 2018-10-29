@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import debounce from '../debounce'
+import {debounce} from '../utils'
 
 import storeEmail from '../store-email'
 import {contactSupport} from '../api'
