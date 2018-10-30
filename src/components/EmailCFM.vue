@@ -95,16 +95,15 @@
             <tr>
                 <td colspan="10" class="send_btn">
                     <input type="button" name="send_btn" id="send_btn" 
-                        value="Отправить запрос на подтверждение QSO - 
-                            Send CFM QSO request"
-                        class="btn" :disabled="pending || !validated" 
+                        value="Отправить запрос на подтверждение QSO - Send CFM QSO request"
+                        class="btn" :disabled="pending" 
                         @click="sendClick()">
                 </td>
             </tr>
                 
         </table>
        
-        <div v-if="response" id="message" :class="{succes: success}" v-html="response"></div>
+        <div v-if="response" id="message" :class="{success: success}" v-html="response"></div>
     </div>
 </template>
 
@@ -122,6 +121,7 @@ import RdaInput from './RDAinput'
 import {orderedBands, MODES, stripCallsign} from '../ham-radio'
 import storeEmail from '../store-email'
 import {cfmRequestQso, getCorrespondentEmail} from '../api'
+import {isEmpty} from '../utils'
 
 const CORRESPONDENT_ERRORS = {
   blacklist: {
@@ -163,30 +163,51 @@ export default {
   computed: {
     ...mapGetters(['userToken']),
   },
+  watch: {
+    userToken: function (newVal) {
+      this.request.token = newVal
+      if (!newVal) {
+        this.request.recaptcha = null
+        this.request.email = storeEmail.load()
+      }
+    }
+  },
   mounted () {
     this.validate()
   },
   methods: {
     sendClick () {
-      this.pending = true
-      if (this.request.email) {
-        storeEmail.save(this.request.email)
-      }
+      if (this.request.qso.length > 1)
+        this.request.qso = this.request.qso.filter((item) => {
+          return !isEmpty(item)
+        })
+
+      this.$nextTick(() => {
+
+        if (this.validated) {
       
-      cfmRequestQso(this.request)
-        .then(() => {
-          this.response = "Ваш запрос будет отправлен корреспондентам в течение суток.<br/>" + 
-              "Your request will be sent to correspondents in 24 hours."
-          this.request.qso = []
-          this.success = true
-        })
-        .catch((e) => {
-          this.requestError = e.message
-          this.success = false
-        })
-        .finally(() => {
-          this.pending = false
-        })
+          this.pending = true
+          if (this.request.email) {
+            storeEmail.save(this.request.email)
+          }
+      
+          cfmRequestQso(this.request)
+            .then(() => {
+              this.response = "Ваш запрос будет отправлен корреспондентам в течение суток.<br/>" + 
+                "Your request will be sent to correspondents in 24 hours."
+              this.request.qso = [{}]
+              this.success = true
+            })
+            .catch((e) => {
+              this.requestError = e.message
+              this.success = false
+            })
+            .finally(() => {
+              this.pending = false
+            })
+        } else if (this.request.qso.length === 0)
+          this.request.qso = [{}]
+      })
     },
     deleteQso (idx) {
       if (confirm("Удалить строку? Do you really want to delete the line?"))

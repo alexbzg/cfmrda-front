@@ -59,7 +59,7 @@ a#logout_link{
 }
 
 #message{
-	width: 500px;
+	width: 600px;
     margin: 0px auto 100px auto;
     padding: 10px;
     text-align: center;
@@ -67,10 +67,10 @@ a#logout_link{
     color: #fff;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Параметры тени */
     border: 1px solid #f7fb1e;
+    line-height: 2em;
 }
 #message.success{
     background-color: #089D0B;
-    border-color: #eee;
 }
 
 

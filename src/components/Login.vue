@@ -13,8 +13,7 @@
             <template v-if="mode !== 'passwordChange'">
                 <b>Позывной</b><br/>
                 <input type="text" name="callsign_input" id="callsign_input" v-model.trim="login.callsign" 
-                    :class="{error: validationErrors.callsign}"
-                    @input="capitalize(login, 'callsign')"/>
+                    :class="{error: validationErrors.callsign}" v-capitalize/>
                 <br/>
             </template>
 
@@ -66,13 +65,12 @@ import {debounce} from '../utils'
 import {login as api_login} from '../api'
 import validationMixin from '../validation-mixin'
 import recaptchaMixin from '../recaptcha-mixin'
-import capitalizeMixin from '../capitalize-mixin'
 
 import {SET_USER_MUTATION} from '../store'
 
 export default {
   name: 'login',
-  mixins: [validationMixin, recaptchaMixin, capitalizeMixin],
+  mixins: [validationMixin, recaptchaMixin],
   data () {
     const token = this.$route.query.token
     return {

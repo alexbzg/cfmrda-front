@@ -165,7 +165,6 @@
 import {getRankings, getHunterDetails, getRecentUploads, getMscData} from '../api'
 import storage from '../storage'
 
-import capitalizeMixin from '../capitalize-mixin'
 import rankDataMixin from '../rank-data-mixin'
 import replaceZerosMixin from '../replace-zeros-mixin'
 
@@ -183,7 +182,7 @@ import rdaShort from '../rdaShort.json'
 export default {
   BANDS: orderedBands(),
   name: 'Index',
-  mixins: [capitalizeMixin, rankDataMixin, replaceZerosMixin],
+  mixins: [rankDataMixin, replaceZerosMixin],
   components: {RankTable, Selector, ViewUploadLink},
   data () {
     getRankings() 
@@ -274,7 +273,7 @@ export default {
       if ((csMatch = reStripCallsign.exec(this.callsign)) !== null) {
         this.callsign = csMatch[0]
         reStripCallsign.lastIndex = 0
-        this.capitalize(this, 'callsign')
+        this.callsign = this.callsign.toUpperCase()
         this.setCallsignValid()
       }
     }

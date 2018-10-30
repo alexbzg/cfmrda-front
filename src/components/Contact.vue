@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 import {debounce} from '../utils'
 
 import storeEmail from '../store-email'
@@ -37,7 +39,7 @@ export default {
     const msg = { 
       text: null
     }
-    const token = this.$store.getters.userToken
+    const token = this.userToken
     if (token) {
       msg.token = token
     } else {
@@ -55,7 +57,19 @@ export default {
   mounted () {
     this.validate()
   },
-  methods: {
+  computed: {
+    ...mapGetters(['userToken']),
+  },
+  watch: {
+    userToken: function (newVal) {
+      this.msg.token = newVal
+      if (!newVal) {
+        this.msg.recaptcha = null
+        this.msg.email = storeEmail.load()
+      }
+    }
+  },
+ methods: {
 
     sendClick: debounce(function () {
       this.send()

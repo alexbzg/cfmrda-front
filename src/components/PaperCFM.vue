@@ -103,7 +103,6 @@ import {mapGetters} from 'vuex'
 import Datepicker from 'vuejs-datepicker'
 
 import validationMixin from '../validation-mixin'
-import capitalizeMixin from '../capitalize-mixin'
 import recaptchaMixin from '../recaptcha-mixin'
 
 import {orderedBands, MODES} from '../ham-radio'
@@ -113,7 +112,7 @@ import {cfmRequestQso} from '../api'
 export default {
   BANDS: orderedBands(),
   MODES: MODES,
-  mixins: [validationMixin, recaptchaMixin, capitalizeMixin],
+  mixins: [validationMixin, recaptchaMixin],
   components: {Datepicker},
   name: 'PaperCFM',
   data () {
