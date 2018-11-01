@@ -1071,10 +1071,14 @@ table#cfm_qso td.no_border{
 table#cfm_qso td.rda_callsign, table#cfm_qso td.my_callsign{
 	font-weight: bold;
 }
-table#cfm_qso tr.cfm_checked, table#cfm_qso tr.cfm_checked td.cfm{
+table#cfm_qso td.cfm, table#cfm_qso td.reject{
+	background-color: #ffffca;
+	width: 80px;
+}
+table#cfm_qso tr.cfm_checked, table#cfm_qso tr.cfm_checked td.cfm, table#cfm_qso tr.cfm_checked td.reject{
 	background-color: #a7ffad;
 }
-table#cfm_qso td.cfm{
+table#cfm_qso tr.cfm_reject, table#cfm_qso tr.cfm_reject td.cfm, table#cfm_qso tr.cfm_reject td.reject{
 	background-color: #fbd0d0;
 }
 table#cfm_qso td.cfm_btn{

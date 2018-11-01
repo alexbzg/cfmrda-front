@@ -18,12 +18,12 @@
         <tr>
             <td class="no_border"></td>
             <td class="menu" :class="{selected: band === 'total'}" 
-                @click="select('band', 'total')">All RDA</td>            
+                @click="select('band', 'total')">RDA</td>            
             <td class="menu" v-for="(_band, index) in $options.BANDS" :key="index" 
                 :class="{selected: _band === band}" 
                 @click="select('band',_band)">{{_band}}</td>
             <td class="menu" :class="{selected: band === 'bandsSum'}" 
-                @click="select('band', 'bandsSum')">All bands</td>   
+                @click="select('band', 'bandsSum')">RDA Challenge</td>   
         </tr>
     </tbody>
 </template>

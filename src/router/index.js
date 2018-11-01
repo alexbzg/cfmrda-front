@@ -15,6 +15,8 @@ const ManageUploads = () => import(/* webpackChunkName: "uploader" */ './../comp
 const NewUpload = () => import(/* webpackChunkName: "uploader" */ './../components/NewUpload.vue')
 const Uploads = () => import(/* webpackChunkName: "uploader" */ './../components/Uploads.vue')
 
+const CfmQso = () => import(/* webpackChunkName: "cfm_qso" */ './../components/CfmQso.vue')
+
 const router = new Router({
   routes: [
     { path: '/',
@@ -35,6 +37,10 @@ const router = new Router({
           component: EmailCFM
         }
       ]
+    },
+    { path: '/cfm_qso',
+      name: 'CfmQso',
+      component: CfmQso
     },
     {
       path: '/uploads',

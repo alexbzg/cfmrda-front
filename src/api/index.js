@@ -67,6 +67,10 @@ export function login (data) {
   return dataPost('login', data)
 }
 
+export function cfmQso (data) {
+  return dataPost('cfm_qso', data)
+}
+
 export function contactSupport (data) {
   return dataPost('contact_support', data)
 }
