@@ -23,7 +23,9 @@
             </td>
             <td class="qsos">{{upload.qsoCount}}</td>
             <td class="period">{{upload.dateStart}} - {{upload.dateEnd}}</td>
-            <td class="uploader" v-if="admin">{{replace0(upload.uploader)}}</td>
+            <td class="uploader" v-if="admin">{{replace0(upload.uploader)}}
+                <span v-if="upload.uploadType !== 'adif'">({{upload.uploadType}})</span>
+            </td>
             <td class="upload_date">{{upload.uploadDate}}</td>
             <td class="del">
                 <img src="images/icon_delete.png" title="Удалить этот файл" @click="deleteUpload(upload)">

@@ -7,7 +7,7 @@
                 <td class="btn_space"></td>
                 <td>
                     <input type="text" name="check_call_input" id="check_call_input" 
-                        v-model="callsign" @change="callsignChange()">
+                        v-capitalize v-model="callsign" @change="callsignChange()">
                 </td>
                 <td class="btn_space">
                     <input type="button" name="check_call_btn" value="OK" class="btn"
@@ -93,7 +93,9 @@
                                             {{item.stationCallsign}}
                                         </view-upload-link>
                                     </td>
-                                    <td class="uploader">{{item.uploader}}</td>
+                                    <td class="uploader">{{item.uploader}}
+                                        <span v-if="item.uploadType !== 'adif'">({{item.uploadType}})</span>
+                                    </td>
                                 </tr>
                             </table>
 
@@ -115,7 +117,10 @@
                                             {{item.count}}
                                         </view-upload-link>
                                     </td>
-                                    <td class="uploader">{{item.uploader}}</td>
+                                    <td class="uploader">
+                                        {{item.uploader}}
+                                        <span v-if="item.uploadType !== 'adif'">({{item.uploadType}})</span>
+                                    </td>
                                 </tr>
                             </table>
                         </td>
@@ -152,8 +157,13 @@
                         {{replace0(activator)}}
                     </span>
                 </td>
-                <td class="uploader">{{replace0(item.uploader)}}</td>
-                <td class="uploaded">{{item.uploadDate}} <span>{{item.uploadTime}}</span></td>
+                <td class="uploader">
+                    {{replace0(item.uploader)}}
+                    <span v-if="item.uploadType !== 'adif'">({{item.uploadType}})</span>
+                </td>
+                <td class="uploaded">{{item.uploadDate}} 
+                    <span>{{item.uploadTime}}</span>
+                </td>
             </tr>
         </table>
     </div>

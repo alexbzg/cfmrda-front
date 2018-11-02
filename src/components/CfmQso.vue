@@ -46,8 +46,16 @@ import {cfmQso} from '../api'
 export default {
   name: 'CfmQso',
   data () {
-    const token = this.$route.query.token
-    cfmQso({token: token})
+    return {
+      qso: [],
+      token: this.$route.query.token,
+      pending: false,
+      success: false,
+      response: null
+    }
+  },
+  mounted () {
+    cfmQso({token: this.token})
       .then((data) => {
         for (const qso of data) {
           qso.cfm = false
@@ -55,13 +63,6 @@ export default {
         }
         this.qso = data
       })
-    return {
-      qso: [],
-      token: token,
-      pending: false,
-      success: false,
-      response: null
-    }
   },
   methods: {
     submitClick () {
