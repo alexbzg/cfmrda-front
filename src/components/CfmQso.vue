@@ -38,6 +38,7 @@
                 </td>
             </tr>
         </table>
+        <div v-if="response" id="message" :class="{success: success}" v-html="response"></div>
     </div>
 </template>
 <script>
@@ -95,7 +96,7 @@ export default {
           })
           .catch((e) => {
             this.success = false
-            this.response = e
+            this.response = e.message
           })
           .finally(() => {
             this.pending = false

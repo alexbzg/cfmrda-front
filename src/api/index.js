@@ -71,6 +71,10 @@ export function cfmQso (data) {
   return dataPost('cfm_qso', data)
 }
 
+export function cfmBlacklist (token) {
+  return dataPost('cfm_blacklist', {token: token})
+}
+
 export function contactSupport (data) {
   return dataPost('contact_support', data)
 }

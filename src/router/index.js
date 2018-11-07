@@ -7,15 +7,16 @@ import Login from './../components/Login'
 import Index from './../components/Index'
 import Contact from './../components/Contact'
 import Faq from './../components/Faq'
-import CFM from './../components/CFM'
-import EmailCFM from './../components/EmailCFM'
-import PaperCFM from './../components/PaperCFM'
+
+const CFM = () => import(/* webpackChunkName: "cfm" */ './../components/CFM.vue')
+const EmailCFM = () => import(/* webpackChunkName: "cfm" */ './../components/EmailCFM.vue')
 
 const ManageUploads = () => import(/* webpackChunkName: "uploader" */ './../components/ManageUploads.vue')
 const NewUpload = () => import(/* webpackChunkName: "uploader" */ './../components/NewUpload.vue')
 const Uploads = () => import(/* webpackChunkName: "uploader" */ './../components/Uploads.vue')
 
 const CfmQso = () => import(/* webpackChunkName: "cfm_qso" */ './../components/CfmQso.vue')
+const CfmBlacklist = () => import(/* webpackChunkName: "cfm_blacklist" */ './../components/CfmBlacklist.vue')
 
 const router = new Router({
   routes: [
@@ -26,11 +27,11 @@ const router = new Router({
     { path: '/cfm',
       component: CFM,
       children: [
-        {
+        /*{
           path: 'paper',
           name: 'PaperCFM',
           component: PaperCFM
-        },
+        },*/
         {
           path: '',
           name: 'EmailCFM',
@@ -41,6 +42,10 @@ const router = new Router({
     { path: '/cfm_qso',
       name: 'CfmQso',
       component: CfmQso
+    },
+    { path: '/cfm_blacklist',
+      name: 'CfmBlacklist',
+      component: CfmBlacklist
     },
     {
       path: '/uploads',
