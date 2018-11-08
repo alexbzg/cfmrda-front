@@ -635,11 +635,13 @@ table#stat1rda_hunter td.uploader input, table#stat1rda_activator td.uploader in
 	float: right;
 	margin: 7px 3px 0 0;
 }
+table#stat1rda_hunter td.date, table#stat1rda_activator td.date{
+	padding: 7px 30px;
+}
 
 
 
 table#stat1rda_activator{
-	width: 400px;
 	margin: 20px auto;
 	border-collapse: collapse;
 	box-shadow: 3px 3px 6px rgba(0,0,0,0.2);

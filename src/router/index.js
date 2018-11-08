@@ -6,7 +6,7 @@ Vue.use(Router)
 import Login from './../components/Login'
 import Index from './../components/Index'
 import Contact from './../components/Contact'
-import Faq from './../components/Faq'
+import StaticPage from './../components/StaticPage'
 
 const CFM = () => import(/* webpackChunkName: "cfm" */ './../components/CFM.vue')
 const EmailCFM = () => import(/* webpackChunkName: "cfm" */ './../components/EmailCFM.vue')
@@ -69,9 +69,9 @@ const router = new Router({
       component: Contact
     },
     {
-      path: '/faq',
-      name: 'Faq',
-      component: Faq
+      path: '/static/:page',
+      name: 'StaticPage',
+      component: StaticPage
     },
     {
       path: '/login',

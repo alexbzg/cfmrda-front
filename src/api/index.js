@@ -97,6 +97,13 @@ export function getRankings () {
     })
 }
 
+export function getHTML (page) {
+  return get('/html/' + page + '.html')
+    .then((response) => {
+      return response.data
+    })
+}
+
 export function getRecentUploads () {
   return get('/json/recent_uploads.json')
     .then(response => {
