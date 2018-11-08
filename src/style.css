@@ -41,19 +41,25 @@ input, button, textarea, select{
 	color: #900;
 	font-style: italic;
 }
+.grey_note{
+	color: #999;
+	font-size: 14px;
+}
 h4{
 	text-align: center;
 	font-size: 24px;
 	margin: 10px 0 20px 0;
 }
-
+p{
+		text-indent: 2em;
+}
 a#logout_link{
 	text-decoration: underline;
 	cursor: pointer;
 }
 
 #message{
-	width: 500px;
+	width: 600px;
     margin: 0px auto 100px auto;
     padding: 10px;
     text-align: center;
@@ -61,10 +67,10 @@ a#logout_link{
     color: #fff;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Параметры тени */
     border: 1px solid #f7fb1e;
+    line-height: 2em;
 }
 #message.success{
     background-color: #089D0B;
-    border-color: #eee;
 }
 
 
@@ -108,7 +114,7 @@ a#logout_link{
 .list{
 	width: 1200px;
 	margin: 10px auto 50px auto;
-	padding: 20px;
+	padding: 15px 20px 20px 20px;
 	background-color: #fff;
 	box-shadow: 3px 3px 6px rgba(0,0,0,0.3); /* Параметры тени */
 	text-align: center;
@@ -121,6 +127,23 @@ a#logout_link{
 }
 
 
+#list_menu{
+	margin-bottom: 0px;
+	padding: 0px 0px 15px 0px;
+	border-bottom: 2px solid #dfedfd;
+}
+#list_menu span{
+	font-weight: bold;
+	color: #009;
+	cursor: pointer;
+	padding: 0 20px;
+	text-decoration: underline;
+}
+#list_menu a{
+	font-weight: bold;
+	color: #009;
+	padding: 0 20px;
+}
 
 
 
@@ -557,13 +580,12 @@ table#rda_table .partial{
 
 
 table#stat1rda_hunter{
-	width: 600px;
 	margin: 20px auto;
 	border-collapse: collapse;
 	box-shadow: 3px 3px 6px rgba(0,0,0,0.2);
 }
 table#stat1rda_hunter td, table#stat1rda_activator td{
-	padding: 5px 10px;
+	padding: 7px 20px;
 	text-align: center;
 	font-size: 16px;
 	color: #000;
@@ -592,16 +614,26 @@ table#stat1rda_hunter td.call a, table#stat1rda_activator td.call a{
 	color: #009;
 }
 table#stat1rda_hunter td.call.top, table#stat1rda_activator td.call.top{
+	width: 150px;
 	font-weight: bold;
 	color: #000;
 	cursor: default;
 	text-decoration: none;
 }
 table#stat1rda_hunter td.uploader, table#stat1rda_activator td.uploader{
-	width: 80px;
-	font-size: 12px;
+	width: 200px;
 	padding: 0;
 	vertical-align: middle;
+	font-weight: bold;
+	color: #555;
+}
+table#stat1rda_hunter td.uploader span, table#stat1rda_activator td.uploader span{
+	font-size: 12px;
+	font-weight: normal;
+}
+table#stat1rda_hunter td.uploader input, table#stat1rda_activator td.uploader input{
+	float: right;
+	margin: 7px 3px 0 0;
 }
 
 
@@ -755,10 +787,10 @@ table#last_uploads td.menu{
 
 
 
-/*                            =============    A D M I N   ================             */
+/*                            =============    U P L O A D S  ================             */
 
 table#admin{
-	margin: 20px auto;
+	margin: 0px auto 20px auto;
  	border-collapse: collapse;
 }
 table#admin td{
@@ -933,17 +965,21 @@ table#rda_log td.call{
 
 
 
+/* ==========================================     C F M   Q S O   R E Q U E S T   ====================================================== */
+
+
+
 
 table#cfm_qso_request{
 	margin: 30px auto 50px auto;
  	border-collapse: collapse;
 }
 table#cfm_qso_request td{
-	padding: 7px 10px;
+	padding: 7px 7px;
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
-	vertical-align: middle;
+	vertical-align: top;
 }
 table#cfm_qso_request td.menu{
 	font-weight: bold;	
@@ -960,11 +996,35 @@ table#cfm_qso_request td.rda_callsign_note{
 	vertical-align: top;
 	border: none;
 }
-table#cfm_qso_request td.time input, table#cfm_qso_request td.band input, table#cfm_qso_request td.mode input, table#cfm_qso_request td.rda input{
-	width: 80px;
+
+table#cfm_qso_request td.rda_callsign{
+	width: 160px;
 }
-table#cfm_qso_request td.dx_rst input, table#cfm_qso_request td.my_rst input{
+table#cfm_qso_request td.rda_callsign input{
+	width: 150px;
+	font-weight: bold;
+}
+table#cfm_qso_request td.rda_callsign img{
+
+}
+
+table#cfm_qso_request td.email{
+	padding: 0;
+}
+table#cfm_qso_request td.email input{
+	width: 300px;
+	text-align: center;
+	font-weight: bold;
+}
+table#cfm_qso_request td.time input, table#cfm_qso_request td.rda input{
+	width: 60px;
+}
+table#cfm_qso_request td.rda_rst input, table#cfm_qso_request td.my_rst input{
 	width: 50px;
+}
+table#cfm_qso_request td.my_callsign input{
+	width: 150px;
+	font-weight: bold;
 }
 table#cfm_qso_request td.add_line{
 	border: none;
@@ -975,11 +1035,375 @@ table#cfm_qso_request td.add_line{
 	text-decoration: underline;
 	cursor: pointer;
 }
+table#cfm_qso_request td.del{
+	cursor: pointer;
+}
 table#cfm_qso_request td.send_btn{
 	border: none;
 	height: 50px;
 	vertical-align: bottom;
 }
+
+
+
+
+
+/* ==========================================     C F M   Q S O   ====================================================== */
+
+table#cfm_qso{
+	margin: 30px auto 100px auto;
+ 	border-collapse: collapse;
+}
+table#cfm_qso td{
+	padding: 10px 15px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+	vertical-align: middle;
+}
+table#cfm_qso td.menu{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+table#cfm_qso td.no_border{
+	border: none;
+}
+table#cfm_qso td.rda_callsign, table#cfm_qso td.my_callsign{
+	font-weight: bold;
+}
+table#cfm_qso td.cfm, table#cfm_qso td.reject{
+	background-color: #ffffca;
+	width: 80px;
+}
+table#cfm_qso tr.cfm_checked, table#cfm_qso tr.cfm_checked td.cfm, table#cfm_qso tr.cfm_checked td.reject{
+	background-color: #a7ffad;
+}
+table#cfm_qso tr.cfm_reject, table#cfm_qso tr.cfm_reject td.cfm, table#cfm_qso tr.cfm_reject td.reject{
+	background-color: #fbd0d0;
+}
+table#cfm_qso td.cfm_btn{
+	border: none;
+	height: 70px;
+	vertical-align: bottom;
+}
+table#cfm_qso td.cfm_btn input{
+	padding: 3px 50px;
+}
+
+
+
+
+
+
+/* ==========================================     P A P E R   Q S L   ====================================================== */
+
+#paper_qsl{
+	width: 90%;
+	margin: 50px auto 100px auto;
+	text-align: left;
+}
+
+
+table#add_paper_qsl{
+	margin: 30px auto 100px auto;
+ 	border-collapse: collapse;
+}
+table#add_paper_qsl td{
+	padding: 10px 5px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+	vertical-align: middle;
+}
+table#add_paper_qsl td.top{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+table#add_paper_qsl td.no_border{
+	border: none;
+}
+table#add_paper_qsl td.qsl_callsign, table#add_paper_qsl td.qsl_my_call, table#add_paper_qsl td.qsl_my_new_call{
+	font-weight: bold;
+}
+table#add_paper_qsl td.qsl_time input, table#add_paper_qsl td.qsl_rda input{
+	width: 60px;
+}
+table#add_paper_qsl td.qsl_rst input{
+	width: 50px;
+}
+table#add_paper_qsl td.qsl_callsign input{
+	width: 150px;
+	font-weight: bold;
+}
+table#add_paper_qsl td.qsl_my_call input, table#add_paper_qsl td.qsl_my_new_call input{
+	width: 120px;
+	font-weight: bold;
+}
+table#add_paper_qsl td.del img{
+	cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+/* ==========================================     A W A R D S  ====================================================== */
+
+
+#awards{
+	text-align: left;
+	text-indent: 2px;
+	line-height: 2em;
+}
+#awards_rules, #application{
+	margin: 50px auto 100px auto;
+	width: 80%;
+}
+#issued_awards{
+	margin: 50px auto 100px auto;
+	width: 90%;
+	text-align: center;
+}
+
+#issued_awards select{
+	display: block;
+	width: 300px;
+	padding: 10px;
+	margin: 0 auto;
+	font-weight: bold;
+	font-size: 24px;
+	text-align: center;
+}
+#issued_awards option{
+	font-weight: bold;
+	font-size: 18px;
+	text-align: center;
+}
+
+table.issued{
+	display: inline-block;
+	margin: 30px 20px 100px 0;
+ 	border-collapse: collapse;
+}
+table.issued td{
+	padding: 5px 12px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+	vertical-align: middle;
+}
+table.issued td.top{
+	font-weight: bold;	
+	font-size: 18px;
+	padding: 3px 0px;
+	background-color: #e7f2ff;
+}
+table.issued td.num, table.issued td.callsign{
+	font-weight: bold;	
+}
+table.issued td.date{
+	font-size: 12px;
+	color: #777;
+}
+table.issued td.more{
+	border: none;
+	vertical-align: top;
+	cursor: pointer;
+	color: #009;
+	text-decoration: underline;
+}
+
+
+
+
+
+/* ==========================================     З А Я В К А   Н А   Д И П Л О М  ====================================================== */
+
+#app_form{
+	text-align: center;
+}
+#app_form input, #app_form select{
+	text-align: center;
+	font-weight: bold;
+}
+#app_form input{
+	margin-bottom: 20px;
+}
+#app_form input#app_name, #app_form input#app_callsign, #app_form input#app_email, #app_form input#app_post_addr{
+	width: 550px;
+	text-align: left;
+	padding-left: 10px;
+}
+#app_form span{
+	width: 250px;
+	display: inline-block;
+	margin-right: 20px;
+	text-align: right;
+	font-weight: bold;
+	color: #555;
+}
+#app_form h4{
+	margin: 50px 0 10px 0;
+}
+table#application_table{
+	margin: 0 auto;
+ 	border-collapse: collapse;
+}
+table#application_table td{
+	padding: 5px 15px;
+	text-align: center;
+	color: #333;
+	border: none;
+}
+table#application_table td.award_select select{
+	width: 150px;
+}
+table#application_table td.award_title select{
+	width: 300px;
+}
+#add_line{
+	color: #009;
+	text-decoration: underline;
+	cursor: pointer;
+	padding: 10px 0 30px 0;
+}
+#app_form  span.all_ok{
+	text-align: center;
+	color: #900;
+	font-weight: bold;
+}
+
+
+
+/*    ====================================        С Т А Т У С  ==========================================       */
+
+
+table.status{
+	margin: 0 auto;
+ 	border-collapse: collapse;
+}
+table.status td{
+	padding: 10px 20px;
+	color: #333;
+	border: 1px solid #dfedfd;
+	vertical-align: top;
+}
+table.status td.status_text{
+	color: #900;
+	font-weight: bold;
+	background-color: #ffffca;
+}
+table.status td.app_text, table.status td.status_text{
+	text-align: left;
+	font-weight: bold;
+}
+table.status td.app_text.top, table.status td.status_text.top{
+	text-align: center;
+	background-color: #e7f2ff;
+	font-weight: bold;
+	color: #333;
+}
+table.status span{
+	display: block;
+	margin: 0 auto;
+}
+table.status td.date.top{
+	font-weight: bold;
+	background-color: #e7f2ff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================     З А Я В К И  ====================================================== */
+
+
+#awards_admin{
+	margin: 50px auto 100px auto;
+}
+table.requests_list{
+	margin: 0px auto;
+ 	border-collapse: collapse;
+}
+table.requests_list td{
+	padding: 5px 20px;
+	color: #333;
+	border: 1px solid #dfedfd;
+	vertical-align: middle;
+}
+table.requests_list td.top{
+	font-weight: bold;
+	background-color: #e7f2ff;
+}
+table.requests_list td.request_call, table.requests_list td.del img{
+	font-weight: bold;	
+	color: #009;
+	text-decoration: underline;
+	cursor: pointer;
+}
+table.requests_list span{
+	display: block;
+	margin: 5px;
+}
+table.requests_list td.request_status select{
+	width: 300px;
+	margin-bottom: 5px;
+}
+
+table.requests_list td.request_status textarea{
+	width: 300px;
+	text-align: left;
+}
+
+
+
+
+table#paper_qsl_list{
+	margin: 30px auto 100px auto;
+ 	border-collapse: collapse;
+}
+table#paper_qsl_list td{
+	padding: 10px 15px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+	vertical-align: middle;
+}
+table#paper_qsl_list td.top{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+table#paper_qsl_list td.qsl_callsign, table#paper_qsl_list td.qsl_my_call, table#paper_qsl_list td.qsl_my_new_call{
+	font-weight: bold;
+}
+table#paper_qsl_list td.qsl_photo{
+	text-decoration: underline;
+	color: #009;
+	cursor: pointer;
+}
+table#paper_qsl_list td.checked{
+	background-color: #fbd0d0;
+}
+
+
+
+
+
 
 
 

@@ -7,6 +7,9 @@ import store from './store'
 
 import router from './router'
 
+import capitalizeDirective from './capitalize-directive'
+capitalizeDirective()
+
 new Vue({
   store: store,
   router: router,

@@ -22,15 +22,15 @@
 </template>
 
 <script>
-import debounce from '../debounce'
+import {mapGetters} from 'vuex'
 
-import storage from '../storage'
+import {debounce} from '../utils'
+
+import storeEmail from '../store-email'
 import {contactSupport} from '../api'
 
 import validationMixin from '../validation-mixin'
 import recaptchaMixin from '../recaptcha-mixin'
-
-const STORAGE_KEY_EMAIL = 'contact_email'
 
 export default {
   mixins: [validationMixin, recaptchaMixin],
@@ -39,12 +39,12 @@ export default {
     const msg = { 
       text: null
     }
-    const token = this.$store.getters.userToken
+    const token = this.userToken
     if (token) {
       msg.token = token
     } else {
       msg.recaptcha = null
-      msg.email = storage.load(STORAGE_KEY_EMAIL)
+      msg.email = storeEmail.load()
     }
     return { 
       msg: msg,
@@ -57,7 +57,19 @@ export default {
   mounted () {
     this.validate()
   },
-  methods: {
+  computed: {
+    ...mapGetters(['userToken']),
+  },
+  watch: {
+    userToken: function (newVal) {
+      this.msg.token = newVal
+      if (!newVal) {
+        this.msg.recaptcha = null
+        this.msg.email = storeEmail.load()
+      }
+    }
+  },
+ methods: {
 
     sendClick: debounce(function () {
       this.send()
@@ -66,7 +78,7 @@ export default {
     send () {
 
       if (this.msg.email) {
-        storage.save(STORAGE_KEY_EMAIL, this.msg.email, 'local')
+        storeEmail.save(this.msg.email)
       }
       this.pending = true
       

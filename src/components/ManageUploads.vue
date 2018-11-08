@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div>
     <table id="admin" v-show="!pending">
         <tr>
             <td class="menu allow" v-if="admin">Допущено</td>
@@ -50,7 +50,7 @@
     </table>
 
     <div id="wait" v-show="pending">
-      База данных обновляется. Подождите...<br/>
+      PSE QRX. База данных обновляется...<br/>
       <img src="images/spinner.gif">
     </div>
 
@@ -66,12 +66,11 @@ import {GET_UPLOADS_ACTION} from '../store'
 import Datepicker from 'vuejs-datepicker'
 import UploadsTable from './UploadsTable'
 
-import CapitalizeMixin from '../capitalize-mixin'
 import ValidationMixin from '../validation-mixin'
 
 export default {
   name: 'ManageUploads',
-  mixins: [CapitalizeMixin, ValidationMixin],
+  mixins: [ValidationMixin],
   components: {Datepicker, UploadsTable},
   data () {
     this.$store.dispatch(GET_UPLOADS_ACTION)
@@ -125,8 +124,9 @@ export default {
         return false
     },
     searchFieldChange (field) {
-      this.capitalize(this.search, field)
-      if (this.search[field] !== null && !this.search[field].length)
+      if (this.search[field] !== null)
+        this.search[field] = this.search[field].toUpperCase()
+      if (this.search[field] !== null && !this.search[field].length) 
         this.search[field] = null
       else if (field === 'rda') {
         if (this.search.rda && this.search.rda.length > 3 && !rdaValues.includes(this.search.rda)) {

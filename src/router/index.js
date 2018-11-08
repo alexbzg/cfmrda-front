@@ -7,27 +7,66 @@ import Login from './../components/Login'
 import Index from './../components/Index'
 import Contact from './../components/Contact'
 import Faq from './../components/Faq'
+
+const CFM = () => import(/* webpackChunkName: "cfm" */ './../components/CFM.vue')
+const EmailCFM = () => import(/* webpackChunkName: "cfm" */ './../components/EmailCFM.vue')
+
 const ManageUploads = () => import(/* webpackChunkName: "uploader" */ './../components/ManageUploads.vue')
-const Upload = () => import(/* webpackChunkName: "uploader" */ './../components/Upload.vue')
+const NewUpload = () => import(/* webpackChunkName: "uploader" */ './../components/NewUpload.vue')
+const Uploads = () => import(/* webpackChunkName: "uploader" */ './../components/Uploads.vue')
+
+const CfmQso = () => import(/* webpackChunkName: "cfm_qso" */ './../components/CfmQso.vue')
+const CfmBlacklist = () => import(/* webpackChunkName: "cfm_blacklist" */ './../components/CfmBlacklist.vue')
 
 const router = new Router({
   routes: [
     { path: '/',
       name: 'Index',
-      component: Index,
-      props: true
+      component: Index
+    },
+    { path: '/cfm',
+      component: CFM,
+      children: [
+        /*{
+          path: 'paper',
+          name: 'PaperCFM',
+          component: PaperCFM
+        },*/
+        {
+          path: '',
+          name: 'EmailCFM',
+          component: EmailCFM
+        }
+      ]
+    },
+    { path: '/cfm_qso',
+      name: 'CfmQso',
+      component: CfmQso
+    },
+    { path: '/cfm_blacklist',
+      name: 'CfmBlacklist',
+      component: CfmBlacklist
     },
     {
-      path: '/upload',
-      name: 'Upload',
-      component: Upload,
-      props: true
+      path: '/uploads',
+      component: Uploads,
+      children: [
+        {
+          path: 'manage',
+          name: 'ManageUploads',
+          component: ManageUploads
+        },
+        {
+          path: '',
+          name: 'NewUpload',
+          component: NewUpload
+        }
+      ]
     },
     {
       path: '/contact',
       name: 'Contact',
-      component: Contact,
-      props: true
+      component: Contact
     },
     {
       path: '/faq',
@@ -35,15 +74,9 @@ const router = new Router({
       component: Faq
     },
     {
-      path: '/manageUploads',
-      name: 'ManageUploads',
-      component: ManageUploads
-    },
-    {
       path: '/login',
       name: 'Login',
-      component: Login,
-      props: true
+      component: Login
     }
   ]
 })

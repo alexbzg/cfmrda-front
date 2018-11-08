@@ -55,12 +55,24 @@ export function manageUploads (data) {
   return dataPost('manage_uploads', data)
 }
 
+export function cfmRequestQso (data) {
+  return dataPost('cfm_request_qso', data)
+}
+
 export function getUploads (token) {
   return dataPost('user_uploads', {'token': token})
 }
 
 export function login (data) {
   return dataPost('login', data)
+}
+
+export function cfmQso (data) {
+  return dataPost('cfm_qso', data)
+}
+
+export function cfmBlacklist (token) {
+  return dataPost('cfm_blacklist', {token: token})
 }
 
 export function contactSupport (data) {
@@ -109,6 +121,13 @@ export function getFullRDA () {
 
 export function getHunterDetails (callsign) {
   return get(API_URL + 'hunter/' + callsign)
+    .then(response => {
+      return response.data
+    })
+}
+
+export function getCorrespondentEmail (callsign) {
+  return get(API_URL + 'correspondent_email/' + callsign)
     .then(response => {
       return response.data
     })

@@ -1,5 +1,4 @@
 <template>
-    <div class="list list_small">
       <div id="upload">
         <div id="upload_rules" @click="showInfo = !showInfo">Правила загрузки ADI файлов</div>
             <ul id="upload_info" v-if="showInfo">
@@ -20,8 +19,7 @@
           <br/>
           Позывной RDA активатора
           <input type="text" name="callsign_input" id="callsign_input" 
-                v-model.trim="adif.stationCallsign" 
-                @input="capitalize(adif, 'stationCallsign')" 
+                v-model.trim="adif.stationCallsign" v-capitalize
                 :class="{error: !adif.stationCallsignFieldEnable && validationErrors.stationCallsign}"
                 :disabled="adif.stationCallsignFieldEnable"/><br/>
           <span id="activator_check">
@@ -29,8 +27,7 @@
                 @change="stationCallsignTypeChange"/> 
               Брать <i>позывной</i> активатора в ADI файле из поля
               <input type="text" name="callsign_field" id="callsign_field" 
-                v-model="adif.stationCallsignField"
-                @input="capitalize(adif, 'stationCallsignField')"
+                v-model="adif.stationCallsignField" v-capitalize
                 :class="{error: adif.stationCallsignFieldEnable && validationErrors.stationCallsignField}"
                 :disabled="!adif.stationCallsignFieldEnable"/>
           </span><br/>
@@ -39,8 +36,7 @@
               Брать <i>RDA</i> активатора в ADI файле из поля
               <input type="text" name="rda_field" id="rda_field" v-model="adif.rdaField"
                 :class="{error: adif.rdaFieldEnable && validationErrors.rdaField}"
-                @input="capitalize(adif, 'rdaField')"
-                :disabled="!adif.rdaFieldEnable"/>
+                v-capitalize :disabled="!adif.rdaFieldEnable"/>
           </span><br/>
           <span id="operators_check">
               <input type="checkbox" name="operators_check" 
@@ -48,8 +44,7 @@
               <i>Также подтвердить</i> загружаемые RDA районы операторам коллективной станции:<br/>
               <input type="text" name="operators_callsigns" id="operators_callsigns" 
                 :disabled="!adif.additionalActivatorsEnable"
-                @input="capitalize(adif, 'additionalActivators')"
-                v-model.trim="adif.additionalActivators"/>
+                v-capitalize v-model.trim="adif.additionalActivators"/>
           </span>
           <br/>
           <table id="upload_files" v-if="adif.files.length">
@@ -60,8 +55,7 @@
             <tr v-for="(file, index) in adif.files" :key="index">
               <td class="file">{{file.name}}</td>
               <td class="rda_input"><input type="text" name="rda_input" id="rda_input" v-model.trim="file.rda" 
-                @input="capitalize(adif.files[index], 'rda')" 
-                :disabled="adif.rdaFieldEnable"
+                v-capitalize :disabled="adif.rdaFieldEnable"
                 :class="{error: !adif.rdaFieldEnable && validationErrors['files.'+index+'.rda']}"></td>
             </tr>
           </table>
@@ -97,7 +91,6 @@
         </div>
         
       </div>
-    </div>   
 </template>
 
 <script>
@@ -106,16 +99,14 @@ import {uploadADIF as apiUploadADIF} from '../api'
 import {parseRDA} from '../ham-radio'
 
 import validationMixin from '../validation-mixin'
-import capitalizeMixin from '../capitalize-mixin'
 
 const STORAGE_KEY_STATION_CALLSIGN_SETTINGS = 'station_callsign_settings'
 const DEF_STATION_CALLSIGN_FIELD = 'STATION_CALLSIGN'
 
 export default {
-  mixins: [validationMixin, capitalizeMixin],
+  mixins: [validationMixin],
   name: 'Upload',
   data () {
-     
     const stationCallsignSettings = this.loadStationCallsignSettings()
     const adif = {
         rda: null,

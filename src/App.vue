@@ -5,8 +5,8 @@
 
         <div id="top_menu" >
             <span id="callsign" v-if="userCallsign">{{userCallsign}}</span>  
-            <router-link to="/upload" v-if="userCallsign">Загрузить ADIF</router-link>
-            <router-link to="/manageUploads" v-if="userCallsign">Мои загрузки</router-link>
+            <router-link to="/cfm">CFM RDA</router-link>
+            <router-link to="/uploads" v-if="userCallsign">Загрузки</router-link>
             <router-link to="/faq">FAQ</router-link>
             <router-link to="/contact">Contact</router-link>
             <router-link to="/login" v-if="!userCallsign">Login</router-link>
@@ -14,7 +14,7 @@
        </div>
     </div>
     
-    <keep-alive :include="['ManageUploads', 'Index', 'Upload', 'Contact']">
+    <keep-alive :include="['Index', 'Contact', 'Uploads', 'CFM']">
         <router-view></router-view>
     </keep-alive>
   </div>
@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style>
-    textarea.error, input.error {
+    textarea.error, input.error, select.error {
         background-color: #ff111133;
     }
 </style>

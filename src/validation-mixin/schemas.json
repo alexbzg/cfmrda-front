@@ -219,5 +219,66 @@
             {"properties": {"uploadDate": {"type": "null"}}}
         ]
     }
+},
+"cfmRequestQso": {
+    "type": "object",
+    "properties": {
+        "email": {
+            "type": "string",
+            "format": "email"
+        },
+        "recaptcha": {
+            "type": "string",
+            "minLength": 1
+        },
+        "token": { 
+            "type": "string",
+            "minLength": 3
+        },
+        "qso": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "callsign": {
+                        "type": "string",
+                        "pattern": "[A-Z]+\\d+[A-Z]+"
+                    },
+                    "stationCallsign": {
+                        "type": "string",
+                        "pattern": "(:?\\*|^(:?[A-Z\\d]+\\/)?[A-Z]+\\d+[A-Z]+(:?\\/[A-Z\\d]+)*$)"
+                    },
+                    "rda": {"enum": "$rdaValues$"},
+                    "time": {
+                        "type": "string",
+                        "pattern": "\\d\\d\\d\\d"
+                    },
+                    "band": {
+                        "enum": ["1.8", "3.5", "7", "10", "14", "18", "21", "24", "28"]
+                    },
+                    "mode": {
+                        "enum": ["CW", "SSB", "DIGI"]
+                    },
+                    "correspondent": {
+                        "type": "string",
+                        "pattern": "[A-Z]+\\d+[A-Z]+"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    }
+                },
+                "required": ["callsign", "stationCallsign", "rda", "band", "mode", "date", 
+                    "time", "recRST", "sentRST", "correspondent", "email"]
+            }
+        }
+    },
+    "required": ["qso"],
+    "anyOf": [
+        {"required": ["email", "recaptcha"]},
+        {"required": ["token"]}
+    ]
+
 }
 }
