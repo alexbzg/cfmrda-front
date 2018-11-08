@@ -1,5 +1,5 @@
 <template>
-  <div class="list list_small" v-async-html="$route.params.page">
+  <div class="list" v-async-html="$route.params.page">
   </div>
 </template>
 <script>

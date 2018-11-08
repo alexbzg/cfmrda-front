@@ -943,8 +943,6 @@ table#rda_log td.call{
 
 
 
-
-
 #submenu{
 	width: 900px;
 	margin: 10px auto;
@@ -1159,13 +1157,21 @@ table#add_paper_qsl td.del img{
 
 #awards{
 	text-align: left;
-	text-indent: 2px;
 	line-height: 2em;
 }
 #awards_rules, #application{
 	margin: 50px auto 100px auto;
 	width: 80%;
 }
+#awards_rules img{
+	margin: 50px 50px 0 50px;
+}
+#awards_rules p{
+	text-align: left;
+	text-indent: 0;
+}
+
+
 #issued_awards{
 	margin: 50px auto 100px auto;
 	width: 90%;
