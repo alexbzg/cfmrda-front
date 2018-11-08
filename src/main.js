@@ -10,6 +10,9 @@ import router from './router'
 import capitalizeDirective from './capitalize-directive'
 capitalizeDirective()
 
+import asyncHtmlDirective from './async-html-directive'
+asyncHtmlDirective()
+
 new Vue({
   store: store,
   router: router,
