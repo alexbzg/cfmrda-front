@@ -5,6 +5,7 @@ Vue.use(Router)
 
 import Login from './../components/Login'
 import Index from './../components/Index'
+import Chat from './../components/Chat'
 import Contact from './../components/Contact'
 import StaticPage from './../components/StaticPage'
 
@@ -23,6 +24,10 @@ const router = new Router({
     { path: '/',
       name: 'Index',
       component: Index
+    },
+    { path: '/chat',
+      name: 'Chat',
+      component: Chat
     },
     { path: '/cfm',
       component: CFM,

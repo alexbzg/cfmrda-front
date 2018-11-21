@@ -280,5 +280,32 @@
         {"required": ["token"]}
     ]
 
+},
+"chat": {
+    "type": "object",
+    "properties": {
+        "token": { 
+            "type": "string",
+            "minLength": 3
+        },
+        "callsign": {
+            "type": "string",
+            "pattern": "(:?\\*|^(:?[A-Z\\d]+\\/)?[A-Z]+\\d+[A-Z]+(:?\\/[A-Z\\d]+)*$)"
+        },
+        "message": {
+            "type": "string",
+            "minLength": 1
+        },
+        "delete": {
+            "type": "number"
+        },
+        "exit": {
+            "type": "boolean"
+        }
+    },
+    "anyOf": [
+        {"required": ["token"]},
+        {"required": ["callsign"]}
+    ]
 }
 }

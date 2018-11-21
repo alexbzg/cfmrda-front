@@ -51,7 +51,7 @@ h4{
 	margin: 10px 0 20px 0;
 }
 p{
-		text-indent: 2em;
+		text-indent: 1em;
 }
 a#logout_link{
 	text-decoration: underline;
@@ -200,13 +200,15 @@ a#logout_link{
 	padding: 10px 0 100px 0;
 }
 #upload_form {
-	margin: 30px auto 0 auto;
+	margin: 0px auto 0 auto;
 	text-align: center;
 }
 #upload #file_btn{
 	line-height: 1.5em;
-	width: 80%;
-	margin: 0 auto;
+	width: 450px;
+	margin: 0 auto 10px auto;
+	padding: 10px;
+	text-decoration: underline;
 }
 
 
@@ -290,13 +292,14 @@ table#upload_files td.rda_input{
 
 
 #upload #upload_rules{
-	width: 90%;
-	margin: 0px auto;
+	width: 100%;
+	margin: 0px;
 	text-align: center;
 	text-decoration: underline;
 	color: #900;
 	font-weight: bold;
 	cursor: pointer;
+	text-align: right;
 }
 #upload #upload_info{
 	width: 90%;
@@ -1121,6 +1124,7 @@ table#add_paper_qsl td.top{
 }
 table#add_paper_qsl td.no_border{
 	border: none;
+	height: 50px;
 }
 table#add_paper_qsl td.qsl_callsign, table#add_paper_qsl td.qsl_my_call, table#add_paper_qsl td.qsl_my_new_call{
 	font-weight: bold;
@@ -1138,6 +1142,9 @@ table#add_paper_qsl td.qsl_callsign input{
 table#add_paper_qsl td.qsl_my_call input, table#add_paper_qsl td.qsl_my_new_call input{
 	width: 120px;
 	font-weight: bold;
+}
+table#add_paper_qsl td.qsl_my_new_call{
+	width: 150px;
 }
 table#add_paper_qsl td.del img{
 	cursor: pointer;
@@ -1409,6 +1416,163 @@ table#paper_qsl_list td.checked{
 }
 
 
+
+
+
+
+
+
+
+
+
+/* ==========================================     C H A T  ====================================================== */
+
+
+table#message_form{
+    width: 1010px;
+    padding: 0px;
+    margin: 20px auto 0 auto;
+    border: none;
+    border-collapse: collapse;
+    text-align: center;
+}
+table#message_form tr, table#message_form td{
+    padding: 0;
+}
+table#message_form td.note{
+    font-size: 12px;
+    vertical-align: top;
+    color: #999;
+    line-height: 12px;
+}
+table#message_form input#your_call, table#message_form input#your_name{
+    width: 130px;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 3px;
+    margin: 0 10px;
+    border: 1px solid #999;
+}
+table#message_form input#your_call{
+    color: #009;
+}
+table#message_form input#your_name{
+    font-size: 16px;
+    font-weight: normal;
+}
+table#message_form input#your_text{
+    width: 600px;
+    text-align: left;
+    border: 1px solid #999;
+    font-size: 16px;
+    padding: 3px;
+}
+table#message_form button{
+    width: 50px;
+    padding: 3px;
+}
+
+
+
+table#chat_layout td{
+    vertical-align: top;
+}
+
+
+
+#chat_info{
+    width: 130px;
+    margin: 20px 0 0 0;
+    border: 1px solid #eee;
+    text-align: left;
+}
+.chat_info_title{
+    background-color: #eee;
+    text-align: center;
+    color: #777;
+}
+.chat_info_users1{
+    padding: 10px 0 10px 0px;
+    font-weight: bold;
+    line-height: 1.5em;
+    color: #777;
+    font-size: 16px;
+}
+
+.chat_info_users2{
+    padding: 10px 0 10px 0px;
+    font-weight: bold;
+    line-height: 1.5em;
+    color: #999;
+    font-size: 16px;
+}
+.chat_info_users1 span.admin, .chat_info_users2 span.admin{
+    color: #b24c4c;
+}
+.chat_info_users1 span, .chat_info_users2 span{
+    display: block;
+    padding-left: 22px;
+}
+.chat_info_users1 span.typing{
+    background: #fff url("/images/icon_typing.gif") 1px 5px no-repeat;
+}
+.delete_btn{
+    cursor: pointer;
+}
+
+
+
+table#chat_window{
+    width: 1000px;
+    padding: 0px;
+    margin: 20px 20px 20px 20px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    border-collapse: collapse;
+}
+table#chat_window td{
+    text-align: left;
+    vertical-align: top;
+}
+table#chat_window tr{
+    border: 1px solid #eee;
+}
+table#chat_window td.call{
+	padding: 5px 5px;
+    font-weight: bold;
+    width: 150px;
+    line-height: 14px;
+    color: #009;
+}
+table#chat_window td.call span.date_time{
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}
+table#chat_window td.call span.call{
+    color: #00A;
+    cursor: pointer;
+}
+table#chat_window td.call span.admin{
+    color: #A00;
+}
+table#chat_window td.call span.name{
+    font-size: 14px;
+    color: #333;
+    font-weight: normal;
+    cursor: pointer;
+}
+table#chat_window span.message_to{
+    color: #999;
+    margin-right: 15px;
+}
+table#chat_window tr.admin td.call span.call{
+    color: #A00;
+}
+table#chat_window td.message{
+    line-height: 1.5em;
+    padding-top: 5px;
+}
 
 
 
