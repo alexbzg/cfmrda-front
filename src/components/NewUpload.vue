@@ -69,7 +69,8 @@
         </div> 
 
         <div id="uploading_info" v-if="pending">
-          Идёт загрузка файла...<br/>
+          Идёт загрузка файла и пересчёт статистики из базы данных.<br/>
+          Это займёт примерно 5 минут.<br/>
           <img id="uploading" src="images/spinner.gif" border="0" />
         </div>
 
