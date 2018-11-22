@@ -108,6 +108,9 @@ a#logout_link{
 #top_menu a:hover{
 	color: #009;
 }
+#top_menu a#chat{
+	color: #900;
+}
 
 
 
@@ -143,6 +146,10 @@ a#logout_link{
 	font-weight: bold;
 	color: #009;
 	padding: 0 20px;
+}
+#list_menu a.router-link-exact-active{
+	color: #000;
+	text-decoration: none;
 }
 
 
@@ -1155,6 +1162,49 @@ table#add_paper_qsl td.del img{
 
 
 
+table#paper_qsl_check{
+	margin: 30px auto 100px auto;
+ 	border-collapse: collapse;
+}
+table#paper_qsl_check td{
+	padding: 10px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+	vertical-align: middle;
+}
+table#paper_qsl_check td.top{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+table#paper_qsl_check td.qsl_links, table#paper_qsl_check td.qsl_card{
+	padding: 0 5px;
+	vertical-align: middle;
+	line-height: 10px;
+}
+table#paper_qsl_check td.qsl_callsign, table#paper_qsl_check td.qsl_new_callsign, table#paper_qsl_check td.qsl_rda_callsign {
+	font-weight: bold;
+}
+table#paper_qsl_check td.qsl_cfm, table#paper_qsl_check td.qsl_not_cfm{
+	background-color: #ffffca;
+	width: 80px;
+}
+table#paper_qsl_check tr.cfm_checked, 
+table#paper_qsl_check tr.cfm_checked td.qsl_cfm, 
+table#paper_qsl_check tr.cfm_checked td.qsl_not_cfm{
+	background-color: #a7ffad;
+}
+table#paper_qsl_check tr.not_cfm_checked, 
+table#paper_qsl_check tr.not_cfm_checked td.qsl_cfm, 
+table#paper_qsl_check tr.not_cfm_checked td.qsl_not_cfm{
+	background-color: #fbd0d0;
+}
+
+
+
+
+
+
 
 
 
@@ -1518,6 +1568,7 @@ table#chat_layout td{
 }
 .delete_btn{
     cursor: pointer;
+    float: right;
 }
 
 

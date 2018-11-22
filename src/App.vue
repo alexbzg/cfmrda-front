@@ -6,7 +6,7 @@
         <div id="top_menu" >
             <span id="callsign" v-if="userCallsign">{{userCallsign}}</span>  
             <router-link to="/static/rules">Awards</router-link>
-            <router-link to="/chat">Chat</router-link>
+            <router-link to="/chat" id="chat">Chat</router-link>
             <router-link to="/cfm">CFM RDA</router-link>
             <router-link to="/uploads" v-if="userCallsign">Загрузки</router-link>
             <router-link to="/static/faq">FAQ</router-link>
@@ -16,7 +16,7 @@
        </div>
     </div>
     
-    <keep-alive :include="['Index', 'Contact', 'Uploads', 'CFM', 'Chat']">
+    <keep-alive :include="['Index', 'Contact', 'Uploads', 'CFM']">
         <router-view></router-view>
     </keep-alive>
   </div>

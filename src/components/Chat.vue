@@ -46,7 +46,10 @@
                                     <br/>
                                     <span class="date_time">{{message.date}} {{message.time}}</span>
                                 </td>
-                                <td>
+                                <td @mouseover="messageMouseOver(true,$event)"  
+                                    @mouseout="messageMouseOver(false,$event)">
+                                    <img class="delete_btn" src="/images/icon_delete20.png" 
+                                        title="Удалить сообщение" @click="deleteMessage(message.ts)"/>
                                     <span class="message_to" v-for="callsign in message.to" :key="callsign">
                                         &rArr; {{callsign}}
                                     </span>
@@ -59,7 +62,8 @@
                         <div id="chat_info">
                             <div class="chat_info_title">Online</div>
                             <div class="chat_info_users1">
-                                <span v-for="user in users" :key="user.callsign" :class="{admin: user.admin}"
+                                <span v-for="user in users" :key="user.callsign" 
+                                    :class="{admin: user.admin, typing:user.typing}"
                                     @click="replyTo(user.callsign)">
                                     {{replace0(user.callsign)}}<br/>
                                 </span>
@@ -91,7 +95,7 @@ const USERS_POST_INT = 5 * 1000
 const chatService = dataService('/json/chat.json', 'chat-update')
 const usersService = dataService('/json/active_users.json', 'users-update')
 
-const reMSG_TO = /(:?=>\s?\w+\s?)+\s/
+const reMSG_TO = /(:?\u21d2\s?\w+\s?)+(:?\s|$)/
 
 
 export default {
@@ -101,9 +105,9 @@ export default {
     const stored = storage.load(CHAT_STORAGE_KEY)
     let callsign = null
     if (stored && stored.callsign)
-        callsign = stored.callsign
+      callsign = stored.callsign
     else if (this.$store.getters.userCallsign)
-        callsign = this.$store.getters.userCallsign
+      callsign = this.$store.getters.userCallsign
     chatService.onUpdate(this.chatUpdate)
     chatService.load()
     this.reloadUsers()
@@ -121,6 +125,10 @@ export default {
       pending: false,
     }
   },
+  beforeRouteLeave (to, from, next) {
+    this.post({'exit': true})
+    next()
+  },
   beforeDestroy () {
     clearInterval(this.$chatReloadInterval)
     clearInterval(this.$usersReloadInterval)
@@ -132,14 +140,15 @@ export default {
         let match = null
         if (match = reMSG_TO.exec(msg.text)) {
           const to = match[0]
-          msg.text = msg.text.substring(to.length, msg.text.length - to.length)
-          msg.to = to.split(/\s?=>\s?/)
+          msg.text = msg.text.substring(to.length, msg.text.length - 1)
+          msg.to = to.split(/\s?\u21d2\s?/)
+          msg.to.shift()
         }
       }
       this.messages = chatService.data
     },
     post (data) {
-      if (this.userToken && this.userCallsign === this.callsign)
+      if (this.userToken && (this.userCallsign === this.callsign || 'delete' in data))
         data.token = this.userToken
       else
         data.callsign = this.callsign
@@ -200,24 +209,25 @@ export default {
         this.post(_data)
       }
     },
-    msgMouseOver (state, e) {
+    deleteMessage (ts) {
+      if (this.admin && window.confirm('Вы действительно хотите удалить сообщение?')) {
+        this.post({'delete': ts})
+          .then(chatService.load)
+      }
+    },
+    replyTo (callsign) {
+      const txt = String.fromCharCode(8658) + ' ' + callsign
+      if ( !this.message || this.message.indexOf(txt) === -1 ) {
+        this.message = txt + ' ' +  (this.message ? this.message : '')
+      }
+    },
+    messageMouseOver (state, e) {
       if (this.admin) {
         if (state) {
           e.currentTarget.classList.add( 'can_delete' )
         } else {
           e.currentTarget.classList.remove( 'can_delete' )
         }
-      }
-    },
-    deleteMsg (ts) {
-      if (window.confirm('Do you really want to delete this message?')) {
-        this.serverPost( { 'delete': ts } )
-      }
-    },
-    replyTo (callsign) {
-      const txt = '=> ' + callsign
-      if ( !this.message || this.message.indexOf(txt) === -1 ) {
-        this.message = txt + (this.message ? ' ' + this.message : '')
       }
     }
   },
@@ -232,4 +242,14 @@ export default {
 </script>
 
 <style scoped>
+.delete_btn {
+    width: 20px;
+    height: 20px;
+    display: none;
+}
+
+.can_delete img{
+    display: inline;
+}
+
 </style>
