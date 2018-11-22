@@ -140,7 +140,7 @@ export default {
         let match = null
         if (match = reMSG_TO.exec(msg.text)) {
           const to = match[0]
-          msg.text = msg.text.substring(to.length, msg.text.length - 1)
+          msg.text = msg.text.substring(to.length, msg.text.length)
           msg.to = to.split(/\s?\u21d2\s?/)
           msg.to.shift()
         }
