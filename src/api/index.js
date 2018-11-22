@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Vue from 'vue'
 
 export const API_URL = '/aiohttp/'
 
@@ -83,6 +84,10 @@ export function uploadADIF (data) {
   return dataPost('adif', data)
 }
 
+export function chatPost (data) {
+  return dataPost('chat', data)
+}
+
 export function getRDAValues () {
   return get('/json/rdaValues.json')
     .then(response => {
@@ -145,4 +150,38 @@ export function getUpload (id) {
     .then(response => {
       return response.data
     })
+}
+
+export function dataService(url, eventName) {
+  let bus = new Vue({})
+  let s = {
+    lastModified: null,
+    load: load,
+    data: null,
+    processData: function () {},
+    onUpdate: onUpdate}
+
+  return s
+
+  function onUpdate (callback) {
+    bus.$on(eventName, callback)
+    if (s.data) {
+      callback()
+    }
+  }
+
+  function load () {
+    return get(url)
+      .then(loadComplete)
+
+    function loadComplete (response) {
+      if (s.lastModified !== response.headers['last-modified']) {
+        s.lastModified = response.headers['last-modified']
+        s.data = response.data
+        s.processData()
+        bus.$emit(eventName)
+      }
+      return response.data
+    }
+  }
 }
