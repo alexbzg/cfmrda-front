@@ -131,9 +131,10 @@ a#logout_link{
 
 
 #list_menu{
-	margin-bottom: 0px;
-	padding: 0px 0px 15px 0px;
-	border-bottom: 2px solid #dfedfd;
+	margin-bottom: 10px;
+	padding: 10px 0px;
+	border: 1px solid #eee;
+	background-color: #f6f9fc;
 }
 #list_menu span{
 	font-weight: bold;
@@ -741,7 +742,7 @@ table#last_uploads td.activator span{
 table#last_uploads td.uploader{
 	width: 140px;
 }
-table#last_uploads td.uploader span{
+table#last_uploads td.uploader span, table#admin td.uploader span{
 	font-size: 12px;
 	color: #777;
 }

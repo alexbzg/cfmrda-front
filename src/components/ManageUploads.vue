@@ -50,7 +50,7 @@
     </table>
 
     <div id="wait" v-show="pending">
-      PSE QRX. База данных обновляется...<br/>
+      PSE QRX...<br/>
       <img src="images/spinner.gif">
     </div>
 
