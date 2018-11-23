@@ -191,7 +191,8 @@ export default {
       apiUploadADIF(this.adif)
         .then((response) => { 
           if (response.filesLoaded) {
-            this.response.message = 'Успешно загружено файлов: ' + response.filesLoaded
+            this.response.message = 'Успешно загружено файлов: ' + response.filesLoaded +
+              '.<br/> Статистика будет обновлена в течение 24 часов.'
             this.response.success = true
           }
           if (response.errors.length) {
