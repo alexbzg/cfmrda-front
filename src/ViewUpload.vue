@@ -8,7 +8,7 @@
                 <td class="menu band">RDA</td>
                 <td class="menu rda">Band</td>
                 <td class="menu mode">Mode</td>
-                <td class="menu call">Calsign</td>
+                <td class="menu call">Callsign</td>
                 <td class="menu station_call">Activator</td>
             </tr>
             <tr v-for="(item, idx) in uploadData" :key="idx">

@@ -69,7 +69,8 @@
         </div> 
 
         <div id="uploading_info" v-if="pending">
-          Идёт загрузка файла...<br/>
+          Идёт загрузка файла и пересчёт статистики из базы данных.<br/>
+          Это займёт примерно 5 минут.<br/>
           <img id="uploading" src="images/spinner.gif" border="0" />
         </div>
 
@@ -190,7 +191,8 @@ export default {
       apiUploadADIF(this.adif)
         .then((response) => { 
           if (response.filesLoaded) {
-            this.response.message = 'Успешно загружено файлов: ' + response.filesLoaded
+            this.response.message = 'Успешно загружено файлов: ' + response.filesLoaded +
+              '.<br/> Статистика будет обновлена в течение 24 часов.'
             this.response.success = true
           }
           if (response.errors.length) {

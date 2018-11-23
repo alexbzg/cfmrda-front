@@ -1,7 +1,9 @@
 <template>
     <div>
         <div class="list list1">
-            <div id="qso_in_database"><span>{{parseInt(mscData.qsoCount).toLocaleString()}} QSO</span> in our database</div>
+            <div id="qso_in_database" v-if="mscData.qsoCount">
+                <span>{{parseInt(mscData.qsoCount).toLocaleString()}} QSO</span> in our database
+            </div>
             <table id="check_call">
                 <tr>
                 <td class="btn_space"></td>

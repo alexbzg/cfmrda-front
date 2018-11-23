@@ -87,10 +87,10 @@ import {dataService, chatPost} from '../api'
 
 const CHAT_STORAGE_KEY = 'chat'
 
-const TYPING_INT = 5 * 60
-const CHAT_RELOAD_INT = 5 * 1000
-const USERS_RELOAD_INT = 5 * 1000
-const USERS_POST_INT = 5 * 1000
+const TYPING_INT = 30 //seconds
+const CHAT_RELOAD_INT = 5 * 1000 //ms
+const USERS_RELOAD_INT = 5 * 1000 //ms
+const USERS_POST_INT = 5 * 1000  //ms
 
 const chatService = dataService('/json/chat.json', 'chat-update')
 const usersService = dataService('/json/active_users.json', 'users-update')

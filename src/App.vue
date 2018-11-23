@@ -6,10 +6,10 @@
         <div id="top_menu" >
             <span id="callsign" v-if="userCallsign">{{userCallsign}}</span>  
             <router-link to="/static/rules">Awards</router-link>
-            <router-link to="/chat" id="chat">Chat</router-link>
             <router-link to="/cfm">CFM RDA</router-link>
             <router-link to="/uploads" v-if="userCallsign">Загрузки</router-link>
             <router-link to="/static/faq">FAQ</router-link>
+            <router-link to="/chat" id="chat">Chat</router-link>
             <router-link to="/contact">Contact</router-link>
             <router-link to="/login" v-if="!userCallsign">Login</router-link>
             <a @click="logout()" v-else id="logout_link">Logout</a>
