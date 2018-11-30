@@ -72,6 +72,10 @@ export function cfmQso (data) {
   return dataPost('cfm_qso', data)
 }
 
+export function cfmQslQso (data) {
+  return dataPost('cfm_qsl_qso', data)
+}
+
 export function cfmBlacklist (token) {
   return dataPost('cfm_blacklist', {token: token})
 }

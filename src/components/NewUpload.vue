@@ -7,47 +7,53 @@
               <li><b>Один файл - несколько RDA районов</b>. Отметьте "Брать RDA район активатора..." и напишите название ПОЛЯ в ADI файле, из которого будет браться RDA активатора для каждого QSO.</li>
               <li><b>Можно</b> выбирать и загружать <b>сразу несколько</b> ADI файлов.</li>
               <li>Если <b>активатор</b> работал из RDA района <b>разными позывными</b> (<i>например, .../P и .../M</i>), то отметьте "Брать позывной активатора..." и напишите название ПОЛЯ (<i>без двоеточия и цифры</i>) в ADI файле, из которого будет браться позывной активатора для каждого QSO.<br/><img src="/images/help_1.jpg" title="Как указывать поле позывного в ADIF" /></li>
-              <li>Если <b>активатор</b> работал из RDA района <b>коллективным позывным</b> (<i>например, позывным R7AB работали операторы R7DA и R7TU</i>), то можно отметить "Подтвердить эти RDA районы..." и написать позывные операторов коллективной станции, чтобы проведенные QSO пошли в зачёт и операторам.</li>
-              <li>Если у активатора есть <b>лог работы</b> его <b>старым позывным</b>, а зачёт должен пойти и за новый позывной (<i>например, новый позывной RU6K, а старые позывные - UU2JQ, EO2012JQ, UB2JQ, UB4JLF</i>), то при загрузке лога укажите актуальный позывной на тот момент (<i>из примера - UU2JQ</i>), отметьте "Подтвердить эти RDA районы..." и напишите новый позывной (<i>из примера - RU6K</i>). Проведенные QSO пойдут в зачёт и старому, и новому позывному.</li>
+              <li>Если <b>активатор</b> работал из RDA района <b>коллективным позывным</b> (<i>например, позывным R7AB работали операторы R7DA и R7TU</i>), то можно отметить "Подтвердить RDA районы..." и написать позывные операторов коллективной станции, чтобы проведенные QSO пошли в зачёт и операторам.</li>
+              <li>Если у активатора есть <b>лог работы</b> его <b>старым позывным</b>, а зачёт должен пойти и за новый позывной (<i>например, новый позывной RU6K, а старые позывные - UU2JQ, EO2012JQ, UB2JQ, UB4JLF</i>), то при загрузке лога укажите актуальный позывной на тот момент (<i>из примера - UU2JQ</i>), отметьте "Подтвердить RDA районы..." и напишите новый позывной (<i>из примера - RU6K</i>). Проведенные QSO пойдут в зачёт и старому, и новому позывному.</li>
           </ul>
 
         <div id="upload_form" v-if="!pending">
+          Позывной
+          <input type="text" name="callsign_input" id="callsign_input" 
+                v-model.trim="adif.stationCallsign" v-capitalize
+                :class="{error: !adif.stationCallsignFieldEnable && validationErrors.stationCallsign}"
+                :disabled="adif.stationCallsignFieldEnable"/>
+
+          <div id="upload_setup_link" @click="showSetup = !showSetup">
+              Расширенные настройки загрузки
+          </div>
+          <div id="upload_setup" v-show="showSetup">
+            <span id="activator_check">
+                <input type="checkbox" name="activator_check" v-model="adif.stationCallsignFieldEnable"
+                  @change="stationCallsignTypeChange"/> 
+                Брать <b>позывной</b> в ADIF из поля
+                <input type="text" name="callsign_field" id="callsign_field" 
+                  v-model="adif.stationCallsignField" v-capitalize
+                  :class="{error: adif.stationCallsignFieldEnable && validationErrors.stationCallsignField}"
+                  :disabled="!adif.stationCallsignFieldEnable"/>
+            </span><br/>
+            <span id="rda_check">
+                <input type="checkbox" name="rda_check" v-model="adif.rdaFieldEnable"/> 
+                Брать <b>RDA район</b> в ADIF из поля
+                <input type="text" name="rda_field" id="rda_field" v-model="adif.rdaField"
+                  :class="{error: adif.rdaFieldEnable && validationErrors.rdaField}"
+                  v-capitalize :disabled="!adif.rdaFieldEnable"/>
+            </span><br/>
+            <span id="operators_check">
+                <input type="checkbox" name="operators_check" 
+                  v-model="adif.additionalActivatorsEnable"/>
+                 Подтвердить RDA районы <b>для операторов вашей экспедиции</b> или для вашего <b>нового позывного</b><br/>
+                <input type="text" name="operators_callsigns" id="operators_callsigns" 
+                  :disabled="!adif.additionalActivatorsEnable"
+                  v-capitalize v-model.trim="adif.additionalActivators"/>
+            </span>
+          </div>
+
           <input type="file" id="adif_file" style="display: none;" @change="adifFileChange"
             accept=".adi,.adif" multiple/>
           <label  for="adif_file">
             <div class="btn" id="file_btn">Выберите один или несколько ADI файлов для загрузки</div>
           </label>
-          <br/>
-          Позывной RDA активатора
-          <input type="text" name="callsign_input" id="callsign_input" 
-                v-model.trim="adif.stationCallsign" v-capitalize
-                :class="{error: !adif.stationCallsignFieldEnable && validationErrors.stationCallsign}"
-                :disabled="adif.stationCallsignFieldEnable"/><br/>
-          <span id="activator_check">
-              <input type="checkbox" name="activator_check" v-model="adif.stationCallsignFieldEnable"
-                @change="stationCallsignTypeChange"/> 
-              Брать <i>позывной</i> активатора в ADI файле из поля
-              <input type="text" name="callsign_field" id="callsign_field" 
-                v-model="adif.stationCallsignField" v-capitalize
-                :class="{error: adif.stationCallsignFieldEnable && validationErrors.stationCallsignField}"
-                :disabled="!adif.stationCallsignFieldEnable"/>
-          </span><br/>
-          <span id="rda_check">
-              <input type="checkbox" name="rda_check" v-model="adif.rdaFieldEnable"/> 
-              Брать <i>RDA район</i> активатора в ADI файле из поля
-              <input type="text" name="rda_field" id="rda_field" v-model="adif.rdaField"
-                :class="{error: adif.rdaFieldEnable && validationErrors.rdaField}"
-                v-capitalize :disabled="!adif.rdaFieldEnable"/>
-          </span><br/>
-          <span id="operators_check">
-              <input type="checkbox" name="operators_check" 
-                v-model="adif.additionalActivatorsEnable"/>
-              <i> Подтвердить RDA районы</i> для операторов вашей экспедиции или для вашего нового позывного:<br/>
-              <input type="text" name="operators_callsigns" id="operators_callsigns" 
-                :disabled="!adif.additionalActivatorsEnable"
-                v-capitalize v-model.trim="adif.additionalActivators"/>
-          </span>
-          <br/>
+
           <table id="upload_files" v-if="adif.files.length">
             <tr>
               <td class="top file">Файл</td>
@@ -125,6 +131,7 @@ export default {
         fileName: null
     }
     return {
+      showSetup: false,
       showInfo: false,
       pending: false,
       response: {

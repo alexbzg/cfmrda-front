@@ -185,6 +185,9 @@ export default {
       this.$nextTick(() => {
 
         if (this.validated) {
+
+          this.response = null
+          this.success = false
       
           this.pending = true
           if (this.request.email) {

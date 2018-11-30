@@ -11,6 +11,7 @@ import StaticPage from './../components/StaticPage'
 
 const CFM = () => import(/* webpackChunkName: "cfm" */ './../components/CFM.vue')
 const EmailCFM = () => import(/* webpackChunkName: "cfm" */ './../components/EmailCFM.vue')
+const PaperCFM = () => import(/* webpackChunkName: "cfm" */ './../components/PaperCFM.vue')
 
 const ManageUploads = () => import(/* webpackChunkName: "uploader" */ './../components/ManageUploads.vue')
 const NewUpload = () => import(/* webpackChunkName: "uploader" */ './../components/NewUpload.vue')
@@ -32,11 +33,11 @@ const router = new Router({
     { path: '/cfm',
       component: CFM,
       children: [
-        /*{
+        {
           path: 'paper',
           name: 'PaperCFM',
           component: PaperCFM
-        },*/
+        },
         {
           path: '',
           name: 'EmailCFM',

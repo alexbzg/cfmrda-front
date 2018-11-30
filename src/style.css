@@ -200,7 +200,7 @@ a#logout_link{
 
 
 
-/*                        U P L O A D              */
+/*                                                   U P L O A D              */
 
 #upload{
 	text-align: center;
@@ -213,9 +213,9 @@ a#logout_link{
 }
 #upload #file_btn{
 	line-height: 1.5em;
-	width: 450px;
+	width: 500px;
 	margin: 0 auto 10px auto;
-	padding: 10px;
+	padding: 7px 10px;
 	text-decoration: underline;
 }
 
@@ -253,7 +253,7 @@ table#upload_files td.rda_input{
 #upload_form input#callsign_input{
 	width: 200px;
 	margin-left: 10px;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 	font-weight: bold;
 	color: #333;
 }
@@ -302,10 +302,10 @@ table#upload_files td.rda_input{
 #upload #upload_rules{
 	width: 100%;
 	margin: 0px;
-	text-align: center;
 	text-decoration: underline;
 	color: #900;
 	font-weight: bold;
+	font-style: italic;
 	cursor: pointer;
 	text-align: right;
 }
@@ -319,6 +319,35 @@ table#upload_files td.rda_input{
 #upload #upload_info li{
 	margin-bottom: 15px;
 }
+
+
+
+#upload_setup_link{
+	margin: 0px 0 20px 0;
+	text-align: right;
+	font-style: italic;
+	text-decoration: underline;
+	cursor: pointer;
+}
+#upload_setup{
+	margin: 20px 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -996,6 +1025,7 @@ table#cfm_qso_request td{
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
+	border-bottom: 2px solid #c8e0fb;
 	vertical-align: top;
 }
 table#cfm_qso_request td.menu{
@@ -1080,6 +1110,7 @@ table#cfm_email_list td{
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
+	border-bottom: 2px solid #c8e0fb;
 	vertical-align: middle;
 }
 table#cfm_email_list td.top{
@@ -1108,7 +1139,7 @@ table#cfm_email_list td.status_comm{
 	font-size: 12px;
 	color: #900;
 	font-style: italic;
-	background-color: #fff;
+	border-top: 1px solid #dfedfd;
 }
 table#cfm_email_list td.del{
 	cursor: pointer;
@@ -1136,6 +1167,7 @@ table#cfm_qso td{
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
+	border-bottom: 2px solid #c8e0fb;
 	vertical-align: middle;
 }
 table#cfm_qso td.menu{
@@ -1163,10 +1195,10 @@ table#cfm_qso td.comment textarea{
 	text-align: left;
 }
 table#cfm_qso tr.cfm_checked, table#cfm_qso tr.cfm_checked td.cfm, table#cfm_qso tr.cfm_checked td.reject{
-	background-color: #a7ffad;
+	background-color: #caffcd;
 }
 table#cfm_qso tr.cfm_reject, table#cfm_qso tr.cfm_reject td.cfm, table#cfm_qso tr.cfm_reject td.reject{
-	background-color: #fbd0d0;
+	background-color: #fce2e2;
 }
 table#cfm_qso td.cfm_btn{
 	border: none;
