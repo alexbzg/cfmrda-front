@@ -7,7 +7,7 @@
             size="invisible"
             :sitekey="$options.RECAPTCHA_SITE_KEY">
         </vue-recaptcha>
-
+        <h4>CFM RDA по email запросу</h4>
         <p>Данные QSO будут отправлены корреспонденту по email, указанному в его профиле QRZ.com.<br/>Если корреспондент подтвердит QSO с вами, то подтвержденное QSO будет добавлено в базу CFMRDA.ru.</p>
         <p class="grey_note">The QSO data will be sent to the correspondent by the email specified by him in the QRZ.com profile.<br/>If the correspondent will confirm QSO with you the confirmed QSO will be added to the database of CFMRDA.ru.</p>
         <table id="cfm_qso_request">

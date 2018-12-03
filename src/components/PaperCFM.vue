@@ -20,7 +20,7 @@
             <tr>
                 <td class="qsl_callsign">
                     <input type="text" name="qsl_callsign" id="qsl_callsign" v-model="qso.stationCallsign" 
-                        :class="{error: validationErrors.callsign}"/>
+                        :class="{error: validationErrors.stationCallsign}"/>
                 </td>
                 <td class="qsl_rda">
                     <rda-input type="text" name="qsl_rda" id="qsl_rda" v-model="qso.rda"
@@ -67,7 +67,7 @@
             <tr><td colspan="10" class="no_border"></td></tr>
             <tr v-if="response">
                 <td colspan="10" class="response">
-                    <div v-if="response" id="message" :class="{success: success}" v-html="response"></div>
+                    <div v-if="response" id="message" v-html="response"></div>
                 </td>
             </tr>
 
@@ -173,7 +173,7 @@ export default {
       }
       const reader = new FileReader()
       const vm = this
-      this.qso.file.name = files[0].name
+      this.qso.image.name = files[0].name
         
       reader.onload = function (e) {
         vm.qso.image.file = e.target.result
@@ -193,15 +193,14 @@ export default {
     buttonClick () {
       this.pending = true
       this.response = null
-      this.success = false
       this.post({qso: this.qso})
         .then(() => {
-          this.response = 'Ваше запрос был отправлен. Your request was sent.'
           this.qso.stationCallsign = null
           this.qso.time = null
           this.qso.rda = null
           this.qso.image.file = null
           this.qso.image.name = null
+          this.loadList()
         })
         .catch((e) => {
           this.response = e.message
