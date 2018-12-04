@@ -320,7 +320,31 @@
         {"required": ["email", "recaptcha"]},
         {"required": ["token"]}
     ]
-
+},
+"qslAdmin":{
+    "type": "array",
+    "minItems": 1,
+    "items": {
+        "type": "object",
+        "properties": {
+            "id": {"type": "number"},
+            "state": {"type": "boolean"},
+            "comment": {
+                "oneOf": [
+                    {"type": "string"},
+                    {"type": "null"}
+                ]
+            }
+        },
+        "required": ["id", "state"],
+        "oneOf": [
+            {"properties":{"state": {"enum": [true]}}},
+            {"properties":{
+                "state": {"enum": [false]},
+                "comment": {"minLength": 5}
+            }}
+        ]
+    }
 },
 "chat": {
     "type": "object",
