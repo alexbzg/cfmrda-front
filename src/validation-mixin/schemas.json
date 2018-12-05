@@ -336,14 +336,7 @@
                 ]
             }
         },
-        "required": ["id", "state"],
-        "oneOf": [
-            {"properties":{"state": {"enum": [true]}}},
-            {"properties":{
-                "state": {"enum": [false]},
-                "comment": {"minLength": 5}
-            }}
-        ]
+        "required": ["id", "state", "comment"]
     }
 },
 "chat": {

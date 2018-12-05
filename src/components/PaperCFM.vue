@@ -20,6 +20,7 @@
             <tr>
                 <td class="qsl_callsign">
                     <input type="text" name="qsl_callsign" id="qsl_callsign" v-model="qso.stationCallsign" 
+                        v-capitalize
                         :class="{error: validationErrors.stationCallsign}"/>
                 </td>
                 <td class="qsl_rda">
@@ -45,10 +46,12 @@
                 </td>
                 <td class="qsl_my_call">
                     <input type="text" name="qsl_my_call" id="qsl_my_call" v-model="qso.callsign"
+                        v-capitalize
                         :class="{error: validationErrors.callsign}"/>
                 </td>
                 <td class="qsl_my_new_call" colspan="2">
                     <input type="text" name="qsl_my_new_call" id="qsl_my_new_call" v-model="qso.newCallsign"
+                        v-capitalize
                         :class="{error: validationErrors.newCallsign}"/>
                 </td>
                 <td rowspan="2" class="del">

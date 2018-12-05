@@ -14,7 +14,7 @@
                 <td class="menu rda_rst">Sent RST</td>
                 <td class="menu my_rst">Rcvd RST</td>
                 <td class="menu">CFM</td>
-                <td class="menu">Reject</td>
+                <td class="menu">NOT CFM</td>
             </tr>
             <tr :class="{cfm_checked: item.cfm, cfm_reject: item.reject}" v-for="item in qso" :key="item.id">
                 <td class="rda_callsign">{{item.callsign}}</td>

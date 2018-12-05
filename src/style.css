@@ -108,7 +108,7 @@ a#logout_link{
 #top_menu a:hover{
 	color: #009;
 }
-#top_menu a#chat{
+#top_menu a#chat, #top_menu a#admin{
 	color: #900;
 }
 
@@ -1210,6 +1210,49 @@ table#cfm_qso td.cfm_btn input{
 }
 
 
+/* ==========================================     A U T O   L O G I N   ====================================================== */
+
+
+#autologin{
+	margin: 50px 0;
+	line-height: 2em;
+}
+#autologin h6{
+	margin: 0 0 30px 0;
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+	color: #900;
+}
+.log_pass{
+	padding: 0 15px;
+	font-size: 18px;
+	font-weight: bold;
+	background-color: #ffffca;
+	color: #000;
+}
+#autologin_link{
+	font-weight: bold;
+	color: #00c;
+}
+#autologin_info{
+	width: 50%;
+	margin: 30px auto;
+	text-align: left;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1228,6 +1271,7 @@ table#add_paper_qsl td{
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
+	border-bottom: 2px solid #dfedfd;
 	vertical-align: middle;
 }
 table#add_paper_qsl td.top{
@@ -1284,6 +1328,7 @@ table#paper_qsl_check td{
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
+	border-bottom: 2px solid #dfedfd;
 	vertical-align: middle;
 }
 table#paper_qsl_check td.top{

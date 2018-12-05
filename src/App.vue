@@ -5,6 +5,7 @@
 
         <div id="top_menu" >
             <span id="callsign" v-if="userCallsign">{{userCallsign}}</span>  
+            <router-link to="/admin" v-if="admin" id="admin">Admin</router-link>
             <router-link to="/static/rules">Awards</router-link>
             <router-link to="/cfm">CFM RDA</router-link>
             <router-link to="/uploads" v-if="userCallsign">Загрузки</router-link>
@@ -16,7 +17,7 @@
        </div>
     </div>
     
-    <keep-alive :include="['Index', 'Contact', 'Uploads', 'CFM']">
+    <keep-alive :include="['Index', 'Contact', 'Uploads', 'CFM', 'Admin']">
         <router-view></router-view>
     </keep-alive>
   </div>
@@ -34,7 +35,7 @@ export default {
   components: {
   },
   computed: {
-    ...mapGetters(['userCallsign'])
+    ...mapGetters(['userCallsign', 'admin'])
   },
   methods: {
     logout () {

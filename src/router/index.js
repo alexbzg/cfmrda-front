@@ -20,6 +20,9 @@ const Uploads = () => import(/* webpackChunkName: "uploader" */ './../components
 const CfmQso = () => import(/* webpackChunkName: "cfm_qso" */ './../components/CfmQso.vue')
 const CfmBlacklist = () => import(/* webpackChunkName: "cfm_blacklist" */ './../components/CfmBlacklist.vue')
 
+const Admin = () => import(/* webpackChunkName: "admin" */ './../components/Admin.vue')
+const QslAdmin = () => import(/* webpackChunkName: "admin" */ './../components/QslAdmin.vue')
+
 const router = new Router({
   routes: [
     { path: '/',
@@ -43,6 +46,22 @@ const router = new Router({
           name: 'EmailCFM',
           component: EmailCFM
         }
+      ]
+    },
+    { path: '/admin',
+      component: Admin,
+      name: 'Admin',
+      children: [
+        {
+          path: 'qsl',
+          name: 'QslAdmin',
+          component: QslAdmin
+        }/*,
+        {
+          path: '',
+          name: 'EmailCFM',
+          component: EmailCFM
+        }*/
       ]
     },
     { path: '/cfm_qso',
