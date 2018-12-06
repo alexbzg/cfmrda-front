@@ -56,12 +56,13 @@ const router = new Router({
           path: 'qsl',
           name: 'QslAdmin',
           component: QslAdmin
-        }/*,
+        },
         {
-          path: '',
-          name: 'EmailCFM',
-          component: EmailCFM
-        }*/
+          path: 'uploads',
+          name: 'ManageUploads',
+          component: ManageUploads,
+          props: {admin: true}
+        }
       ]
     },
     { path: '/cfm_qso',

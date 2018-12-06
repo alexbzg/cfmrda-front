@@ -279,9 +279,13 @@ table#upload_files td.rda_input{
 
 #upload #ok_check{
 	margin: 20px auto;
+	padding: 5px 0;
+	width: 200px;
 	text-align: center;
 	color: #900;
 	font-weight: bold;
+	background-color: #ffffca;
+	border: 1px solid #900;
 }
 #upload #ok_check input{
 	margin-right: 10px;
@@ -1315,6 +1319,11 @@ table#add_paper_qsl td.qsl_card{
 	font-size: 12px;
 }
 
+table#add_paper_qsl td.qsl_image img, table#paper_qsl_check td.qsl_image img{
+	max-width: 1000px;
+	max-height: 700px;
+}
+
 
 
 
@@ -1371,8 +1380,6 @@ table#paper_qsl_check td.qsl_comm textarea{
 	height: 50px;
 	text-align: left;
 }
-
-
 
 
 

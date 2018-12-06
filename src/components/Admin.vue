@@ -1,6 +1,7 @@
 <template>
   <div class="list">
     <div id="list_menu">
+        <router-link to="/admin/uploads">Загрузки ADIF</router-link>
         <router-link to="/admin/qsl">Проверка QSL карточек</router-link>
     </div>
     <keep-alive>

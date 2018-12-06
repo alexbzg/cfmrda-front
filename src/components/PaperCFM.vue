@@ -63,6 +63,7 @@
                 <td colspan="9" class="qsl_upload">
                     <b>Загрузите скан или фото QSL-карточки!</b> 
                     <input type="file" name="qsl_callsign" @change="qslImageChange" 
+                        :class="{error: validationErrors['image.name']}"
                         accept=".png,.jpg,.gif"/>
                 </td>
             </tr>
@@ -93,6 +94,7 @@
                             title="QSL проверена. Информация добавлена в базу CFMRDA."/>
                         <img v-if="qso.state === false" src="/images/icon_qsl_not_cfm.png" 
                             title="QSL не прошла проверку."/>
+                        <span v-if="qso.comment"><br/>{{qso.comment}}</span>
                     </td>
                     <td class="del">
                         <img src="/images/icon_delete.png" title="Удалить эту строку - Delete this line"

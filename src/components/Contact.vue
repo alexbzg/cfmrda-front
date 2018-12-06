@@ -39,7 +39,7 @@ export default {
     const msg = { 
       text: null
     }
-    const token = this.userToken
+    const token = this.$store.getters.userToken
     if (token) {
       msg.token = token
     } else {
