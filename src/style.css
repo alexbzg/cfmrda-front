@@ -1339,6 +1339,9 @@ table#add_paper_qsl td.qsl_image img, table#paper_qsl_check td.qsl_image img{
 	max-width: 1000px;
 	max-height: 700px;
 }
+table#add_paper_qsl td.qsl_upload input{
+	margin-left: 10px;
+}
 
 
 

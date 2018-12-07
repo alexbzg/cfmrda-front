@@ -26,7 +26,7 @@
                 <td class="qsl_band">{{item.band}}</td>
                 <td class="qsl_mode">{{item.mode}}</td>
                 <td class="qsl_card">
-                    <a href="#" @click="showImage = item">
+                    <a href="#" @click="showImage = showImage === item ? null : item">
                         <img src="/images/icon_qsl.png" title="Просмотр QSL">
                     </a>
                 </td>
