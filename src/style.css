@@ -37,6 +37,11 @@ input, button, textarea, select{
 	color: #900;
 	font-style: italic;
 }
+.note_grey{
+	font-size: 14px;
+	color: #777;
+	font-style: italic;
+}
 .red{
 	color: #900;
 	font-style: italic;
@@ -108,7 +113,7 @@ a#logout_link{
 #top_menu a:hover{
 	color: #009;
 }
-#top_menu a#chat{
+#top_menu a#chat, #top_menu a#admin{
 	color: #900;
 }
 
@@ -131,9 +136,10 @@ a#logout_link{
 
 
 #list_menu{
-	margin-bottom: 0px;
-	padding: 0px 0px 15px 0px;
-	border-bottom: 2px solid #dfedfd;
+	margin-bottom: 10px;
+	padding: 10px 0px;
+	border: 1px solid #eee;
+	background-color: #f5f5f5;
 }
 #list_menu span{
 	font-weight: bold;
@@ -148,7 +154,7 @@ a#logout_link{
 	padding: 0 20px;
 }
 #list_menu a.router-link-exact-active{
-	color: #000;
+	color: #555;
 	text-decoration: none;
 }
 
@@ -192,14 +198,18 @@ a#logout_link{
 	color: #777;
 }
 
+#recap{
+	text-align: center;
+	width: 310px;
+	margin: 10px auto;
+}
 
 
 
 
 
 
-
-/*                        U P L O A D              */
+/*                                                   U P L O A D              */
 
 #upload{
 	text-align: center;
@@ -212,9 +222,9 @@ a#logout_link{
 }
 #upload #file_btn{
 	line-height: 1.5em;
-	width: 450px;
+	width: 500px;
 	margin: 0 auto 10px auto;
-	padding: 10px;
+	padding: 7px 10px;
 	text-decoration: underline;
 }
 
@@ -252,7 +262,7 @@ table#upload_files td.rda_input{
 #upload_form input#callsign_input{
 	width: 200px;
 	margin-left: 10px;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 	font-weight: bold;
 	color: #333;
 }
@@ -278,9 +288,13 @@ table#upload_files td.rda_input{
 
 #upload #ok_check{
 	margin: 20px auto;
+	padding: 5px 0;
+	width: 200px;
 	text-align: center;
 	color: #900;
 	font-weight: bold;
+	background-color: #ffffca;
+	border: 1px solid #900;
 }
 #upload #ok_check input{
 	margin-right: 10px;
@@ -301,10 +315,10 @@ table#upload_files td.rda_input{
 #upload #upload_rules{
 	width: 100%;
 	margin: 0px;
-	text-align: center;
 	text-decoration: underline;
 	color: #900;
 	font-weight: bold;
+	font-style: italic;
 	cursor: pointer;
 	text-align: right;
 }
@@ -318,6 +332,35 @@ table#upload_files td.rda_input{
 #upload #upload_info li{
 	margin-bottom: 15px;
 }
+
+
+
+#upload_setup_link{
+	margin: 0px 0 20px 0;
+	text-align: right;
+	font-style: italic;
+	text-decoration: underline;
+	cursor: pointer;
+}
+#upload_setup{
+	margin: 20px 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -741,9 +784,10 @@ table#last_uploads td.activator span{
 table#last_uploads td.uploader{
 	width: 140px;
 }
-table#last_uploads td.uploader span{
+table#last_uploads td.uploader span, table#admin td.uploader span{
 	font-size: 12px;
 	color: #777;
+	font-weight: normal;
 }
 table#last_uploads td.rda a{
 	color: #009;
@@ -874,6 +918,7 @@ table#admin td.search_result{
 }
 table#admin td.search_result img, table#admin td.del img{
 	cursor: pointer;
+	padding-top: 12px;
 }
 .del_btn{
 	background-color: #FF4500;
@@ -993,6 +1038,7 @@ table#cfm_qso_request td{
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
+	border-bottom: 2px solid #c8e0fb;
 	vertical-align: top;
 }
 table#cfm_qso_request td.menu{
@@ -1051,12 +1097,73 @@ table#cfm_qso_request td.add_line{
 }
 table#cfm_qso_request td.del{
 	cursor: pointer;
+	padding-top: 12px;
 }
 table#cfm_qso_request td.send_btn{
 	border: none;
 	height: 50px;
 	vertical-align: bottom;
 }
+
+
+
+
+#cfm_email_list_text{
+	margin: 50px 0 0 0;
+	color: #777;
+	font-style: italic;
+	font-size: 14px;
+}
+table#cfm_email_list{
+	margin: 10px auto 50px auto;
+ 	border-collapse: collapse;
+}
+table#cfm_email_list td{
+	padding: 5px 10px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+	border-bottom: 2px solid #c8e0fb;
+	vertical-align: middle;
+}
+table#cfm_email_list td.top{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+table#cfm_email_list td.rda, table#cfm_email_list td.rda_callsign{
+	font-weight: bold;	
+}
+table#cfm_email_list td.status, table#cfm_email_list td.status_date{
+	font-size: 16px;
+	background-color: #ffffca;
+	padding: 3px 15px;
+}
+table#cfm_email_list td.top.status, table#cfm_email_list td.top.status_date{
+	background-color: #e7f2ff;
+}
+table#cfm_email_list tr.cfmd, table#cfm_email_list tr.cfmd td.status, table#cfm_email_list tr.cfmd td.status_date{
+	background-color: #caffcd;
+}
+table#cfm_email_list tr.not_cfmd, table#cfm_email_list tr.not_cfmd td.status, table#cfm_email_list tr.not_cfmd td.status_date{
+	background-color: #fce2e2;
+}
+table#cfm_email_list td.status_comm{
+	text-align: left;
+	font-size: 12px;
+	color: #900;
+	font-style: italic;
+	border-top: 1px solid #dfedfd;
+}
+table#cfm_email_list td.del{
+	cursor: pointer;
+}
+
+
+
+
+
+
+
 
 
 
@@ -1069,10 +1176,11 @@ table#cfm_qso{
  	border-collapse: collapse;
 }
 table#cfm_qso td{
-	padding: 10px 15px;
+	padding: 10px 10px;
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
+	border-bottom: 2px solid #c8e0fb;
 	vertical-align: middle;
 }
 table#cfm_qso td.menu{
@@ -1087,13 +1195,23 @@ table#cfm_qso td.rda_callsign, table#cfm_qso td.my_callsign{
 }
 table#cfm_qso td.cfm, table#cfm_qso td.reject{
 	background-color: #ffffca;
-	width: 80px;
+	width: 50px;
+}
+table#cfm_qso td.comment{
+	padding: 2px 2px 0px 2px;
+	vertical-align: middle;
+}
+table#cfm_qso td.comment textarea{
+	font-size: 12px;
+	width: 200px;
+	height: 50px;
+	text-align: left;
 }
 table#cfm_qso tr.cfm_checked, table#cfm_qso tr.cfm_checked td.cfm, table#cfm_qso tr.cfm_checked td.reject{
-	background-color: #a7ffad;
+	background-color: #caffcd;
 }
 table#cfm_qso tr.cfm_reject, table#cfm_qso tr.cfm_reject td.cfm, table#cfm_qso tr.cfm_reject td.reject{
-	background-color: #fbd0d0;
+	background-color: #fce2e2;
 }
 table#cfm_qso td.cfm_btn{
 	border: none;
@@ -1105,6 +1223,49 @@ table#cfm_qso td.cfm_btn input{
 }
 
 
+/* ==========================================     A U T O   L O G I N   ====================================================== */
+
+
+#autologin{
+	margin: 50px 0;
+	line-height: 2em;
+}
+#autologin h6{
+	margin: 0 0 30px 0;
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+	color: #900;
+}
+.log_pass{
+	padding: 0 15px;
+	font-size: 18px;
+	font-weight: bold;
+	background-color: #ffffca;
+	color: #000;
+}
+#autologin_link{
+	font-weight: bold;
+	color: #00c;
+}
+#autologin_info{
+	width: 50%;
+	margin: 30px auto;
+	text-align: left;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1112,21 +1273,18 @@ table#cfm_qso td.cfm_btn input{
 /* ==========================================     P A P E R   Q S L   ====================================================== */
 
 #paper_qsl{
-	width: 90%;
-	margin: 50px auto 100px auto;
 	text-align: left;
 }
-
-
 table#add_paper_qsl{
 	margin: 30px auto 100px auto;
  	border-collapse: collapse;
 }
 table#add_paper_qsl td{
-	padding: 10px 5px;
+	padding: 5px 5px;
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
+	border-bottom: 2px solid #dfedfd;
 	vertical-align: middle;
 }
 table#add_paper_qsl td.top{
@@ -1136,6 +1294,13 @@ table#add_paper_qsl td.top{
 table#add_paper_qsl td.no_border{
 	border: none;
 	height: 50px;
+}
+table#add_paper_qsl td.no_border2{
+	border: none;
+	font-size: 14px;
+	font-style: italic;
+	vertical-align: bottom;
+	color: #777;
 }
 table#add_paper_qsl td.qsl_callsign, table#add_paper_qsl td.qsl_my_call, table#add_paper_qsl td.qsl_my_new_call{
 	font-weight: bold;
@@ -1160,7 +1325,20 @@ table#add_paper_qsl td.qsl_my_new_call{
 table#add_paper_qsl td.del img{
 	cursor: pointer;
 }
+table#add_paper_qsl tr.cfmd{
+	background-color: #caffcd;
+}
+table#add_paper_qsl tr.not_cfmd{
+	background-color: #fce2e2;
+}
+table#add_paper_qsl td.qsl_card{
+	font-size: 12px;
+}
 
+table#add_paper_qsl td.qsl_image img, table#paper_qsl_check td.qsl_image img{
+	max-width: 1000px;
+	max-height: 700px;
+}
 
 
 
@@ -1175,6 +1353,7 @@ table#paper_qsl_check td{
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
+	border-bottom: 2px solid #dfedfd;
 	vertical-align: middle;
 }
 table#paper_qsl_check td.top{
@@ -1185,6 +1364,7 @@ table#paper_qsl_check td.qsl_links, table#paper_qsl_check td.qsl_card{
 	padding: 0 5px;
 	vertical-align: middle;
 	line-height: 10px;
+	font-size: 12px;
 }
 table#paper_qsl_check td.qsl_callsign, table#paper_qsl_check td.qsl_new_callsign, table#paper_qsl_check td.qsl_rda_callsign {
 	font-weight: bold;
@@ -1192,6 +1372,9 @@ table#paper_qsl_check td.qsl_callsign, table#paper_qsl_check td.qsl_new_callsign
 table#paper_qsl_check td.qsl_cfm, table#paper_qsl_check td.qsl_not_cfm{
 	background-color: #ffffca;
 	width: 80px;
+}
+table#paper_qsl_check td.top.qsl_cfm, table#paper_qsl_check td.top.qsl_not_cfm{
+	background-color: #e7f2ff;
 }
 table#paper_qsl_check tr.cfm_checked, 
 table#paper_qsl_check tr.cfm_checked td.qsl_cfm, 
@@ -1203,6 +1386,22 @@ table#paper_qsl_check tr.not_cfm_checked td.qsl_cfm,
 table#paper_qsl_check tr.not_cfm_checked td.qsl_not_cfm{
 	background-color: #fbd0d0;
 }
+table#paper_qsl_check td.qsl_comm{
+	padding: 2px 2px 0px 2px;
+	vertical-align: middle;
+}
+table#paper_qsl_check td.qsl_comm textarea{
+	font-size: 12px;
+	width: 150px;
+	height: 50px;
+	text-align: left;
+}
+
+
+
+
+
+
 
 
 
@@ -1424,6 +1623,7 @@ table.requests_list td.request_call, table.requests_list td.del img{
 	color: #009;
 	text-decoration: underline;
 	cursor: pointer;
+	padding-top: 12px;
 }
 table.requests_list span{
 	display: block;
@@ -1437,6 +1637,10 @@ table.requests_list td.request_status select{
 table.requests_list td.request_status textarea{
 	width: 300px;
 	text-align: left;
+}
+table.requests_list td.uploader span{
+	font-size: 12px;
+	font-weight: normal;
 }
 
 

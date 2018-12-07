@@ -60,8 +60,8 @@ export function cfmRequestQso (data) {
   return dataPost('cfm_request_qso', data)
 }
 
-export function getUploads (token) {
-  return dataPost('user_uploads', {'token': token})
+export function getUploads (data) {
+  return dataPost('uploads', data)
 }
 
 export function login (data) {
@@ -70,6 +70,14 @@ export function login (data) {
 
 export function cfmQso (data) {
   return dataPost('cfm_qso', data)
+}
+
+export function cfmQslQso (data) {
+  return dataPost('cfm_qsl_qso', data)
+}
+
+export function qslAdmin (data) {
+  return dataPost('qsl_admin', data)
 }
 
 export function cfmBlacklist (token) {

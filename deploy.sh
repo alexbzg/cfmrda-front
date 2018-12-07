@@ -1,4 +1,5 @@
 chown web_ftp:www-data src -R
+chmod o+w src -R
 rm /var/www/cfmrda/js/*
 cp /var/www/cfmrda-dev/dist/js/* /var/www/cfmrda/js/
 rm /var/www/cfmrda/css/*

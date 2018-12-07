@@ -11,6 +11,7 @@ import StaticPage from './../components/StaticPage'
 
 const CFM = () => import(/* webpackChunkName: "cfm" */ './../components/CFM.vue')
 const EmailCFM = () => import(/* webpackChunkName: "cfm" */ './../components/EmailCFM.vue')
+const PaperCFM = () => import(/* webpackChunkName: "cfm" */ './../components/PaperCFM.vue')
 
 const ManageUploads = () => import(/* webpackChunkName: "uploader" */ './../components/ManageUploads.vue')
 const NewUpload = () => import(/* webpackChunkName: "uploader" */ './../components/NewUpload.vue')
@@ -18,6 +19,9 @@ const Uploads = () => import(/* webpackChunkName: "uploader" */ './../components
 
 const CfmQso = () => import(/* webpackChunkName: "cfm_qso" */ './../components/CfmQso.vue')
 const CfmBlacklist = () => import(/* webpackChunkName: "cfm_blacklist" */ './../components/CfmBlacklist.vue')
+
+const Admin = () => import(/* webpackChunkName: "admin" */ './../components/Admin.vue')
+const QslAdmin = () => import(/* webpackChunkName: "admin" */ './../components/QslAdmin.vue')
 
 const router = new Router({
   routes: [
@@ -32,15 +36,32 @@ const router = new Router({
     { path: '/cfm',
       component: CFM,
       children: [
-        /*{
+        {
           path: 'paper',
           name: 'PaperCFM',
           component: PaperCFM
-        },*/
+        },
         {
           path: '',
           name: 'EmailCFM',
           component: EmailCFM
+        }
+      ]
+    },
+    { path: '/admin',
+      component: Admin,
+      name: 'Admin',
+      children: [
+        {
+          path: 'qsl',
+          name: 'QslAdmin',
+          component: QslAdmin
+        },
+        {
+          path: 'uploads',
+          name: 'ManageUploads',
+          component: ManageUploads,
+          props: {admin: true}
         }
       ]
     },

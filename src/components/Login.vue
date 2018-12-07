@@ -2,14 +2,6 @@
     <div class="list list_small">
         <div id="login_register">
 
-            <vue-recaptcha v-if="mode === 'register' || mode === 'passwordRequest'"
-                ref="recaptcha"
-                @verify="onRecaptchaVerify"
-                @expired="onRecaptchaExpired"
-                size="invisible"
-                :sitekey="$options.RECAPTCHA_SITE_KEY">
-            </vue-recaptcha>
-
             <template v-if="mode !== 'passwordChange'">
                 <b>Позывной</b><br/>
                 <input type="text" name="callsign_input" id="callsign_input" v-model.trim="login.callsign" 
@@ -25,15 +17,30 @@
             </template>
 
             <div id="register" v-if="mode === 'register'">
-                <br/><span class="red"><b><u>Регистрация необходима только активаторам для загрузки логов!</u></b></span><br/><br/>
+<!--                <br/><span class="red"><b><u>Регистрация необходима только активаторам для загрузки логов!</u></b></span><br/><br/>  -->
                 <b>Email</b><br/>
-                <span class="note_red">
-                    Email должен быть <b>обязательно</b> тем, который показывается на вашей странице на <b>QRZ.com</b>!<br/>
-                    На этот email будет отправлено письмо с ссылкой. Кликните по ней для завершения регистрации.
-                </span><br/>
                 <input type="text" name="email_input" id="email_input" 
                     :class="{error: validationErrors.email}"
                     v-model.trim="login.email"><br/>
+                <span class="note_red">
+                    Email должен быть <b>обязательно</b> тот, который показывается на вашей странице на <b>QRZ.com</b>!<br/>
+                    На этот email будет отправлено письмо с ссылкой. Кликните по ней для завершения регистрации.<br/><br/>                    
+                </span>
+                <span class="note_grey">
+                    Так сделано для дополнительной проверки подлинности регистрируемого позывного.<br/>
+                    QRZ.com выбран потому, что по запросу отправляет email позывного. QRZ.ru такой возможности не даёт.<br/>
+                    Если вы принципиально не хотите регистрироваться на QRZ.com,<br/>
+                    для регистрации вы можете с нами связаться через форму Contact (см. меню)
+                </span>
+            </div>
+
+            <div id="recap">
+                <vue-recaptcha v-if="mode === 'register' || mode === 'passwordRequest'"
+                ref="recaptcha"
+                @verify="onRecaptchaVerify"
+                @expired="onRecaptchaExpired"
+                :sitekey="$options.RECAPTCHA_SITE_KEY">
+                </vue-recaptcha>
             </div>
 
             <template v-if="mode == 'login'">
@@ -42,7 +49,7 @@
             </template>
             <input type="button" name="login_btn" id="login1_btn" 
                 value="OK" class="btn"
-                :disabled="pending || !validated" @click="loginClick()"/>
+                v-show="!pending && validated" @click="loginClick()"/>
             <div v-if="response" id="message" v-html="response"></div>
             <div id="login_bottom" v-if="mode !== 'passwordChange'">
                 <a id="pass_recovery" href="#" 

@@ -1,13 +1,6 @@
 <template>
     <div>
-        <vue-recaptcha v-if="!userToken"
-            ref="recaptcha"
-            @verify="onRecaptchaVerify"
-            @expired="onRecaptchaExpired"
-            size="invisible"
-            :sitekey="$options.RECAPTCHA_SITE_KEY">
-        </vue-recaptcha>
-
+        <h4>CFM RDA по email запросу</h4>
         <p>Данные QSO будут отправлены корреспонденту по email, указанному в его профиле QRZ.com.<br/>Если корреспондент подтвердит QSO с вами, то подтвержденное QSO будет добавлено в базу CFMRDA.ru.</p>
         <p class="grey_note">The QSO data will be sent to the correspondent by the email specified by him in the QRZ.com profile.<br/>If the correspondent will confirm QSO with you the confirmed QSO will be added to the database of CFMRDA.ru.</p>
         <table id="cfm_qso_request">
@@ -94,6 +87,14 @@
             </tr>
             <tr>
                 <td colspan="10" class="send_btn">
+                    <div id="recap">
+                        <vue-recaptcha v-if="!userToken"
+                            ref="recaptcha"
+                            @verify="onRecaptchaVerify"
+                            @expired="onRecaptchaExpired"
+                            :sitekey="$options.RECAPTCHA_SITE_KEY">
+                        </vue-recaptcha>
+                    </div>
                     <input type="button" name="send_btn" id="send_btn" 
                         value="Отправить запрос на подтверждение QSO - Send CFM QSO request"
                         class="btn" :disabled="pending" 
@@ -185,6 +186,9 @@ export default {
       this.$nextTick(() => {
 
         if (this.validated) {
+
+          this.response = null
+          this.success = false
       
           this.pending = true
           if (this.request.email) {

@@ -40,17 +40,16 @@
             </td>
         </tr>
         <uploads-table :admin="admin" :uploads="searchResult" v-if="searchResult" :pending="pending"
-            @edit-pending="editPending" @server-error="serverError">
+            @edit-uploads="editUploads">
             <img src="images/icon_close.png" title="Закрыть результаты поиска" 
                 @click="showSearchResult = false">
         </uploads-table>
-        <uploads-table :admin="admin" :uploads="uploads" :pending="pending"
-            @edit-pending="editPending" @server-error="serverError">
+        <uploads-table :admin="admin" :uploads="uploads" :pending="pending" @edit-uploads="editUploads">
         </uploads-table>
     </table>
 
     <div id="wait" v-show="pending">
-      PSE QRX. База данных обновляется...<br/>
+      PSE QRX...<br/>
       <img src="images/spinner.gif">
     </div>
 
@@ -58,10 +57,9 @@
 
 </template>
 <script>
-import {mapGetters} from 'vuex'
 import {rdaValues, parseRDA} from '../ham-radio'
 
-import {GET_UPLOADS_ACTION} from '../store'
+import {getUploads} from '../api'
 
 import Datepicker from 'vuejs-datepicker'
 import UploadsTable from './UploadsTable'
@@ -71,9 +69,10 @@ import ValidationMixin from '../validation-mixin'
 export default {
   name: 'ManageUploads',
   mixins: [ValidationMixin],
+  props: ['admin'],
   components: {Datepicker, UploadsTable},
   data () {
-    this.$store.dispatch(GET_UPLOADS_ACTION)
+    this.loadList()
     const search = {
         rda: null,
         station: null,
@@ -86,11 +85,11 @@ export default {
       errorMessage: null,
       validationData: search,
       validationSchema: "uploadsSearch",
-      showSearchResult: false
+      showSearchResult: false,
+      uploads: []
     }
   },
   computed: {
-    ...mapGetters(['admin', 'uploads']),
     searchResult () {
       if (this.showSearchResult && this.validated) 
         return  this.uploads.filter((upload) => {
@@ -113,6 +112,31 @@ export default {
     }
   },
   methods: {
+    post (data) {
+      data.token = this.$store.getters.userToken
+      if (this.admin)
+        data.admin = true
+      return getUploads(data)
+        .catch((e) => {
+          this.errorMessage = e
+          throw e
+        })
+    },
+    loadList () {
+      this.post({})
+        .then((data) => {this.uploads = data})
+    },
+    editUploads(data) {
+      if (this.pending) 
+        return
+      this.pending = true
+      this.post(data)
+        .then(() => {this.loadList()})
+        .finally(() => {
+          this.pending = false
+        })
+     
+    },
     searchCallsign (needle, hay) {
       if (hay) {
         if (needle.includes('*')) {
@@ -135,12 +159,6 @@ export default {
             this.search.rda = rda
         }
       }
-    },
-    editPending (pending) {
-      this.pending = pending
-    },
-    serverError (e) {
-      this.errorMessage = e.message
     }
   }
 }

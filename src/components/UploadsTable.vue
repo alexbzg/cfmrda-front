@@ -35,8 +35,6 @@
 </template>
 
 <script>
-import {GET_UPLOADS_ACTION} from '../store'
-
 import ViewUploadLink from './ViewUploadLink.vue'
 
 import ReplaceZerosMixin from '../replace-zeros-mixin'
@@ -51,22 +49,9 @@ export default {
     }
   },
   methods: {
-    editUploads (data) {
-      if (this.pending) 
-        return
-      this.$emit('edit-pending', false)
-      this.$emit('edit-pending', true)
-      this.$store.dispatch(GET_UPLOADS_ACTION, data)
-        .catch((e) => {
-          this.$emit('server-error', e)
-        })
-        .finally(() => {
-          this.$emit('edit-pending', false)
-        })
-    },
     changeEnabled (upload, event) {
       if (confirm("Вы действительно хотите изменить допуск файла?")) {
-        this.editUploads(
+        this.$emit('edit-uploads',
           {enabled: !upload.enabled,
           id: upload.id})
       } else 
@@ -74,7 +59,7 @@ export default {
     },
     deleteUpload (upload) {
       if (confirm("Вы действительно хотите удалить файл?")) {
-        this.editUploads(
+        this.$emit('edit-uploads',
           {delete: 1,
           id: upload.id})
       }
