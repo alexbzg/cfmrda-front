@@ -1,19 +1,20 @@
 <template>
     <div class="list list_small">
       <div id="contact">
-        <vue-recaptcha v-if="!msg.token"
-            ref="recaptcha"
-            @verify="onRecaptchaVerify"
-            @expired="onRecaptchaExpired"
-            size="invisible"
-            :sitekey="$options.RECAPTCHA_SITE_KEY">
-        </vue-recaptcha>
        
         <input type="text" v-model.trim="msg.email" v-if="!msg.token" placeholder="your e-mail"
             id="email_input" :class="{error: validationErrors.email}"/><br/>
         <textarea v-model="msg.text" placeholder="your message" id="text_area"
-            :class="{error: validationErrors.text}"></textarea><br/>
-        <input type="button" value="OK" :disabled="pending || !validated" @click="sendClick()"
+            :class="{error: validationErrors.text}"></textarea>
+        <div id="recap">
+          <vue-recaptcha v-if="!msg.token"
+              ref="recaptcha"
+              @verify="onRecaptchaVerify"
+              @expired="onRecaptchaExpired"
+              :sitekey="$options.RECAPTCHA_SITE_KEY">
+          </vue-recaptcha>
+        </div>
+        <input type="button" value="OK" v-show="!pending && validated" @click="sendClick()"
             id="send_button" class="btn">
 
         <div v-if="response" id="message" v-html="response"></div>

@@ -37,6 +37,11 @@ input, button, textarea, select{
 	color: #900;
 	font-style: italic;
 }
+.note_grey{
+	font-size: 14px;
+	color: #777;
+	font-style: italic;
+}
 .red{
 	color: #900;
 	font-style: italic;
@@ -193,7 +198,11 @@ a#logout_link{
 	color: #777;
 }
 
-
+#recap{
+	text-align: center;
+	width: 310px;
+	margin: 10px auto;
+}
 
 
 
@@ -1285,6 +1294,13 @@ table#add_paper_qsl td.top{
 table#add_paper_qsl td.no_border{
 	border: none;
 	height: 50px;
+}
+table#add_paper_qsl td.no_border2{
+	border: none;
+	font-size: 14px;
+	font-style: italic;
+	vertical-align: bottom;
+	color: #777;
 }
 table#add_paper_qsl td.qsl_callsign, table#add_paper_qsl td.qsl_my_call, table#add_paper_qsl td.qsl_my_new_call{
 	font-weight: bold;

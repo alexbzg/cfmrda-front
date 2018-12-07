@@ -77,6 +77,11 @@
 
             <tbody v-for="qso in qsoList" :key="qso.id">
                 <tr>
+                  <td colspan="10" class="no_border2">
+                    Удаление <b>проверенной и утвержденной</b> QSL карточки из списка <b>не виляет</b> на вашу статистику CFM RDA.
+                  </td>
+                </tr>
+                <tr>
                     <td class="qsl_callsign">{{qso.stationCallsign}}</td>
                     <td class="qsl_rda">{{qso.rda}}</td>
                     <td class="qsl_date">{{qso.date}}</td>

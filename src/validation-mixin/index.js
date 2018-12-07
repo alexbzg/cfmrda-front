@@ -32,9 +32,9 @@ export default {
         for (const item of errors) {
           this.$set(this.validationErrors, item.path, item.keyword)
         }
-        if (this.validationErrors.recaptcha) {
+/*        if (this.validationErrors.recaptcha) {
           this.$refs.recaptcha.execute()
-        }
+        }*/
       }
     }
   },
