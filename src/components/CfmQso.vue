@@ -49,6 +49,7 @@ export default {
   data () {
     return {
       qso: [],
+      user: null,
       token: this.$route.query.token,
       pending: false,
       success: false,
@@ -58,11 +59,13 @@ export default {
   mounted () {
     cfmQso({token: this.token})
       .then((data) => {
-        for (const qso of data) {
+        for (const qso of data.qso) {
           qso.cfm = false
           qso.reject = false
         }
         this.qso = data
+        if (data.user)
+          this.user = data.user
       })
   },
   methods: {

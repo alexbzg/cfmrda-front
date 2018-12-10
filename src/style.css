@@ -1839,6 +1839,58 @@ table#chat_window td.message{
 
 
 
+/*        =========================            С Т А Т И С Т И К А   ================================   */
+
+table#table_stats, table#table_stats_list{
+	margin: 0px auto 50px auto;
+ 	border-collapse: collapse;
+}
+table#table_stats td, table#table_stats_list td{
+	width: 70px;
+	padding: 10px 0px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+	vertical-align: middle;
+}
+table#table_stats td.top{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+table#table_stats td.top0{
+	padding: 1px 15px;
+	font-size: 14px;
+}
+table#table_stats td.menu{
+	width: 70px;
+	padding: 5px 0;
+	cursor: pointer;
+}
+table#table_stats td.rda, table#table_stats_list td.rda{
+	width: 100px;
+	font-size: 18px;
+	font-weight: bold;
+}
+table#table_stats td.divider{
+	width: 20px;
+	border: none;
+}
+table#table_stats td.no_border{
+	width: 290px;
+	border: none;
+}
+table#table_stats td.no_border2{
+	width: 276px;
+	border: none;
+}
+table#table_stats td.active{
+	background-color: #ffffca; 
+}
+
+#window_stats{
+	height: 400px;
+	overflow: auto;
+}
 
 
 
@@ -1846,4 +1898,56 @@ table#chat_window td.message{
 
 
 
+
+
+
+
+
+
+
+
+/*        =========================           Н О В Ы Й   -   С Т А Р Ы Й   П О З Ы В Н О Й     ================================   */
+
+table#new_old{
+	margin: 50px auto 100px auto;
+ 	border-collapse: collapse;
+}
+table#new_old td{
+	padding: 10px 10px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+	vertical-align: middle;
+}
+table#new_old td.top{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+table#new_old td.no_border{
+	border: none;
+}
+table#new_old td.del, table#new_old td.edit{
+	width: 70px;
+	cursor: pointer;
+	border: none;
+}
+table#new_old td.new {
+	font-weight: bold;
+}
+table#new_old td.del {
+	text-align: right;
+}
+table#new_old td.edit {
+	text-align: left;
+}
+table#new_old td.new input{
+	width: 150px;
+	font-weight: bold;
+	text-align: center;
+}
+table#new_old td.old input{
+	width: 600px;
+	font-weight: bold;
+	text-align: center;
+}
 
