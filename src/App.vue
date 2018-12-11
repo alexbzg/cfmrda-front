@@ -17,7 +17,7 @@
        </div>
     </div>
     
-    <keep-alive :include="['Index', 'Contact', 'Uploads', 'CFM', 'Admin']">
+    <keep-alive :include="['Index', 'Contact', 'Uploads', 'CFM', 'Admin', 'AutoRegistration']">
         <router-view></router-view>
     </keep-alive>
   </div>
