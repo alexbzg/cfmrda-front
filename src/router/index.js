@@ -23,6 +23,8 @@ const CfmBlacklist = () => import(/* webpackChunkName: "cfm_blacklist" */ './../
 const Admin = () => import(/* webpackChunkName: "admin" */ './../components/Admin.vue')
 const QslAdmin = () => import(/* webpackChunkName: "admin" */ './../components/QslAdmin.vue')
 
+const AutoRegistration = () => import(/* webpackChunkName: "auto_reg" */ './../components/AutoRegistration.vue')
+
 const router = new Router({
   routes: [
     { path: '/',
@@ -32,6 +34,11 @@ const router = new Router({
     { path: '/chat',
       name: 'Chat',
       component: Chat
+    },
+    { path: '/auto_registration',
+      name: 'AutoRegistration',
+      component: AutoRegistration,
+      props: true
     },
     { path: '/cfm',
       component: CFM,

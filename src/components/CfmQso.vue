@@ -43,6 +43,7 @@
 </template>
 <script>
 import {cfmQso} from '../api'
+import {SET_USER_MUTATION} from '../store'
 
 export default {
   name: 'CfmQso',
@@ -63,9 +64,7 @@ export default {
           qso.cfm = false
           qso.reject = false
         }
-        this.qso = data
-        if (data.user)
-          this.user = data.user
+        this.qso = data.qso
       })
   },
   methods: {
@@ -84,7 +83,17 @@ export default {
               request.qso[type].push(qso.id)
         }
         cfmQso(request)
-          .then(() => {
+          .then((data) => {
+            if (data.user) {
+              this.$store.commit(SET_USER_MUTATION,
+                {user: {
+                  callsign: data.user.callsign,
+                  email: data.user.email,
+                  email_confirmed: data.user.email_confirmed,
+                  token: this.token
+                }})
+              this.$router.push({name: 'AutoRegistration', params: {user: data.user}})
+            }
             this.success = true
             this.response = "Данные были сохранены."
             this.qso = this.qso.filter((qso) => {
