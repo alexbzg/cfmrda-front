@@ -109,6 +109,7 @@ import validationMixin from '../validation-mixin'
 
 const STORAGE_KEY_STATION_CALLSIGN_SETTINGS = 'station_callsign_settings'
 const DEF_STATION_CALLSIGN_FIELD = 'STATION_CALLSIGN'
+const RDA_DETECT_SKIP = ['TO-20']
 
 export default {
   mixins: [validationMixin],
@@ -173,7 +174,11 @@ export default {
       for (let i = 0; i < files.length; i++) {
         const reader = new FileReader()
         const vm = this
-        const file = {name: files[i].name, rda: parseRDA(files[i].name)}
+        const rda = parseRDA(files[i].name)        
+        const file = {
+          name: files[i].name, 
+          rda: RDA_DETECT_SKIP.includes(rda) ? null : rda
+        }
         this.adif.files.push(file)
 
         reader.onload = function (e) {

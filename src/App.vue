@@ -4,7 +4,8 @@
         <router-link to="/"><img id="logo" src="images/cfmrda_logo.png" border="0" /></router-link>
 
         <div id="top_menu" >
-            <span id="callsign" v-if="userCallsign">{{userCallsign}}</span>  
+             <router-link to="/" id="callsign" v-if="userCallsign">{{userCallsign}}</router-link>
+<!--            <span id="callsign" v-if="userCallsign">{{userCallsign}}</span>    -->
             <router-link to="/admin" v-if="admin" id="admin">Admin</router-link>
             <router-link to="/static/rules">Awards</router-link>
             <router-link to="/cfm">CFM RDA</router-link>

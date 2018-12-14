@@ -138,7 +138,7 @@
 
     <div class="list">
       <h4>Latest uploads</h4>
-      Статистика CFM RDA пересчитывается раз в сутки в 00:00мск
+      Статистика CFM RDA пересчитывается раз в сутки примерно в 00:00 мск
         <table id="last_uploads">
             <tr>
                 <td class="rda menu">RDA</td>
