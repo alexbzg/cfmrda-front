@@ -2,9 +2,9 @@
     <div id="paper_qsl">
         <h4>CFM RDA по бумажным QSL-карточкам</h4>
         <p>Заполните форму ввода данными из полученной QSL-карточки, подтверждающей QSO с необходимым вам RDA. Если QSL карточка выписана вам на старый позывной, то в поле "Your сallsign" укажите его, а в поле "New callsign" можно указать ваш новый позывной, чтобы это QSO пошло в зачёт и новому позывному.<br/>
-        После проверки модератором данные будут добавлены в  базу CFMRDA.</p>
+        После проверки модератором данные будут добавлены в  базу CFMRDA. Чтобы QSL карточка прошла проверку, на ней должен быть указан RDA!</p>
         <p class="grey_note">Fill in the input form with data from the received QSL card confirming the QSO with the RDA you need. If a QSL card is issued to your old callsign, then enter it in the "QSL callsign" field, and you can enter your new callsign in the "New callsign" field so that this QSO will go on to the new callsign.<br/>
-        Your data will be added to CFMRDA database after the check by the moderator.</p>
+        Your data will be added to CFMRDA database after the check by the moderator. In order for a QSL card to pass the test, the RDA must be indicated on it.</p>
         <table id="add_paper_qsl">
             <tr>
                 <td class="top qsl_callsign">Station's callsign</td>

@@ -1,8 +1,8 @@
 <template>
     <div>
         <h4>CFM RDA по email запросу</h4>
-        <p>Данные QSO будут отправлены корреспонденту по email, указанному в его профиле QRZ.com.<br/>Если корреспондент подтвердит QSO с вами, то подтвержденное QSO будет добавлено в базу CFMRDA.ru.</p>
-        <p class="grey_note">The QSO data will be sent to the correspondent by the email specified by him in the QRZ.com profile.<br/>If the correspondent will confirm QSO with you the confirmed QSO will be added to the database of CFMRDA.ru.</p>
+        <p>Данные QSO будут отправлены RDA корреспонденту по email, указанному в его профиле QRZ.com.<br/>Если корреспондент подтвердит QSO с вами, то подтвержденное QSO будет добавлено в базу CFMRDA.ru.</p>
+        <p class="grey_note">The QSO data will be sent to the RDA correspondent by the email specified by him in the QRZ.com profile.<br/>If the correspondent will confirm QSO with you the confirmed QSO will be added to the database of CFMRDA.ru.</p>
         <table id="cfm_qso_request">
             <tr v-if="!userToken">
                 <td colspan="10" class="no_border email">
@@ -14,7 +14,7 @@
                 <td colspan="10" class="rda_callsign_note">Ваш email - Your email</td>
             </tr>
             <tr>
-                <td class="menu rda_callsign">Station callsign</td>
+                <td class="menu rda_callsign">RDA's callsign</td>
                 <td class="menu rda">RDA</td>
                 <td class="menu date">Date</td>
                 <td class="menu time">GMT</td>

@@ -293,10 +293,10 @@ table#upload_files td.rda_input{
 #upload #ok_check{
 	margin: 20px auto;
 	padding: 5px 0;
-	width: 200px;
+	width: 500px;
+	line-height: 2em;
 	text-align: center;
 	color: #900;
-	font-weight: bold;
 	background-color: #ffffca;
 	border: 1px solid #900;
 }
@@ -306,8 +306,9 @@ table#upload_files td.rda_input{
 
 
 #upload input#upload_btn{
-	width: 80%;
-	margin: 0 auto;
+	width: 500px;
+	margin: 30px auto 0 auto;
+	padding: 10px 0;
 }
 #uploading_info{
 	margin-top: 50px;
