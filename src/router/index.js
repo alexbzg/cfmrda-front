@@ -90,6 +90,12 @@ const router = new Router({
           component: ManageUploads
         },
         {
+        path: 'rules',
+        name: 'StaticPage',
+        component: StaticPage,
+        props: {page: 'rulesADIF'}
+        },
+        {
           path: '',
           name: 'NewUpload',
           component: NewUpload
@@ -104,7 +110,8 @@ const router = new Router({
     {
       path: '/static/:page',
       name: 'StaticPage',
-      component: StaticPage
+      component: StaticPage,
+      props: true
     },
     {
       path: '/login',

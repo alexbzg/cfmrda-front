@@ -1,10 +1,11 @@
 <template>
-  <div class="list" v-async-html="$route.params.page">
+  <div v-async-html="page">
   </div>
 </template>
 <script>
 export default {
-  name: 'Faq',
+  name: 'StaticPage',
+  props: ['page'],
   data () {    
     return {}
   }

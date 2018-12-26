@@ -116,10 +116,6 @@ a#logout_link{
 #top_menu a#chat, #top_menu a#admin{
 	color: #900;
 }
-#top_menu a#callsign{
-	color: #000;
-	text-decoration: none;
-}
 
 
 
@@ -293,12 +289,13 @@ table#upload_files td.rda_input{
 #upload #ok_check{
 	margin: 20px auto;
 	padding: 5px 0;
-	width: 500px;
-	line-height: 2em;
+	width: 400px;
 	text-align: center;
 	color: #900;
+	font-weight: bold;
 	background-color: #ffffca;
 	border: 1px solid #900;
+	line-height: 2em;
 }
 #upload #ok_check input{
 	margin-right: 10px;
@@ -307,7 +304,7 @@ table#upload_files td.rda_input{
 
 #upload input#upload_btn{
 	width: 500px;
-	margin: 30px auto 0 auto;
+	margin: 20px auto;
 	padding: 10px 0;
 }
 #uploading_info{
@@ -317,24 +314,16 @@ table#upload_files td.rda_input{
 }
 
 
-#upload #upload_rules{
-	width: 100%;
-	margin: 0px;
-	text-decoration: underline;
-	color: #900;
-	font-weight: bold;
-	font-style: italic;
-	cursor: pointer;
-	text-align: right;
-}
-#upload #upload_info{
+
+
+ul#upload_info{
 	width: 90%;
 	margin: 10px auto;
 	text-align: left;
 	color: #333;
 	line-height: 1.5em;
 }
-#upload #upload_info li{
+ul#upload_info li{
 	margin-bottom: 15px;
 }
 
@@ -351,7 +340,9 @@ table#upload_files td.rda_input{
 	margin: 20px 0;
 }
 
-
+.list .list{
+	width: 100%;
+}
 
 
 
@@ -1347,9 +1338,6 @@ table#add_paper_qsl td.qsl_image img, table#paper_qsl_check td.qsl_image img{
 table#add_paper_qsl td.qsl_upload input{
 	margin-left: 10px;
 }
-table#add_paper_qsl td.response{
-	border: none;
-}
 
 
 
@@ -1847,7 +1835,7 @@ table#chat_window td.message{
 
 
 
-/*        =========================            С Т А Т И С Т И К А   ================================   */
+/*        =========================            СТАТИСТИКА   ================================   */
 
 table#table_stats, table#table_stats_list{
 	margin: 0px auto 50px auto;
@@ -1914,14 +1902,14 @@ table#table_stats td.active{
 
 
 
-/*        =========================           Н О В Ы Й   -   С Т А Р Ы Й   П О З Ы В Н О Й     ================================   */
+/*        =========================           НОВЫЙ - СТАРЫЙ ПОЗЫВНОЙ     ================================   */
 
 table#new_old{
-	margin: 50px auto 100px auto;
+	margin: 0px auto 100px auto;
  	border-collapse: collapse;
 }
 table#new_old td{
-	padding: 10px 10px;
+	padding: 10px 0px;
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
@@ -1930,32 +1918,5 @@ table#new_old td{
 table#new_old td.top{
 	font-weight: bold;	
 	background-color: #e7f2ff;
-}
-table#new_old td.no_border{
-	border: none;
-}
-table#new_old td.del, table#new_old td.edit{
-	width: 70px;
-	cursor: pointer;
-	border: none;
-}
-table#new_old td.new {
-	font-weight: bold;
-}
-table#new_old td.del {
-	text-align: right;
-}
-table#new_old td.edit {
-	text-align: left;
-}
-table#new_old td.new input{
-	width: 150px;
-	font-weight: bold;
-	text-align: center;
-}
-table#new_old td.old input{
-	width: 600px;
-	font-weight: bold;
-	text-align: center;
 }
 
