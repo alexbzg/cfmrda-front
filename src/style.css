@@ -89,33 +89,42 @@ a#logout_link{
 
 
 
-
-
-
-
-
 #logo{
 	position: absolute;
 	top: 2px;
 	left: 20px;
 }
 #top_menu{
-	width: 1200px;
+	width: 1220px;
 	margin: 10px auto;
-	padding: 10px 20px;
+	padding: 10px 0px 10px 20px;
 	text-align: right;
 	font-weight: bold;
 }
-#top_menu a{
+#top_menu a {
 	color: #00a;
-	padding-left: 30px;
+	margin-left: 30px;
+    text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size .2s;
 }
-#top_menu a:hover{
-	color: #009;
+
+#top_menu a:hover {
+    background-size: 100% 2px;
+    color: #009;
 }
 #top_menu a#chat, #top_menu a#admin{
 	color: #900;
 }
+#top_menu a#callsign{
+	color: #000;
+}
+
+
+
 
 
 
@@ -131,7 +140,7 @@ a#logout_link{
 	width: 800px;
 }
 .list1{
-	padding: 5px 5px 20px 5px;
+	
 }
 
 
@@ -459,8 +468,7 @@ table#check_call{
 table#check_call td{
 	padding: 0 20px 0 0;
 	text-align: center;
-	font-size: 12px;
-	color: #aaa;
+	color: #777;
 }
 table#check_call input#check_call_input{
 	font-weight: bold;
@@ -470,6 +478,88 @@ table#check_call input#check_call_input{
 table#check_call td.btn_space{
 	width: 100px;
 }
+
+
+table#check_call span#ex_calls_link{
+	font-size: 14px;
+	color: #55f;
+	text-decoration: underline;
+	margin-left: 20px;
+	cursor: pointer;
+}
+
+#ex_calls_form{
+	margin: 0 0 50px 0;
+	color: #333;
+}
+#ex_calls_form span{
+	font-style: italic;
+}
+#ex_calls_form span#help_eng{
+	font-style: normal;
+	display: block;
+	margin: 20px 0;
+	font-size: 14px;
+	color: #777;
+}
+#ex_calls_form textarea{
+	width: 1000px;
+	height: 40px;
+	color: #333;
+}
+
+
+
+
+
+
+
+
+/* =========================================  N E W / O L D   C A L L S I G N S   ================================*/
+
+
+div#new_old{
+	margin: 30px;
+}
+div#new_old input#call_search{
+	width: 200px;
+	margin-bottom: 30px;
+}
+
+table#new_old{
+	margin: 0px auto 100px auto;
+ 	border-collapse: collapse;
+}
+table#new_old td{
+	padding: 5px 0 0 0;
+	text-align: center;
+	color: #333;
+	vertical-align: middle;
+	border: none;
+}
+table#new_old td.top{
+	padding: 5px 10px;
+	border: 1px solid #dfedfd;
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+table#new_old td.new{
+	font-weight: bold;	
+}
+table#new_old td.btns{
+	padding-left: 10px;
+}
+table#new_old textarea{
+	width: 700px;
+	height: 40px;
+	color: #333;
+}
+
+
+
+
+
+
 
 
 #callsign_select_mode{
@@ -1895,28 +1985,4 @@ table#table_stats td.active{
 
 
 
-
-
-
-
-
-
-
-/*        =========================           НОВЫЙ - СТАРЫЙ ПОЗЫВНОЙ     ================================   */
-
-table#new_old{
-	margin: 0px auto 100px auto;
- 	border-collapse: collapse;
-}
-table#new_old td{
-	padding: 10px 0px;
-	text-align: center;
-	color: #333;
-	border: 1px solid #dfedfd;
-	vertical-align: middle;
-}
-table#new_old td.top{
-	font-weight: bold;	
-	background-color: #e7f2ff;
-}
 

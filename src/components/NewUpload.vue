@@ -57,7 +57,7 @@
             </tr>
           </table>
           <br/>
-          <div id="ok_check" v-if="validated"><b>Проверьте правильно ли указан RDA!</b><br/>
+          <div id="ok_check" v-if="validated"><b>Проверьте, правильно ли указан RDA!</b><br/>
               <input type="checkbox" name="ok_check" v-model="check"/> Да, всё верно.
           </div>
           <input type="button" name="upload_btn" id="upload_btn" v-if="check"

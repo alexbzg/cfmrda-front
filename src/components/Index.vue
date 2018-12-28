@@ -17,12 +17,37 @@
                 </td>
                 </tr>
                 <tr>
-                    <td></td><td>callsign</td><td></td>
+                    <td></td>
+                    <td id="ex_calls" v-if="(hunterData && hunterData.oldCallsigns &&
+                        hunterData.oldCallsigns.length) || 
+                        (callsignValid && callsignValid === $store.getters.userCallsign)">
+                        <b>ex-callsigns</b>: 
+                        <span v-for="item in hunterData.oldCallsigns" :key="item">{{item}} </span>
+                        <span id="ex_calls_link" v-if="(callsign && callsign === $store.getters.userCallsign)"
+                            @click="showCallsignsEdit = !showCallsignsEdit">
+                            ( add/edit )
+                        </span>
+                    </td>
+                    <td id="ex_calls" v-if="hunterData && hunterData.newCallsign">
+                        <b>{{callsignValid}} is the ex-callsign of {{hunterData.newCallsign}}</b> 
+                    </td>
+                    <td></td>
                 </tr>
             </table>
+            <div id="ex_calls_form" v-if="showCallsignsEdit">
+                Укажите (<b>через пробел</b>) свои старые <b>постояные</b> позывные после 1991 года. <b>Временные</b> (спец) позывные вносит <b>только владелец</b> лицензии.<br/>
+                Позывной нужно указывать <b>без дроби</b>. <span>(Например, R7AB/M или 5B4/R7AB и так будет автоматически засчитываться за R7AB)</span>.<br/>
+                <b>После утверждения модератором</b> статистика дополнительных позывных будет объединена с основным позывным RDA Охотника.<br/>
+                <span id="help_eng">Type (<b>separating by spaces</b>) your old <b>constant</b> callsign issued after 1991. <b>Temporary</b> (special) callsigns are typed <b>only by the owner</b> of the license.<br/>
+                The callsign must be given <b>without a fraction</b>. <span>(For example, R7AB/M ок 5B4/R7AB will be automatically counted for R7AB anyway)</span>.<br/>
+                The statistics of additional callsigns will be merged with the main callsign of RDA Hunter <b>after approval by the moderator</b>.</span>
+                <textarea v-model="callsignsEdit"></textarea><br/>
+                <input type="button" name="check_call_btn" value="OK" class="btn">
+            </div>
+
 
             <div id="callsign_error" v-if="callsignError">
-                No callign in the database
+                No callsign in the database
             </div>
 
             <table class="select_view" v-if="callsignValid && hunterData">
@@ -240,6 +265,8 @@ export default {
       mode: 'total',
       rdaValue: null,
       showDetails: false,
+      showCallsignsEdit: false,
+      callsignsEdit: null,
       message: null
     }
   },
@@ -258,14 +285,16 @@ export default {
     },
     loadHunter () {
       if (this.callsignValid) {
+        this.hunterData = null
         this.showDetails = false
         this.callsignError = false
         getHunterDetails(this.callsign)
           .then((data) => {
             this.hunterData = data
+            if (data.oldCallsigns)
+              this.callsignsEdit = data.oldCallsigns.join(' ')
             if (!data) {
               this.callsignError = true
-              this.callsignValid = null
               this.$callsignErrorTimeout =
                 setTimeout(() => { this.callsignError = false }, 10000)
             }
