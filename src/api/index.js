@@ -68,6 +68,10 @@ export function login (data) {
   return dataPost('login', data)
 }
 
+export function oldCallsigns (data) {
+  return dataPost('old_callsigns', data)
+}
+
 export function cfmQso (data) {
   return dataPost('cfm_qso', data)
 }

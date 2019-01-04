@@ -35,14 +35,24 @@
                 </tr>
             </table>
             <div id="ex_calls_form" v-if="showCallsignsEdit">
-                Укажите (<b>через пробел</b>) свои старые <b>постояные</b> позывные после 1991 года. <b>Временные</b> (спец) позывные вносит <b>только владелец</b> лицензии.<br/>
-                Позывной нужно указывать <b>без дроби</b>. <span>(Например, R7AB/M или 5B4/R7AB и так будет автоматически засчитываться за R7AB)</span>.<br/>
-                <b>После утверждения модератором</b> статистика дополнительных позывных будет объединена с основным позывным RDA Охотника.<br/>
-                <span id="help_eng">Type (<b>separating by spaces</b>) your old <b>constant</b> callsign issued after 1991. <b>Temporary</b> (special) callsigns are typed <b>only by the owner</b> of the license.<br/>
-                The callsign must be given <b>without a fraction</b>. <span>(For example, R7AB/M ок 5B4/R7AB will be automatically counted for R7AB anyway)</span>.<br/>
-                The statistics of additional callsigns will be merged with the main callsign of RDA Hunter <b>after approval by the moderator</b>.</span>
-                <textarea v-model="callsignsEdit"></textarea><br/>
-                <input type="button" name="check_call_btn" value="OK" class="btn">
+                Укажите (<b>через пробел</b>) свои старые <b>постояные</b> позывные после 1991 года. 
+                <b>Временные</b> (спец) позывные вносит <b>только владелец</b> лицензии.<br/>
+                Позывной нужно указывать <b>без дроби</b>. 
+                <span>(Например, R7AB/M или 5B4/R7AB и так будет автоматически засчитываться за R7AB)</span>.<br/>
+                <b>После утверждения модератором</b> статистика дополнительных позывных будет объединена 
+                с основным позывным RDA Охотника.<br/>
+                <span id="help_eng">
+                   Type (<b>separating by spaces</b>) your old <b>constant</b> callsign issued after 1991.
+                   <b>Temporary</b> (special) callsigns are typed <b>only by the owner</b> of the license.<br/>
+                   The callsign must be given <b>without a fraction</b>. 
+                   <span>(For example, R7AB/M ок 5B4/R7AB will be automatically counted for R7AB anyway)</span>
+                   .<br/>
+                   The statistics of additional callsigns will be merged with the main callsign of RDA Hunter 
+                   <b>after approval by the moderator</b>.
+                </span>
+                <textarea v-model="callsignsEdit" v-capitalize></textarea><br/>
+                <input type="button" name="check_call_btn" value="OK" class="btn" @click="postCallsigns">
+                <div id="callsign_edit_error" v-if="callsignsEditError">{{callsignsEditError}}</div>
             </div>
 
 
@@ -200,8 +210,11 @@
 </template>
 
 <script>
-import {getRankings, getHunterDetails, getRecentUploads, getMscData} from '../api'
+import {mapGetters} from 'vuex'
+
+import {getRankings, getHunterDetails, getRecentUploads, getMscData, oldCallsigns} from '../api'
 import storage from '../storage'
+import {arrayUnique, arraysEqSets} from '../utils'
 
 import rankDataMixin from '../rank-data-mixin'
 import replaceZerosMixin from '../replace-zeros-mixin'
@@ -210,7 +223,7 @@ import RankTable from './RankTable.vue'
 import Selector from './Selector.vue'
 import ViewUploadLink from './ViewUploadLink.vue'
 
-import {orderedBands} from '../ham-radio'
+import {orderedBands, stripCallsign} from '../ham-radio'
 
 const reStripCallsign = /\d*[A-Z]+\d+[A-Z]+/i
 const STORAGE_KEY_CALLSIGN = 'hunter_callsign'
@@ -267,6 +280,7 @@ export default {
       showDetails: false,
       showCallsignsEdit: false,
       callsignsEdit: null,
+      callsignsEditError: null,
       message: null
     }
   },
@@ -279,6 +293,20 @@ export default {
     }
   },
   methods: {
+    postCallsigns () {
+      if (this.callsignsEdit && this.callsignsEdit.length) {
+        const callsigns = arrayUnique(this.callsignsEdit.split(/[;,\s]+/).map(stripCallsign
+          ).filter((c) => {return c !== this.userCallsign}))
+        this.callsignsEdit = callsigns.join(' ')
+        if (!arraysEqSets(callsigns, this.hunterData.oldCallsigns)) {
+          this.callsignsEditError = null
+          oldCallsigns({token: this.userToken, callsigns: callsigns})
+            .catch((e) => {
+              this.callsignsEditError = e
+            })
+        }
+      }
+    },
     setCallsignValid () {
       storage.save(STORAGE_KEY_CALLSIGN, this.callsign, 'local')
       this.callsignValid = this.callsign
@@ -321,6 +349,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['userCallsign', 'userToken']),
     qsoFilter () {
       const allModes = this.isMeta(this.mode)
       const allBands = this.isMeta(this.band)
