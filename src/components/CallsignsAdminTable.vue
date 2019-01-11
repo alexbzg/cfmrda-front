@@ -7,23 +7,20 @@
                 Дополнительные позывные <span class="note_grey">(через пробел)</span>
             </td>
         </tr>
-        <tr>
-            <td><input type="checkbox" checked></td>
-            <td class="new">R7AB</td>
-            <td class="old"><textarea>RN6BN RA6AUV EZ6AKL</textarea></td>
-            <td class="btns"><input type="submit" class="btn" value="OK"></td>
-        </tr>
-        <tr>
-            <td><input type="checkbox"></td>
-            <td class="new">R7CL</td>
-            <td class="old"><textarea>RN6BN</textarea></td>
-            <td class="btns"><input type="submit" class="btn" value="OK"></td>
+        <tr v-for="(entry, idx) in entries" :key="idx">
+            <td><input type="checkbox" v-model="entry.confirmed"></td>
+            <td class="new">{{replace0(entry.new)}}</td>
+            <td class="old"><textarea v-model="entry.callsignsEdit" v-capitalize></textarea></td>
+            <td class="btns"><input type="submit" class="btn" value="OK" @click="saveClick(entry)"></td>
         </tr>
     </table>
 </template>
 
 <script>
 import ReplaceZerosMixin from '../replace-zeros-mixin'
+
+import {arrayUnique} from '../utils'
+import {stripCallsign} from '../ham-radio'
 
 export default {
   name: 'CallsignsAdminTable',
@@ -42,37 +39,22 @@ export default {
   methods: {
     createEntries () {
       return this.callsigns.map((entry) => {
-        const callsigns = entry.old.map((item) => {
-            return item.callsign
-          })
-        return {
+        const callsigns = entry.old.map((item) => {return item.callsign})
+        return  {
           new: entry.new,
           confirmed: entry.confirmed,
           old: callsigns,
           callsignsEdit: callsigns.join(' ')
-        })
+        }})
     },
     saveClick (entry) {
       if (confirm("Сохранить изменения позывных?")) {
         if (entry.callsignsEdit && entry.callsignsEdit.length) {
-          const callsigns = arrayUnique(entry.callsignsEdit.split(/[;,\s]+/).map(stripCallsign
+          entry.callsigns = arrayUnique(entry.callsignsEdit.split(/[;,\s]+/).map(stripCallsign
           ).filter((c) => {return c !== entry.new}))
-          entry.callsignsEdit = callsigns.join(' ')
-          if (!arraysEqSets(callsigns, entry.old.this.hunterData.oldCallsigns)) {
-          this.callsignsEditError = null
-          oldCallsigns({token: this.userToken, callsigns: callsigns})
-            .catch((e) => {
-              this.callsignsEditError = e
-            })
+          entry.callsignsEdit = entry.callsigns.join(' ')
         }
-      }
-       this.$emit('save-callsigns', entry)
-    },
-    deleteUpload (upload) {
-      if (confirm("Вы действительно хотите удалить файл?")) {
-        this.$emit('edit-uploads',
-          {delete: 1,
-          id: upload.id})
+        this.$emit('save-callsigns', entry)
       }
     }
   }

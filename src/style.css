@@ -490,7 +490,9 @@ table#check_call span#ex_calls_link{
 
 #ex_calls_form{
 	margin: 0 0 50px 0;
+	padding: 10px;
 	color: #333;
+	box-shadow: 2px 2px 6px rgba(0,0,0,0.3); /* Параметры тени */
 }
 #ex_calls_form span{
 	font-style: italic;
@@ -828,6 +830,79 @@ table.top_100 td span.rank{
 table.top_100 td span.callsign{
 	cursor: pointer;
 }
+
+
+
+
+
+
+
+
+
+
+
+#index_issued_awards{
+	margin: 50px auto 100px auto;
+	text-align: center;
+}
+#index_issued_awards table#select_award{
+	margin: 0 auto;
+ 	border-collapse: collapse;
+}
+#index_issued_awards table#select_award td{
+	padding: 7px 25px;
+	text-align: center;
+	color: #333;
+	border: none;
+}
+#index_issued_awards table#select_award td.top{
+	font-weight: bold;	
+	color: #009;
+	background-color: #e7f2ff;
+	text-decoration: underline;
+	cursor: pointer;
+	border: 1px solid #dfedfd;
+	font-weight: bold;
+}
+#index_issued_awards table#select_award td.active{
+	background-color: #ffffca; 
+}
+#index_issued_awards table#select_award td.separator{
+	padding: 0;
+	width: 20px;
+}
+#index_issued_awards .sub_award{
+	display: inline-block;
+	padding: 7px 25px;
+	color: #009;
+	background-color: #e7f2ff;
+	text-decoration: underline;
+	cursor: pointer;
+	border: 1px solid #dfedfd;
+	font-weight: bold;
+}
+#index_issued_awards .active{
+	background-color: #ffffca; 
+}
+#index_issued_awards table#select_award td#award_result{
+	font-size: 24px;
+	font-weight: bold;
+}
+#index_issued_awards table#select_award td#award_result span{
+	font-size: 18px;
+	color: #777;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

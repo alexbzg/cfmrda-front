@@ -2,30 +2,15 @@
     <div class="list">
         <div id="new_old">
 
-            <input type="text" id="call_search" v-model="searchValue"> 
+            <input type="text" id="call_search" v-model="searchValue" v-capitalize> 
             <input type="submit" class="btn" value="Искать" @click="doSearch">
 
-            <table id="new_old">
-                <tr>
-                    <td class="top">Проверен</td>
-                    <td class="top new">Позывной</td>
-                    <td class="top old" colspan="2">
-                        Дополнительные позывные <span class="note_grey">(через пробел)</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" checked></td>
-                    <td class="new">R7AB</td>
-                    <td class="old"><textarea>RN6BN RA6AUV EZ6AKL</textarea></td>
-                    <td class="btns"><input type="submit" class="btn" value="OK"></td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td class="new">R7CL</td>
-                    <td class="old"><textarea>RN6BN</textarea></td>
-                    <td class="btns"><input type="submit" class="btn" value="OK"></td>
-                </tr>
-            </table>
+            <callsigns-admin-table :callsigns="callsignsSearch"  v-if="callsignsSearch.length"
+                @save-callsigns="saveCallsigns">
+            </callsigns-admin-table>
+
+            <callsigns-admin-table :callsigns="callsignsNotConfirmed" @save-callsigns="saveCallsigns">
+            </callsigns-admin-table>
         </div>
     </div>
 
@@ -33,17 +18,20 @@
 <script>
 import {mapGetters} from 'vuex'
 
-import {qslAdmin} from '../api'
+import {oldCallsignsAdmin} from '../api'
 
+import CallsignsAdminTable from './CallsignsAdminTable'   
 
 export default {
   name: 'CallsignsAdmin',
+  components: {CallsignsAdminTable},
   data () {
     this.loadList()
     return {
       callsigns: [],
-      searchTerm: null,
+      searchValue: null,
       callsignsSearch: [],
+      callsignsNotConfirmed: [],    
       pending: false,
       success: false,
       response: null
@@ -52,22 +40,34 @@ export default {
   methods: {
     post(data) {
       data.token = this.$store.getters.userToken
-      return qslAdmin(data)
+      return oldCallsignsAdmin(data)
     },
     loadList() {
       this.post({})
         .then((data) => {
-          for (const qsl of data) {
-            qsl.cfm = false
-            qsl.not_cfm = false
-          }
-          this.qslList = data
+          this.callsigns = data
+          this.callsignsNotConfirmed = data.filter((entry) => {return !entry.confirmed})
+          this.doSearch()
         })
     },
-    buttonClick () {
+    doSearch () {
+      if (this.searchValue) {
+        this.callsignsSearch = this.callsigns.filter((entry) => {
+          return entry.new === this.searchValue || 
+            entry.old.findIndex((old) => {return old.callsign === this.searchValue}) > -1
+        })
+        if (this.callsignsSearch.length === 0)
+          this.callsignsSearch.push({
+            new: this.searchValue,
+            old: [],
+            confirmed: false
+          })
+      }
+    },
+    saveCallsigns (entry) {
       this.pending = true
       this.response = null
-      this.post({qsl: this.qsl})
+      this.post({confirm: entry})
         .then(() => {
           this.loadList()
         })
@@ -80,18 +80,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userToken']),
-    qsl () {
-      const r = []
-      for (const qsl of this.qslList) {
-        if (qsl.cfm || qsl.not_cfm) {
-          r.push({id: qsl.id, 
-            state: !!qsl.cfm,
-            comment: qsl.comment})
-        }
-      }
-      return r
-    }
+    ...mapGetters(['userToken'])
   }
 }
 </script>
