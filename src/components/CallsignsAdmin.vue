@@ -1,19 +1,20 @@
 <template>
-    <div class="list">
-        <div id="new_old">
+    <div id="new_old">
 
-            <input type="text" id="call_search" v-model="searchValue" v-capitalize> 
-            <input type="submit" class="btn" value="Искать" @click="doSearch">
-
-            <callsigns-admin-table :callsigns="callsignsSearch"  v-if="callsignsSearch.length"
-                @save-callsigns="saveCallsigns">
-            </callsigns-admin-table>
-
-            <callsigns-admin-table :callsigns="callsignsNotConfirmed" @save-callsigns="saveCallsigns">
-            </callsigns-admin-table>
+        <input type="text" id="call_search" v-model="searchValueEdit" v-capitalize> 
+        <input type="submit" class="btn" value="Искать" @click="searchValue = searchValueEdit">
+        <div v-if="callsignsSearch" class="searchClose">
+            <img src="images/icon_close.png" title="Закрыть результаты поиска" 
+                @click="searchValue = null"/>
         </div>
-    </div>
+        <callsigns-admin-table :callsigns="callsignsSearch"  v-if="callsignsSearch"
+            @save-callsigns="saveCallsigns">
+        </callsigns-admin-table>
 
+        <div v-if="response" id="message" :class="{success: success}" v-html="response"></div>
+        <callsigns-admin-table :callsigns="callsignsNotConfirmed" @save-callsigns="saveCallsigns">
+        </callsigns-admin-table>
+    </div>
 </template>
 <script>
 import {mapGetters} from 'vuex'
@@ -30,8 +31,7 @@ export default {
     return {
       callsigns: [],
       searchValue: null,
-      callsignsSearch: [],
-      callsignsNotConfirmed: [],    
+      searchValueEdit: null,
       pending: false,
       success: false,
       response: null
@@ -46,23 +46,7 @@ export default {
       this.post({})
         .then((data) => {
           this.callsigns = data
-          this.callsignsNotConfirmed = data.filter((entry) => {return !entry.confirmed})
-          this.doSearch()
         })
-    },
-    doSearch () {
-      if (this.searchValue) {
-        this.callsignsSearch = this.callsigns.filter((entry) => {
-          return entry.new === this.searchValue || 
-            entry.old.findIndex((old) => {return old.callsign === this.searchValue}) > -1
-        })
-        if (this.callsignsSearch.length === 0)
-          this.callsignsSearch.push({
-            new: this.searchValue,
-            old: [],
-            confirmed: false
-          })
-      }
     },
     saveCallsigns (entry) {
       this.pending = true
@@ -80,7 +64,26 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userToken'])
+    ...mapGetters(['userToken']),
+    callsignsSearch () {
+      if (this.searchValue) {
+        const r = this.callsigns.filter((entry) => {
+          return entry.new === this.searchValue || 
+            entry.old.findIndex((old) => {return old.callsign === this.searchValue}) > -1
+        })
+        if (r.length === 0)
+          r.push({
+            new: this.searchValue,
+            old: [],
+            confirmed: false
+          })
+        return r
+      } else
+        return null
+    },
+    callsignsNotConfirmed () {
+      return this.callsigns.filter((entry) => {return !entry.confirmed})
+    }
   }
 }
 </script>

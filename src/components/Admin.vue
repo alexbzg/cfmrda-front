@@ -2,8 +2,8 @@
   <div class="list">
     <div id="list_menu">
         <router-link to="/admin/uploads">Загрузки ADIF</router-link>
-        <router-link to="/admin/qsl">Проверка QSL карточек</router-link>
-        <router-link to="/admin/callsigns">Проверка позывных</router-link>
+        <router-link to="/admin/qsl">QSL карточки</router-link>
+        <router-link to="/admin/callsigns">Позывные</router-link>
     </div>
     <keep-alive>
         <router-view></router-view>
