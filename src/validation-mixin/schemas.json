@@ -339,6 +339,23 @@
         "required": ["id", "state", "comment"]
     }
 },
+"oldCallsigns": {
+    "type": "object",
+    "properties": {
+        "token": {
+            "type": "string",
+            "minLength": 3
+        },
+        "callsigns": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "pattern": "[A-Z]+\\d+[A-Z]+"
+            }
+        }
+    },
+    "required": ["token", "callsigns"]
+},
 "chat": {
     "type": "object",
     "properties": {

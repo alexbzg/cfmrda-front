@@ -1,15 +1,5 @@
 <template>
       <div id="upload">
-        <div id="upload_rules" @click="showInfo = !showInfo">Правила загрузки ADIF</div>
-            <ul id="upload_info" v-if="showInfo">
-              <li><b>Засчитываются QSO</b>, проведенные любым видом излучения на любых КВ диапазонах <b>c 12 июня 1991 года</b>.<br/>Связи, проведённые до этой даты, в базу CFMRDA добавлены не будут.</li>
-              <li><b>Один файл - один RDA район</b>. Если название файла будет начинаться с RDA района (<i>например, BU-10.adi или KR-03_R7AB.adi</i>), то RDA район в поле ввода будет вставлен автоматически.</li>
-              <li><b>Один файл - несколько RDA районов</b>. Отметьте "Брать RDA район активатора..." и напишите название ПОЛЯ в ADI файле, из которого будет браться RDA активатора для каждого QSO.<br/><img src="/images/help_0.jpg" title="Как указывать поле позывного в ADIF" /></li>
-              <li><b>Можно</b> выбирать и загружать <b>сразу несколько</b> ADI файлов.</li>
-              <li>Если <b>активатор</b> работал из RDA района <b>разными позывными</b> (<i>например, .../P и .../M</i>), то отметьте "Брать позывной активатора..." и напишите название ПОЛЯ (<i>без двоеточия и цифры</i>) в ADI файле, из которого будет браться позывной активатора для каждого QSO.<br/><img src="/images/help_1.jpg" title="Как указывать поле позывного в ADIF" /></li>
-              <li>Если <b>активатор</b> работал из RDA района <b>коллективным позывным</b> (<i>например, позывным R7AB работали операторы R7DA и R7TU</i>), то можно отметить "Подтвердить RDA районы..." и написать позывные операторов коллективной станции, чтобы проведенные QSO пошли в зачёт и операторам.</li>
-              <li>Если у активатора есть <b>лог работы</b> его <b>старым позывным</b>, а зачёт должен пойти и за новый позывной (<i>например, новый позывной RU6K, а старые позывные - UU2JQ, EO2012JQ, UB2JQ, UB4JLF</i>), то при загрузке лога укажите актуальный позывной на тот момент (<i>из примера - UU2JQ</i>), отметьте "Подтвердить RDA районы..." и напишите новый позывной (<i>из примера - RU6K</i>). Проведенные QSO пойдут в зачёт и старому, и новому позывному.</li>
-          </ul>
 
         <div id="upload_form" v-if="!pending">
           Позывной
@@ -67,7 +57,7 @@
             </tr>
           </table>
           <br/>
-          <div id="ok_check" v-if="validated">
+          <div id="ok_check" v-if="validated"><b>Проверьте, правильно ли указан RDA!</b><br/>
               <input type="checkbox" name="ok_check" v-model="check"/> Да, всё верно.
           </div>
           <input type="button" name="upload_btn" id="upload_btn" v-if="check"
@@ -108,13 +98,16 @@ import {parseRDA} from '../ham-radio'
 import validationMixin from '../validation-mixin'
 
 const STORAGE_KEY_STATION_CALLSIGN_SETTINGS = 'station_callsign_settings'
+const STORAGE_KEY_RDA_SETTINGS = 'rda_settings'
 const DEF_STATION_CALLSIGN_FIELD = 'STATION_CALLSIGN'
+const RDA_DETECT_SKIP = ['TO-20', 'OM-20', 'TO-19', 'OM-19']
 
 export default {
   mixins: [validationMixin],
   name: 'Upload',
   data () {
     const stationCallsignSettings = this.loadStationCallsignSettings()
+    const rdaSettings = this.loadRdaSettings()
     const adif = {
         rda: null,
         stationCallsignFieldEnable: stationCallsignSettings.fieldEnable,
@@ -124,15 +117,14 @@ export default {
             stationCallsignSettings.field : null,
         additionalActivatorsEnable: false,
         additionalActivators: null,
-        rdaFieldEnable: false,
-        rdaField: null,
+        rdaFieldEnable: rdaSettings.fieldEnable,
+        rdaField:rdaSettings.field,
         files: [],
         token: this.$store.getters.userToken,
         fileName: null
     }
     return {
       showSetup: false,
-      showInfo: false,
       pending: false,
       response: {
         message: null,
@@ -157,6 +149,10 @@ export default {
       return storage.load(STORAGE_KEY_STATION_CALLSIGN_SETTINGS) ||
         {fieldEnable: false, callsign: null, field: null}
     },
+    loadRdaSettings () {
+      return storage.load(STORAGE_KEY_RDA_SETTINGS) ||
+        {fieldEnable: false, field: null}
+    },
     clearResponse() {
       this.response.message = null
       this.response.errors = null
@@ -173,7 +169,11 @@ export default {
       for (let i = 0; i < files.length; i++) {
         const reader = new FileReader()
         const vm = this
-        const file = {name: files[i].name, rda: parseRDA(files[i].name)}
+        const rda = parseRDA(files[i].name)        
+        const file = {
+          name: files[i].name, 
+          rda: RDA_DETECT_SKIP.includes(rda) ? null : rda
+        }
         this.adif.files.push(file)
 
         reader.onload = function (e) {
@@ -192,6 +192,11 @@ export default {
       }
       stationCallsignSettings.fieldEnable = this.adif.stationCallsignFieldEnable
       storage.save(STORAGE_KEY_STATION_CALLSIGN_SETTINGS, stationCallsignSettings, 'local')
+      const rdaSettings = this.loadRdaSettings()
+      rdaSettings.fieldEnable = this.adif.rdaFieldEnable
+      if (this.adif.rdaFieldEnable)
+          rdaSettings.field = this.adif.rdaField
+      storage.save(STORAGE_KEY_RDA_SETTINGS, rdaSettings, 'local')
       this.pending = true
       this.check = false
       apiUploadADIF(this.adif)

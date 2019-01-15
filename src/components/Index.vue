@@ -2,7 +2,7 @@
     <div>
         <div class="list list1">
             <div id="qso_in_database" v-if="mscData.qsoCount">
-                <span>{{parseInt(mscData.qsoCount).toLocaleString()}} QSO</span> in our database
+                <span>{{parseInt(mscData.qsoCount).toLocaleString()}}</span> QSO
             </div>
             <table id="check_call">
                 <tr>
@@ -17,12 +17,47 @@
                 </td>
                 </tr>
                 <tr>
-                    <td></td><td>callsign</td><td></td>
+                    <td></td>
+                    <td id="ex_calls" v-if="(hunterData && hunterData.oldCallsigns &&
+                        hunterData.oldCallsigns.length) || 
+                        (callsignValid && callsignValid === $store.getters.userCallsign)">
+                        <b>ex-callsigns</b>: 
+                        <span v-for="item in hunterData.oldCallsigns" :key="item">{{item}} </span>
+                        <span id="ex_calls_link" v-if="(callsign && callsign === $store.getters.userCallsign)"
+                            @click="showCallsignsEdit = !showCallsignsEdit">
+                            ( add/edit )
+                        </span>
+                    </td>
+                    <td id="ex_calls" v-if="hunterData && hunterData.newCallsign">
+                        <b>{{callsignValid}} is the ex-callsign of {{hunterData.newCallsign}}</b> 
+                    </td>
+                    <td></td>
                 </tr>
             </table>
+            <div id="ex_calls_form" v-if="showCallsignsEdit">
+                Укажите (<b>через пробел</b>) свои старые <b>постояные</b> позывные после 1991 года. 
+                <b>Временные</b> (спец) позывные вносит <b>только владелец</b> лицензии.<br/>
+                Позывной нужно указывать <b>без дроби</b>. 
+                <span>(Например, R7AB/M или 5B4/R7AB и так будет автоматически засчитываться за R7AB)</span>.<br/>
+                <b>После утверждения модератором</b> статистика дополнительных позывных будет объединена 
+                с основным позывным RDA Охотника.<br/>
+                <span id="help_eng">
+                   Type (<b>separating by spaces</b>) your old <b>constant</b> callsign issued after 1991.
+                   <b>Temporary</b> (special) callsigns are typed <b>only by the owner</b> of the license.<br/>
+                   The callsign must be given <b>without a fraction</b>. 
+                   <span>(For example, R7AB/M ок 5B4/R7AB will be automatically counted for R7AB anyway)</span>
+                   .<br/>
+                   The statistics of additional callsigns will be merged with the main callsign of RDA Hunter 
+                   <b>after approval by the moderator</b>.
+                </span>
+                <textarea v-model="callsignsEdit" v-capitalize></textarea><br/>
+                <input type="button" name="check_call_btn" value="OK" class="btn" @click="postCallsigns">
+                <div id="callsign_edit_error" v-if="callsignsEditError">{{callsignsEditError}}</div>
+            </div>
+
 
             <div id="callsign_error" v-if="callsignError">
-                No callign in the database
+                No callsign in the database
             </div>
 
             <table class="select_view" v-if="callsignValid && hunterData">
@@ -138,7 +173,7 @@
 
     <div class="list">
       <h4>Latest uploads</h4>
-      Статистика CFM RDA пересчитывается раз в сутки в 00:00мск
+      Статистика CFM RDA пересчитывается раз в сутки после 00:00 мск
         <table id="last_uploads">
             <tr>
                 <td class="rda menu">RDA</td>
@@ -175,8 +210,11 @@
 </template>
 
 <script>
-import {getRankings, getHunterDetails, getRecentUploads, getMscData} from '../api'
+import {mapGetters} from 'vuex'
+
+import {getRankings, getHunterDetails, getRecentUploads, getMscData, oldCallsigns} from '../api'
 import storage from '../storage'
+import {arrayUnique, arraysEqSets} from '../utils'
 
 import rankDataMixin from '../rank-data-mixin'
 import replaceZerosMixin from '../replace-zeros-mixin'
@@ -185,7 +223,7 @@ import RankTable from './RankTable.vue'
 import Selector from './Selector.vue'
 import ViewUploadLink from './ViewUploadLink.vue'
 
-import {orderedBands} from '../ham-radio'
+import {orderedBands, stripCallsign} from '../ham-radio'
 
 const reStripCallsign = /\d*[A-Z]+\d+[A-Z]+/i
 const STORAGE_KEY_CALLSIGN = 'hunter_callsign'
@@ -240,6 +278,9 @@ export default {
       mode: 'total',
       rdaValue: null,
       showDetails: false,
+      showCallsignsEdit: false,
+      callsignsEdit: null,
+      callsignsEditError: null,
       message: null
     }
   },
@@ -252,20 +293,36 @@ export default {
     }
   },
   methods: {
+    postCallsigns () {
+      if (this.callsignsEdit && this.callsignsEdit.length) {
+        const callsigns = arrayUnique(this.callsignsEdit.split(/[;,\s]+/).map(stripCallsign
+          ).filter((c) => {return c !== this.userCallsign}))
+        this.callsignsEdit = callsigns.join(' ')
+        if (!arraysEqSets(callsigns, this.hunterData.oldCallsigns)) {
+          this.callsignsEditError = null
+          oldCallsigns({token: this.userToken, callsigns: callsigns})
+            .catch((e) => {
+              this.callsignsEditError = e
+            })
+        }
+      }
+    },
     setCallsignValid () {
       storage.save(STORAGE_KEY_CALLSIGN, this.callsign, 'local')
       this.callsignValid = this.callsign
     },
     loadHunter () {
       if (this.callsignValid) {
+        this.hunterData = null
         this.showDetails = false
         this.callsignError = false
         getHunterDetails(this.callsign)
           .then((data) => {
             this.hunterData = data
+            if (data.oldCallsigns)
+              this.callsignsEdit = data.oldCallsigns.join(' ')
             if (!data) {
               this.callsignError = true
-              this.callsignValid = null
               this.$callsignErrorTimeout =
                 setTimeout(() => { this.callsignError = false }, 10000)
             }
@@ -292,6 +349,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['userCallsign', 'userToken']),
     qsoFilter () {
       const allModes = this.isMeta(this.mode)
       const allBands = this.isMeta(this.band)

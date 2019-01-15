@@ -1,6 +1,7 @@
 <template>
   <div class="list">
     <div id="list_menu">
+        <router-link to="/uploads/rules">Правила загрузки</router-link>
         <router-link to="/uploads">Загрузить ADIF</router-link>
         <router-link to="/uploads/manage">Мои загрузки</router-link>
     </div>

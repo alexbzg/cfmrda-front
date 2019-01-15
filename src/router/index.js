@@ -22,6 +22,7 @@ const CfmBlacklist = () => import(/* webpackChunkName: "cfm_blacklist" */ './../
 
 const Admin = () => import(/* webpackChunkName: "admin" */ './../components/Admin.vue')
 const QslAdmin = () => import(/* webpackChunkName: "admin" */ './../components/QslAdmin.vue')
+const CallsignsAdmin = () => import(/* webpackChunkName: "admin" */ './../components/CallsignsAdmin.vue')
 
 const AutoRegistration = () => import(/* webpackChunkName: "auto_reg" */ './../components/AutoRegistration.vue')
 
@@ -65,6 +66,11 @@ const router = new Router({
           component: QslAdmin
         },
         {
+          path: 'callsigns',
+          name: 'CallsignsAdmin',
+          component: CallsignsAdmin
+        },
+        {
           path: 'uploads',
           name: 'ManageUploads',
           component: ManageUploads,
@@ -90,6 +96,12 @@ const router = new Router({
           component: ManageUploads
         },
         {
+        path: 'rules',
+        name: 'StaticPage',
+        component: StaticPage,
+        props: {page: 'rulesADIF'}
+        },
+        {
           path: '',
           name: 'NewUpload',
           component: NewUpload
@@ -104,7 +116,8 @@ const router = new Router({
     {
       path: '/static/:page',
       name: 'StaticPage',
-      component: StaticPage
+      component: StaticPage,
+      props: true
     },
     {
       path: '/login',
