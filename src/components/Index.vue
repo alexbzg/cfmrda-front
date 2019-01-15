@@ -9,7 +9,7 @@
                 <td class="btn_space"></td>
                 <td>
                     <input type="text" name="check_call_input" id="check_call_input" 
-                        v-capitalize v-model="callsign" @change="callsignChange()">
+                        v-capitalize v-model="callsign" @input="callsignChange()">
                 </td>
                 <td class="btn_space">
                     <input type="button" name="check_call_btn" value="OK" class="btn"
@@ -20,7 +20,8 @@
                     <td></td>
                     <td id="ex_calls" v-if="(hunterData && hunterData.oldCallsigns &&
                         hunterData.oldCallsigns.length) || 
-                        (callsignValid && callsignValid === $store.getters.userCallsign)">
+                        (callsign && callsign === callsignValid && 
+                        callsignValid === $store.getters.userCallsign)">
                         <b>ex-callsigns</b>: 
                         <span v-for="item in hunterData.oldCallsigns" :key="item">{{item}} </span>
                         <span id="ex_calls_link" v-if="(callsign && callsign === $store.getters.userCallsign)"
@@ -34,7 +35,8 @@
                     <td></td>
                 </tr>
             </table>
-            <div id="ex_calls_form" v-if="showCallsignsEdit">
+            <div id="ex_calls_form" v-if="callsignValid && callsignValid === $store.getters.userCallsign && 
+                showCallsignsEdit">
                 Укажите (<b>через пробел</b>) свои старые <b>постояные</b> позывные после 1991 года. 
                 <b>Временные</b> (спец) позывные вносит <b>только владелец</b> лицензии.<br/>
                 Позывной нужно указывать <b>без дроби</b>. 
@@ -225,7 +227,6 @@ import ViewUploadLink from './ViewUploadLink.vue'
 
 import {orderedBands, stripCallsign} from '../ham-radio'
 
-const reStripCallsign = /\d*[A-Z]+\d+[A-Z]+/i
 const STORAGE_KEY_CALLSIGN = 'hunter_callsign'
 
 import rdaShort from '../rdaShort.json'
@@ -301,6 +302,9 @@ export default {
         if (!arraysEqSets(callsigns, this.hunterData.oldCallsigns)) {
           this.callsignsEditError = null
           oldCallsigns({token: this.userToken, callsigns: callsigns})
+            .then(() => {
+              this.showCallsignsEdit = false
+            })
             .catch((e) => {
               this.callsignsEditError = e
             })
@@ -312,7 +316,9 @@ export default {
       this.callsignValid = this.callsign
     },
     loadHunter () {
-      if (this.callsignValid) {
+      const callsign = stripCallsign(this.callsign)
+      if (callsign) {
+        this.setCallsignValid()
         this.hunterData = null
         this.showDetails = false
         this.callsignError = false
@@ -338,14 +344,13 @@ export default {
       this.loadHunter()
     },
     callsignChange () {
-      let csMatch = null
-      this.callsignValid = false
-      if ((csMatch = reStripCallsign.exec(this.callsign)) !== null) {
-        this.callsign = csMatch[0]
-        reStripCallsign.lastIndex = 0
-        this.callsign = this.callsign.toUpperCase()
-        this.setCallsignValid()
-      }
+      this.callsignValid = null
+      this.hunterData = null
+      this.showDetails = false
+      this.callsignError = false
+      const callsign = stripCallsign(this.callsign)
+      if (callsign)
+        this.callsign = callsign
     }
   },
   computed: {
