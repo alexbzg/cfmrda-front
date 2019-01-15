@@ -98,6 +98,7 @@ import {parseRDA} from '../ham-radio'
 import validationMixin from '../validation-mixin'
 
 const STORAGE_KEY_STATION_CALLSIGN_SETTINGS = 'station_callsign_settings'
+const STORAGE_KEY_RDA_SETTINGS = 'rda_settings'
 const DEF_STATION_CALLSIGN_FIELD = 'STATION_CALLSIGN'
 const RDA_DETECT_SKIP = ['TO-20', 'OM-20', 'TO-19', 'OM-19']
 
@@ -106,6 +107,7 @@ export default {
   name: 'Upload',
   data () {
     const stationCallsignSettings = this.loadStationCallsignSettings()
+    const rdaSettings = this.loadRdaSettings()
     const adif = {
         rda: null,
         stationCallsignFieldEnable: stationCallsignSettings.fieldEnable,
@@ -115,8 +117,8 @@ export default {
             stationCallsignSettings.field : null,
         additionalActivatorsEnable: false,
         additionalActivators: null,
-        rdaFieldEnable: false,
-        rdaField: null,
+        rdaFieldEnable: rdaSettings.fieldEnable,
+        rdaField:rdaSettings.field,
         files: [],
         token: this.$store.getters.userToken,
         fileName: null
@@ -146,6 +148,10 @@ export default {
     loadStationCallsignSettings () {
       return storage.load(STORAGE_KEY_STATION_CALLSIGN_SETTINGS) ||
         {fieldEnable: false, callsign: null, field: null}
+    },
+    loadRdaSettings () {
+      return storage.load(STORAGE_KEY_RDA_SETTINGS) ||
+        {fieldEnable: false, field: null}
     },
     clearResponse() {
       this.response.message = null
@@ -186,6 +192,11 @@ export default {
       }
       stationCallsignSettings.fieldEnable = this.adif.stationCallsignFieldEnable
       storage.save(STORAGE_KEY_STATION_CALLSIGN_SETTINGS, stationCallsignSettings, 'local')
+      const rdaSettings = this.loadRdaSettings()
+      rdaSettings.fieldEnable = this.adif.rdaFieldEnable
+      if (this.adif.rdaFieldEnable)
+          rdaSettings.field = this.adif.rdaField
+      storage.save(STORAGE_KEY_RDA_SETTINGS, rdaSettings, 'local')
       this.pending = true
       this.check = false
       apiUploadADIF(this.adif)
