@@ -478,6 +478,9 @@ table#check_call input#check_call_input{
 table#check_call td.btn_space{
 	width: 100px;
 }
+table#check_call td#ex_calls span{
+	margin-left: 10px;
+}
 
 
 table#check_call span#ex_calls_link{
@@ -666,15 +669,15 @@ table.select_view td.separator{
 
 
 
-.view_menu_line{
+.view_menu{
 	text-align: center;
 	width: 1060px;
-	margin: 0 auto 10px auto;
-	height: 40px;
+	margin: 20px auto 20px auto;
 }
-.view_menu_line .menu{
+.view_menu .menu{
 	display: inline-block;
 	padding: 7px 25px;
+	margin-bottom: 10px;
 	color: #009;
 	font-weight: bold;	
 	border: 1px solid #dfedfd;
@@ -682,18 +685,59 @@ table.select_view td.separator{
 	text-decoration: underline;
 	cursor: pointer;
 }
-.view_menu_line .selected{
+.view_menu .selected{
 	background-color: #ffffca;
 }
-.view_menu_line .tab{
+.view_menu .tab{
 	margin-left: 10px;
 }
-.view_menu_line .left{
+.view_menu .left{
 	float: left;
 }
-.view_menu_line .right{
+.view_menu .right{
 	float: right;
 }
+
+
+
+
+
+
+
+
+table.top_100{
+	width: 95%;
+	margin: 0px auto 50px auto;
+	border-collapse: collapse;
+}
+table.top_100 td{
+	padding: 7px 0px 7px 10px;
+	width: 10%;
+	vertical-align: middle;
+	text-align: left;
+}
+table.top_100 td.selected{
+	font-weight: bold;
+	color: #a00;
+	background-color: #ffffca;
+	box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+}
+table.top_100 td span.rank{
+	font-size: 12px;
+	color: #aaa;
+}
+table.top_100 td span.call_result{
+	font-size: 12px;
+	color: #009;
+	margin-left: 5px;
+}
+
+table.top_100 td span.callsign{
+	cursor: pointer;
+}
+
+
+
 
 
 
@@ -841,40 +885,6 @@ table#stat1rda_activator{
 
 
 
-
-
-
-
-table.top_100{
-	width: 95%;
-	margin: 20px auto 50px auto;
-	border-collapse: collapse;
-}
-table.top_100 td{
-	padding: 5px 0px 5px 10px;
-	width: 10%;
-	vertical-align: middle;
-	text-align: left;
-}
-table.top_100 td.selected{
-	font-weight: bold;
-	color: #a00;
-	background-color: #ffffca;
-	box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-}
-table.top_100 td span.rank{
-	font-size: 12px;
-	color: #900;
-}
-table.top_100 td span.call_result{
-	font-size: 12px;
-	color: #009;
-	margin-left: 5px;
-}
-
-table.top_100 td span.callsign{
-	cursor: pointer;
-}
 
 
 

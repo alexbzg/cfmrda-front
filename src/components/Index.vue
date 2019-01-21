@@ -217,6 +217,8 @@ import {mapGetters} from 'vuex'
 import {getRankings, getHunterDetails, getRecentUploads, getMscData, oldCallsigns} from '../api'
 import storage from '../storage'
 import {arrayUnique, arraysEqSets} from '../utils'
+import {orderedBands, stripCallsign} from '../ham-radio'
+import {SET_OLD_CALLSIGNS_ALL} from '../store'
 
 import rankDataMixin from '../rank-data-mixin'
 import replaceZerosMixin from '../replace-zeros-mixin'
@@ -225,7 +227,6 @@ import RankTable from './RankTable.vue'
 import Selector from './Selector.vue'
 import ViewUploadLink from './ViewUploadLink.vue'
 
-import {orderedBands, stripCallsign} from '../ham-radio'
 
 const STORAGE_KEY_CALLSIGN = 'hunter_callsign'
 
@@ -304,6 +305,7 @@ export default {
           oldCallsigns({token: this.userToken, callsigns: callsigns})
             .then(() => {
               this.showCallsignsEdit = false
+              this.$store.commit(SET_OLD_CALLSIGNS_ALL, callsigns)
             })
             .catch((e) => {
               this.callsignsEditError = e
@@ -314,6 +316,8 @@ export default {
     setCallsignValid () {
       storage.save(STORAGE_KEY_CALLSIGN, this.callsign, 'local')
       this.callsignValid = this.callsign
+      if (this.callsign === this.oldCallsigns)
+        this.callsignEdit = this.oldCallsigns.all.join(' ')
     },
     loadHunter () {
       const callsign = stripCallsign(this.callsign)
@@ -354,7 +358,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userCallsign', 'userToken']),
+    ...mapGetters(['userCallsign', 'userToken', 'oldCallsigns']),
     qsoFilter () {
       const allModes = this.isMeta(this.mode)
       const allBands = this.isMeta(this.band)

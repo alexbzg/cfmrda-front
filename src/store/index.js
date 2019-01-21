@@ -15,6 +15,7 @@ const STORAGE_KEY_USER = 'user'
 const USER_INIT_MUTATION = 'userInit'
 const SET_UPLOADS_MUTATION = 'setUploads'
 export const SET_USER_MUTATION = 'setUser'
+export const SET_OLD_CALLSIGNS_ALL = 'setOldCallsignsAll'
 
 export const GET_UPLOADS_ACTION = 'getUploads'
 
@@ -36,6 +37,9 @@ const store = new Vuex.Store({
     },
     uploads: state => {
       return JSON.parse(JSON.stringify(state.uploads))
+    },
+    oldCallsigns: state => {
+      return JSON.parse(JSON.stringify(state.oldCallsigns))
     }
   },
   mutations: {
@@ -53,6 +57,9 @@ const store = new Vuex.Store({
     },
     [SET_UPLOADS_MUTATION] (state, uploads) {
       state.uploads = uploads
+    },
+    [SET_OLD_CALLSIGNS_ALL] (state, callsigns) {
+      state.oldCallsigns.all = JSON.parse(JSON.stringify(callsigns))
     }
   },
   actions: {
