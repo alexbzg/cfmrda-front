@@ -39,7 +39,7 @@ const store = new Vuex.Store({
       return JSON.parse(JSON.stringify(state.uploads))
     },
     oldCallsigns: state => {
-      return JSON.parse(JSON.stringify(state.oldCallsigns))
+      return state.user ? JSON.parse(JSON.stringify(state.user.oldCallsigns)) : null
     }
   },
   mutations: {
@@ -59,7 +59,7 @@ const store = new Vuex.Store({
       state.uploads = uploads
     },
     [SET_OLD_CALLSIGNS_ALL] (state, callsigns) {
-      state.oldCallsigns.all = JSON.parse(JSON.stringify(callsigns))
+      state.user.oldCallsigns.all = JSON.parse(JSON.stringify(callsigns))
     }
   },
   actions: {

@@ -4,7 +4,7 @@
     "properties": {
         "callsign": { 
             "type": "string",
-            "pattern":  "^[A-Z]+\\d+[A-Z]+$",
+            "pattern":  "$reCallsignBase$",
             "minLength": 3
         },
         "password": {
@@ -19,7 +19,7 @@
     "properties": {
         "callsign": { 
             "type": "string",
-            "pattern":  "^[A-Z]+\\d+[A-Z]+$",
+            "pattern":  "$reCallsignBase$",
             "minLength": 3
         },
         "password": {
@@ -43,7 +43,7 @@
     "properties": {
         "callsign": { 
             "type": "string",
-            "pattern":  "^[A-Z]+\\d+[A-Z]+$",
+            "pattern":  "$reCallsignBase$",
             "minLength": 3
         },
         "recaptcha": {
@@ -125,7 +125,7 @@
                 "properties": {
                     "stationCallsign": {
                         "type": "string",
-                        "pattern": "^(:?[A-Z\\d]+\\/)?[A-Z]+\\d+[A-Z]+(:?\\/[A-Z\\d]+)*$"
+                        "pattern": "$reCallsignFull$"
                     },
                     "stationCallsignFieldEnable": {
                         "enum": [false]
@@ -233,7 +233,7 @@
         },
         "stationCallsign": {
             "type": "string",
-            "pattern": "(:?\\*|^(:?[A-Z\\d]+\\/)?[A-Z]+\\d+[A-Z]+(:?\\/[A-Z\\d]+)*$)"
+            "pattern": "$reCallsignFull$"
         },
         "rda": {"enum": "$rdaValues$"},
         "time": {
@@ -284,11 +284,11 @@
                 "properties": {
                     "callsign": {
                         "type": "string",
-                        "pattern": "[A-Z]+\\d+[A-Z]+"
+                        "pattern": "$reCallsignBase$"
                     },
                     "stationCallsign": {
                         "type": "string",
-                        "pattern": "(:?\\*|^(:?[A-Z\\d]+\\/)?[A-Z]+\\d+[A-Z]+(:?\\/[A-Z\\d]+)*$)"
+                        "pattern": "$reCallsignFull$"
                     },
                     "rda": {"enum": "$rdaValues$"},
                     "time": {
@@ -303,7 +303,7 @@
                     },
                     "correspondent": {
                         "type": "string",
-                        "pattern": "[A-Z]+\\d+[A-Z]+"
+                        "pattern": "$reCallsignBase$"
                     },
                     "email": {
                         "type": "string",
@@ -350,7 +350,7 @@
             "type": "array",
             "items": {
                 "type": "string",
-                "pattern": "[A-Z]+\\d+[A-Z]+"
+                "pattern": "$reCallsignBase$"
             }
         }
     },
@@ -365,7 +365,7 @@
         },
         "callsign": {
             "type": "string",
-            "pattern": "(:?\\*|^(:?[A-Z\\d]+\\/)?[A-Z]+\\d+[A-Z]+(:?\\/[A-Z\\d]+)*$)"
+            "pattern": "$reCallsignFull$"
         },
         "message": {
             "type": "string",

@@ -38,6 +38,7 @@ export function parseRDA (val) {
   return r
 }
 
+
 const reSTRIP_CALLSIGN = /\d*[A-Z]+\d+[A-Z]+/
 
 export function stripCallsign(callsign) {

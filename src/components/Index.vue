@@ -18,10 +18,10 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td id="ex_calls" v-if="(hunterData && hunterData.oldCallsigns &&
-                        hunterData.oldCallsigns.length) || 
+                    <td id="ex_calls" v-if="(hunterData && hunterData.oldCallsigns) &&
+                        (hunterData.oldCallsigns.length || 
                         (callsign && callsign === callsignValid && 
-                        callsignValid === $store.getters.userCallsign)">
+                        callsignValid === $store.getters.userCallsign))">
                         <b>ex-callsigns</b>: 
                         <span v-for="item in hunterData.oldCallsigns" :key="item">{{item}} </span>
                         <span id="ex_calls_link" v-if="(callsign && callsign === $store.getters.userCallsign)"
@@ -298,9 +298,9 @@ export default {
     postCallsigns () {
       if (this.callsignsEdit && this.callsignsEdit.length) {
         const callsigns = arrayUnique(this.callsignsEdit.split(/[;,\s]+/).map(stripCallsign
-          ).filter((c) => {return c !== this.userCallsign}))
+          ).filter((c) => {return c !== this.userCallsign && c !== null}))
         this.callsignsEdit = callsigns.join(' ')
-        if (!arraysEqSets(callsigns, this.hunterData.oldCallsigns)) {
+        if (!arraysEqSets(callsigns, this.oldCallsigns.all)) {
           this.callsignsEditError = null
           oldCallsigns({token: this.userToken, callsigns: callsigns})
             .then(() => {
@@ -316,8 +316,6 @@ export default {
     setCallsignValid () {
       storage.save(STORAGE_KEY_CALLSIGN, this.callsign, 'local')
       this.callsignValid = this.callsign
-      if (this.callsign === this.oldCallsigns)
-        this.callsignEdit = this.oldCallsigns.all.join(' ')
     },
     loadHunter () {
       const callsign = stripCallsign(this.callsign)
@@ -326,11 +324,11 @@ export default {
         this.hunterData = null
         this.showDetails = false
         this.callsignError = false
+        if (this.callsign === this.userCallsign)
+          this.callsignsEdit = this.oldCallsigns.all.join(' ')
         getHunterDetails(this.callsign)
           .then((data) => {
             this.hunterData = data
-            if (data.oldCallsigns)
-              this.callsignsEdit = data.oldCallsigns.join(' ')
             if (!data) {
               this.callsignError = true
               this.$callsignErrorTimeout =
