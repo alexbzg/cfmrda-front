@@ -9,7 +9,7 @@
                 <td class="btn_space"></td>
                 <td>
                     <input type="text" name="check_call_input" id="check_call_input" 
-                        v-capitalize v-model="callsign" @change="callsignChange()">
+                        v-capitalize v-model="callsign" @input="callsignChange()">
                 </td>
                 <td class="btn_space">
                     <input type="button" name="check_call_btn" value="OK" class="btn"
@@ -18,9 +18,10 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td id="ex_calls" v-if="(hunterData && hunterData.oldCallsigns &&
-                        hunterData.oldCallsigns.length) || 
-                        (callsignValid && callsignValid === $store.getters.userCallsign)">
+                    <td id="ex_calls" v-if="(hunterData && hunterData.oldCallsigns) &&
+                        (hunterData.oldCallsigns.length || 
+                        (callsign && callsign === callsignValid && 
+                        callsignValid === $store.getters.userCallsign))">
                         <b>ex-callsigns</b>: 
                         <span v-for="item in hunterData.oldCallsigns" :key="item">{{item}} </span>
                         <span id="ex_calls_link" v-if="(callsign && callsign === $store.getters.userCallsign)"
@@ -34,7 +35,8 @@
                     <td></td>
                 </tr>
             </table>
-            <div id="ex_calls_form" v-if="showCallsignsEdit">
+            <div id="ex_calls_form" v-if="callsignValid && callsignValid === $store.getters.userCallsign && 
+                showCallsignsEdit">
                 Укажите (<b>через пробел</b>) свои старые <b>постояные</b> позывные после 1991 года. 
                 <b>Временные</b> (спец) позывные вносит <b>только владелец</b> лицензии.<br/>
                 Позывной нужно указывать <b>без дроби</b>. 
@@ -215,6 +217,8 @@ import {mapGetters} from 'vuex'
 import {getRankings, getHunterDetails, getRecentUploads, getMscData, oldCallsigns} from '../api'
 import storage from '../storage'
 import {arrayUnique, arraysEqSets} from '../utils'
+import {orderedBands, stripCallsign} from '../ham-radio'
+import {SET_OLD_CALLSIGNS_ALL} from '../store'
 
 import rankDataMixin from '../rank-data-mixin'
 import replaceZerosMixin from '../replace-zeros-mixin'
@@ -223,9 +227,7 @@ import RankTable from './RankTable.vue'
 import Selector from './Selector.vue'
 import ViewUploadLink from './ViewUploadLink.vue'
 
-import {orderedBands, stripCallsign} from '../ham-radio'
 
-const reStripCallsign = /\d*[A-Z]+\d+[A-Z]+/i
 const STORAGE_KEY_CALLSIGN = 'hunter_callsign'
 
 import rdaShort from '../rdaShort.json'
@@ -296,11 +298,15 @@ export default {
     postCallsigns () {
       if (this.callsignsEdit && this.callsignsEdit.length) {
         const callsigns = arrayUnique(this.callsignsEdit.split(/[;,\s]+/).map(stripCallsign
-          ).filter((c) => {return c !== this.userCallsign}))
+          ).filter((c) => {return c !== this.userCallsign && c !== null}))
         this.callsignsEdit = callsigns.join(' ')
-        if (!arraysEqSets(callsigns, this.hunterData.oldCallsigns)) {
+        if (!arraysEqSets(callsigns, this.oldCallsigns.all)) {
           this.callsignsEditError = null
           oldCallsigns({token: this.userToken, callsigns: callsigns})
+            .then(() => {
+              this.showCallsignsEdit = false
+              this.$store.commit(SET_OLD_CALLSIGNS_ALL, callsigns)
+            })
             .catch((e) => {
               this.callsignsEditError = e
             })
@@ -312,15 +318,17 @@ export default {
       this.callsignValid = this.callsign
     },
     loadHunter () {
-      if (this.callsignValid) {
+      const callsign = stripCallsign(this.callsign)
+      if (callsign) {
+        this.setCallsignValid()
         this.hunterData = null
         this.showDetails = false
         this.callsignError = false
+        if (this.callsign === this.userCallsign)
+          this.callsignsEdit = this.oldCallsigns.all.join(' ')
         getHunterDetails(this.callsign)
           .then((data) => {
             this.hunterData = data
-            if (data.oldCallsigns)
-              this.callsignsEdit = data.oldCallsigns.join(' ')
             if (!data) {
               this.callsignError = true
               this.$callsignErrorTimeout =
@@ -338,18 +346,17 @@ export default {
       this.loadHunter()
     },
     callsignChange () {
-      let csMatch = null
-      this.callsignValid = false
-      if ((csMatch = reStripCallsign.exec(this.callsign)) !== null) {
-        this.callsign = csMatch[0]
-        reStripCallsign.lastIndex = 0
-        this.callsign = this.callsign.toUpperCase()
-        this.setCallsignValid()
-      }
+      this.callsignValid = null
+      this.hunterData = null
+      this.showDetails = false
+      this.callsignError = false
+      const callsign = stripCallsign(this.callsign)
+      if (callsign)
+        this.callsign = callsign
     }
   },
   computed: {
-    ...mapGetters(['userCallsign', 'userToken']),
+    ...mapGetters(['userCallsign', 'userToken', 'oldCallsigns']),
     qsoFilter () {
       const allModes = this.isMeta(this.mode)
       const allBands = this.isMeta(this.band)

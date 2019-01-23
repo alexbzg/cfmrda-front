@@ -49,11 +49,9 @@ export default {
     },
     saveClick (entry) {
       if (confirm("Сохранить изменения позывных?")) {
-        if (entry.callsignsEdit && entry.callsignsEdit.length) {
-          entry.old = arrayUnique(entry.callsignsEdit.split(/[;,\s]+/).map(stripCallsign
-          ).filter((c) => {return c !== entry.new}))
-          entry.callsignsEdit = entry.old.join(' ')
-        }
+        entry.old = arrayUnique(entry.callsignsEdit.split(/[;,\s]+/).map(stripCallsign
+          ).filter((c) => {return c !== null && c !== entry.new}))
+        entry.callsignsEdit = entry.old.join(' ')
         this.$emit('save-callsigns', entry)
       }
     }

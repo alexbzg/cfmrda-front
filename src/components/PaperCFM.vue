@@ -28,7 +28,8 @@
                         :class="{error: validationErrors.rda}"/>
                 </td>
                 <td class="qsl_date">
-                    <datepicker v-model="qso.date" :input-class="{error: !qso.date}"></datepicker>
+                    <datepicker v-model="qso.date" :input-class="{error: !qso.date}" use-utc="true">
+                    </datepicker>
                 </td>
                 <td class="qsl_time">
                     <the-mask mask="##:##" type="text" name="qso_time" id="qso_time" 
