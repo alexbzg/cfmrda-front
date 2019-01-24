@@ -18,7 +18,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td id="ex_calls" v-if="(hunterData && hunterData.oldCallsigns) &&
+                    <td id="ex_calls" v-if="hunterData &&
                         (hunterData.oldCallsigns.length || 
                         (callsign && callsign === callsignValid && 
                         callsignValid === $store.getters.userCallsign))">
