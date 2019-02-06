@@ -1584,9 +1584,13 @@ table#paper_qsl_check td.qsl_links, table#paper_qsl_check td.qsl_card{
 	vertical-align: middle;
 	line-height: 10px;
 	font-size: 12px;
+	cursor: pointer;
 }
 table#paper_qsl_check td.qsl_callsign, table#paper_qsl_check td.qsl_new_callsign, table#paper_qsl_check td.qsl_rda_callsign {
 	font-weight: bold;
+}
+table#paper_qsl_check td.qsl_rda_callsign a{
+	color: #009;
 }
 table#paper_qsl_check td.qsl_cfm, table#paper_qsl_check td.qsl_not_cfm{
 	background-color: #ffffca;

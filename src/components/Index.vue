@@ -357,13 +357,11 @@ export default {
   },
   computed: {
     ...mapGetters(['userCallsign', 'userToken', 'oldCallsigns']),
-    qsoFilter () {
+    rdaFilter () {
       const allModes = this.isMeta(this.mode)
       const allBands = this.isMeta(this.band)
-      return (qso) => {
-        return (allModes || qso.mode === this.mode) &&
-            (allBands || qso.band === this.band)
-      }
+      return (item) => { return (allModes || item.mode === this.mode) &&
+        (allBands || item.band === this.band)}
     },
     hunterRank () {
       function emptyField () {
@@ -390,31 +388,35 @@ export default {
     },
     rdaCfm () {
       const r ={}
-      if (this.hunterData) {        
-        for (const rda in this.hunterData.qso) {
-          if (this.role === 'hunter') {
-            if (this.hunterData.qso[rda].hunter) {
-              for (const qso of this.hunterData.qso[rda].hunter) {
-                if (this.qsoFilter(qso)) {
+      if (this.hunterData) {
+        if (this.role === 'hunter') {
+          if (this.hunterData.rda.hunter) {
+            for (const rda in this.hunterData.rda.hunter) {
+              for (const item of this.hunterData.rda.hunter[rda]) {
+                if (this.rdaFilter(item)) {
                   r[rda] = 'cfm'
                   break
                 }
               }
             }
           }
-          if (!r[rda] && this.hunterData.qso[rda].activator) {
-            let count = 0
-            for (const qsos of this.hunterData.qso[rda].activator) {
-              if (this.qsoFilter(qsos)) {
-                count += qsos.count
-                if (count > 99) {
-                  r[rda] = 'cfm'
-                  break
+        }
+        else {
+          if (this.hunterData.rda.activator) {
+            for (const rda in this.hunterData.rda.activator) {
+              let count = 0
+              for (const item of this.hunterData.rda.activator[rda]) {
+                if (this.rdaFilter(item)) {
+                  count += item.count
+                  if (count > 99) {
+                    r[rda] = 'cfm'
+                    break
+                  }
                 }
               }
-            }
-            if (!r[rda] && this.role === 'activator' && count > 0) {
-              r[rda] = 'partial'
+              if (!r[rda] && count > 0) {
+                r[rda] = 'partial'
+              }
             }
           }
         }
@@ -422,19 +424,7 @@ export default {
       return r
     },
     rdaQso () {
-      const r = {hunter: null, activator: null}
-      if (this.rdaValue && this.hunterData.qso[this.rdaValue.value]) {
-        const data = this.hunterData.qso[this.rdaValue.value]
-        for (const type in r) {
-          if (type in data) {
-            const qso = data[type].filter(this.qsoFilter)
-            if (qso.length) {
-              r[type] = qso
-            }
-          }
-        }
-      }
-      return r
+      return {hunter: null, activator: null}
     }
   }
 }
