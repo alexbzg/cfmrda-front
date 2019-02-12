@@ -104,7 +104,7 @@
                             <div v-for="(val, idxVal) in group.values" :key="idxVal" class="rda" 
                                 :class="{cfm: rdaCfm[val.value] === 'cfm', 
                                     partial: rdaCfm[val.value] === 'partial'}" 
-                                @click="rdaValue === val ? rdaValue = null : rdaValue = val">
+                                @click="setRdaValue(rdaValue === val ? null : val)">
                                 {{val.displayValue}}
                             </div>
                         </td>
@@ -114,11 +114,12 @@
                         <td colspan="2">
                             <table id="stat1rda_hunter" v-if="role === 'hunter' && rdaQso.hunter">
                                 <tr>
-                                    <td id="hunter_activator" colspan="5">RDA hunter</td>
+                                    <td id="hunter_activator" colspan="6">RDA hunter</td>
                                 </tr>
                                 <tr>
                                     <td class="rda_top">{{rdaValue.value}}</td>
                                     <td class="time top">GMT</td>
+                                    <td class="mode top">Mode</td>
                                     <td class="band top">МГц</td>
                                     <td class="call top">CFM QSO</td>
                                     <td class="uploader top">Uploader</td>
@@ -126,6 +127,7 @@
                                 <tr v-for="(item, idxIt) in rdaQso.hunter" :key="idxIt">
                                     <td class="date">{{item.date}}</td>
                                     <td class="time">{{item.time}}</td>
+                                    <td class="mode">{{item.mode}}</td>
                                     <td class="band">{{item.band}}</td>
                                     <td class="call">
                                         <view-upload-link :id="item.uploadId">
@@ -140,16 +142,18 @@
 
                             <table id="stat1rda_activator" v-if="rdaQso.activator">
                                 <tr>
-                                    <td id="hunter_activator" colspan="5">RDA activator</td>
+                                    <td id="hunter_activator" colspan="6">RDA activator</td>
                                 </tr>
                                 <tr>
                                     <td class="rda_top">{{replace0(rdaValue.value)}}</td>
                                     <td class="band top">МГц</td>
+                                    <td class="mode top">Mode</td>
                                     <td class="call top">QSOs</td>
                                     <td class="uploader top">Uploader</td>
                                 </tr>
                                 <tr v-for="(item, idxIt) in rdaQso.activator" :key="idxIt">
                                     <td class="date">{{item.date}}</td>
+                                    <td class="mode">{{item.mode}}</td>
                                     <td class="band">{{item.band}}</td>
                                     <td class="call">
                                          <view-upload-link :id="item.uploadId">
@@ -214,7 +218,7 @@
 <script>
 import {mapGetters} from 'vuex'
 
-import {getRankings, getHunterDetails, getRecentUploads, getMscData, oldCallsigns} from '../api'
+import {getRankings, getHunterDetails, getRecentUploads, getMscData, oldCallsigns, getQSO} from '../api'
 import storage from '../storage'
 import {arrayUnique, arraysEqSets} from '../utils'
 import {orderedBands, stripCallsign} from '../ham-radio'
@@ -270,6 +274,7 @@ export default {
       callsignValid: callsign,
       rankData: {},
       rda: rda,
+      rdaQso: {hunter: null, activator: null},
       recentUploads: [],
       mscData: {
         qsoCount: null
@@ -334,6 +339,16 @@ export default {
               this.$callsignErrorTimeout =
                 setTimeout(() => { this.callsignError = false }, 10000)
             }
+          })
+      }
+    },
+    setRdaValue (value) {
+      this.rdaValue = value
+      if (value) {
+        getQSO([this.callsign, this.role, value.value, this.isMeta(this.mode) ? '' : this.mode,
+          this.isMeta(this.band) ? '' : this.band])
+          .then((data) => {
+            this.rdaQso = data
           })
       }
     },
@@ -422,9 +437,6 @@ export default {
         }
       }
       return r
-    },
-    rdaQso () {
-      return {hunter: null, activator: null}
     }
   }
 }

@@ -154,6 +154,14 @@ export function getHunterDetails (callsign) {
     })
 }
 
+export function getQSO (params) {
+  return get(API_URL + 'qso/' + params.join('/'))
+    .then(response => {
+      return response.data
+    })
+}
+
+
 export function getCorrespondentEmail (callsign) {
   return get(API_URL + 'correspondent_email/' + callsign)
     .then(response => {
