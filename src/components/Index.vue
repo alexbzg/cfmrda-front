@@ -175,7 +175,8 @@
 
 
 
-    <rank-table :rank-data="rankData" :callsign="callsignValid" @callsign-click="callsignClick"/>
+    <rank-table :rank-data-top="rankData" :rank-data-hunter="hunterData.rank" 
+        :callsign="callsignValid" @callsign-click="callsignClick"/>
 
     <div class="list">
       <h4>Latest uploads</h4>
