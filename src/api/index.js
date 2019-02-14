@@ -161,6 +161,12 @@ export function getQSO (params) {
     })
 }
 
+export function getRankingsSlice (params) {
+  return get(API_URL + 'rankings/' + params.join('/'))
+    .then(response => {
+      return response.data
+    })
+}
 
 export function getCorrespondentEmail (callsign) {
   return get(API_URL + 'correspondent_email/' + callsign)

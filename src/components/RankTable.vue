@@ -5,32 +5,40 @@
 
 
         <div class="view_menu">
-            <div class="menu" :class="{selected: band === 'total'}" @click="band = 'total'">RDA</div>
-            <div class="menu" v-for="(_band, index) in $options.BANDS" :key="'band' + index" 
-                :class="{selected: _band === band}" @click="band = _band">{{_band}}</div>
+            <div class="menu" :class="{selected: params.band === '9BAND'}" 
+                @click="switch9BAND()">9BAND RDA</div> 
 
-            <div class="menu tab" :class="{selected: band === 'bandsSum'}" 
-                @click="band = 'bandsSum'">RDA Challenge</div>   
-            <div class="menu tab" :class="{selected: band === '9BAND'}" 
-                @click="switch9BAND()">9BAND RDA</div>   
+            <div class="menu tab" :class="{selected: params.band === 'bandsSum'}" 
+                @click="params.band = 'bandsSum'">RDA Challenge</div>   
+
+            <div class="menu tab" :class="{selected: params.band === 'total'}" 
+                @click="params.band = 'total'">RDA</div>
+            <div class="menu" v-for="(_band, index) in $options.BANDS" :key="'band' + index" 
+                :class="{selected: _band === params.band}" @click="params.band = _band">{{_band}}</div>
 
             <br/>
-            <div class="menu left" :class="{selected: mode === 'total'}" 
-                @click="mode = 'total'">Mix</div>
-            <div class="menu left" v-for="(_mode, idx) in $options.MODES" :key="'mode' + idx"
-                @click="mode = _mode" :class="{selected: mode === _mode}">{{_mode}}</div>
 
-
-            <template v-if="rankDataHunter">
-                <div class="menu" :class="{selected: type === 'top'}" @click="setType('top')" >TOP</div>
-                <div class="menu" :class="{selected: type === 'hunter'}" 
-                    @click="setType('hunter')" >{{callsign}}</div>
+            <div class="menu left" :class="{selected: params.mode === 'total'}" 
+                @click="params.mode = 'total'">Mix</div>
+            <template v-if="params.band !== '9BAND' && params.band !== 'bandsSum'">
+                <div class="menu left" v-for="(_mode, idx) in $options.MODES" :key="'mode' + idx"
+                    @click="params.mode = _mode" :class="{selected: params.mode === _mode}">{{_mode}}</div>
             </template>
 
-            <div class="menu right" v-for="(name, _role) in $options.ROLES" :key="'role' + _role"
-                :class="{selected: role === _role}" @click="role = _role">
-                {{name}}
-            </div>
+            <div class="menu" :class="{selected: params.type === 'top'}" 
+                @click="params.type = 'top'" >TOP</div>
+            <div class="menu" :class="{selected: params.type === 'callsign'}" 
+                v-if="callsignRankings && callsignRankings[params.role] &&
+                    callsignRankings[params.role][params.mode] &&
+                    callsignRankings[params.role][params.mode][params.band]"
+                @click="params.type = 'callsign'" >{{callsign}}</div>
+
+            <template v-if="params.band !== '9BAND' && params.band !== 'bandsSum'">
+                <div class="menu right" v-for="(name, _role) in $options.ROLES" :key="'role' + _role"
+                    :class="{selected: params.role === _role}" @click="params.role = _role">
+                    {{name}}
+                </div>
+            </template>
            
        </div>
 
@@ -52,12 +60,13 @@
 
 <script>
 import {ROLES, MODES, orderedBands} from '../ham-radio'
+import {getRankingsSlice} from '../api'
 
 import rankDataMixin from '../rank-data-mixin'
 import replaceZerosMixin from '../replace-zeros-mixin'
 
 const ROWS_COUNT = 13
-const COLUMNS_COUNT = 8
+const COLUMNS_COUNT = 7
 
 export default {
   ROLES: ROLES,
@@ -67,29 +76,67 @@ export default {
   COLUMNS_COUNT: COLUMNS_COUNT,
   name: 'rankTable',
   mixins: [rankDataMixin, replaceZerosMixin],
-  props: ['rankDataTop', 'rankDataHunter', 'callsign'],
+  props: ['rankDataTop', 'callsignRankings', 'callsign'],
   data () {
     return {
-      role: 'hunter',
-      mode: 'total',
-      band: 'total',
-      type: 'top'
+      params: {
+        role: 'hunter',
+        mode: 'total',
+        band: 'total',
+        type: 'top'
+      },
+      rankDataSlice: null,
+      sliceParams: {
+        role: null,
+        mode: null,
+        band: null
+      }
     }
   },
   methods: {
     switch9BAND () {
-      this.role = 'hunter'
-      this.mode = 'total'
-      this.band = '9BAND'
+      this.params = {
+        role: 'hunter',
+        mode: 'total',
+        band: '9BAND',
+        type: this.params.type
+      }
+    }
+  },
+  watch: {
+    params: {
+      handler () {
+        if (this.params.type === 'callsign') {
+          if (this.params.role !== this.sliceParams.role || this.params.mode !== this.sliceParams.mode ||
+            this.params.band !== this.sliceParams.band) {
+            if (this.callsignRankings && this.callsignRankings[this.params.role] &&
+              this.callsignRankings[this.params.role][this.params.mode] &&
+              this.callsignRankings[this.params.role][this.params.mode][this.params.band]) {
+              this.sliceParams.role = this.params.role
+              this.sliceParams.mode = this.params.mode
+              this.sliceParams.band = this.params.band
+              const sliceCentre = this.callsignRankings[this.params.role][this.params.mode][this.params.band][0].row
+              const sliceRadius = Math.ceil(COLUMNS_COUNT * ROWS_COUNT / 2)
+              const sliceStart = Math.max(1, sliceCentre - sliceRadius)
+              getRankingsSlice([this.params.role, this.params.mode, this.params.band, 
+                sliceStart, sliceCentre + sliceRadius])
+                .then((data) => {this.rankDataSlice = data})
+            } else {
+              this.params.type = 'top'
+            }
+          }
+        }
+      },
+      deep: true
     }
   },
   computed: {
     rows () {
       const rows = []
-      const dataSrc = this.type === 'top' ? this.rankDataTop : null 
-      if (dataSrc[this.role] && dataSrc[this.role] && dataSrc[this.role][this.mode] &&
-        dataSrc[this.role][this.mode][this.band]) {
-        const data = dataSrc[this.role][this.mode][this.band]
+      const dataSrc = this.params.type === 'top' ? this.rankDataTop : this.rankDataSlice
+      if (dataSrc && dataSrc[this.params.role] && dataSrc[this.params.role] && dataSrc[this.params.role][this.params.mode] &&
+        dataSrc[this.params.role][this.params.mode][this.params.band]) {
+        const data = dataSrc[this.params.role][this.params.mode][this.params.band]
         const topCount = Math.min(ROWS_COUNT*COLUMNS_COUNT, data.length)
         const rowCount = Math.min(ROWS_COUNT, topCount)
         for (let rc = 0; rc < rowCount; rc++) {

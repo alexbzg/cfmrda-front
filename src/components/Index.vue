@@ -68,25 +68,27 @@
                 <tbody>
                     <tr>
                         <td class="no_border">AutoCFM RDAs</td>
+                        <td></td>
+                        <td :class="{selected: band === 'bandsSum'}">
+                            {{hunterRank.bandsSum.count}}</td>
                         <td :class="{selected: band === 'total'}">
                             {{hunterRank.total.count}}
                         </td>
                         <td :class="{selected: band === _band}"
                             v-for="(_band, index) in $options.BANDS" :key="index">
                             {{hunterRank[_band].count}}</td>
-                        <td :class="{selected: band === 'bandsSum'}">
-                            {{hunterRank.bandsSum.count}}</td>
                     </tr>
                     <tr>
                         <td class="no_border">Место в рейтинге</td>
+                        <td></td>
+                        <td :class="{selected: band === 'bandsSum'}">
+                            {{hunterRank.bandsSum.rank}}</td>
                         <td :class="{selected: band === 'total'}">
                             {{hunterRank.total.rank}}
                         </td>
                         <td :class="{selected: band === _band}"
                             v-for="(_band, index) in $options.BANDS" :key="index">
                             {{hunterRank[_band].rank}}</td>
-                        <td :class="{selected: band === 'bandsSum'}">
-                            {{hunterRank.bandsSum.rank}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -175,7 +177,7 @@
 
 
 
-    <rank-table :rank-data-top="rankData" :rank-data-hunter="hunterData.rank" 
+    <rank-table :rank-data-top="rankData" :callsign-rankings="hunterData ? hunterData.rank : null" 
         :callsign="callsignValid" @callsign-click="callsignClick"/>
 
     <div class="list">

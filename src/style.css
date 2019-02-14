@@ -639,7 +639,7 @@ table.select_view{
  	border-collapse: collapse;
 }
 table.select_view td{
-	padding: 7px 25px;
+	padding: 7px 20px;
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
@@ -689,7 +689,7 @@ table.select_view td.separator{
 	background-color: #ffffca;
 }
 .view_menu .tab{
-	margin-left: 10px;
+	margin-left: 14px;
 }
 .view_menu .left{
 	float: left;
