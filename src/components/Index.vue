@@ -67,10 +67,10 @@
                 </selector>
                 <tbody>
                     <tr>
-                        <td class="no_border">AutoCFM RDAs</td>
-                        <td></td>
-                        <td :class="{selected: band === 'bandsSum'}">
-                            {{hunterRank.bandsSum.count}}</td>
+                        <td class="no_border">AutoCFM RDA</td>
+                        <td>{{hunterRank['9BAND'].count}}</td>
+                        <td>{{hunterRank.bandsSum.count}}</td>
+                        <td class="col_no_border"> </td>
                         <td :class="{selected: band === 'total'}">
                             {{hunterRank.total.count}}
                         </td>
@@ -80,9 +80,9 @@
                     </tr>
                     <tr>
                         <td class="no_border">Место в рейтинге</td>
-                        <td></td>
-                        <td :class="{selected: band === 'bandsSum'}">
-                            {{hunterRank.bandsSum.rank}}</td>
+                        <td>{{hunterRank['9BAND'].rank}}</td>
+                        <td>{{hunterRank.bandsSum.rank}}</td>
+                        <td class="col_no_border"></td>
                         <td :class="{selected: band === 'total'}">
                             {{hunterRank.total.rank}}
                         </td>
@@ -385,7 +385,7 @@ export default {
       function emptyField () {
         return {count: 0, rank: '-' }
       }
-      const r = {'total': emptyField(), 'bandsSum': emptyField()}
+      const r = {'total': emptyField(), 'bandsSum': emptyField(), '9BAND': emptyField()}
       if (this.hunterData && this.hunterData.rank && this.hunterData.rank[this.role] &&
         this.hunterData.rank[this.role][this.mode]) {
         const data = this.hunterData.rank[this.role][this.mode]

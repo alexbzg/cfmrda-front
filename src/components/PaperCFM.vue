@@ -63,6 +63,7 @@
                 <td colspan="9" class="qsl_upload">
                     <b>Загрузите скан или фото QSL-карточки!</b> 
                     <input type="file" name="qsl_callsign" @change="qslImageChange" 
+                        ref="fileInput"
                         :class="{error: validationErrors['image.name']}"
                         accept=".png,.jpg,.gif"/>
                 </td>
@@ -210,6 +211,7 @@ export default {
           this.qso.rda = null
           this.qso.image.file = null
           this.qso.image.name = null
+          this.$refs.fileInput.value = ''
           this.loadList()
         })
         .catch((e) => {

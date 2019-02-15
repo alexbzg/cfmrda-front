@@ -651,11 +651,20 @@ table.select_view td.menu{
 	text-decoration: underline;
 	cursor: pointer;
 }
+table.select_view td.no_click{
+	text-decoration: none;
+	cursor: default;
+}
 table.select_view td.selected{
 	background-color: #ffffca; 
 	font-weight: bold;
 }
 table.select_view td.no_border{
+	border: none;
+}
+table.select_view td.col_no_border{
+	padding: 0;
+	width: 7px;
 	border: none;
 }
 table.select_view td.separator{

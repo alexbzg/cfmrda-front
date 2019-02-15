@@ -34,9 +34,9 @@
                 @click="params.type = 'callsign'" >{{callsign}}</div>
 
             <template v-if="params.band !== '9BAND' && params.band !== 'bandsSum'">
-                <div class="menu right" v-for="(name, _role) in $options.ROLES" :key="'role' + _role"
+                <div class="menu right" v-for="(_role, idx) in ['activator', 'hunter']" :key="'role' + idx"
                     :class="{selected: params.role === _role}" @click="params.role = _role">
-                    {{name}}
+                    {{$options.ROLES[_role]}}
                 </div>
             </template>
            
