@@ -42,7 +42,7 @@
                     </rda-input>
                 </td>
                 <td class="date">
-                    <datepicker v-model="qso.date" :input-class="{error: !qso.date}" use-utc="true">
+                    <datepicker v-model="qso.date" :input-class="{error: !qso.date}" :use-utc="true">
                     </datepicker>
                 </td>
                 <td class="time">

@@ -639,7 +639,7 @@ table.select_view{
  	border-collapse: collapse;
 }
 table.select_view td{
-	padding: 7px 25px;
+	padding: 7px 20px;
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
@@ -651,11 +651,20 @@ table.select_view td.menu{
 	text-decoration: underline;
 	cursor: pointer;
 }
+table.select_view td.no_click{
+	text-decoration: none;
+	cursor: default;
+}
 table.select_view td.selected{
 	background-color: #ffffca; 
 	font-weight: bold;
 }
 table.select_view td.no_border{
+	border: none;
+}
+table.select_view td.col_no_border{
+	padding: 0;
+	width: 7px;
 	border: none;
 }
 table.select_view td.separator{
@@ -689,7 +698,7 @@ table.select_view td.separator{
 	background-color: #ffffca;
 }
 .view_menu .tab{
-	margin-left: 10px;
+	margin-left: 14px;
 }
 .view_menu .left{
 	float: left;
@@ -1584,9 +1593,13 @@ table#paper_qsl_check td.qsl_links, table#paper_qsl_check td.qsl_card{
 	vertical-align: middle;
 	line-height: 10px;
 	font-size: 12px;
+	cursor: pointer;
 }
 table#paper_qsl_check td.qsl_callsign, table#paper_qsl_check td.qsl_new_callsign, table#paper_qsl_check td.qsl_rda_callsign {
 	font-weight: bold;
+}
+table#paper_qsl_check td.qsl_rda_callsign a{
+	color: #009;
 }
 table#paper_qsl_check td.qsl_cfm, table#paper_qsl_check td.qsl_not_cfm{
 	background-color: #ffffca;

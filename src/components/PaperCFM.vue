@@ -1,10 +1,9 @@
 <template>
     <div id="paper_qsl">
         <h4>CFM RDA по бумажным QSL-карточкам</h4>
-        <p>Заполните форму ввода данными из полученной QSL-карточки, подтверждающей QSO с необходимым вам RDA. Если QSL карточка выписана вам на старый позывной, то в поле "Your сallsign" укажите его, а в поле "New callsign" можно указать ваш новый позывной, чтобы это QSO пошло в зачёт и новому позывному.<br/>
-        После проверки модератором данные будут добавлены в  базу CFMRDA. Чтобы QSL карточка прошла проверку, на ней должен быть указан RDA!</p>
-        <p class="grey_note">Fill in the input form with data from the received QSL card confirming the QSO with the RDA you need. If a QSL card is issued to your old callsign, then enter it in the "QSL callsign" field, and you can enter your new callsign in the "New callsign" field so that this QSO will go on to the new callsign.<br/>
-        Your data will be added to CFMRDA database after the check by the moderator. In order for a QSL card to pass the test, the RDA must be indicated on it.</p>
+        <p>Введите данные QSO из полученной QSL, подтверждающей необходимый вам RDA. Если QSL карточка выписана вам на старый позывной, то в поле "New callsign" можно указать ваш новый позывной, чтобы это QSO пошло в зачёт и новому позывному.<br/>
+        После проверки модератором данные будут добавлены в  базу CFMRDA. Принимаются фото бумажных QSL и изображения eQSL.</p>
+        <p class="grey_note">Fill in the input form with data from the received QSL card confirming the QSO with the RDA you need. If a QSL card is issued to your old callsign, you can enter your new callsign in the "New callsign" field so that this QSO will go on to the new callsign. Your data will be added to CFMRDA database after the check by the moderator.<br/> Photos of paper QSLs and eQSL images are taken.</p>
         <table id="add_paper_qsl">
             <tr>
                 <td class="top qsl_callsign">Station's callsign</td>
@@ -28,7 +27,7 @@
                         :class="{error: validationErrors.rda}"/>
                 </td>
                 <td class="qsl_date">
-                    <datepicker v-model="qso.date" :input-class="{error: !qso.date}" use-utc="true">
+                    <datepicker v-model="qso.date" :input-class="{error: !qso.date}" :use-utc="true">
                     </datepicker>
                 </td>
                 <td class="qsl_time">
@@ -64,6 +63,7 @@
                 <td colspan="9" class="qsl_upload">
                     <b>Загрузите скан или фото QSL-карточки!</b> 
                     <input type="file" name="qsl_callsign" @change="qslImageChange" 
+                        ref="fileInput"
                         :class="{error: validationErrors['image.name']}"
                         accept=".png,.jpg,.gif"/>
                 </td>
@@ -211,6 +211,7 @@ export default {
           this.qso.rda = null
           this.qso.image.file = null
           this.qso.image.name = null
+          this.$refs.fileInput.value = ''
           this.loadList()
         })
         .catch((e) => {

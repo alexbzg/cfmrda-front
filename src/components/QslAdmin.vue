@@ -19,16 +19,15 @@
             <tr :class="{cfm_checked: item.cfm, not_cfm_checked: item.not_cfm}">
                 <td class="qsl_callsign">{{item.callsign}}</td>
                 <td class="qsl_new_callsign">{{item.newCallsign}}</td>
-                <td class="qsl_rda_callsign">{{item.stationCallsign}}</td>
+                <td class="qsl_rda_callsign"><a :href="'https://www.qrz.ru/db/' + item.stationCallsign" target="_blank" rel="noopener" title="Страница позывного на QRZ.ru">{{item.stationCallsign}}</a></td>
                 <td class="qsl_rda">{{item.rda}}</td>
                 <td class="qsl_date">{{item.date}}</td>
                 <td class="qsl_time">{{item.time}}</td>
                 <td class="qsl_band">{{item.band}}</td>
                 <td class="qsl_mode">{{item.mode}}</td>
                 <td class="qsl_card">
-                    <a href="#" @click="showImage = showImage === item ? null : item">
-                        <img src="/images/icon_qsl.png" title="Просмотр QSL">
-                    </a>
+                    <img src="/images/icon_qsl.png" title="Просмотр QSL"
+                      @click="showImage = showImage === item ? null : item"/>
                 </td>
                 <td class="qsl_cfm">
                     <input type="checkbox" v-model="item.cfm" 

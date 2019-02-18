@@ -2,7 +2,7 @@
   <div class="list">
     <div id="list_menu">
         <router-link to="/cfm/">Email CFM</router-link>
-        <router-link to="/cfm/paper">Paper QSL CFM</router-link>
+        <router-link to="/cfm/paper">QSL card CFM</router-link>
     </div>
     <keep-alive>
         <router-view></router-view>
