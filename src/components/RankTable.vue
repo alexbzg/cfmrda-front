@@ -6,10 +6,12 @@
 
         <div class="view_menu">
             <div class="menu" :class="{selected: params.band === '9BAND'}" 
-                @click="switch9BAND()">9BAND RDA</div> 
+                @click="switch9BAND()">9BAND</div>
+            <div class="menu menu_info"><router-link to="/static/rules#challenge">i</router-link></div>
 
             <div class="menu tab" :class="{selected: params.band === 'bandsSum'}" 
-                @click="params.band = 'bandsSum'">RDA Challenge</div>   
+                @click="params.band = 'bandsSum'">Challenge</div>
+            <div class="menu menu_info"><router-link to="/static/faq#count_9band">i</router-link></div>
 
             <div class="menu tab" :class="{selected: params.band === 'total'}" 
                 @click="params.band = 'total'">RDA</div>
