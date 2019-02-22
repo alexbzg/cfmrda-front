@@ -27,6 +27,7 @@ const CallsignsAdmin = () => import(/* webpackChunkName: "admin" */ './../compon
 const AutoRegistration = () => import(/* webpackChunkName: "auto_reg" */ './../components/AutoRegistration.vue')
 
 const router = new Router({
+//  mode: 'history',
   routes: [
     { path: '/',
       name: 'Index',
@@ -124,7 +125,16 @@ const router = new Router({
       name: 'Login',
       component: Login
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    if (to.hash) {
+      return {selector: to.hash}
+    } else if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 })
 
 export default router

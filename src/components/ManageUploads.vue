@@ -12,7 +12,7 @@
             <td class="menu upload_date">Дата загрузки</td>
             <td class="menu del"></td>
         </tr>
-        <tr id="search" @keyup.enter="showSearchResult = validated">
+        <tr id="search" @keyup.enter="searchQuery()">
             <td class="allow" v-if="admin"></td>
             <td class="rda">
                 <input type="text" name="rda_input" id="rda_input" 
@@ -36,7 +36,7 @@
             </td>
             <td class="del">
                 <input type="button" name="search_btn" id="search_btn" value="Найти" class="btn"
-                    :disabled="!validated" @click="showSearchResult = true">
+                    :disabled="!validated" @click="searchQuery()">
             </td>
         </tr>
         <uploads-table :admin="admin" :uploads="searchResult" v-if="searchResult" :pending="pending"
@@ -86,29 +86,8 @@ export default {
       validationData: search,
       validationSchema: "uploadsSearch",
       showSearchResult: false,
+      searchResult: true,
       uploads: []
-    }
-  },
-  computed: {
-    searchResult () {
-      if (this.showSearchResult && this.validated) 
-        return  this.uploads.filter((upload) => {
-          if (this.search.rda && this.search.rda.length && 
-            ((upload.rda && !upload.rda.includes(this.search.rda)) || !upload.rda))
-            return false
-          if (this.search.station && this.search.station.length &&
-            !this.searchCallsign(this.search.station, upload.stations))
-            return false
-          if (this.search.uploader && this.search.uploader.length &&
-            !this.searchCallsign(this.search.uploader, [upload.uploader]))
-            return false
-          if (this.search.uploadDate &&
-            Date.parse(this.search.uploadDate.toDateString()) != Date.parse(upload.uploadDate))
-            return false
-          return true
-        })
-      else
-        return null
     }
   },
   methods: {
@@ -125,6 +104,24 @@ export default {
     loadList () {
       this.post({})
         .then((data) => {this.uploads = data})
+    },
+    searchQuery () {
+      if (this.validated) {
+        const query = {}
+        if (this.search.rda && this.search.rda.length)
+          query.rda = this.search.rda
+        if (this.search.station && this.search.station.length)
+          query.station = this.search.station
+        if (this.search.uploader && this.search.uploader.length)
+          query.uploader = this.search.uploader
+        if (this.search.uploadDate)
+          query.uploadDate = this.search.uploadDate.toDateString()
+        this.post({search: query})
+          .then((data) => {
+            this.searchResult = data
+            this.showSearchResult = true
+          })
+     }
     },
     editUploads(data) {
       if (this.pending) 

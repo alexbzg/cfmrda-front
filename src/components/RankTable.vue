@@ -6,10 +6,12 @@
 
         <div class="view_menu">
             <div class="menu" :class="{selected: params.band === '9BAND'}" 
-                @click="switch9BAND()">9BAND RDA</div> 
+                @click="switch9BAND()">9BAND</div>
+            <div class="menu menu_info"><router-link to="/static/faq#count_9band">i</router-link></div>
 
             <div class="menu tab" :class="{selected: params.band === 'bandsSum'}" 
-                @click="params.band = 'bandsSum'">RDA Challenge</div>   
+                @click="params.band = 'bandsSum'">Challenge</div>
+            <div class="menu menu_info"><router-link to="/static/rules#challenge">i</router-link></div>
 
             <div class="menu tab" :class="{selected: params.band === 'total'}" 
                 @click="params.band = 'total'">RDA</div>
@@ -20,7 +22,7 @@
 
             <div class="menu left" :class="{selected: params.mode === 'total'}" 
                 @click="params.mode = 'total'">Mix</div>
-            <template v-if="params.band !== '9BAND' && params.band !== 'bandsSum'">
+            <template v-if="params.band !== '9BAND'">
                 <div class="menu left" v-for="(_mode, idx) in $options.MODES" :key="'mode' + idx"
                     @click="params.mode = _mode" :class="{selected: params.mode === _mode}">{{_mode}}</div>
             </template>
@@ -82,7 +84,7 @@ export default {
       params: {
         role: 'hunter',
         mode: 'total',
-        band: 'total',
+        band: '9BAND',
         type: 'top'
       },
       rankDataSlice: null,

@@ -114,6 +114,12 @@
                     <tr v-if="rdaValue && rdaValue.group === group.group && (rdaQso.hunter || rdaQso.activator)"
                         :key="idxGr + '-actVal'">
                         <td colspan="2">
+
+                          
+                            <div id="close_stat1rda">
+                                <img src="images/icon_close.png" title="Close" @click="setRdaValue(null)">
+                            </div>
+
                             <table id="stat1rda_hunter" v-if="role === 'hunter' && rdaQso.hunter">
                                 <tr>
                                     <td id="hunter_activator" colspan="6">RDA hunter</td>
@@ -168,6 +174,7 @@
                                     </td>
                                 </tr>
                             </table>
+                          
                         </td>
                     </tr>
                 </template>
