@@ -39,8 +39,8 @@
                     :disabled="!validated" @click="searchQuery()">
             </td>
         </tr>
-        <uploads-table :admin="admin" :uploads="searchResult" v-if="searchResult" :pending="pending"
-            @edit-uploads="editUploads">
+        <uploads-table :admin="admin" :uploads="searchResult" v-if="showSearchResult && searchResult" 
+            :pending="pending" @edit-uploads="editUploads">
             <img src="images/icon_close.png" title="Закрыть результаты поиска" 
                 @click="showSearchResult = false">
         </uploads-table>
@@ -123,12 +123,15 @@ export default {
           })
      }
     },
-    editUploads(data) {
+    editUploads (data) {
       if (this.pending) 
         return
       this.pending = true
       this.post(data)
-        .then(() => {this.loadList()})
+        .then(() => {
+          this.loadList()
+          this.searchQuery()
+        })
         .finally(() => {
           this.pending = false
         })

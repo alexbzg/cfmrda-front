@@ -2,8 +2,8 @@
     <div id="paper_qsl">
         <h4>CFM RDA по бумажным QSL-карточкам</h4>
         <p>Введите данные QSO из полученной QSL, подтверждающей необходимый вам RDA. Если QSL карточка выписана вам на старый позывной, то в поле "New callsign" можно указать ваш новый позывной, чтобы это QSO пошло в зачёт и новому позывному.<br/>
-        После проверки модератором данные будут добавлены в  базу CFMRDA. Принимаются фото бумажных QSL и изображения eQSL.</p>
-        <p class="grey_note">Fill in the input form with data from the received QSL card confirming the QSO with the RDA you need. If a QSL card is issued to your old callsign, you can enter your new callsign in the "New callsign" field so that this QSO will go on to the new callsign. Your data will be added to CFMRDA database after the check by the moderator.<br/> Photos of paper QSLs and eQSL images are taken.</p>
+        После проверки модератором данные будут добавлены в  базу CFMRDA. Принимаются <b>только фото бумажных</b> QSL и изображения <b>eQSL</b>.</p>
+        <p class="grey_note">Fill in the input form with data from the received QSL card confirming the QSO with the RDA you need. If a QSL card is issued to your old callsign, you can enter your new callsign in the "New callsign" field so that this QSO will go on to the new callsign. Your data will be added to CFMRDA database after the check by the moderator.<br/> <b>Photos of paper QSLs</b> and <b>eQSL</b> images are taken only.</p>
         <table id="add_paper_qsl">
             <tr>
                 <td class="top qsl_callsign">Station's callsign</td>
