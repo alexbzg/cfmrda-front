@@ -116,7 +116,9 @@
                         <td colspan="2">
 
                           
-                            <div id="close_stat1rda"><img src="images/icon_close.png" title="Close"></div>
+                            <div id="close_stat1rda">
+                                <img src="images/icon_close.png" title="Close" @click="setRdaValue(null)">
+                            </div>
 
                             <table id="stat1rda_hunter" v-if="role === 'hunter' && rdaQso.hunter">
                                 <tr>

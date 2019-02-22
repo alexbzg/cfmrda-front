@@ -27,7 +27,7 @@ const CallsignsAdmin = () => import(/* webpackChunkName: "admin" */ './../compon
 const AutoRegistration = () => import(/* webpackChunkName: "auto_reg" */ './../components/AutoRegistration.vue')
 
 const router = new Router({
-  mode: 'history',
+//  mode: 'history',
   routes: [
     { path: '/',
       name: 'Index',
