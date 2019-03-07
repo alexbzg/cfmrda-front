@@ -305,7 +305,10 @@ export default {
           })
     },
     deletePrevRequest (qso) {
-
+      if (confirm('Удалить запрос? Do you really want to delete the request?')) {
+        cfmRequestQso({token: this.userToken, delete: qso.id})
+          .then(() => this.loadPrevRequests())
+      }
     },
     checkCorrespondent (qso) {
       qso.correspondent = stripCallsign(qso.stationCallsign)
