@@ -122,13 +122,12 @@
                     <td class="top band">MHz</td>
                     <td class="top mode">Mode</td>
                     <td class="top my_callsign">Your callsign</td>
-                    <td class="top new_callsign">New callsign</td>
                     <td class="top del"></td>
                 </tr>
                 <template v-for="(qso, idx) in prevRequests">
                     <tr :class="{cfmd: qso.state === true, not_cfmd: qso.state === false}" 
                         :key="'qso_' + idx">
-                        <td class="status">
+                        <td class="status" :rowspan="qso.comment ? 2 : 1">
                             <img v-if="qso.icon" 
                                 :src="'/images/icon_email_' + qso.icon + '.png'" :title="qso.iconTitle">
                         </td>
@@ -140,8 +139,7 @@
                         <td class="band">{{qso.band}}</td>
                         <td class="mode">{{qso.mode}}</td>
                         <td class="my_callsign">{{qso.callsign}}</td>
-                        <td class="new_callsign">{{qso.newCallsign}}</td>
-                        <td class="del">
+                        <td class="del" :rowspan="qso.comment ? 2 : 1">
                             <img src="/images/icon_delete.png" title="Удалить эту строку - Delete this line"
                             @click="deletePrevRequest(qso)">
                         </td>

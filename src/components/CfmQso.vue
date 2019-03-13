@@ -14,7 +14,8 @@
                 <td class="menu rda_rst">Sent RST</td>
                 <td class="menu my_rst">Rcvd RST</td>
                 <td class="menu">CFM</td>
-                <td class="menu">NOT CFM</td>
+                <td class="menu">Reject</td>
+                <td class="menu">Comment</td>
             </tr>
             <tr :class="{cfm_checked: item.cfm, cfm_reject: item.reject}" v-for="item in qso" :key="item.id">
                 <td class="rda_callsign">{{item.callsign}}</td>
@@ -28,16 +29,28 @@
                 <td class="my_rst">{{item.rcvRST}}</td>
                 <td class="cfm"><input type="checkbox" name="cfm_check" v-model="item.cfm"
                     @change="item.reject = item.cfm ? false : item.reject"></td>
-                <td class="reject"><input type="checkbox" name="cfm_check" v-model="item.reject"
-                    @change="item.cfm = item.reject ? false : item.cfm"></td>
+                <td class="reject">
+                    <input type="checkbox" name="cfm_check" v-model="item.reject"
+                        @change="item.cfm = item.reject ? false : item.cfm">
+                    <template v-if="admin">
+                    </template>
+                </td>
+                <td class="comment">
+                    <textarea v-if="item.reject" v-model="item.comment"></textarea>
+                </td>
             </tr>
             <tr>
                 <td colspan="10" class="cfm_btn">
+                    Письмо не доставлено
+                    <img src="/images/icon_email_bad.png" width="20" title="Письмо не доставлено"> 
+                    <input type="checkbox" v-model="blacklist" @change="blacklistChange"><br/>
+
                     <input type="button" name="cfm_btn" id="cfm_btn" value="OK" class="btn"
                         @click="submitClick()" :disabled="pending">
                 </td>
             </tr>
         </table>
+
         <div v-if="response" id="message" :class="{success: success}" v-html="response"></div>
     </div>
 </template>
@@ -54,11 +67,15 @@ export default {
       token: this.$route.query.token,
       pending: false,
       success: false,
-      response: null
+      blacklist: false,
+      response: null,
+      admin: this.$store.getters.admin &&
+          this.$store.getters.userCallsign !== this.$route.query.callsign 
     }
   },
   mounted () {
-    cfmQso({token: this.token})
+    const request = {token: this.token}
+    cfmQso (request)
       .then((data) => {
         for (const qso of data.qso) {
           qso.cfm = false
@@ -68,19 +85,34 @@ export default {
       })
   },
   methods: {
+    blacklistChange () {
+      for (const qso of this.qso) {
+        qso.reject = this.blacklist
+        qso.comment = this.blacklist ? "Неверный адрес. Письмо не доставлено. Invalid email address. The message could not be delivered." : null
+      }
+    },
     submitClick () {
       if (confirm('Вы действительно хотите сохранить изменения?')) {
         this.pending = true
-        const request = {token: this.token,
+        const request = {
+          token: this.token,
           qso: {
             cfm: [], 
             reject: []
-          }
+          },
+          comments: {}
         }
         for (const qso of this.qso) {
           for (const type in request.qso) 
-            if (qso[type])
+            if (qso[type]) {
               request.qso[type].push(qso.id)
+              if (qso.comment)
+                request.comments[qso.id] = qso.comment
+            }
+        }
+        if (this.admin) {
+          request.admin = this.$store.getters.userToken
+          request.blacklist = this.blacklist
         }
         cfmQso(request)
           .then((data) => {
