@@ -106,6 +106,54 @@
         </table>
        
         <div v-if="response" id="message" :class="{success: success}" v-html="response"></div>
+
+        <template v-if="prevRequests">
+            <div id="cfm_email_list_text">
+                Удаление строки происходит только из списка отправленных Email CFM запросов и не виляет на вашу статистику CFM RDA.
+            </div>
+            <table id="cfm_email_list">
+                <tr>
+                    <td class="top status">Status</td>
+                    <td class="top status_date">Status date</td>
+                    <td class="top rda">RDA</td>
+                    <td class="top rda_callsign">Station's callsign</td>
+                    <td class="top date">Date</td>
+                    <td class="top time">GMT</td>
+                    <td class="top band">MHz</td>
+                    <td class="top mode">Mode</td>
+                    <td class="top my_callsign">Your callsign</td>
+                    <td class="top del"></td>
+                </tr>
+                <template v-for="(qso, idx) in prevRequests">
+                    <tr :class="{cfmd: qso.state === true, not_cfmd: qso.state === false}" 
+                        :key="'qso_' + idx">
+                        <td class="status" :rowspan="qso.comment ? 2 : 1">
+                            <img v-if="qso.icon" 
+                                :src="'/images/icon_email_' + qso.icon + '.png'" :title="qso.iconTitle">
+                        </td>
+                        <td class="status_date">{{qso.statusDate}}</td>
+                        <td class="rda">{{qso.rda}}</td>
+                        <td class="rda_callsign">{{qso.stationCallsign}}</td>
+                        <td class="date">{{qso.date}}</td>
+                        <td class="time">{{qso.time}}</td>
+                        <td class="band">{{qso.band}}</td>
+                        <td class="mode">{{qso.mode}}</td>
+                        <td class="my_callsign">{{qso.callsign}}</td>
+                        <td class="del" :rowspan="qso.comment ? 2 : 1">
+                            <img src="/images/icon_delete.png" title="Удалить эту строку - Delete this line"
+                            @click="deletePrevRequest(qso)">
+                        </td>
+                    </tr>  
+                    <tr :class="{cfmd: qso.state === true, not_cfmd: qso.state === false}" 
+                        :key="'comment_' + idx" v-if="qso.comment">
+                        <td class="status_comm" colspan="8">
+                            <b>Comment:</b> {{qso.comment}}
+                        </td>
+                    </tr>
+                </template>
+            </table>
+        </template>
+
     </div>
 </template>
 
@@ -159,7 +207,8 @@ export default {
       pending: false,
       validationSchema: 'cfmRequestQso',
       response: null,
-      success: false
+      success: false,
+      prevRequests: null
     }
   },
   computed: {
@@ -176,6 +225,7 @@ export default {
   },
   mounted () {
     this.validate()
+    this.loadPrevRequests()
   },
   methods: {
     sendClick () {
@@ -202,6 +252,7 @@ export default {
                 "Your request will be sent to correspondents in 24 hours."
               this.request.qso = [{}]
               this.success = true
+              this.loadPrevRequests()
             })
             .catch((e) => {
               this.response = e.message
@@ -217,6 +268,45 @@ export default {
     deleteQso (idx) {
       if (confirm("Удалить строку? Do you really want to delete the line?"))
         this.request.qso.splice(idx, 1)
+    },
+    loadPrevRequests () {
+      if (this.userToken)
+        cfmRequestQso({token: this.userToken})
+          .then((data) => {
+            data.map(item => {
+              if (item.blacklist)
+                item.state = false
+              if (item.state) {
+                item.icon = 'ok'
+                item.iconTitle = 'RDA подтверждён - CFMD RDA'
+              } 
+              else if (item.state === false) {
+                if (item.blacklist) {
+                  item.icon = 'bad'
+                  item.iconTitle = 'Письмо не доставлено - Email could not be delivered'
+                } else {
+                  item.icon = 'no'
+                  item.iconTitle = 'Подтверждение RDA отклонено - CFM RDA is rejected'
+                }
+              } else if (item.viewed) {
+                item.icon = 'opened'
+                item.iconTitle = 'CFMRDA email получен и просмотрен - CFMRDA Email was received'
+              } else if (item.sent) {
+                item.icon = 'sent'
+                item.iconTitle = 'CFMRDA Email отправлен - CFMRDA Email was sent'
+              } else {
+                item.icon = 'wait'
+                item.iconTitle = 'CFMRDA Email ожидает отправки - CFMRDA Email is waiting to be delivered'
+              }
+            })
+            this.prevRequests = data
+          })
+    },
+    deletePrevRequest (qso) {
+      if (confirm('Удалить запрос? Do you really want to delete the request?')) {
+        cfmRequestQso({token: this.userToken, delete: qso.id})
+          .then(() => this.loadPrevRequests())
+      }
     },
     checkCorrespondent (qso) {
       qso.correspondent = stripCallsign(qso.stationCallsign)

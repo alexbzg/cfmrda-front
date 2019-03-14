@@ -76,7 +76,14 @@ const router = new Router({
           name: 'ManageUploads',
           component: ManageUploads,
           props: {admin: true}
+        },
+        {
+          path: 'email',
+          name: 'CfmQso',
+          component: CfmQso,
+          props: {admin: true}
         }
+           
       ]
     },
     { path: '/cfm_qso',
