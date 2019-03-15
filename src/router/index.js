@@ -8,6 +8,9 @@ import Index from './../components/Index'
 import Chat from './../components/Chat'
 import Contact from './../components/Contact'
 import StaticPage from './../components/StaticPage'
+import Stats from './../components/Stats'
+
+import StatsRdaQso from './../components/StatsRdaQso'
 
 const CFM = () => import(/* webpackChunkName: "cfm" */ './../components/CFM.vue')
 const EmailCFM = () => import(/* webpackChunkName: "cfm" */ './../components/EmailCFM.vue')
@@ -57,6 +60,17 @@ const router = new Router({
         }
       ]
     },
+    { path: '/stats',
+      component: Stats,
+      children: [
+        {
+          path: '',
+          name: 'StatsRdaQso',
+          component: StatsRdaQso
+        }
+      ]
+    },
+       
     { path: '/admin',
       component: Admin,
       name: 'Admin',

@@ -10,6 +10,7 @@
             <router-link to="/static/rules">Awards</router-link>
             <router-link to="/cfm">CFM RDA</router-link>
             <router-link to="/uploads" v-if="userCallsign">Загрузки</router-link>
+            <router-link to="/stats">Stats</router-link>
             <router-link to="/static/faq">FAQ</router-link>
             <router-link to="/chat" id="chat">Chat</router-link>
             <router-link to="/contact">Contact</router-link>

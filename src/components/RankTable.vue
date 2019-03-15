@@ -20,12 +20,8 @@
 
             <br/>
 
-            <div class="menu left" :class="{selected: params.mode === 'total'}" 
-                @click="params.mode = 'total'">Mix</div>
-            <template v-if="params.band !== '9BAND'">
-                <div class="menu left" v-for="(_mode, idx) in $options.MODES" :key="'mode' + idx"
-                    @click="params.mode = _mode" :class="{selected: params.mode === _mode}">{{_mode}}</div>
-            </template>
+            <radio-btns-mode v-model="params.mode" :hide-modes="params.band === '9BAND'">
+            </radio-btns-mode>
 
             <div class="menu" :class="{selected: params.type === 'top'}" 
                 @click="params.type = 'top'" >TOP</div>
@@ -67,6 +63,8 @@ import {getRankingsSlice} from '../api'
 import rankDataMixin from '../rank-data-mixin'
 import replaceZerosMixin from '../replace-zeros-mixin'
 
+import RadioBtnsMode from './RadioBtnsMode.vue'
+
 const ROWS_COUNT = 13
 const COLUMNS_COUNT = 7
 
@@ -77,6 +75,7 @@ export default {
   ROWS_COUNT: ROWS_COUNT,
   COLUMNS_COUNT: COLUMNS_COUNT,
   name: 'rankTable',
+  components: {RadioBtnsMode},
   mixins: [rankDataMixin, replaceZerosMixin],
   props: ['rankDataTop', 'callsignRankings', 'callsign'],
   data () {
