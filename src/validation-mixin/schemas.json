@@ -264,14 +264,6 @@
 "cfmRequestQso": {
     "type": "object",
     "properties": {
-        "email": {
-            "type": "string",
-            "format": "email"
-        },
-        "recaptcha": {
-            "type": "string",
-            "minLength": 1
-        },
         "token": { 
             "type": "string",
             "minLength": 3
@@ -284,7 +276,7 @@
                 "properties": {
                     "callsign": {
                         "type": "string",
-                        "pattern": "$reCallsignBase$"
+                        "pattern": "$reCallsignFull$"
                     },
                     "stationCallsign": {
                         "type": "string",
@@ -315,11 +307,7 @@
             }
         }
     },
-    "required": ["qso"],
-    "anyOf": [
-        {"required": ["email", "recaptcha"]},
-        {"required": ["token"]}
-    ]
+    "required": ["qso", "token"]
 },
 "qslAdmin":{
     "type": "array",

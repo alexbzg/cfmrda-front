@@ -42,7 +42,6 @@
             <tr>
                 <td colspan="10" class="cfm_btn">
                     Письмо не доставлено
-                    <img src="/images/icon_email_bad.png" width="20" title="Письмо не доставлено"> 
                     <input type="checkbox" v-model="blacklist" @change="blacklistChange"><br/>
 
                     <input type="button" name="cfm_btn" id="cfm_btn" value="OK" class="btn"

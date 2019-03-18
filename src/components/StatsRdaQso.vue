@@ -19,6 +19,7 @@
                         <table id="table_stats_list">
                             <tr v-for="(_rda, idx) in rda" :key="idx">
                                 <td class="rda">{{_rda}}</td>
+                                <td>{{getQso(_rda, 'total', mode)}}</td>
                                 <td v-for="(band, idx) in $options.BANDS" :key="idx">
                                     {{getQso(_rda, band, mode)}}
                                 </td>
