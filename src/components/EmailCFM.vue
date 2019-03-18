@@ -4,15 +4,6 @@
         <p>Данные QSO будут отправлены RDA корреспонденту по email, указанному в его профиле QRZ.com.<br/>Если корреспондент подтвердит QSO с вами, то подтвержденное QSO будет добавлено в базу CFMRDA.ru.</p>
         <p class="grey_note">The QSO data will be sent to the RDA correspondent by the email specified by him in the QRZ.com profile.<br/>If the correspondent will confirm QSO with you the confirmed QSO will be added to the database of CFMRDA.ru.</p>
         <table id="cfm_qso_request">
-            <tr v-if="!userToken">
-                <td colspan="10" class="no_border email">
-                    <input type="text" name="email" id="email" 
-                        v-model="request.email" :class="{error: validationErrors.email}"/>
-                </td>
-            </tr>
-            <tr v-if="!userToken">
-                <td colspan="10" class="rda_callsign_note">Ваш email - Your email</td>
-            </tr>
             <tr>
                 <td class="menu rda_callsign">RDA's callsign</td>
                 <td class="menu rda">RDA</td>
@@ -165,6 +156,7 @@ import {TheMask} from 'vue-the-mask'
 
 import validationMixin from '../validation-mixin'
 import recaptchaMixin from '../recaptcha-mixin'
+import requireLoginMixin from '../require-login-mixin'
 
 import RdaInput from './RDAinput'
 
@@ -187,19 +179,13 @@ const CORRESPONDENT_ERRORS = {
 export default {
   BANDS: orderedBands(),
   MODES: MODES,
-  mixins: [validationMixin, recaptchaMixin],
+  mixins: [validationMixin, recaptchaMixin, requireLoginMixin],
   components: {Datepicker, RdaInput, TheMask},
   name: 'EmailCFM',
   data () {
-    const token = this.$store.getters.userToken
     const request = {
-      qso: [{}]
-    }
-    if (token)
-      request.token = token
-    else {
-      request.recaptcha = null
-      request.email = storeEmail.load()
+      qso: [{}],
+      token: this.$store.getters.userToken
     }
     return {
       request: request,
@@ -213,15 +199,6 @@ export default {
   },
   computed: {
     ...mapGetters(['userToken']),
-  },
-  watch: {
-    userToken: function (newVal) {
-      this.request.token = newVal
-      if (!newVal) {
-        this.request.recaptcha = null
-        this.request.email = storeEmail.load()
-      }
-    }
   },
   mounted () {
     this.validate()

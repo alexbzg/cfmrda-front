@@ -658,6 +658,9 @@ table.select_view td.no_click{
 table.select_view td.selected{
 	background-color: #ffffca; 
 	font-weight: bold;
+	color: #333;
+	text-decoration: none;
+	cursor: default;
 }
 table.select_view td.no_border{
 	border: none;
@@ -702,6 +705,9 @@ table.select_view td.separator{
 }
 .view_menu .selected{
 	background-color: #ffffca;
+	color: #333;
+	text-decoration: none;
+	cursor: default;
 }
 .view_menu .tab{
 	margin-left: 14px;
@@ -714,6 +720,28 @@ table.select_view td.separator{
 }
 
 
+
+.radio_btns_mode div{
+	width: 100px;
+	display: inline-block;
+	padding: 5px 0px;
+	text-align: center;
+	color: #009;
+	text-decoration: underline;
+	border: 1px solid #dfedfd;
+	font-weight: bold;	
+	background-color: #e7f2ff;
+	cursor: pointer;
+}
+.radio_btns_mode div.selected{
+	background-color: #ffffca; 
+	color: #333;
+	text-decoration: none;
+	cursor: default;
+}
+.view_menu .radio_btns_mode div{
+	float: left;
+}
 
 
 
@@ -1477,6 +1505,21 @@ table#cfm_qso td.cfm_btn{
 table#cfm_qso td.cfm_btn input{
 	padding: 3px 50px;
 }
+table#cfm_qso td.cfm_btn input#cfm_btn{
+	margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* ==========================================     A U T O   L O G I N   ====================================================== */
@@ -1509,6 +1552,10 @@ table#cfm_qso td.cfm_btn input{
 	margin: 30px auto;
 	text-align: left;
 }
+
+
+
+
 
 
 
@@ -1659,7 +1706,11 @@ table#paper_qsl_check td.qsl_comm textarea{
 	height: 50px;
 	text-align: left;
 }
+.moderator{
+	text-align: right;
+	font-size: 10px;
 
+}
 
 
 
@@ -2101,12 +2152,17 @@ table#chat_window td.message{
 
 /*        =========================            СТАТИСТИКА   ================================   */
 
-table#table_stats, table#table_stats_list{
-	margin: 0px auto 50px auto;
+
+
+table#table_stats{
+	margin: 15px auto 50px auto;
+ 	border-collapse: collapse;
+}
+table#table_stats_list{
  	border-collapse: collapse;
 }
 table#table_stats td, table#table_stats_list td{
-	width: 70px;
+	width: 100px;
 	padding: 10px 0px;
 	text-align: center;
 	color: #333;
@@ -2117,40 +2173,132 @@ table#table_stats td.top{
 	font-weight: bold;	
 	background-color: #e7f2ff;
 }
-table#table_stats td.top0{
-	padding: 1px 15px;
-	font-size: 14px;
-}
-table#table_stats td.menu{
-	width: 70px;
-	padding: 5px 0;
-	cursor: pointer;
-}
 table#table_stats td.rda, table#table_stats_list td.rda{
 	width: 100px;
 	font-size: 18px;
 	font-weight: bold;
 }
-table#table_stats td.divider{
-	width: 20px;
-	border: none;
-}
-table#table_stats td.no_border{
-	width: 290px;
-	border: none;
-}
-table#table_stats td.no_border2{
-	width: 276px;
-	border: none;
-}
-table#table_stats td.active{
-	background-color: #ffffca; 
+table#table_stats td.plus{
+	width: 130px;
 }
 
+
 #window_stats{
-	height: 400px;
+	height: 500px;
 	overflow: auto;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================     C L U S T E R  ====================================================== */
+
+
+#rda_cluster{
+	line-height: 2em;
+	color:#555;
+}
+#cluster_submenu{
+	margin: 10px auto 20px auto;
+	text-align: center;
+	font-size: 18px;
+}
+#cluster_submenu span{
+	margin: 0 10px;
+	color:#aaa;
+}
+#cluster_submenu span.active{
+	color:#333;
+}
+#cluster_submenu span.space{
+	margin-left: 45px;
+}
+
+table#cluster{
+	margin: 0px auto 50px auto;
+ 	border-collapse: collapse;
+ 	background-color: #fff;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+}
+table#cluster td{
+    padding: 3px 10px;
+    border: 1px solid #a6def8;
+    text-align: center;
+
+}
+table#cluster td.time, table#cluster td.mode{
+    width: 80px;
+}
+table#cluster td.band{ 
+	width: 80px;
+	font-size: 14px;   
+}
+table#cluster td.band span{ 
+	font-size: 18px;   
+    font-weight: bold;	
+    padding-right: 2px;
+    color:#333;
+}
+table#cluster td.callsign{
+    width: 180px;
+    font-size: 18px;
+    font-weight: bold;	
+    color:#333;
+}
+table#cluster td.rda{
+    width: 80px;
+	font-size: 18px;   
+    font-weight: bold;	
+    color: #555;
+}
+table#cluster td.text{
+    width: 300px;
+    color: #777;
+}
+table#cluster td.spotter{
+    width: 120px;
+    color: #999;
+    font-size: 14px;
+}
+table#cluster td.top{
+	font-weight: bold;	
+	padding: 3px;
+    border: 1px solid #a6def8;
+    color: #fff;
+    background-color: #0091c9;
+    font-size: 16px;   
+}
+table#cluster tr.odd {
+    background-color: #eff9fe;
+}
+
+a#adx_link{
+	color: #009;
+	font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

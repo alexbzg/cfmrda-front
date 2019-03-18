@@ -139,6 +139,14 @@ export function getMscData () {
     })
 }
 
+export function getStat () {
+  return get('/json/stat.json')
+    .then(response => {
+      return response.data
+    })
+}
+
+
 
 export function getFullRDA () {
   return get('/json/rda.json')
