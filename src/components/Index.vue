@@ -98,6 +98,8 @@
                 {{showDetails ? 'Свернуть' : 'Подробно по RDA районам для ' + replace0(callsignValid)}}
             </span>
 
+
+
             <table id="rda_table" v-if="showDetails">
                 <template v-for="(group, idxGr) in rda">
                     <tr :key="idxGr">
@@ -182,6 +184,8 @@
 
         </div>
 
+    <div id="banner" v-async-html="'banner/index'">
+    </div>
 
 
     <rank-table :rank-data-top="rankData" :callsign-rankings="hunterData ? hunterData.rank : null" 

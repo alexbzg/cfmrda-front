@@ -7,7 +7,7 @@
             <router-link to="/" id="callsign" v-if="userCallsign">{{userCallsign}}</router-link>
             <router-link to="/" v-if="$route.name !== 'Index'" id="home">Home</router-link>
             <router-link to="/admin" v-if="admin" id="admin">Admin</router-link>
-            <router-link to="/static/rules">Awards</router-link>
+            <router-link to="/awards">Awards</router-link>
             <router-link to="/cfm" v-if="userCallsign">CFM RDA</router-link>
             <router-link to="/uploads" v-if="userCallsign">Загрузки</router-link>
             <router-link to="/stats">Stats</router-link>
