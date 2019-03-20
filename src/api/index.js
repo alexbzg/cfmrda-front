@@ -118,6 +118,13 @@ export function getRankings () {
     })
 }
 
+export function getIssuedAwards () {
+  return get('/json/issued_awards.json')
+    .then(response => {
+      return response.data
+    })
+}
+
 export function getHTML (page) {
   return get('/html/' + page + '.html')
     .then((response) => {

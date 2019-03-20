@@ -81,7 +81,9 @@ a#logout_link{
 
 
 
-
+#banner{
+	text-align: center;
+}
 
 
 
@@ -123,12 +125,6 @@ a#logout_link{
 	color: #000;
 }
 
-
-iframe{
-	display: block;
-	margin: 50px auto;
-	width: 1000px;
-}
 
 
 
@@ -2219,14 +2215,16 @@ table#table_stats td.plus{
 	font-size: 18px;
 }
 #cluster_submenu span{
-	margin: 0 10px;
+	margin: 0 12px;
 	color:#aaa;
+	display: inline-block;
+	line-height: 1em;
 }
 #cluster_submenu span.active{
 	color:#333;
 }
 #cluster_submenu span.space{
-	margin-left: 45px;
+	margin-left: 50px;
 }
 
 table#cluster{

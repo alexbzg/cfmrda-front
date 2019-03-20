@@ -9,8 +9,10 @@ import Chat from './../components/Chat'
 import Contact from './../components/Contact'
 import StaticPage from './../components/StaticPage'
 import Stats from './../components/Stats'
+import Awards from './../components/Awards'
 
 import StatsRdaQso from './../components/StatsRdaQso'
+import AwardsIssued from './../components/AwardsIssued'
 
 const CFM = () => import(/* webpackChunkName: "cfm" */ './../components/CFM.vue')
 const EmailCFM = () => import(/* webpackChunkName: "cfm" */ './../components/EmailCFM.vue')
@@ -118,15 +120,32 @@ const router = new Router({
           component: ManageUploads
         },
         {
-        path: 'rules',
-        name: 'StaticPage',
-        component: StaticPage,
-        props: {page: 'rulesADIF'}
+          path: 'rules',
+          name: 'StaticPage',
+          component: StaticPage,
+          props: {page: 'rulesADIF'}
         },
         {
           path: '',
           name: 'NewUpload',
           component: NewUpload
+        }
+      ]
+    },
+    {
+      path: '/awards',
+      component: Awards,
+      children: [
+        {
+          path: 'rules',
+          name: 'Awards',
+          component: StaticPage,
+          props: {page: 'rules'}
+        },
+        {
+          path: '',
+          name: 'AwardsIssued',
+          component: AwardsIssued
         }
       ]
     },

@@ -184,7 +184,7 @@
 
         </div>
 
-    <div v-async-html="'banner/index'">
+    <div id="banner" v-async-html="'banner/index'">
     </div>
 
 
