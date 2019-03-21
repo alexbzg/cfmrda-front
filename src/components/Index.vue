@@ -29,9 +29,6 @@
                             ( add/edit )
                         </span>
                     </td>
-                    <td id="ex_calls" v-if="hunterData && hunterData.newCallsign">
-                        <b>{{callsignValid}} is the ex-callsign of {{hunterData.newCallsign}}</b> 
-                    </td>
                     <td></td>
                 </tr>
             </table>
@@ -348,6 +345,10 @@ export default {
         getHunterDetails(this.callsign)
           .then((data) => {
             this.hunterData = data
+            if (data.newCallsign) {
+              this.callsign = data.newCallsign
+              this.setCallsignValid()
+            }
             if (!data) {
               this.callsignError = true
               this.$callsignErrorTimeout =
