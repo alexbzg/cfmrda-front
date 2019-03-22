@@ -2206,11 +2206,10 @@ table#table_stats td.plus{
 
 
 #rda_cluster{
-	line-height: 2em;
 	color:#555;
 }
 #cluster_submenu{
-	margin: 10px auto 20px auto;
+	margin: 10px auto 0px auto;
 	text-align: center;
 	font-size: 18px;
 }
@@ -2226,6 +2225,20 @@ table#table_stats td.plus{
 #cluster_submenu span.space{
 	margin-left: 50px;
 }
+
+#icon_select{
+	height: 15px;
+	position: relative;
+}
+#icon_select img{
+	position: absolute;
+	right: 20px;
+	top: 10px;
+	cursor: pointer;
+}
+
+
+
 
 table#cluster{
 	margin: 0px auto 50px auto;
@@ -2254,9 +2267,16 @@ table#cluster td.band span{
 }
 table#cluster td.callsign{
     width: 180px;
+}
+table#cluster td.callsign a{
     font-size: 18px;
     font-weight: bold;	
     color:#333;
+    text-decoration: none;
+}
+table#cluster td.callsign a:hover{
+    color:#009;
+    text-decoration: underline;
 }
 table#cluster td.rda{
     width: 80px;

@@ -153,7 +153,12 @@ export function getStat () {
     })
 }
 
-
+export function getDx () {
+  return get('/json/dx.json')
+    .then(response => {
+      return response.data
+    })
+}
 
 export function getFullRDA () {
   return get('/json/rda.json')

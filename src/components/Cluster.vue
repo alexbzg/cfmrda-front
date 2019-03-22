@@ -63,23 +63,35 @@
 </template>
 
 <script>
-import {getHunterDetails, getDx} from '../api'
+import {mapGetters} from 'vuex'
 
+import {getHunterDetails, getDx} from '../api'
 import {orderedBands, MODES} from '../ham-radio'
+import {SET_DX_FILTER_MUTATION} from '../store'
 
 export default {
   BANDS: orderedBands(),
   MODES: MODES,
   name: 'Cluster',
   data () {
-    const filter = {
-      bands: {},
-      modes: {mix: false},
-
-    }
     return { 
       awardsData: null,
-      awards: []
+      awards: [],
+      filter: this.$store.getters.dxFilter  
+    }
+  },
+  computed: {
+    ..mapGetters['dxFilter']
+  },
+  watch: {
+    filter: {
+      handler: function (val) {
+        if (JSON.stringify(val) === JSON.stringify(this.dxFilter))
+          return
+        this.$store.commit(SET_DX_FILTER_MUTATION, val)
+        this.filter = this.dxFilter
+      },
+      deep: true
     }
   },
   mounted () {

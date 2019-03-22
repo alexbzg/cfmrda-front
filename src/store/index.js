@@ -1,29 +1,37 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import merge from 'deepmerge'
 
 Vue.use(Vuex)
-/*
-import Ajv from 'ajv'
-const ajv = new Ajv({allErrors: true})
-*/
 
 import storage from '../storage'
-import {getUploads, manageUploads} from '../api'
+import {BANDS, MODES} from '../ham-radio'
+import {getDx, getHunterDetails} from '../api'
 
 const STORAGE_KEY_USER = 'user'
+const STORAGE_KEY_DX_FILTER = 'dxFilter'
 
-const USER_INIT_MUTATION = 'userInit'
-const SET_UPLOADS_MUTATION = 'setUploads'
+const INIT_MUTATION = 'userInit'
 export const SET_USER_MUTATION = 'setUser'
 export const SET_OLD_CALLSIGNS_ALL = 'setOldCallsignsAll'
+export const SET_DX_FILTER_MUTATION = 'setDxFilter'
+export const DX_LISTENERS_MUTATION = 'dxListeners'
+const SET_USER_RDA_MUTATION = 'setUserRda'
+const SET_DX_MUTATION = 'setDx'
 
-export const GET_UPLOADS_ACTION = 'getUploads'
+const DX_UPDATE_ACTION = 'dxUpdate'
+const LOAD_USER_RDA_ACTION = 'userRdaLoad'
+
+const DX_UPDATE_INTERVAL = 60 * 1000
 
 const store = new Vuex.Store({
   state: {
     user: null,
     remember: true,
-    uploads: null
+    dxFilter: null,
+    dx: null,
+    dxListeners: {},
+    userRda: {}
   },
   getters: {
     userCallsign: state => {
@@ -40,11 +48,57 @@ const store = new Vuex.Store({
     },
     oldCallsigns: state => {
       return state.user ? JSON.parse(JSON.stringify(state.user.oldCallsigns)) : null
+    },
+    dxFilter: state => {
+      return JSON.parse(JSON.stringify(state.dxFilter))
     }
   },
   mutations: {
-    [USER_INIT_MUTATION] (state) {
+    [INIT_MUTATION] (state) {
       state.user = storage.load(STORAGE_KEY_USER)
+      const dxfDef = {
+        bands: {},
+        modes: {
+          mix: false
+        },
+        allRda: false,
+        dxped: false,
+        sound: false
+      }
+      for (const band of BANDS)
+        dxfDef.bands[band] = true
+      for (const mode of MODES)
+        dxfDef.modes[mode] = true
+      const dxfStor = storage.load(STORAGE_KEY_DX_FILTER, 'local')
+      state.dxFilter = merge(dxfDef, dxfStor)
+    },
+    [DX_LISTENERS_MUTATION] (state, payload) {
+      for (const lstnr in payload) {
+        if (payload[lstnr])
+          state.dxListeners[lstnr] = true
+        else
+          delete state.dxListeners[lstnr]
+      }
+      if (state.dxUpdateInterval && Object.keys(state.dxListeners).length === 0)
+        clearInterval(state.dxUpdateInterval)
+      else if (!state.dxUpdateInterval && Object.keys(state.dxListeners).length) 
+        state.dxUpdateInterval = setInterval(function () {store.dispatch(DX_UPDATE_ACTION)}, 
+          DX_UPDATE_INTERVAL)
+    },
+    [SET_DX_FILTER_MUTATION] (state, payload) {
+      const dxfNew = JSON.parse(JSON.stringify(payload))
+      if (!state.dxFilter.modes.mix && dxfNew.modes.mix) {
+        for (const mode of MODES)
+          dxfNew.modes[mode] = false
+      }
+      for (const mode of MODES) {
+        if (!state.dxFilter.modes[mode] && dxfNew.modes[mode]) {
+          dxfNew.modes.mix = false
+          break
+        }
+      }
+      state.dxFilter = dxfNew
+      storage.save(STORAGE_KEY_DX_FILTER, dxfNew, 'local')
     },
     [SET_USER_MUTATION] (state, payload) {
       state.user = payload.user
@@ -55,34 +109,31 @@ const store = new Vuex.Store({
         state.remember = payload.remember
       }
     },
-    [SET_UPLOADS_MUTATION] (state, uploads) {
-      state.uploads = uploads
-    },
     [SET_OLD_CALLSIGNS_ALL] (state, callsigns) {
       state.user.oldCallsigns.all = JSON.parse(JSON.stringify(callsigns))
+    },
+    [SET_USER_RDA_MUTATION] (state, payload) {
+      state.userRda = payload
+    },
+    [SET_DX_MUTATION] (state, payload) {
+      state.dx = payload
     }
   },
   actions: {
-    [GET_UPLOADS_ACTION] ({state, commit}, payload) {        
-      if (state.user && state.user.token) {
-        const storeUploads = () => {
-          getUploads(state.user.token)
-            .then((data) => {
-              commit(SET_UPLOADS_MUTATION, data)
-            })
-        }
-        if (payload) {
-          payload.token = state.user.token
-          return manageUploads(payload)
-            .then(() => {storeUploads()})
-        } else
-          return storeUploads()
+    [LOAD_USER_RDA_ACTION] (commit, state) {
+      if (state.user && state.user.callsign) {
+        getHunterDetails(state.user.callsign)
+          .then(data => { commit(SET_USER_RDA_MUTATION, data.rda)})
       }
+    },
+    [DX_UPDATE_ACTION] (commit) {
+      getDx()
+        .then(data => { commit(SET_DX_MUTATION, data) })
     }
   },
   strict: process.env.NODE_ENV !== 'production'
 })
 
-store.commit(USER_INIT_MUTATION)
+store.commit(INIT_MUTATION)
 
 export default store
