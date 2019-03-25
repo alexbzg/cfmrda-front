@@ -41,8 +41,10 @@
             </tr>
             <tr>
                 <td colspan="10" class="cfm_btn">
-                    Письмо не доставлено
-                    <input type="checkbox" v-model="blacklist" @change="blacklistChange"><br/>
+                    <template v-if="admin">
+                        Письмо не доставлено
+                        <input type="checkbox" v-model="blacklist" @change="blacklistChange"><br/>
+                    </template>
 
                     <input type="button" name="cfm_btn" id="cfm_btn" value="OK" class="btn"
                         @click="submitClick()" :disabled="pending">
