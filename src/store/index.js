@@ -51,7 +51,33 @@ const store = new Vuex.Store({
     },
     dxFilter: state => {
       return JSON.parse(JSON.stringify(state.dxFilter))
+    }, 
+    dx: state => {
+      if (state.dx) {
+        return state.dx.filter(item => {
+          if (!state.dxFilter.bands[item.band])
+            return false
+          if (!state.dxFilter.modes.mix && !state.dxFilter.modes[item.mode])
+            return false
+          if (state.dxFilter.allRda && item.awards.RDA)
+            return true
+          if (state.dxFilter.dxped && item.dxped)
+            return true
+          if (item.awards.RDA) {
+            if (state.userRda[item.awards.RDA.value] &&
+              state.userRDA[item.awards.RDA.value][item.band] &&
+              (state.dxFilter.modes.mix || 
+                state.userRDA[item.awards.RDA.value][item.band][item.mode]))
+              return false
+            else
+              return true
+          }
+          return false
+        })
+      } else
+        return null
     }
+
   },
   mutations: {
     [INIT_MUTATION] (state) {
@@ -70,7 +96,9 @@ const store = new Vuex.Store({
       for (const mode of MODES)
         dxfDef.modes[mode] = true
       const dxfStor = storage.load(STORAGE_KEY_DX_FILTER, 'local')
-      state.dxFilter = merge(dxfDef, dxfStor)
+      state.dxFilter = dxfStor ? merge(dxfDef, dxfStor) : dxfDef
+      if (state.user && state.user.callsign)
+        store.dispatch(LOAD_USER_RDA_ACTION)
     },
     [DX_LISTENERS_MUTATION] (state, payload) {
       for (const lstnr in payload) {
@@ -108,12 +136,24 @@ const store = new Vuex.Store({
           payload.remember ? 'local' : 'session')
         state.remember = payload.remember
       }
+      if (state.user && state.user.callsign)
+        store.dispatch(LOAD_USER_RDA_ACTION)
     },
     [SET_OLD_CALLSIGNS_ALL] (state, callsigns) {
       state.user.oldCallsigns.all = JSON.parse(JSON.stringify(callsigns))
     },
     [SET_USER_RDA_MUTATION] (state, payload) {
-      state.userRda = payload
+      state.userRda = {}
+      for (const rda in payload) {
+        state.userRda[rda] = {}
+        for (const item of payload[rda]) {
+          if (item.band) {
+            if (!(item.band in state.userRda[rda]))
+              state.userRda[rda][item.band] = {}
+            state.userRda[rda][item.band][item.mode] = true
+          }
+        }
+      }
     },
     [SET_DX_MUTATION] (state, payload) {
       state.dx = payload
@@ -123,7 +163,7 @@ const store = new Vuex.Store({
     [LOAD_USER_RDA_ACTION] (commit, state) {
       if (state.user && state.user.callsign) {
         getHunterDetails(state.user.callsign)
-          .then(data => { commit(SET_USER_RDA_MUTATION, data.rda)})
+          .then(data => {commit(SET_USER_RDA_MUTATION, data.rda.hunter)})
       }
     },
     [DX_UPDATE_ACTION] (commit) {
