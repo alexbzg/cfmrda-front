@@ -43,13 +43,10 @@ const store = new Vuex.Store({
     admin: state => {
       return state.user ? state.user.admin : false
     },
-    uploads: state => {
-      return JSON.parse(JSON.stringify(state.uploads))
-    },
     oldCallsigns: state => {
       return state.user ? JSON.parse(JSON.stringify(state.user.oldCallsigns)) : null
     },
-    dxFilter: state => {
+    dxFilter: state => () => {
       return JSON.parse(JSON.stringify(state.dxFilter))
     }, 
     dx: state => {
@@ -77,7 +74,6 @@ const store = new Vuex.Store({
       } else
         return null
     }
-
   },
   mutations: {
     [INIT_MUTATION] (state) {
@@ -160,13 +156,13 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    [LOAD_USER_RDA_ACTION] (commit, state) {
+    [LOAD_USER_RDA_ACTION] ({commit, state}) {
       if (state.user && state.user.callsign) {
         getHunterDetails(state.user.callsign)
           .then(data => {commit(SET_USER_RDA_MUTATION, data.rda.hunter)})
       }
     },
-    [DX_UPDATE_ACTION] (commit) {
+    [DX_UPDATE_ACTION] ({commit}) {
       getDx()
         .then(data => { commit(SET_DX_MUTATION, data) })
     }

@@ -10,6 +10,7 @@ import Contact from './../components/Contact'
 import StaticPage from './../components/StaticPage'
 import Stats from './../components/Stats'
 import Awards from './../components/Awards'
+import Cluster from './../components/Cluster'
 
 import StatsRdaQso from './../components/StatsRdaQso'
 import AwardsIssued from './../components/AwardsIssued'
@@ -105,6 +106,10 @@ const router = new Router({
     { path: '/cfm_qso',
       name: 'CfmQso',
       component: CfmQso
+    },
+    { path: '/cluster',
+      name: 'Cluster',
+      component: Cluster
     },
     { path: '/cfm_blacklist',
       name: 'CfmBlacklist',

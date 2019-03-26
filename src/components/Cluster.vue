@@ -1,19 +1,19 @@
 <template>
     <div id="rda_cluster">    
         <div id="cluster_submenu" v-if="showFilter">
-            <span class="band" v-for="(band, idx) in  $options.BANDS" :key="idx"
+            <span class="band" v-for="band in  $options.BANDS" :key="band"
                 :class="{active: filter.bands[band]}">
                 {{band}}<br/><input type="checkbox" v-model="filter.bands[band]">
             </span>
             <span class="mode space" :class="{active: filter.modes.mix}">
-                MIX<br/><input type="checkbox" v-model="filterSetting.modes.mix">
+                MIX<br/><input type="checkbox" v-model="filter.modes.mix">
             </span>
-            <span class="mode" v-for="(mode, idx) in $options.MODES" :key="idx" 
-                :class="{active: filter.modes[mode]">
+            <span class="mode" v-for="mode in $options.MODES" :key="mode" 
+                :class="{active: filter.modes[mode]}">
                 {{mode}}<br/><input type="checkbox" v-model="filter.modes[mode]">
             </span>
             <span class="all_rda space" :class="{active: filter.allRda}"> 
-                All RDA<br/><input type="checkbox" v-model="showFilterSettings.allRda">
+                All RDA<br/><input type="checkbox" v-model="filter.allRda">
             </span>
             <span class="dxped space" :class="{active: filter.dxped}">
                 +DXped<br/><input type="checkbox" v-model="filter.dxped">
@@ -37,7 +37,7 @@
                 <td class="top text">Text</td>
                 <td class="top spotter">Spotter</td>
             </tr>
-            <tr v-for="(item, idx) in dxFiltered">
+            <tr v-for="(item, idx) in dx" :key="idx">
                 <td class="time">{{item.time}}</td>
                 <td class="band">
                     <span>{{item.freq.toFixed(1).substr(0, item.freq.toFixed(1).length - 5)}}</span>
@@ -65,7 +65,6 @@
 <script>
 import {mapGetters} from 'vuex'
 
-import {getHunterDetails, getDx} from '../api'
 import {orderedBands, MODES} from '../ham-radio'
 import {SET_DX_FILTER_MUTATION} from '../store'
 
@@ -77,38 +76,24 @@ export default {
     return { 
       awardsData: null,
       awards: [],
-      filter: this.$store.getters.dxFilter  
+      filter: this.$store.getters.dxFilter(),
+      showFilter: false,
+      time: '12:00'
     }
   },
   computed: {
-    ..mapGetters['dxFilter']
+    ...mapGetters(['dxFilter', 'dx'])
   },
   watch: {
     filter: {
       handler: function (val) {
-        if (JSON.stringify(val) === JSON.stringify(this.dxFilter))
+        if (JSON.stringify(val) === JSON.stringify(this.dxFilter()))
           return
         this.$store.commit(SET_DX_FILTER_MUTATION, val)
-        this.filter = this.dxFilter
+        this.filter = this.dxFilter()
       },
       deep: true
     }
-  },
-  mounted () {
-    getIssuedAwards()
-      .then(data => {
-        this.awardsData = data
-        for (const award in data) {
-          const entry = {title: award}
-          if (!Array.isArray(data[award])) {
-            entry.tiers = []
-            for (const tier in data[award])
-              entry.tiers.push(tier)
-            entry.activeTier = entry.tiers[0]
-          }
-          this.awards.push(entry)
-        }
-      })
   }
 }
 </script>
