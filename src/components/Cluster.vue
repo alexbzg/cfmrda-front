@@ -1,4 +1,5 @@
 <template>
+    <div class="list">
     <div id="rda_cluster">    
         <div id="cluster_submenu" v-if="showFilter">
             <span class="band" v-for="band in  $options.BANDS" :key="band"
@@ -27,58 +28,31 @@
             <img src="/images/icon_select.png" @click="showFilter = !showFilter" />
         </div>   
 
-        <table id="cluster">
-            <tr>
-                <td class="top time">{{time}}z</td>
-                <td class="top band">MHz</td>
-                <td class="top mode">Mode</td>
-                <td class="top callsign">Callsign</td>
-                <td class="top rda">RDA</td>
-                <td class="top text">Text</td>
-                <td class="top spotter">Spotter</td>
-            </tr>
-            <tr v-for="(item, idx) in dx" :key="idx">
-                <td class="time">{{item.time}}</td>
-                <td class="band">
-                    <span>{{item.freq.toFixed(1).substr(0, item.freq.toFixed(1).length - 5)}}</span>
-                    {{item.freq.toFixed(1).substr( -5 )}}
-                </td>
-                <td class="mode">{{item.mode}}</td>
-                <td class="callsign">
-                    <a :href="'http://qrz.ru/db/' + item.cs" target="_blank" rel="noopener">
-                        {{item.cs}}
-                    </a>
-                </td>
-                <td class="rda">{{item.awards.RDA ? item.awards.RDA.value : ''}}</td>
-                <td class="text">
-                    <a v-if="item.dxped" :href="item.dxped.link" target="_blank" rel="noopener">
-                        INFO
-                    </a>
-                    {{item.text}}
-                </td>
-                <td class="spotter">{{item.de}}</td>
-            </tr>
-        </table>
+        <cluster-table rows="20" listener="cluster"></cluster-table>
+
+    </div>
     </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
 
-import {orderedBands, MODES} from '../ham-radio'
 import {SET_DX_FILTER_MUTATION} from '../store'
+import {orderedBands, MODES} from '../ham-radio'
+
+
+import ClusterTable from './ClusterTable'
+
 
 export default {
   BANDS: orderedBands(),
   MODES: MODES,
   name: 'Cluster',
+  components: {ClusterTable},
   data () {
     return { 
-      awardsData: null,
-      awards: [],
       filter: this.$store.getters.dxFilter(),
       showFilter: false,
-      time: '12:00'
     }
   },
   computed: {

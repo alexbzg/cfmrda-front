@@ -11,6 +11,7 @@ import {getDx, getHunterDetails} from '../api'
 const STORAGE_KEY_USER = 'user'
 const STORAGE_KEY_DX_FILTER = 'dxFilter'
 
+
 const INIT_MUTATION = 'userInit'
 export const SET_USER_MUTATION = 'setUser'
 export const SET_OLD_CALLSIGNS_ALL = 'setOldCallsignsAll'
@@ -29,9 +30,10 @@ const store = new Vuex.Store({
     user: null,
     remember: true,
     dxFilter: null,
-    dx: null,
+    dx: [],
     dxListeners: {},
-    userRda: {}
+    userRda: {},
+    dxNewSpot: null
   },
   getters: {
     userCallsign: state => {
@@ -62,9 +64,9 @@ const store = new Vuex.Store({
             return true
           if (item.awards.RDA) {
             if (state.userRda[item.awards.RDA.value] &&
-              state.userRDA[item.awards.RDA.value][item.band] &&
+              state.userRda[item.awards.RDA.value][item.band] &&
               (state.dxFilter.modes.mix || 
-                state.userRDA[item.awards.RDA.value][item.band][item.mode]))
+                state.userRda[item.awards.RDA.value][item.band][item.mode]))
               return false
             else
               return true
@@ -103,9 +105,11 @@ const store = new Vuex.Store({
         else
           delete state.dxListeners[lstnr]
       }
-      if (state.dxUpdateInterval && Object.keys(state.dxListeners).length === 0)
+      if (state.dxUpdateInterval && Object.keys(state.dxListeners).length === 0) {
         clearInterval(state.dxUpdateInterval)
-      else if (!state.dxUpdateInterval && Object.keys(state.dxListeners).length) 
+        state.dxUpdateInterval = null
+      } else if (!state.dxUpdateInterval && Object.keys(state.dxListeners).length)
+        store.dispatch(DX_UPDATE_ACTION)
         state.dxUpdateInterval = setInterval(function () {store.dispatch(DX_UPDATE_ACTION)}, 
           DX_UPDATE_INTERVAL)
     },
@@ -122,6 +126,7 @@ const store = new Vuex.Store({
         }
       }
       state.dxFilter = dxfNew
+      
       storage.save(STORAGE_KEY_DX_FILTER, dxfNew, 'local')
     },
     [SET_USER_MUTATION] (state, payload) {
@@ -152,7 +157,22 @@ const store = new Vuex.Store({
       }
     },
     [SET_DX_MUTATION] (state, payload) {
-      state.dx = payload
+      if (payload.length) {
+        const newDx0 = JSON.stringify(payload[0])
+        if (!state.dxPrev || state.dxPrev !== newDx0) {
+          const prev = state.dxPrev
+          state.dx = payload
+          state.dxPrev = newDx0
+          if (store.getters.dx.length) {
+            const newFDx0 = JSON.stringify(store.getters.dx[0])
+            if (!state.dxPrevF || state.dxPrevF !== newFDx0) {
+              state.dxPrevF = newFDx0
+              if (prev)
+                state.dxNewSpot = newFDx0
+            }
+          }
+        }
+      }
     }
   },
   actions: {

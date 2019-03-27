@@ -4,8 +4,8 @@
         <router-link to="/"><img id="logo" src="images/cfmrda_logo.png" border="0" /></router-link>
 
         <div id="top_menu" >
-            <router-link to="/" id="callsign" v-if="userCallsign">{{userCallsign}}</router-link>
-            <router-link to="/" v-if="$route.name !== 'Index'" id="home">Home</router-link>
+            <router-link to="/" id="callsign" v-if="userCallsign" exact>{{userCallsign}}</router-link>
+            <router-link to="/" v-if="$route.name !== 'Index'" id="home" exact>Home</router-link>
             <router-link to="/admin" v-if="admin" id="admin">Admin</router-link>
             <router-link to="/awards">Awards</router-link>
             <router-link to="/cluster">Cluster</router-link>
