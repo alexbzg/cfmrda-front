@@ -124,8 +124,10 @@ a#logout_link{
 #top_menu a#callsign{
 	color: #000;
 }
-
-
+#top_menu a.router-link-active{
+	background-size: 100% 2px;
+	cursor: default;
+}
 
 
 .list{
@@ -1002,6 +1004,38 @@ table#stat1rda_activator{
 
 
 
+/*               R E A L T I M E   S T A T                      */
+
+
+
+table#cfm_rda_check{
+	margin: 0px auto 50px auto;
+ 	border-collapse: collapse;
+ 	background-color: #fff;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+}
+table#cfm_rda_check td{
+    padding: 5px 20px;
+    border: 1px solid #dfedfd;
+    text-align: center;
+}
+table#cfm_rda_check td.top{
+	font-weight: bold;	
+	padding: 3px;
+    border: 1px solid #a6def8;
+    color: #333;
+    background-color: #e7f2ff;
+    font-size: 16px;   
+}
+table#cfm_rda_check td.top2{
+	padding: 3px 20px;
+	line-height: 14px;
+    font-size: 14px;   
+    font-weight: normal;
+}
+table#cfm_rda_check td.callsign {
+    width: 150px;
+}
 
 
 
@@ -1016,6 +1050,11 @@ table#stat1rda_activator{
 
 
 
+
+
+
+
+/*             L A T E S T   U P L O A D S           */
 
 table#last_uploads{
 	margin: 30px auto;
@@ -1711,12 +1750,20 @@ table#paper_qsl_check td.qsl_comm textarea{
 	font-size: 10px;
 
 }
+/*
+table#paper_qsl_check td.qsl_rda{
+	border-right: 1px solid #CD8B8F;
+}
+table#paper_qsl_check td.top.qsl_rda_qrz{
+	background-color: #e7f2ff;
+}
 
+table#paper_qsl_check td.qsl_rda_qrz{
+	background-color: 	#fff;
+	border: 1px solid #CD8B8F;
+}
 
-
-
-
-
+*/
 
 
 
@@ -2206,11 +2253,10 @@ table#table_stats td.plus{
 
 
 #rda_cluster{
-	line-height: 2em;
 	color:#555;
 }
 #cluster_submenu{
-	margin: 10px auto 20px auto;
+	margin: 10px auto 0px auto;
 	text-align: center;
 	font-size: 18px;
 }
@@ -2227,6 +2273,30 @@ table#table_stats td.plus{
 	margin-left: 50px;
 }
 
+#icon_select{
+	height: 15px;
+	position: relative;
+}
+#icon_select img{
+	position: absolute;
+	right: 20px;
+	top: 10px;
+	cursor: pointer;
+}
+
+#chat_cluster_view{
+	text-align: center;
+}
+#chat_cluster_view img{
+	cursor: pointer;
+	box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+	border: 1px solid #a6def8;
+	margin-bottom: 5px;
+}
+
+
+
+
 table#cluster{
 	margin: 0px auto 50px auto;
  	border-collapse: collapse;
@@ -2234,11 +2304,15 @@ table#cluster{
     box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
 }
 table#cluster td{
-    padding: 3px 10px;
+    padding: 7px 10px;
     border: 1px solid #a6def8;
     text-align: center;
 
 }
+#chat_cluster table#cluster td{
+    padding: 2px 10px;
+}
+
 table#cluster td.time, table#cluster td.mode{
     width: 80px;
 }
@@ -2254,9 +2328,16 @@ table#cluster td.band span{
 }
 table#cluster td.callsign{
     width: 180px;
+}
+table#cluster td.callsign a{
     font-size: 18px;
     font-weight: bold;	
     color:#333;
+    text-decoration: none;
+}
+table#cluster td.callsign a:hover{
+    color:#009;
+    text-decoration: underline;
 }
 table#cluster td.rda{
     width: 80px;
@@ -2267,6 +2348,13 @@ table#cluster td.rda{
 table#cluster td.text{
     width: 300px;
     color: #777;
+    text-align: left;
+}
+table#cluster td.text a{
+    margin-right: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #00a;
 }
 table#cluster td.spotter{
     width: 120px;

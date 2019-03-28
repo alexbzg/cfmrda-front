@@ -10,7 +10,7 @@
         <tr v-for="(entry, idx) in entries" :key="idx">
             <td><input type="checkbox" v-model="entry.confirmed"></td>
             <td class="new">{{replace0(entry.new)}}</td>
-            <td class="old"><textarea v-model="entry.callsignsEdit" v-capitalize></textarea></td>
+            <td class="old"><textarea v-model.trim="entry.callsignsEdit" v-capitalize></textarea></td>
             <td class="btns"><input type="submit" class="btn" value="OK" @click="saveClick(entry)"></td>
         </tr>
     </table>

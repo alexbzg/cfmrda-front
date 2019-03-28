@@ -1,8 +1,8 @@
 <template>
   <div class="list">
     <div id="list_menu">
-        <router-link to="/awards/rules">Rules</router-link>
-        <router-link to="/awards/">Issued awards</router-link>
+        <router-link to="/awards/rules">Правила/Rules</router-link>
+        <router-link to="/awards/">Выданные дипломы/Issued awards</router-link>
     </div>
     <router-view></router-view>
   </div>

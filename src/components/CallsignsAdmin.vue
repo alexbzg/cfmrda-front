@@ -1,7 +1,7 @@
 <template>
     <div id="new_old">
 
-        <input type="text" id="call_search" v-model="searchValueEdit" v-capitalize> 
+        <input type="text" id="call_search" v-model.trim="searchValueEdit" v-capitalize> 
         <input type="submit" class="btn" value="Искать" @click="searchValue = searchValueEdit">
         <div v-if="callsignsSearch" class="searchClose">
             <img src="images/icon_close.png" title="Закрыть результаты поиска" 
