@@ -17,7 +17,8 @@
             </td>
             <td class="mode">{{item.mode}}</td>
             <td class="callsign">
-                <a :href="'http://qrz.ru/db/' + item.cs" target="_blank" rel="noopener">
+                <a :href="'http://qrz.' + (item.dxped ? 'com' : 'ru' ) + '/db/' + item.cs" 
+                    target="_blank" rel="noopener">
                     {{item.cs}}
                 </a>
             </td>
@@ -34,10 +35,6 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
-
-import {DX_LISTENERS_MUTATION} from '../store'
-
 export default {
   name: 'ClusterTable',
   props: ['rows', 'listener'],
@@ -49,31 +46,16 @@ export default {
   computed: {
     dx () {
       return this.$store.getters.dx.slice(0, this.rows)
-    },
-    ...mapState(['dxNewSpot', 'dxFilter'])
+    }
   },
   mounted () {
-    this.listenCluster(true)
     this.updateTime()
-    this.sound = new Audio('/note.mp3')
   },
   beforeDestroy () {
-    this.listenCluster(false)
     if (this.updateTimeTO)
       clearTimeout(this.updateTimeTO)
   },
   methods: {
-    playSound () {
-      if (this.sound)
-        this.sound.play()
-          .catch(() => {
-          })
-    },
-    listenCluster (val) {
-      const lst = {}
-      lst[this.listeners] = val
-      this.$store.commit(DX_LISTENERS_MUTATION, lst)
-    },
     updateTime () {
       const n = new Date()
       let min = n.getUTCMinutes()
@@ -82,17 +64,6 @@ export default {
       if ( hr < 10 ) hr = "0" + hr
       this.time = hr + ':' + min;
       this.updateTimeTO = setTimeout(this.updateTime, (60 - n.getUTCSeconds()) * 1000)
-    }
-  },
-  watch: {
-    dxNewSpot: function (newS) {
-      //eslint-disable-next-line no-console
-      console.log('new spot watch fired ' + new Date() + ' ' +  newS)
-      if (newS && this.dxFilter.sound) {
-        this.playSound()
-        //eslint-disable-next-line no-console
-        console.log('Sound! ' + new Date())
-      }
     }
   }
 }

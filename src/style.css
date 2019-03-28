@@ -2273,15 +2273,25 @@ table#table_stats td.plus{
 	margin-left: 50px;
 }
 
-#icon_select, #chat_cluster_view{
+#icon_select{
 	height: 15px;
 	position: relative;
 }
-#icon_select img, #chat_cluster_view img{
+#icon_select img{
 	position: absolute;
 	right: 20px;
 	top: 10px;
 	cursor: pointer;
+}
+
+#chat_cluster_view{
+	text-align: center;
+}
+#chat_cluster_view img{
+	cursor: pointer;
+	box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+	border: 1px solid #a6def8;
+	margin-bottom: 5px;
 }
 
 

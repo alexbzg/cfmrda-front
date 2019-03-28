@@ -51,9 +51,11 @@
             </tr>
             <tr v-for="(file, index) in adif.files" :key="index">
               <td class="file">{{file.name}}</td>
-              <td class="rda_input"><input type="text" name="rda_input" id="rda_input" v-model.trim="file.rda" 
+              <td class="rda_input"><rda-input name="rda_input" id="rda_input" v-model.trim="file.rda" 
                 v-capitalize :disabled="adif.rdaFieldEnable"
-                :class="{error: !adif.rdaFieldEnable && validationErrors['files.'+index+'.rda']}"></td>
+                :class="{error: !adif.rdaFieldEnable && validationErrors['files.'+index+'.rda']}">
+                </rda-input>
+              </td>
             </tr>
           </table>
           <br/>
@@ -95,6 +97,8 @@ import storage from '../storage'
 import {uploadADIF as apiUploadADIF} from '../api'
 import {parseRDA} from '../ham-radio'
 
+import RdaInput from './RDAinput'
+
 import validationMixin from '../validation-mixin'
 
 const STORAGE_KEY_STATION_CALLSIGN_SETTINGS = 'station_callsign_settings'
@@ -104,6 +108,7 @@ const RDA_DETECT_SKIP = ['TO-20', 'OM-20', 'TO-19', 'OM-19']
 
 export default {
   mixins: [validationMixin],
+  components: {RdaInput},
   name: 'Upload',
   data () {
     const stationCallsignSettings = this.loadStationCallsignSettings()

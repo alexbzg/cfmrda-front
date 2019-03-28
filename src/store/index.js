@@ -7,6 +7,7 @@ Vue.use(Vuex)
 import storage from '../storage'
 import {BANDS, MODES} from '../ham-radio'
 import {getDx, getHunterDetails} from '../api'
+import playSound from '../play-sound'
 
 const STORAGE_KEY_USER = 'user'
 const STORAGE_KEY_DX_FILTER = 'dxFilter'
@@ -25,15 +26,15 @@ const LOAD_USER_RDA_ACTION = 'userRdaLoad'
 
 const DX_UPDATE_INTERVAL = 60 * 1000
 
+const DX_SOUND = new Audio('/note.mp3')
+
 const store = new Vuex.Store({
   state: {
     user: null,
     remember: true,
     dxFilter: null,
     dx: [],
-    dxListeners: {},
-    userRda: {},
-    dxNewSpot: null
+    userRda: {}
   },
   getters: {
     userCallsign: state => {
@@ -97,21 +98,9 @@ const store = new Vuex.Store({
       state.dxFilter = dxfStor ? merge(dxfDef, dxfStor) : dxfDef
       if (state.user && state.user.callsign)
         store.dispatch(LOAD_USER_RDA_ACTION)
-    },
-    [DX_LISTENERS_MUTATION] (state, payload) {
-      for (const lstnr in payload) {
-        if (payload[lstnr])
-          state.dxListeners[lstnr] = true
-        else
-          delete state.dxListeners[lstnr]
-      }
-      if (state.dxUpdateInterval && Object.keys(state.dxListeners).length === 0) {
-        clearInterval(state.dxUpdateInterval)
-        state.dxUpdateInterval = null
-      } else if (!state.dxUpdateInterval && Object.keys(state.dxListeners).length)
-        store.dispatch(DX_UPDATE_ACTION)
-        state.dxUpdateInterval = setInterval(function () {store.dispatch(DX_UPDATE_ACTION)}, 
-          DX_UPDATE_INTERVAL)
+      store.dispatch(DX_UPDATE_ACTION)
+      state.dxUpdateInterval = setInterval(function () {store.dispatch(DX_UPDATE_ACTION)}, 
+        DX_UPDATE_INTERVAL)
     },
     [SET_DX_FILTER_MUTATION] (state, payload) {
       const dxfNew = JSON.parse(JSON.stringify(payload))
@@ -167,8 +156,8 @@ const store = new Vuex.Store({
             const newFDx0 = JSON.stringify(store.getters.dx[0])
             if (!state.dxPrevF || state.dxPrevF !== newFDx0) {
               state.dxPrevF = newFDx0
-              if (prev)
-                state.dxNewSpot = newFDx0
+              if (prev && state.dxFilter.sound)
+                playSound(DX_SOUND)
             }
           }
         }

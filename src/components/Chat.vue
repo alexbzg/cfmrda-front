@@ -1,6 +1,12 @@
 <template>
-    <div class="list">
-        <div id="chat">
+  <div class="list">
+      <div id="chat_cluster_view">
+        <img src="/images/icon_chat_cluster.png" @click="showCluster = !showCluster"/>
+      </div>   
+      <div id="chat_cluster" v-if="showCluster">
+          <cluster-table rows="3"></cluster-table>
+      </div>
+      <div id="chat">
             <table id="message_form">
                 <tbody>
                     <tr>
@@ -53,7 +59,7 @@
                                     <span class="message_to" v-for="callsign in message.to" :key="callsign">
                                         &rArr; {{callsign}}
                                     </span>
-                                    {{message.text}}
+                                    <span class="message_text" v-html="message.text"></span>
                                 </td>
                             </tr>
                         </table>
@@ -80,10 +86,13 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import sanitizeHTML from 'sanitize-html'
 
 import replaceZerosMixin from '../replace-zeros-mixin'
 import storage from '../storage'
 import {dataService, chatPost} from '../api'
+
+import ClusterTable from './ClusterTable'
 
 const CHAT_STORAGE_KEY = 'chat'
 
@@ -96,10 +105,15 @@ const chatService = dataService('/json/chat.json', 'chat-update')
 const usersService = dataService('/json/active_users.json', 'users-update')
 
 const reMSG_TO = /(:?\u21d2\s?\w+\s?)+(:?\s|$)/
-
+const MSG_SANITIZE_HTML_SETTINGS = {
+    allowedTags: ['h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
+        'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
+        'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre']
+}
 
 export default {
   mixins: [replaceZerosMixin],
+  components: {ClusterTable},
   name: 'Chat',
   data () {
     const stored = storage.load(CHAT_STORAGE_KEY)
@@ -123,6 +137,7 @@ export default {
       messages: [],
       typingTs: null,
       pending: false,
+      showCluster: false
     }
   },
   beforeRouteLeave (to, from, next) {
@@ -137,6 +152,7 @@ export default {
   methods: {
     chatUpdate () {
       for (const msg of chatService.data) {
+        msg.text = sanitizeHTML(msg.text, MSG_SANITIZE_HTML_SETTINGS)
         let match = null
         if (match = reMSG_TO.exec(msg.text)) {
           const to = match[0]
