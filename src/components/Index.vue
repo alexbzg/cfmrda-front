@@ -188,6 +188,32 @@
     <rank-table :rank-data-top="rankData" :callsign-rankings="hunterData ? hunterData.rank : null" 
         :callsign="callsignValid" @callsign-click="callsignClick"/>
 
+    <div class="list" v-if="mscData.userActivity">
+
+        <div id="qsl_check_list">
+            <h4>Realtime CFM RDA</h4>
+            <table id="cfm_rda_check">
+                <tr>
+                    <td class="top" rowspan="2"></td>
+                    <td class="top" colspan="2">QSL CFM</td>
+                    <td class="top">Email CFM</td>
+                </tr>
+                <tr>
+                    <td class="top top2">сейчас на проверке</td>
+                    <td class="top top2">сегодня проверено</td>
+                    <td class="top top2">сегодня будет отправлено</td>
+                </tr>
+                <tr v-for="item in mscData.userActivity" :key="item.callsign">
+                    <td class="callsign">{{item.callsign}}</td>
+                    <td class="">{{item.qslWait}}</td>
+                    <td class="">{{item.qslToday}}</td>
+                    <td class="">{{item.email}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+   
+
     <div class="list">
       <h4>Latest uploads</h4>
       Статистика CFM RDA пересчитывается раз в сутки после 00:00 мск

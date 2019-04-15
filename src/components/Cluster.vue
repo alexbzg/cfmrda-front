@@ -28,7 +28,7 @@
             <img src="/images/icon_select.png" @click="showFilter = !showFilter" />
         </div>   
 
-        <cluster-table rows="20" listener="cluster"></cluster-table>
+        <cluster-table rows="50" listener="cluster"></cluster-table>
 
     </div>
     </div>
