@@ -191,7 +191,7 @@
     <div class="list" v-if="mscData.userActivity">
 
         <div id="qsl_check_list">
-            <h4>Realtime CFM RDA</h4>
+            <h4>Today's CFM RDA stats</h4>
             <table id="cfm_rda_check">
                 <tr>
                     <td class="top" rowspan="2"></td>
@@ -199,9 +199,9 @@
                     <td class="top">Email CFM</td>
                 </tr>
                 <tr>
-                    <td class="top top2">сейчас на проверке</td>
-                    <td class="top top2">сегодня проверено</td>
-                    <td class="top top2">сегодня будет отправлено</td>
+                    <td class="top top2">на проверке</td>
+                    <td class="top top2">проверено</td>
+                    <td class="top top2">будет отправлено</td>
                 </tr>
                 <tr v-for="item in mscData.userActivity" :key="item.callsign">
                     <td class="callsign">{{item.callsign}}</td>
