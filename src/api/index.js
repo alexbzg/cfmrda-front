@@ -146,6 +146,13 @@ export function getMscData () {
     })
 }
 
+export function getDeletedUploads () {
+  return get('/json/del_uploads.json')
+    .then(response => {
+      return response.data
+    })
+}
+
 export function getStat () {
   return get('/json/stat.json')
     .then(response => {
