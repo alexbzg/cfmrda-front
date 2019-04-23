@@ -92,6 +92,7 @@
                     <td class="qsl_my_call">{{qso.callsign}}</td>
                     <td class="qsl_my_new_call">{{qso.newCallsign}}</td>
                     <td class="qsl_card">
+                        <div class="moderator" v-if="qso.admin">{{qso.admin}}</div>
                         <a href="#" @click="showImage = (showImage === qso ? null : qso)"
                             v-if="qso.state === null">
                             <img src="/images/icon_qsl.png" title="Просмотр QSL">
