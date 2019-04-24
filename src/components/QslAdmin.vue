@@ -14,32 +14,39 @@
             <td class="top qsl_not_cfm">NOT CFM</td>
             <td class="top qsl_comm">Comment</td>
         </tr>
-        <tr v-for="item in qslList" :key="item.id" :class="{cfm_checked: item.cfm, not_cfm_checked: item.not_cfm}">
-            <td class="qsl_callsign">{{item.callsign}}</td>
-            <td class="qsl_rda_callsign" @click="showRdaLog(item.stationCallsign)">{{item.stationCallsign}}</td>
-            <td class="qsl_rda">{{item.rda}}</td>
-            <td class="qsl_rda_qrz">{{item.qrzRda}}</td>
-            <td class="qsl_date">{{item.date}}</td>
-            <td class="qsl_band">{{item.band}}</td>
-            <td class="qsl_mode">{{item.mode}}</td>
-            <td class="qsl_card">
-                <img src="/images/icon_qsl.png" title="Просмотр QSL"
-                      @click="showImage = showImage === item ? null : item"/>
-            </td>
-            <td class="qsl_cfm">
-                <input type="checkbox" v-model="item.cfm" 
-                      @change="item.not_cfm = item.cfm ? false : item.not_cfm">
-            </td>
-            <td class="qsl_not_cfm">
-                <input type="checkbox" v-model="item.not_cfm" 
-                      @change="item.cfm = item.not_cfm ? false : item.cfm">
-            </td>
-            <td class="qsl_comm">
-                <div class="moderator" v-if="item.cfm || item.not_cfm">{{userCallsign}}</div>
-                <textarea v-if="item.not_cfm" v-model="item.comment">
-                </textarea>
-            </td>
-        </tr>
+        <tbody v-for="item in qslList" :key="item.id">
+            <tr :class="{cfm_checked: item.cfm, not_cfm_checked: item.not_cfm}">
+                <td class="qsl_callsign">{{item.callsign}}</td>
+                <td class="qsl_rda_callsign" @click="showRdaLog(item.stationCallsign)">{{item.stationCallsign}}</td>
+                <td class="qsl_rda">{{item.rda}}</td>
+                <td class="qsl_rda_qrz">{{item.qrzRda}}</td>
+                <td class="qsl_date">{{item.date}}</td>
+                <td class="qsl_band">{{item.band}}</td>
+                <td class="qsl_mode">{{item.mode}}</td>
+                <td class="qsl_card">
+                    <img src="/images/icon_qsl.png" title="Просмотр QSL"
+                        @click="showImage = showImage === item ? null : item"/>
+                </td>
+                <td class="qsl_cfm">
+                    <input type="checkbox" v-model="item.cfm" 
+                        @change="item.not_cfm = item.cfm ? false : item.not_cfm">
+                </td>
+                <td class="qsl_not_cfm">
+                    <input type="checkbox" v-model="item.not_cfm" 
+                        @change="item.cfm = item.not_cfm ? false : item.cfm">
+                </td>
+                <td class="qsl_comm">
+                    <div class="moderator" v-if="item.cfm || item.not_cfm">{{userCallsign}}</div>
+                    <textarea v-if="item.not_cfm" v-model="item.comment">
+                    </textarea>
+                </td>
+            </tr>
+            <tr v-if="showImage === item">
+                <td colspan="11" class="qsl_image">
+                    <img :src="'/qsl_images/' + item.id + '_' + item.image" @click="showImage = null"/>
+                </td>
+            </tr>
+        </tbody>
         <tr>
             <td colspan="12" class="cfm_btn">
                 <input type="button" name="cfm_btn" id="cfm_btn" value="OK" class="btn"
@@ -56,7 +63,7 @@
 <script>
 import {mapGetters} from 'vuex'
 
-import {qslAdmin, getQrzData} from '../api'
+import {qslAdmin} from '../api'
 
 export default {
   name: 'QslAdmin',
@@ -67,7 +74,7 @@ export default {
       pending: false,
       success: false,
       response: null,
-      showImage: null,
+      showImage: null
     }
   },
   methods: {
@@ -81,9 +88,6 @@ export default {
           for (const qsl of data) {
             qsl.cfm = false
             qsl.not_cfm = false
-            qsl.qrzRda = null
-            getQrzData(qsl.stationCallsign)
-              .then(data => {qsl.qrzRda = data.state})
           }
           this.qslList = data
         })
