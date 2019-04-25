@@ -268,7 +268,7 @@
                             {{replace0(activator)}}
                         </span>
                     </td>
-                    <td class="uploader">{{item.uploader}}</td>
+                    <td class="uploader">{{item.delBy}}</td>
                     <td class="uploaded">{{item.delDate}}<span>{{item.delTime}}</span></td>
                 </tr>
             </table>
