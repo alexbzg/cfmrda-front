@@ -63,7 +63,8 @@
               <input type="checkbox" name="ok_check" v-model="check"/> Да, всё верно.
           </div>
           <input type="button" name="upload_btn" id="upload_btn" v-if="check"
-            value="Загрузить в базу данных CFMRDA" class="btn" @click="uploadADIF">
+            value="Загрузить в базу данных CFMRDA" class="btn" @click="uploadADIF"><br/><br/><br/><br/>
+            <span id="upload_email">Если при загрузке ADIF появляется ошибка, пришлите свой ADI файл на <span style="color:#009;"><b><u>support@cfmrda.ru</u></b></span>. Мы загрузим его сами.</span>
         </div> 
 
         <div id="uploading_info" v-if="pending">
@@ -207,6 +208,8 @@ export default {
       apiUploadADIF(this.adif)
         .then((response) => { 
           if (response.filesLoaded) {
+            for 
+
             this.response.message = 'Успешно загружено файлов: ' + response.filesLoaded +
               '.<br/> Статистика будет обновлена в течение 24 часов.'
             this.response.success = true

@@ -225,7 +225,7 @@ a#logout_link{
 #upload{
 	text-align: center;
 	color: #777;
-	padding: 10px 0 100px 0;
+	padding: 10px 0 10px 0;
 }
 #upload_form {
 	margin: 0px auto 0 auto;
@@ -356,7 +356,9 @@ ul#upload_info li{
 }
 
 
-
+#upload_email{
+	font-size: 14px;
+}
 
 
 
@@ -1094,8 +1096,13 @@ table#last_uploads td.uploader span, table#admin td.uploader span{
 	color: #777;
 	font-weight: normal;
 }
+table#last_uploads td.rda{
+	color: #900;
+	font-weight: bold;
+}
 table#last_uploads td.rda a{
 	color: #009;
+	font-weight: normal;
 }
 table#last_uploads td.rda a span{
 	display: inline-block;
@@ -1615,7 +1622,7 @@ table#cfm_qso td.cfm_btn input#cfm_btn{
 /* ==========================================     P A P E R   Q S L   ====================================================== */
 
 #paper_qsl{
-	text-align: left;
+	text-align: centr;
 }
 table#add_paper_qsl{
 	margin: 30px auto 100px auto;
@@ -1687,6 +1694,116 @@ table#add_paper_qsl td.qsl_upload input{
 
 
 
+								/*  новая форма отправки QSL */
+
+table#qsl_data_form{
+	margin: 30px auto 10px auto;
+ 	border-collapse: collapse;
+	border: 2px solid #dfedfd;
+}
+table#qsl_data_form td{
+	padding: 5px 15px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+	border-bottom: 2px solid #dfedfd;
+	vertical-align: middle;
+}
+table#qsl_data_form td.top{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+table#qsl_data_form td.qsl_rda input{
+	width: 60px;
+}
+table#qsl_data_form td.qsl_callsign input{
+	width: 150px;
+	font-weight: bold;
+	text-align: center;
+}
+table#qsl_data_form input.qsl_radio_btns{
+	margin-left: 20px;
+}
+table#qsl_data_form input#my_callsign, 
+table#qsl_data_form select#select_my_callsign{
+	width: 150px;
+	font-weight: bold;
+	text-align: center;
+}
+table#qsl_data_form td.add_line{
+	font-weight: bold;
+	text-decoration: underline;
+	color: #009;
+	cursor: pointer;
+	padding: 15px 0;
+	border-bottom: none;
+}
+table#qsl_data_form td.card_upload, 
+table#qsl_data_form td.qsl_message{
+	border: none;
+}
+table#qsl_data_form textarea{
+	width: 100%;
+	text-align: left;
+	height: 50px;
+}
+table#qsl_data_form td.del{
+	width: 30px;
+}
+table#qsl_data_form td.del img{
+	cursor: pointer;
+}
+
+
+
+
+table#qsl_list{
+	margin: 50px auto 10px auto;
+ 	border-collapse: collapse;
+	border: 1px solid #dfedfd;
+}
+table#qsl_list td{
+	padding: 5px 15px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+	border-bottom: 2px solid #dfedfd;
+	vertical-align: middle;
+}
+table#qsl_list td.top{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+table#qsl_list td.qsl_callsign, 
+table#qsl_list td.qsl_rda{
+	font-weight: bold;	
+}
+table#qsl_list td.qsl_image img{
+	max-width: 1000px;
+	max-height: 700px;
+}
+table#qsl_list tr.cfmd{
+	background-color: #caffcd;
+}
+table#qsl_list tr.not_cfmd{
+	background-color: #fce2e2;
+}
+table#qsl_list td.qsl_card, table#qsl_list td.qsl_message{
+	font-size: 12px;
+}
+table#qsl_list td.del img{
+	cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 table#paper_qsl_check{
@@ -1715,8 +1832,15 @@ table#paper_qsl_check td.qsl_links, table#paper_qsl_check td.qsl_card{
 table#paper_qsl_check td.qsl_callsign, table#paper_qsl_check td.qsl_new_callsign, table#paper_qsl_check td.qsl_rda_callsign {
 	font-weight: bold;
 }
-table#paper_qsl_check td.qsl_rda_callsign a{
+table#paper_qsl_check td.qsl_rda_callsign{
 	color: #009;
+	text-decoration: underline;
+	cursor: pointer;
+}
+table#paper_qsl_check td.qsl_rda_callsign.top{
+	color: #333;
+	text-decoration: none;
+	cursor: default;
 }
 table#paper_qsl_check td.qsl_cfm, table#paper_qsl_check td.qsl_not_cfm{
 	background-color: #ffffca;
@@ -1750,20 +1874,12 @@ table#paper_qsl_check td.qsl_comm textarea{
 	font-size: 10px;
 
 }
-/*
-table#paper_qsl_check td.qsl_rda{
-	border-right: 1px solid #CD8B8F;
-}
-table#paper_qsl_check td.top.qsl_rda_qrz{
-	background-color: #e7f2ff;
-}
+
 
 table#paper_qsl_check td.qsl_rda_qrz{
-	background-color: 	#fff;
-	border: 1px solid #CD8B8F;
+	font-weight: bold;
+	color: #900;
 }
-
-*/
 
 
 
@@ -2221,6 +2337,20 @@ table#table_stats td.plus{
 	width: 130px;
 }
 
+table#table_stats td span{
+	text-decoration: underline;
+	color: #009;
+	cursor: pointer;
+}
+table#table_stats td.stats_detail{
+	padding: 50px 0;
+	text-align: center;
+}
+table#table_stats td.stats_detail a{
+	font-weight: bold;
+	color: #009;
+}
+
 
 #window_stats{
 	height: 500px;
@@ -2385,7 +2515,65 @@ a#adx_link{
 
 
 
+/* ==========================================     O U R   B A S E  ====================================================== */
 
+
+#our_base{
+	margin: 50px auto 100px auto;
+	text-align: center;
+}
+#our_base input#call_search{
+	font-weight: bold;
+}
+table#callsign_rda{
+	margin: 15px auto;
+ 	border-collapse: collapse;
+}
+table#callsign_rda td{
+	padding: 10px 20px;
+	text-align: center;
+	color: #333;
+	border: 1px solid #dfedfd;
+	vertical-align: middle;
+}
+table#callsign_rda td.top{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+	font-size: 24px;
+}
+table#callsign_rda td.time_period{
+	width: 500px;
+	text-align: left;
+	
+}
+table#callsign_rda td.time_period select{
+	margin-right: 20px;
+	
+}
+table#callsign_rda td.rda{
+	padding: 0;
+}
+table#callsign_rda td.rda input, table#callsign_rda td.rda{
+	width: 100px;
+	font-weight: bold;
+	color: #900;
+	font-size: 18px;
+}
+table#callsign_rda td.add_line{
+	font-weight: bold;
+	color: #009;
+	text-decoration: underline;
+	cursor: pointer;
+	padding-bottom: 20px;
+	border: none;
+}
+table#callsign_rda td.admin{
+	color: #777;
+}
+table#callsign_rda td.admin span{
+	font-size: 12px;
+	color: #999;
+}
 
 
 
