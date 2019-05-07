@@ -27,6 +27,17 @@ input, button, textarea, select{
     border-radius: 5px;
     cursor: pointer;
 }
+.btn_white{
+    padding: 2px 5px;
+    font-size: 14px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-align: center;
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.1); 
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
 .note{
 	font-size: 12px;
 	color: #999;
@@ -1517,11 +1528,16 @@ table#cfm_qso td.menu{
 	font-weight: bold;	
 	background-color: #e7f2ff;
 }
+
+
 table#cfm_qso td.no_border{
 	border: none;
 }
-table#cfm_qso td.rda_callsign, table#cfm_qso td.my_callsign{
+table#cfm_qso td.rda_callsign, table#cfm_qso td.my_callsign, table#cfm_qso td.rda{
 	font-weight: bold;
+}
+table#cfm_qso td.rda{
+	color: #700;
 }
 table#cfm_qso td.cfm, table#cfm_qso td.reject{
 	background-color: #ffffca;
@@ -1702,10 +1718,9 @@ table#qsl_data_form{
 	border: 2px solid #dfedfd;
 }
 table#qsl_data_form td{
-	padding: 5px 15px;
+	padding: 7px 15px;
 	text-align: center;
 	color: #333;
-	border: 1px solid #dfedfd;
 	border-bottom: 2px solid #dfedfd;
 	vertical-align: middle;
 }
@@ -1713,8 +1728,11 @@ table#qsl_data_form td.top{
 	font-weight: bold;	
 	background-color: #e7f2ff;
 }
-table#qsl_data_form td.qsl_rda input{
+table#qsl_data_form td.qsl_rda input, table#qsl_data_form td.qsl_time input{
 	width: 60px;
+}
+table#qsl_data_form td.qsl_rda, table#qsl_data_form td.qsl_time{
+	padding: 0;
 }
 table#qsl_data_form td.qsl_callsign input{
 	width: 150px;
@@ -2524,6 +2542,8 @@ a#adx_link{
 }
 #our_base input#call_search{
 	font-weight: bold;
+	font-size: 18px;
+	padding: 3px;
 }
 table#callsign_rda{
 	margin: 15px auto;
@@ -2574,6 +2594,60 @@ table#callsign_rda td.admin span{
 	font-size: 12px;
 	color: #999;
 }
+
+
+
+
+
+
+
+/* ==========================================    E L O G S   C F M    ======================================= */
+
+#elogs_cfm{
+	padding-bottom: 100px;
+}
+table.elog_stats{
+	margin: 50px auto;
+	border-collapse: collapse;
+}
+table.elog_stats td{
+	padding: 3px 15px;
+	text-align: center;
+	vertical-align: middle;
+	color: #333;
+	border: 1px solid #dfedfd;
+}
+table.elog_stats td.top{
+	font-weight: bold;	
+	background-color: #e7f2ff;
+}
+
+table.elog_stats td.login, table.elog_stats td.pass{
+	width: 200px;
+	padding: 5px 0;
+	border: none;
+}
+table.elog_stats td.login input, table.elog_stats td.pass input{
+	width: 180px;
+	margin: 0;
+	font-weight: bold;
+}
+table.elog_stats td.ok, table.elog_stats td.status{
+	text-align: left;
+	border: none;
+}
+table.elog_stats td.elog{
+	font-weight: bold;
+	font-size: 18px;
+	border: none;
+}
+
+
+
+
+
+
+
 
 
 
