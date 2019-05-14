@@ -369,6 +369,12 @@ ul#upload_info li{
 
 #upload_email{
 	font-size: 14px;
+	color: #900;
+	display: block;
+	margin-bottom: 50px;
+}
+#upload_email a{
+	color: #900;
 }
 
 
@@ -416,9 +422,20 @@ table#errors td.top.error{
 
 
 
-
-
-
+table#files{
+	margin: 30px auto 50px auto;
+	border-collapse: collapse;
+}
+table#files td{
+	padding: 10px 20px;
+	text-align: center;
+	border: 1px solid #dfedfd;
+	color: #333;
+}
+table#files td.top{
+	font-weight: bold;	
+	background-color: #EDF3FA;
+}
 
 
 

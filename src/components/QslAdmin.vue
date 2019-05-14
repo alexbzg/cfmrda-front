@@ -19,7 +19,7 @@
                 <td class="qsl_callsign">{{item.callsign}}</td>
                 <td class="qsl_rda_callsign" @click="showRdaLog(item.stationCallsign)">{{item.stationCallsign}}</td>
                 <td class="qsl_rda">{{item.rda}}</td>
-                <td class="qsl_rda_qrz">{{item.qrzRda}}</td>
+                <td class="qsl_rda_qrz">{{item.callsignRda}}</td>
                 <td class="qsl_date">{{item.date}}</td>
                 <td class="qsl_band">{{item.band}}</td>
                 <td class="qsl_mode">{{item.mode}}</td>
