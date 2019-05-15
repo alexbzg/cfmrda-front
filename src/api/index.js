@@ -146,6 +146,13 @@ export function getMscData () {
     })
 }
 
+export function getDeletedUploads () {
+  return get('/json/del_uploads.json')
+    .then(response => {
+      return response.data
+    })
+}
+
 export function getStat () {
   return get('/json/stat.json')
     .then(response => {
@@ -169,6 +176,13 @@ export function getFullRDA () {
 
 export function getHunterDetails (callsign) {
   return get(API_URL + 'hunter/' + callsign)
+    .then(response => {
+      return response.data
+    })
+}
+
+export function getQrzData (callsign) {
+  return get(API_URL + 'qrzru/' + callsign)
     .then(response => {
       return response.data
     })

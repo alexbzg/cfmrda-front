@@ -188,6 +188,32 @@
     <rank-table :rank-data-top="rankData" :callsign-rankings="hunterData ? hunterData.rank : null" 
         :callsign="callsignValid" @callsign-click="callsignClick"/>
 
+    <div class="list" v-if="mscData.userActivity">
+
+        <div id="qsl_check_list">
+            <h4>Today's CFM RDA stats</h4>
+            <table id="cfm_rda_check">
+                <tr>
+                    <td class="top" rowspan="2"></td>
+                    <td class="top" colspan="2">QSL CFM</td>
+                    <td class="top">Email CFM</td>
+                </tr>
+                <tr>
+                    <td class="top top2">на проверке</td>
+                    <td class="top top2">проверено</td>
+                    <td class="top top2">будет отправлено</td>
+                </tr>
+                <tr v-for="item in mscData.userActivity" :key="item.callsign">
+                    <td class="callsign">{{item.callsign}}</td>
+                    <td class="">{{item.qslWait}}</td>
+                    <td class="">{{item.qslToday}}</td>
+                    <td class="">{{item.email}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+   
+
     <div class="list">
       <h4>Latest uploads</h4>
       Статистика CFM RDA пересчитывается раз в сутки после 00:00 мск
@@ -223,13 +249,40 @@
         </table>
     </div>
 
+    <div class="list">
+        <div id="deleted_logs">
+            <h4>Latest deleted logs</h4>
+            <table id="last_uploads">
+                <tr>
+                    <td class="rda menu">RDA</td>
+                    <td class="activator menu">Activator</td>
+                    <td class="uploader menu">Deleted by</td>
+                    <td class="uploaded menu">Date</td>
+                </tr>
+                <tr v-for="(item, idx) in deletedUploads" :key="idx">
+                    <td class="rda">
+                        <span v-for="(rda, rdaIdx) in item.rda" :key="'rda_' + rdaIdx">{{rda}} </span>
+                    </td>
+                    <td class="activator">
+                        <span v-for="(activator, actIdx) in item.activators" :key="'act_' + actIdx">
+                            {{replace0(activator)}}
+                        </span>
+                    </td>
+                    <td class="uploader">{{item.delBy}}</td>
+                    <td class="uploaded">{{item.delDate}}<span>{{item.delTime}}</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
     </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
 
-import {getRankings, getHunterDetails, getRecentUploads, getMscData, oldCallsigns, getQSO} from '../api'
+import {getRankings, getHunterDetails, getRecentUploads, getMscData, oldCallsigns, getQSO, getDeletedUploads} from '../api'
 import storage from '../storage'
 import {arrayUnique, arraysEqSets} from '../utils'
 import {orderedBands, stripCallsign} from '../ham-radio'
@@ -259,6 +312,8 @@ export default {
       .then((data) => {this.recentUploads = data})
     getMscData() 
       .then((data) => {this.mscData = data})
+    getDeletedUploads()
+      .then((data) => {this.deletedUploads = data})
 
     const rda = []
     for (const group of rdaShort) {
@@ -287,6 +342,7 @@ export default {
       rda: rda,
       rdaQso: {hunter: null, activator: null},
       recentUploads: [],
+      deletedUploads: [],
       mscData: {
         qsoCount: null
       },

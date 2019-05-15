@@ -18,13 +18,13 @@
                 <td class="menu">Comment</td>
             </tr>
             <tr :class="{cfm_checked: item.cfm, cfm_reject: item.reject}" v-for="item in qso" :key="item.id">
-                <td class="rda_callsign">{{item.callsign}}</td>
+                <td class="rda_callsign">{{item.stationCallsign}}</td>
                 <td class="rda">{{item.rda}}</td>
                 <td class="date">{{item.date}}</td>
                 <td class="time">{{item.time}}</td>
                 <td class="band">{{item.band}}</td>
                 <td class="mode">{{item.mode}}</td>
-                <td class="my_callsign">{{item.stationCallsign}}</td>
+                <td class="my_callsign">{{item.callsign}}</td>
                 <td class="rda_rst">{{item.sntRST}}</td>
                 <td class="my_rst">{{item.rcvRST}}</td>
                 <td class="cfm"><input type="checkbox" name="cfm_check" v-model="item.cfm"

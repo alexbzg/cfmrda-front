@@ -63,7 +63,8 @@
               <input type="checkbox" name="ok_check" v-model="check"/> Да, всё верно.
           </div>
           <input type="button" name="upload_btn" id="upload_btn" v-if="check"
-            value="Загрузить в базу данных CFMRDA" class="btn" @click="uploadADIF">
+            value="Загрузить в базу данных CFMRDA" class="btn" @click="uploadADIF"><br/><br/>
+            <span id="upload_email">Если при загрузке ADIF появляется ошибка, пришлите свой ADI файл на <b><u>support@cfmrda.ru</u></b>. Мы загрузим его сами.</span>
         </div> 
 
         <div id="uploading_info" v-if="pending">
@@ -75,16 +76,20 @@
             <div id="message" v-if="response.message" v-html="response.message"
                 :class="{'success': response.success}">
             </div>
-            <table id="errors" v-if="response.errors">
+            <table id="files" v-if="response.files.length">
                 <tr>
                     <td class="top file">Файл</td>
                     <td class="top rda">RDA</td>
-                    <td class="top error">Ошибка</td>
+                    <td class="top error">Статус</td>
+                    <td class="top qso_ok">Загружено QSO</td>
+                    <td class="top qso_error">Некорректные QSO</td>
                 </tr>
-                <tr v-for="(error, index) in response.errors" :key="index">
-                    <td class="file">{{error.filename}}</td>
-                    <td class="rda">{{error.rda}}</td>
-                    <td class="error">{{error.message}}</td>
+                <tr v-for="(file, index) in response.files" :key="index">
+                    <td class="file">{{file.file}}</td>
+                    <td class="rda">{{file.rda}}</td>
+                    <td class="error">{{file.message}}</td>
+                    <td class="qso_ok">{{file.qso ? file.qso.ok : ''}}</td>
+                    <td class="qso_error">{{file.qso ? file.qso.error : ''}}</td>
                </tr>
             </table>
         </div>
@@ -133,7 +138,7 @@ export default {
       pending: false,
       response: {
         message: null,
-        errors: null,
+        files: [],
         success: false
       },
       adif: adif,
@@ -206,14 +211,19 @@ export default {
       this.check = false
       apiUploadADIF(this.adif)
         .then((response) => { 
-          if (response.filesLoaded) {
-            this.response.message = 'Успешно загружено файлов: ' + response.filesLoaded +
+          let qso = 0
+          this.response.files = []
+          for (const file of response) {
+            if (file.qso && file.qso.ok)
+              qso += file.qso.ok
+            this.response.files.push(file)
+          }
+          if (qso) {
+            this.response.message = 'Успешно загружено qso: ' + qso +
               '.<br/> Статистика будет обновлена в течение 24 часов.'
             this.response.success = true
-          }
-          if (response.errors.length) {
-            this.response.errors = response.errors
-          }
+          } else 
+            this.response.message = 'Не найдено корректных qso.'
         })
         .catch((e) => {
           this.response.message = e.message
