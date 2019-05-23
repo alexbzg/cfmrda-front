@@ -97,6 +97,12 @@
         </table>
        
         <div v-if="response" id="message" :class="{success: success}" v-html="response"></div>
+        <div v-if="errors" id="message_errors">
+            <div v-for="(item, idx) in errors" :key="idx" class="qso_data_unit">
+              <div class="qso_data">{{item.qso.stationCallsign}} {{item.qso.rda}} {{item.qso.band}} {{item.qso.mode}}</div>
+              <div class="qso_error">{{item.error}}</div>
+            </div>
+        </div>
 
         <template v-if="prevRequests">
             <div id="cfm_email_list_text">
@@ -189,6 +195,7 @@ export default {
     }
     return {
       request: request,
+      errors: [],
       validationData: request,
       pending: false,
       validationSchema: 'cfmRequestQso',
@@ -224,12 +231,15 @@ export default {
           }
       
           cfmRequestQso(this.request)
-            .then(() => {
-              this.response = "Ваш запрос будет отправлен корреспондентам в течение суток.<br/>" + 
-                "Your request will be sent to correspondents in 24 hours."
-              this.request.qso = [{}]
-              this.success = true
-              this.loadPrevRequests()
+            .then((errors) => {
+              if (this.request.qso.length > errors.length) {
+                this.response = "Ваш запрос будет отправлен корреспондентам в течение суток.<br/>" + 
+                    "Your request will be sent to correspondents in 24 hours."
+                this.request.qso = [{}]
+                this.success = true
+                this.loadPrevRequests()
+              }
+              this.errors = errors
             })
             .catch((e) => {
               this.response = e.message

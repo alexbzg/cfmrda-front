@@ -261,6 +261,46 @@
     "required": ["callsign", "stationCallsign", "rda", "band", "mode", "date", 
         "time", "image"]
 },
+"callsignsRda": {
+    "type": "object",
+    "properties": {
+        "token": { 
+            "type": "string",
+            "minLength": 3
+        },
+        "callsign": {
+            "type": "string",
+            "pattern": "$reCallsignFull$"
+        }
+    },
+    "oneOf": [
+        {
+            "properties": {
+                "delete": {
+                    "type": "integer"
+                }
+            },
+            "required": ["delete"]
+        },
+        {
+            "properties": {
+                "new": {
+                    "type": "object",
+                    "properties": {
+                        "rda":{"enum": "$rdaValues$"}
+                    },
+                    "required": ["rda"]
+                },
+                "required": ["new"]
+            }
+        },
+        {
+            "additionalProperties": false
+        }
+    ],
+    "required": ["token", "callsign"]
+},
+
 "cfmRequestQso": {
     "type": "object",
     "properties": {

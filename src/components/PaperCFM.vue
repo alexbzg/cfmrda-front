@@ -71,7 +71,7 @@
 
             <tr><td colspan="10" class="no_border"></td></tr>
             <tr v-if="response">
-                <td colspan="10" class="response">
+                <td colspan="10" class="response no_border">
                     <div v-if="response" id="message" v-html="response"></div>
                 </td>
             </tr>
