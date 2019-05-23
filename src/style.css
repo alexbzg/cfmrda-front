@@ -69,6 +69,20 @@ h4{
 p{
 		text-indent: 1em;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 a#logout_link{
 	text-decoration: underline;
 	cursor: pointer;
@@ -1465,6 +1479,33 @@ table#cfm_qso_request td.send_btn{
 
 
 
+.qso_data_unit{
+	width: 760px;
+    margin: 0px auto 50px auto;
+    padding: 0px;
+    text-align: center;
+    background-color: #ff4949;
+    color: #fff;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Параметры тени */
+    border: 1px solid #ff4949;
+    line-height: 2em;
+}
+
+.qso_data{
+	word-spacing: 20px;
+	font-weight: bold;
+	color: yellow;
+	border-bottom: 1px solid #ff4949;
+}
+.qso_error{
+	padding: 10px;
+	background-color: #ffecec;
+	color: #000;
+}
+
+
+
+
 
 #cfm_email_list_text{
 	margin: 50px 0 0 0;
@@ -2561,7 +2602,20 @@ a#adx_link{
 	font-weight: bold;
 	font-size: 18px;
 	padding: 3px;
+	margin-bottom: 10px;
 }
+
+#our_base span.other_calls{
+	padding: 0 20px;
+	cursor: pointer;
+	color: #777;
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+
+
+
 table#callsign_rda{
 	margin: 15px auto;
  	border-collapse: collapse;
@@ -2572,6 +2626,7 @@ table#callsign_rda td{
 	color: #333;
 	border: 1px solid #dfedfd;
 	vertical-align: middle;
+	margin: 0;
 }
 table#callsign_rda td.top{
 	font-weight: bold;	
@@ -2611,9 +2666,30 @@ table#callsign_rda td.admin span{
 	font-size: 12px;
 	color: #999;
 }
+table#callsign_rda td.no_border{
+	border: none;
+	padding: 30px 0 0 0;
+	vertical-align: top;
+}
+table#callsign_rda td.time_period.no_border{
+	text-align: center;	
 
+}
 
+#need_check h4{
+	margin: 100px 0 20px 0;
+	font-size: 20px;
+	text-decoration: underline;
+	color: #900;
+}
 
+#need_check span{
+	font-weight: bold;
+	color: #009;
+	padding: 0 20px;
+	text-decoration: underline;
+	cursor: pointer;
+}
 
 
 
@@ -2652,6 +2728,9 @@ table.elog_stats td.login input, table.elog_stats td.pass input{
 table.elog_stats td.ok, table.elog_stats td.status{
 	text-align: left;
 	border: none;
+}
+table.elog_stats td.status{
+	padding-right: 70px;
 }
 table.elog_stats td.elog{
 	font-weight: bold;

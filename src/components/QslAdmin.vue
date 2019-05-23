@@ -7,6 +7,7 @@
             <td class="top qsl_rda">RDA</td>
             <td class="top qsl_rda_qrz">QRZ.ru</td>
             <td class="top qsl_date">Date</td>
+            <td class="top qsl_gmt">GMT</td>
             <td class="top qsl_band">MHz</td>
             <td class="top qsl_mode">Mode</td>
             <td class="top qsl_card">QSL</td>
@@ -21,6 +22,7 @@
                 <td class="qsl_rda">{{item.rda}}</td>
                 <td class="qsl_rda_qrz">{{item.callsignRda}}</td>
                 <td class="qsl_date">{{item.date}}</td>
+                <td class="qsl_date">{{item.time}}</td>
                 <td class="qsl_band">{{item.band}}</td>
                 <td class="qsl_mode">{{item.mode}}</td>
                 <td class="qsl_card">
@@ -42,13 +44,13 @@
                 </td>
             </tr>
             <tr v-if="showImage === item">
-                <td colspan="11" class="qsl_image">
+                <td colspan="12" class="qsl_image">
                     <img :src="'/qsl_images/' + item.id + '_' + item.image" @click="showImage = null"/>
                 </td>
             </tr>
         </tbody>
         <tr>
-            <td colspan="12" class="cfm_btn">
+            <td colspan="13" class="cfm_btn">
                 <input type="button" name="cfm_btn" id="cfm_btn" value="OK" class="btn"
                     @click="buttonClick()" :disabled="pending || qsl.length === 0">
             </td>
