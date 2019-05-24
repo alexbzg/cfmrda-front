@@ -84,13 +84,19 @@
                     <td class="top qso_ok">Загружено QSO</td>
                     <td class="top qso_error">Некорректные QSO</td>
                 </tr>
-                <tr v-for="(file, index) in response.files" :key="index">
-                    <td class="file">{{file.file}}</td>
-                    <td class="rda">{{file.rda}}</td>
-                    <td class="error">{{file.message}}</td>
-                    <td class="qso_ok">{{file.qso ? file.qso.ok : ''}}</td>
-                    <td class="qso_error">{{file.qso ? file.qso.error : ''}}</td>
-               </tr>
+                <template v-for="(file, index) in response.files"> 
+                    <tr :key="index">
+                        <td class="file">{{file.file}}</td>
+                        <td class="rda">{{file.rda}}</td>
+                        <td class="error">{{file.message}}</td>
+                        <td class="qso_ok">{{file.qso ? file.qso.ok : ''}}</td>
+                        <td class="qso_error">{{file.qso ? file.qso.error : ''}}</td>
+                    </tr>
+                    <tr v-for="(count, msg) in file.qso.errors" :key="index + '_' + msg">
+                        <td class="error_msg" colspan="4">{{msg}}</td>
+                        <td class="error_count">{{count}}</td>
+                    </tr>
+                </template>
             </table>
         </div>
         
