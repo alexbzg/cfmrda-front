@@ -445,10 +445,25 @@ table#files td{
 	text-align: center;
 	border: 1px solid #dfedfd;
 	color: #333;
+	vertical-align: top;
 }
 table#files td.top{
 	font-weight: bold;	
 	background-color: #EDF3FA;
+}
+table#files td.error{
+	text-align: left;
+}
+table#files td.top.error{
+	text-align: center;
+}
+table#files td.error span.ok{
+	color: green;
+	text-decoration: underline;
+}
+table#files td.error span.count{
+	font-weight: bold;
+	padding-left: 15px;
 }
 
 
