@@ -280,7 +280,7 @@
                     "type": "integer"
                 }
             },
-            "required": ["delete"]
+            "required": ["delete", "token"]
         },
         {
             "properties": {
@@ -291,14 +291,14 @@
                     },
                     "required": ["rda"]
                 },
-                "required": ["new"]
+                "required": ["new", "token"]
             }
         },
         {
             "additionalProperties": false
         }
     ],
-    "required": ["token", "callsign"]
+    "required": ["callsign"]
 },
 
 "cfmRequestQso": {

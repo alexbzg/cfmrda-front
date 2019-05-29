@@ -104,6 +104,11 @@ export function chatPost (data) {
   return dataPost('chat', data)
 }
 
+export function callsignsRda (data) {
+  return dataPost('callsigns_rda', data)
+}
+
+
 export function getRDAValues () {
   return get('/json/rdaValues.json')
     .then(response => {

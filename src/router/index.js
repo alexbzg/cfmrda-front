@@ -14,6 +14,7 @@ import Cluster from './../components/Cluster'
 
 import StatsRdaQso from './../components/StatsRdaQso'
 import AwardsIssued from './../components/AwardsIssued'
+import CallsignsRda from './../components/CallsignsRda'
 
 const CFM = () => import(/* webpackChunkName: "cfm" */ './../components/CFM.vue')
 const EmailCFM = () => import(/* webpackChunkName: "cfm" */ './../components/EmailCFM.vue')
@@ -42,6 +43,10 @@ const router = new Router({
     { path: '/chat',
       name: 'Chat',
       component: Chat
+    },
+    { path: '/callsignsRda',
+      name: 'CallsignsRda',
+      component: CallsignsRda
     },
     { path: '/auto_registration',
       name: 'AutoRegistration',
