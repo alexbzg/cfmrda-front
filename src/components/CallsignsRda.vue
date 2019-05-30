@@ -2,30 +2,33 @@
     <div class="list">
     <div id="our_base">
 
-        <input type="text" id="call_search" v-model="searchCallsign"> 
+        <input type="text" id="call_search" v-model="searchCallsign" v-capitalize> 
         <input type="submit" class="btn" value="Искать" @click="doSearch()">
         <br/>
-        <span v-for="(suffix, idx) in suffixes" :key="idx" @click="doSearch(suffix)">
+        <span v-for="(suffix, idx) in suffixes" :key="idx" @click="doSearch(suffix)" class="other_calls">
             {{suffix}}
         </span>
 
-        <table id="callsign_rda">
+        <table id="callsign_rda" v-if="callsign">
             <tr>
                 <td class="top" colspan="5">{{callsign}}</td>
             </tr>
             <tr v-for="(item, idx) in rdaRecords" :key="idx">
                 <td class="rda">{{item.rda}}</td>
-                <td class="qrz_ru">{{item.period}}</td>
-                <td class="admin">{{item.source}}<span>{{item.ts}}</span></td>
-                <td class="del" v-if="admin" @click="deleteRecord(item)"></td>
+                <td class="time_period">{{item.period}}</td>
+                <td class="admin">{{item.source}} <span>{{item.ts}}</span></td>
+                <td class="del" >
+                    <img src="/images/icon_delete.png" title="Удалить эту строку - Delete this line"
+                    v-if="admin" @click="deleteRecord(item)">
+                </td>
             </tr>
             <tr v-if="admin && callsign">
                 <td class="rda no_border">
                     <rda-input v-model="newEntry.rda"></rda-input>
                 </td>
                 <td class="time_period no_border">
-                    <select v-model="newEntry.periodType">
-                        <option disabled selected>Выберите период</option>
+                    <select v-model="newEntry.periodType" @change="periodTypeChange">
+                        <option disabled value="null">Выберите период</option>
                         <option value="all">Всё время</option>
                         <option value="till">До даты</option>
                         <option value="from">После даты</option>
@@ -82,6 +85,13 @@ export default {
     ...mapGetters(['userToken', 'admin'])
   },
   methods: {
+    periodTypeChange () {
+      const pt = this.newEntry.periodType
+      if (!pt || pt === 'all' || pt === 'from')
+        this.newEntry.dtStop = null
+      if (!pt || pt === 'all' || pt === 'till')
+        this.newEntry.dtStart = null
+    },
     post (data) {
       if (this.pending)
         return;
@@ -96,6 +106,14 @@ export default {
           this.pending = false
         })
     },
+    editPost (data) {
+      data.callsign = this.callsign
+      data.token = this.userToken
+      return this.post(data)
+        .then(rsp => {
+          this.rdaRecords = rsp.rdaRecords
+        })
+    },
     doSearch (searchCallsign) {
       if (searchCallsign && this.searchCallsign !== searchCallsign)
         this.searchCallsign = searchCallsign
@@ -108,14 +126,18 @@ export default {
         })
     },
     deleteRecord (item) {
-      if (confirm('Вы действительно удалить эту запись?')) {
-        this.post({'token': this.userToken, 'delete': item.id})
-          .then(data => {
-             this.rdaRecords = data.rdaRecords
-          })
+      if (confirm('Вы действительно хотите удалить эту запись?')) {
+        this.editPost({'delete': item.id})
       }
     },
     save() {
+      this.editPost({'new': this.newEntry})
+        .then(() => {
+          this.newEntry.rda = null
+          this.newEntry.dtStart = null
+          this.newEntry.dtStop = null
+          this.newEntry.periodType = null
+        })
     }
   }
 }

@@ -273,7 +273,7 @@
             "pattern": "$reCallsignFull$"
         }
     },
-    "oneOf": [
+    "not": {"allOf": [
         {
             "properties": {
                 "delete": {
@@ -290,14 +290,11 @@
                         "rda":{"enum": "$rdaValues$"}
                     },
                     "required": ["rda"]
-                },
-                "required": ["new", "token"]
-            }
-        },
-        {
-            "additionalProperties": false
+                }
+            },
+            "required": ["new", "token"]
         }
-    ],
+    ]},
     "required": ["callsign"]
 },
 

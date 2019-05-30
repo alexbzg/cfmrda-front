@@ -2650,18 +2650,19 @@ table#callsign_rda td.top{
 	background-color: #e7f2ff;
 	font-size: 24px;
 }
-table#callsign_rda td.time_period{
-	width: 500px;
-	text-align: left;
-	
-}
-table#callsign_rda td.time_period select{
-	margin-right: 20px;
-	
-}
 table#callsign_rda td.rda{
 	padding: 0;
 }
+table#callsign_rda td.time_period{
+	width: 600px;
+	text-align: left;
+	
+}
+table#callsign_rda td.time_period select, table#callsign_rda td.time_period .vdp-datepicker{
+	margin-right: 10px;
+	display: inline-block;
+}
+
 table#callsign_rda td.rda input, table#callsign_rda td.rda{
 	width: 100px;
 	font-weight: bold;
