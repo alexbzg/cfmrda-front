@@ -2,8 +2,10 @@
     <div class="list">
     <div id="our_base">
 
-        <input type="text" id="call_search" v-model="searchCallsign" v-capitalize> 
-        <input type="submit" class="btn" value="Искать" @click="doSearch()">
+        <input type="text" id="call_search" v-model="searchCallsign" v-capitalize
+            :class="{error: !searchEnabled}"> 
+        <input type="submit" class="btn" value="Искать" @click="doSearch()"
+            :disabled="!searchEnabled">
         <br/>
         <span v-for="(suffix, idx) in suffixes" :key="idx" @click="doSearch(suffix)" class="other_calls">
             {{suffix}}
@@ -24,10 +26,12 @@
             </tr>
             <tr v-if="admin && callsign">
                 <td class="rda no_border">
-                    <rda-input v-model="newEntry.rda"></rda-input>
+                    <rda-input v-model="newEntry.rda" :class="{error: !$options.parseRDA(newEntry.rda)}">
+                    </rda-input>
                 </td>
                 <td class="time_period no_border">
-                    <select v-model="newEntry.periodType" @change="periodTypeChange">
+                    <select v-model="newEntry.periodType" @change="periodTypeChange"
+                        :class="{error: !newEntry.periodType}">
                         <option disabled value="null">Выберите период</option>
                         <option value="all">Всё время</option>
                         <option value="till">До даты</option>
@@ -43,7 +47,7 @@
                 </td>
                 <td colspan="2" class="no_border">
                     <input type="button" name="save_call_rda" id="save_call_rda" value="Сохранить" class="btn"
-                        @click="save()">
+                        @click="save()" :disabled="!saveEnabled">
                 </td>
             </tr>
         </table>
@@ -59,11 +63,14 @@ import {mapGetters} from 'vuex'
 import Datepicker from 'vuejs-datepicker'
 
 import {callsignsRda} from '../api'
+import {parseRDA, validCallsignFull} from '../ham-radio'
 
 import RdaInput from './RDAinput'
 
+
 export default {
   name: 'CallsignsRda',
+  parseRDA: parseRDA,
   components: {RdaInput, Datepicker},
   data () {
     return {
@@ -82,7 +89,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userToken', 'admin'])
+    ...mapGetters(['userToken', 'admin']),
+    searchEnabled () {
+      return validCallsignFull(this.searchCallsign)
+    },
+    saveEnabled () {
+      const ne = this.newEntry
+      const pt = ne.periodType
+      return (pt === 'all' || ((ne.dtStart || pt == 'till') && (ne.dtStop || pt === 'from'))) &&
+        parseRDA(ne.rda)
+    }
   },
   methods: {
     periodTypeChange () {

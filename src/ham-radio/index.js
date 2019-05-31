@@ -48,3 +48,10 @@ export function stripCallsign(callsign) {
     else
         return null
 }
+
+const reCALLSIGN_FULL = /^(:?[A-Z\d]+\/)?\d?[A-Z]+\d+[A-Z]+(:?\/[A-Z\d]+)*$/
+
+export function validCallsignFull (callsign) {
+  return reCALLSIGN_FULL.test(callsign)
+}
+

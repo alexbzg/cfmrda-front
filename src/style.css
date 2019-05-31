@@ -2611,7 +2611,7 @@ a#adx_link{
 
 
 #our_base{
-	margin: 50px auto 100px auto;
+	margin: 20px auto 200px auto;
 	text-align: center;
 }
 #our_base input#call_search{
@@ -2619,7 +2619,7 @@ a#adx_link{
 	font-size: 18px;
 	padding: 3px;
 	margin-right: 10px;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
 
 #our_base span.other_calls{
@@ -2691,7 +2691,9 @@ table#callsign_rda td.no_border{
 }
 table#callsign_rda td.time_period.no_border{
 	text-align: center;	
-
+}
+table#callsign_rda td.del img{
+	cursor: pointer;
 }
 
 #need_check h4{
