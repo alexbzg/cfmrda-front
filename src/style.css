@@ -1970,7 +1970,12 @@ table#paper_qsl_check td.qsl_comm textarea{
 
 table#paper_qsl_check td.qsl_rda_qrz{
 	font-weight: bold;
-	color: #900;
+	color: #333;
+}
+table#paper_qsl_check td.qsl_rda.wrong{
+	font-weight: bold;
+	color: #a00;
+	background-color: #fee;
 }
 
 

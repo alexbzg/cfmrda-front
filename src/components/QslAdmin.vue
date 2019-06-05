@@ -17,10 +17,14 @@
         </tr>
         <tbody v-for="item in qslList" :key="item.id">
             <tr :class="{cfm_checked: item.cfm, not_cfm_checked: item.not_cfm}">
-                <td class="qsl_callsign">{{item.callsign}}</td>
+                <td class="qsl_callsign" @keyup.enter="submit" >{{item.callsign}}</td>
                 <td class="qsl_rda_callsign" @click="showRdaLog(item.stationCallsign)">{{item.stationCallsign}}</td>
-                <td class="qsl_rda">{{item.rda}}</td>
-                <td class="qsl_rda_qrz">{{item.callsignRda}}</td>
+                <td class="qsl_rda" :class="{wrong: !item.callsignRda.includes(item.rda)}">{{item.rda}}</td>
+                <td class="qsl_rda_qrz">
+                    <template v-for="(rda, idx) in item.callsignRda">
+                        <span :key="idx">{{rda}}</span><br/>
+                    </template>
+                </td>
                 <td class="qsl_date">{{item.date}}</td>
                 <td class="qsl_date">{{item.time}}</td>
                 <td class="qsl_band">{{item.band}}</td>

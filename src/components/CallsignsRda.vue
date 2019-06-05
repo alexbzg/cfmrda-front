@@ -3,7 +3,7 @@
     <div id="our_base">
 
         <input type="text" id="call_search" v-model="searchCallsign" v-capitalize
-            :class="{error: !searchEnabled}"> 
+            :class="{error: !searchEnabled}" @keyup.enter="searchEnabled && doSearch()" > 
         <input type="submit" class="btn" value="Искать" @click="doSearch()"
             :disabled="!searchEnabled">
         <br/>
