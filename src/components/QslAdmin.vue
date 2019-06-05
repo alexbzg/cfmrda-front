@@ -22,7 +22,7 @@
                 <td class="qsl_rda" :class="{wrong: !item.callsignRda.includes(item.rda)}">{{item.rda}}</td>
                 <td class="qsl_rda_qrz">
                     <template v-for="(rda, idx) in item.callsignRda">
-                        <span :key="idx">{{rda}}</span><br/>
+                        <span :key="idx">{{rda}}</span><br :key="idx"/>
                     </template>
                 </td>
                 <td class="qsl_date">{{item.date}}</td>
