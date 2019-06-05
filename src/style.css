@@ -130,7 +130,7 @@ a#logout_link{
 }
 #top_menu a {
 	color: #00a;
-	margin-left: 30px;
+	margin-left: 20px;
     text-decoration: none;
     background-image: linear-gradient(currentColor, currentColor);
     background-position: 0% 100%;
@@ -453,13 +453,14 @@ table#files td.top{
 }
 table#files td.error{
 	text-align: left;
+	color: #777;
 }
 table#files td.top.error{
 	text-align: center;
+	color: #333;
 }
 table#files td.error span.ok{
-	color: green;
-	text-decoration: underline;
+	color: #090;
 }
 table#files td.error span.count{
 	font-weight: bold;
@@ -1969,7 +1970,12 @@ table#paper_qsl_check td.qsl_comm textarea{
 
 table#paper_qsl_check td.qsl_rda_qrz{
 	font-weight: bold;
-	color: #900;
+	color: #333;
+}
+table#paper_qsl_check td.qsl_rda.wrong{
+	font-weight: bold;
+	color: #a00;
+	background-color: #fee;
 }
 
 
@@ -2610,14 +2616,15 @@ a#adx_link{
 
 
 #our_base{
-	margin: 50px auto 100px auto;
+	margin: 20px auto 200px auto;
 	text-align: center;
 }
 #our_base input#call_search{
 	font-weight: bold;
 	font-size: 18px;
 	padding: 3px;
-	margin-bottom: 10px;
+	margin-right: 10px;
+	margin-bottom: 20px;
 }
 
 #our_base span.other_calls{
@@ -2648,18 +2655,19 @@ table#callsign_rda td.top{
 	background-color: #e7f2ff;
 	font-size: 24px;
 }
-table#callsign_rda td.time_period{
-	width: 500px;
-	text-align: left;
-	
-}
-table#callsign_rda td.time_period select{
-	margin-right: 20px;
-	
-}
 table#callsign_rda td.rda{
 	padding: 0;
 }
+table#callsign_rda td.time_period{
+	width: 600px;
+	text-align: left;
+	
+}
+table#callsign_rda td.time_period select, table#callsign_rda td.time_period .vdp-datepicker{
+	margin-right: 10px;
+	display: inline-block;
+}
+
 table#callsign_rda td.rda input, table#callsign_rda td.rda{
 	width: 100px;
 	font-weight: bold;
@@ -2688,7 +2696,9 @@ table#callsign_rda td.no_border{
 }
 table#callsign_rda td.time_period.no_border{
 	text-align: center;	
-
+}
+table#callsign_rda td.del img{
+	cursor: pointer;
 }
 
 #need_check h4{

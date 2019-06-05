@@ -273,14 +273,14 @@
             "pattern": "$reCallsignFull$"
         }
     },
-    "oneOf": [
+    "not": {"allOf": [
         {
             "properties": {
                 "delete": {
                     "type": "integer"
                 }
             },
-            "required": ["delete"]
+            "required": ["delete", "token"]
         },
         {
             "properties": {
@@ -290,15 +290,12 @@
                         "rda":{"enum": "$rdaValues$"}
                     },
                     "required": ["rda"]
-                },
-                "required": ["new"]
-            }
-        },
-        {
-            "additionalProperties": false
+                }
+            },
+            "required": ["new", "token"]
         }
-    ],
-    "required": ["token", "callsign"]
+    ]},
+    "required": ["callsign"]
 },
 
 "cfmRequestQso": {

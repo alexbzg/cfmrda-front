@@ -1,5 +1,5 @@
 <template>
-  <input :value="value" v-capitalize @input="rdaChange($event)"/>
+  <input :value="value" v-capitalize @input="rdaChange($event)" placeholder="RDA"/>
 </template>
 <script>
 import {parseRDA} from '../ham-radio'
