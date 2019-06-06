@@ -30,6 +30,7 @@
                     </rda-input>
                 </td>
                 <td class="time_period no_border">
+                <u>Добавление новой записи для <b>{{callsign}}</b> в базу</u><br/>
                     <select v-model="newEntry.periodType" @change="periodTypeChange"
                         :class="{error: !newEntry.periodType}">
                         <option disabled value="null">Выберите период</option>

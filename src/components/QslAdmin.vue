@@ -19,7 +19,9 @@
             <tr :class="{cfm_checked: item.cfm, not_cfm_checked: item.not_cfm}">
                 <td class="qsl_callsign" @keyup.enter="submit" >{{item.callsign}}</td>
                 <td class="qsl_rda_callsign" @click="showRdaLog(item.stationCallsign)">{{item.stationCallsign}}</td>
-                <td class="qsl_rda" :class="{wrong: !item.callsignRda.includes(item.rda)}">{{item.rda}}</td>
+                <td class="qsl_rda" :class="{wrong: item.callsignRda && !item.callsignRda.includes(item.rda)}">
+                    {{item.rda}}
+                </td>
                 <td class="qsl_rda_qrz">
                     <template v-for="(rda, idx) in item.callsignRda">
                         <span :key="idx">{{rda}}</span><br :key="idx"/>

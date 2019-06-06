@@ -181,6 +181,8 @@
 
         </div>
 
+    <ann></ann>
+
     <div id="banner" v-async-html="'banner/index'">
     </div>
 
@@ -294,6 +296,7 @@ import replaceZerosMixin from '../replace-zeros-mixin'
 import RankTable from './RankTable.vue'
 import Selector from './Selector.vue'
 import ViewUploadLink from './ViewUploadLink.vue'
+import Ann from './Ann.vue'
 
 
 const STORAGE_KEY_CALLSIGN = 'hunter_callsign'
@@ -304,7 +307,7 @@ export default {
   BANDS: orderedBands(),
   name: 'Index',
   mixins: [rankDataMixin, replaceZerosMixin],
-  components: {RankTable, Selector, ViewUploadLink},
+  components: {RankTable, Selector, ViewUploadLink, Ann},
   data () {
     getRankings() 
       .then((data) => {this.rankData = data})
