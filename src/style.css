@@ -1926,10 +1926,13 @@ table#paper_qsl_check td.qsl_links, table#paper_qsl_check td.qsl_card{
 table#paper_qsl_check td.qsl_callsign, table#paper_qsl_check td.qsl_new_callsign, table#paper_qsl_check td.qsl_rda_callsign {
 	font-weight: bold;
 }
-table#paper_qsl_check td.qsl_rda_callsign{
+table#paper_qsl_check td.qsl_rda_callsign a{
 	color: #009;
+	text-decoration: none;
+}
+table#paper_qsl_check td.qsl_rda_callsign a:hover{
+	color: #00f;
 	text-decoration: underline;
-	cursor: pointer;
 }
 table#paper_qsl_check td.qsl_rda_callsign.top{
 	color: #333;
@@ -2835,6 +2838,8 @@ table.elog_stats td.elog{
 .anons1 .text pre{
 	font-size: 16px;
 	font-family: 'Open Sans', sans-serif;
+	word-wrap: normal;
+	white-space: pre-wrap;
 }
 
 table#anons_form{

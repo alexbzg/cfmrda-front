@@ -19,7 +19,7 @@
             <tr :class="{cfm_checked: item.cfm, not_cfm_checked: item.not_cfm}">
                 <td class="qsl_callsign" @keyup.enter="submit" >{{item.callsign}}</td>
                 <td class="qsl_rda_callsign">
-                    <router-link :to="'/callsignsRda/' + item.stationCallsign" target="_blank">
+                    <router-link :to="'/callsignsRda/' + item.stationCallsign.replace('/', '%2F')" target="_blank">
                         {{item.stationCallsign}}
                     </router-link>
                 </td>
