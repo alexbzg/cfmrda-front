@@ -73,6 +73,7 @@ export default {
   name: 'CallsignsRda',
   parseRDA: parseRDA,
   components: {RdaInput, Datepicker},
+  props: ['extSearchCallsign'],
   data () {
     return {
       searchCallsign: null,
@@ -88,6 +89,10 @@ export default {
       },
       response: null
     }
+  },
+  mounted () {
+    if (this.extSearchCallsign)
+      this.doSearch(this.extSearchCallsign)
   },
   computed: {
     ...mapGetters(['userToken', 'admin']),

@@ -266,16 +266,16 @@
     "oneOf": [
         {
             "properties": {
+                "token": {
+                    "type": "string",
+                    "minLength": 8
+                },
                 "new": {
                     "type": "object",
                     "properties": {
-                        "callsign": {
-                            "type": "string",
-                            "pattern": "$reCallsignFull$"
-                        },
                         "text": {
                             "type": "string",
-                            "minLength": 64
+                            "minLength": 10
                         },
                         "period": {
                             "type": "string",
@@ -286,21 +286,21 @@
                             "minLength": 5
                         }
                     },
-                    "required": ["callsign", "caption", "text", "period"],
+                    "required": ["caption", "text", "period"],
                     "additionalProperties": false
                 }
             },
-            "required": ["new"],
+            "required": ["new", "token"],
             "additionalProperties": false
         },
         {
             "properties": {
-                "delete": {
-                    "type": "number"
-                },
                 "token": {
                     "type": "string",
                     "minLength": 8
+                },
+                "delete": {
+                    "type": "number"
                 }
             },
             "required": ["delete", "token"],

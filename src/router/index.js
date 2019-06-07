@@ -44,9 +44,10 @@ const router = new Router({
       name: 'Chat',
       component: Chat
     },
-    { path: '/callsignsRda',
+    { path: '/callsignsRda/:extSearchCallsign?',
       name: 'CallsignsRda',
-      component: CallsignsRda
+      component: CallsignsRda,
+      props: true
     },
     { path: '/auto_registration',
       name: 'AutoRegistration',

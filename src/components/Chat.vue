@@ -151,17 +151,19 @@ export default {
   },
   methods: {
     chatUpdate () {
-      for (const msg of chatService.data) {
-        msg.text = sanitizeHTML(msg.text, MSG_SANITIZE_HTML_SETTINGS)
-        let match = null
-        if (match = reMSG_TO.exec(msg.text)) {
-          const to = match[0]
-          msg.text = msg.text.substring(to.length, msg.text.length)
-          msg.to = to.split(/\s?\u21d2\s?/)
-          msg.to.shift()
+      if (chatService.data && chatService.data.length) {
+        for (const msg of chatService.data) {
+            msg.text = sanitizeHTML(msg.text, MSG_SANITIZE_HTML_SETTINGS)
+            let match = null
+            if (match = reMSG_TO.exec(msg.text)) {
+            const to = match[0]
+            msg.text = msg.text.substring(to.length, msg.text.length)
+            msg.to = to.split(/\s?\u21d2\s?/)
+            msg.to.shift()
+            }
         }
+        this.messages = chatService.data
       }
-      this.messages = chatService.data
     },
     post (data) {
       if (this.userToken && (this.userCallsign === this.callsign || 'delete' in data))
