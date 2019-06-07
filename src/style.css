@@ -70,7 +70,9 @@ p{
 		text-indent: 1em;
 }
 
-
+textarea.error, input.error, select.error {
+        background-color: #fff0f0;
+    }
 
 
 
@@ -2625,14 +2627,21 @@ a#adx_link{
 	padding: 3px;
 	margin-right: 10px;
 	margin-bottom: 20px;
+	background-color: #fff;
+}
+#our_base input#call_search.error{
+	background-color: #fff;
 }
 
 #our_base span.other_calls{
 	padding: 0 20px;
 	cursor: pointer;
-	color: #777;
+	color: #339;
 	text-decoration: underline;
 	font-weight: bold;
+}
+#our_base span.other_calls:hover{
+	color: #009;
 }
 
 
@@ -2641,6 +2650,7 @@ a#adx_link{
 table#callsign_rda{
 	margin: 15px auto;
  	border-collapse: collapse;
+ 	margin-top: 20px;
 }
 table#callsign_rda td{
 	padding: 10px 20px;
@@ -2656,15 +2666,18 @@ table#callsign_rda td.top{
 	font-size: 24px;
 }
 table#callsign_rda td.rda{
-	padding: 0;
+	padding-left: 0;
+	padding-right: 0;
 }
 table#callsign_rda td.time_period{
-	width: 600px;
-	text-align: left;
-	
+	text-align: left;	
+}
+table#callsign_rda td.time_period.no_border{
+	text-align: center;	
+	padding-top: 30px; 
 }
 table#callsign_rda td.time_period select, table#callsign_rda td.time_period .vdp-datepicker{
-	margin-right: 10px;
+	margin: 10px 10px 0 10px;
 	display: inline-block;
 }
 
@@ -2691,11 +2704,7 @@ table#callsign_rda td.admin span{
 }
 table#callsign_rda td.no_border{
 	border: none;
-	padding: 30px 0 0 0;
-	vertical-align: top;
-}
-table#callsign_rda td.time_period.no_border{
-	text-align: center;	
+	vertical-align: bottom;
 }
 table#callsign_rda td.del img{
 	cursor: pointer;
@@ -2770,14 +2779,109 @@ table.elog_stats td.elog{
 
 
 
+/* ==========================================     A N N O U N C E   B L O C K  ====================================================== */
+
+
+#anons_link{
+	font-size: 20px;
+	margin: 20px 0 20px 0;
+	color: #009;
+	cursor: pointer;
+	text-decoration: underline;
+	font-weight: bold;
+}
+.anons_block{
+	margin: 0;
+	color: #333;
+}
+.anons1{
+	width: 90%;
+	margin: 40px auto 0px auto;
+	padding: 0 0 20px 0;
+	border: 1px solid #dfedfd;
+	box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Параметры тени */
+}
+.anons1 .delete{
+	float: right;
+	margin: 5px;
+	cursor: pointer;
+}
+.anons1 .announcer{
+	float: left;
+	padding: 5px 0;
+	width: 200px;
+	font-weight: bold;
+	background-color: #dfedfd;
+}
+.anons1 .announcer span{
+	font-weight: normal;
+	font-size: 12px;
+	margin-left: 20px;
+}
+.anons1 h4{
+	margin: 35px 0 0 0;
+	padding: 0;
+}
+.anons1 .date{
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+.anons1 .text{
+	display: block;
+	margin: 0 auto;
+	width: 80%;
+	text-align: left;
+}
+.anons1 .text pre{
+	font-size: 16px;
+	font-family: 'Open Sans', sans-serif;
+}
+
+table#anons_form{
+	margin: 20px auto;
+	border-collapse: collapse;
+}
+table#anons_form td{
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+table#anons_form td.note{
+	font-size: 14px;
+    vertical-align: top;
+    color: #777;
+    line-height: 14px;
+    font-style: italic;	
+}
+table#anons_form input#anons_call{
+	width: 100px;
+	font-weight: bold;
+}
+table#anons_form input#anons_title{
+	width: 620px;
+	font-weight: bold;
+	margin: 0 20px 0 0;
+}
+table#anons_form input#anons_date{
+	width: 200px;
+	font-weight: bold;
+}
+table#anons_form textarea{
+	width: 780px;
+	height: 100px;
+	margin: 20px auto;
+	text-align: left;
+	padding: 10px 50px;
+}
 
 
 
-
-
-
-
-
-
+#anons_note{
+	display: block;
+	margin-top: 50px;
+	color: #f77;
+	font-style: italic;
+	font-weight: bold;
+}
 
 

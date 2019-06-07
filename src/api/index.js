@@ -104,6 +104,11 @@ export function chatPost (data) {
   return dataPost('chat', data)
 }
 
+export function annPost (data) {
+  return dataPost('ann', data)
+}
+
+
 export function callsignsRda (data) {
   return dataPost('callsigns_rda', data)
 }
@@ -122,6 +127,14 @@ export function getRankings () {
       return response.data
     })
 }
+
+export function getAnn () {
+  return get('/json/ann.json')
+    .then(response => {
+      return response.data
+    })
+}
+
 
 export function getIssuedAwards () {
   return get('/json/issued_awards.json')

@@ -261,6 +261,53 @@
     "required": ["callsign", "stationCallsign", "rda", "band", "mode", "date", 
         "time", "image"]
 },
+"ann": {
+    "type": "object",
+    "oneOf": [
+        {
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "minLength": 8
+                },
+                "new": {
+                    "type": "object",
+                    "properties": {
+                        "text": {
+                            "type": "string",
+                            "minLength": 10
+                        },
+                        "period": {
+                            "type": "string",
+                            "minLength": 5
+                        },
+                        "caption": {
+                            "type": "string",
+                            "minLength": 5
+                        }
+                    },
+                    "required": ["caption", "text", "period"],
+                    "additionalProperties": false
+                }
+            },
+            "required": ["new", "token"],
+            "additionalProperties": false
+        },
+        {
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "minLength": 8
+                },
+                "delete": {
+                    "type": "number"
+                }
+            },
+            "required": ["delete", "token"],
+            "additionalProperties": false
+        }
+    ]
+},
 "callsignsRda": {
     "type": "object",
     "properties": {

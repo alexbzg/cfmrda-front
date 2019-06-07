@@ -30,6 +30,7 @@
                     </rda-input>
                 </td>
                 <td class="time_period no_border">
+                <u>Добавление новой записи для <b>{{callsign}}</b> в базу</u><br/>
                     <select v-model="newEntry.periodType" @change="periodTypeChange"
                         :class="{error: !newEntry.periodType}">
                         <option disabled value="null">Выберите период</option>
@@ -72,6 +73,7 @@ export default {
   name: 'CallsignsRda',
   parseRDA: parseRDA,
   components: {RdaInput, Datepicker},
+  props: ['extSearchCallsign'],
   data () {
     return {
       searchCallsign: null,
@@ -87,6 +89,10 @@ export default {
       },
       response: null
     }
+  },
+  mounted () {
+    if (this.extSearchCallsign)
+      this.doSearch(this.extSearchCallsign)
   },
   computed: {
     ...mapGetters(['userToken', 'admin']),
