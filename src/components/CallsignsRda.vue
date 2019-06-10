@@ -1,21 +1,36 @@
 <template>
     <div class="list">
     <div id="our_base">
-
-        <input type="text" id="call_search" v-model="searchCallsign" v-capitalize
-            :class="{error: !searchEnabled}" @keyup.enter="searchEnabled && doSearch()" > 
-        <input type="submit" class="btn" value="Искать" @click="doSearch()"
+        <table id="call_search_table">
+          <tr>
+            <td>
+                <rda-input id="rda_search" :class="{error: !searchEnabled}" v-model="search.rda"
+                    @keyup.enter="searchEnabled && doSearch()">
+                </rda-input>
+            </td>
+            <td>
+              <input type="text" id="call_search" v-model="search.callsign" v-capitalize
+                :class="{error: !searchEnabled}" @keyup.enter="searchEnabled && doSearch()" >
+            </td>
+            <td>
+              <input type="submit" class="btn" value="Search" @click="doSearch()"
             :disabled="!searchEnabled">
-        <br/>
+            </td>
+          <tr/><tr>
+            <td class="note">RDA</td><td class="note">Callsign</td><td></td>
+          </tr>
+        </table>
+
         <span v-for="(suffix, idx) in suffixes" :key="idx" @click="doSearch(suffix)" class="other_calls">
             {{suffix}}
         </span>
 
-        <table id="callsign_rda" v-if="callsign">
-            <tr>
+        <table id="callsign_rda" v-if="rdaRecords">
+            <tr v-if="callsign && callsign.length">
                 <td class="top" colspan="5">{{callsign}}</td>
             </tr>
             <tr v-for="(item, idx) in rdaRecords" :key="idx">
+                <td class="callsign" v-if="!callsign || !callsign.length">{{item.callsign}}</td>
                 <td class="rda">{{item.rda}}</td>
                 <td class="time_period">{{item.period}}</td>
                 <td class="admin">{{item.source}} <span>{{item.ts}}</span></td>
@@ -24,13 +39,13 @@
                     v-if="admin" @click="deleteRecord(item)">
                 </td>
             </tr>
-            <tr v-if="admin && callsign">
+            <tr v-if="admin && callsign && callsign.length">
                 <td class="rda no_border">
                     <rda-input v-model="newEntry.rda" :class="{error: !$options.parseRDA(newEntry.rda)}">
                     </rda-input>
                 </td>
                 <td class="time_period no_border">
-                <u>Добавление новой записи для <b>{{callsign}}</b> в базу</u><br/>
+                <u>Добавление новой записи для <b>{{callsign}}</b></u><br/>
                     <select v-model="newEntry.periodType" @change="periodTypeChange"
                         :class="{error: !newEntry.periodType}">
                         <option disabled value="null">Выберите период</option>
@@ -46,7 +61,10 @@
                         v-model="newEntry.dtStop" :input-class="{error: !newEntry.dtStop}" :use-utc="true">
                     </datepicker>
                 </td>
-                <td colspan="2" class="no_border">
+                <td class="comment no_border"><input type="text" value="" placeholder="Комментарий"></td>
+                    </tr>
+                    <tr>  
+                <td colspan="5" class="no_border">
                     <input type="button" name="save_call_rda" id="save_call_rda" value="Сохранить" class="btn"
                         @click="save()" :disabled="!saveEnabled">
                 </td>
@@ -76,7 +94,10 @@ export default {
   props: ['extSearchCallsign'],
   data () {
     return {
-      searchCallsign: null,
+      search: {
+        callsign: null,
+        rda: null
+      },
       callsign: null,
       suffixes: [],
       rdaRecords: [],
@@ -97,7 +118,7 @@ export default {
   computed: {
     ...mapGetters(['userToken', 'admin']),
     searchEnabled () {
-      return validCallsignFull(this.searchCallsign)
+      return validCallsignFull(this.search.callsign) || parseRDA(this.search.rda)
     },
     saveEnabled () {
       const ne = this.newEntry
@@ -137,14 +158,19 @@ export default {
         })
     },
     doSearch (searchCallsign) {
-      if (searchCallsign && this.searchCallsign !== searchCallsign)
-        this.searchCallsign = searchCallsign
+      if (searchCallsign && this.search.callsign !== searchCallsign)
+        this.search.callsign = searchCallsign
       this.callsign = null
-      this.post({'callsign': this.searchCallsign})
+      const searchData = {}
+      for (const field in this.search) {
+        if (this.search[field])
+          searchData[field] = this.search[field]
+      }
+      this.post(searchData)
         .then(data => {
           this.suffixes = data.suffixes
           this.rdaRecords = data.rdaRecords
-          this.callsign = this.searchCallsign
+          this.callsign = this.search.callsign
         })
     },
     deleteRecord (item) {

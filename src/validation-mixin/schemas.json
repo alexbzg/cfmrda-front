@@ -318,6 +318,9 @@
         "callsign": {
             "type": "string",
             "pattern": "$reCallsignFull$"
+        },
+        "rda": {
+            "enum": "$rdaValues$"
         }
     },
     "not": {"allOf": [
@@ -328,6 +331,14 @@
                 }
             },
             "required": ["delete", "token"]
+        },
+        {
+            "properties": {
+                "conflict": {
+                    "type": "boolean"
+                }
+            },
+            "required": ["conflict", "token"]
         },
         {
             "properties": {
@@ -342,9 +353,15 @@
             "required": ["new", "token"]
         }
     ]},
-    "required": ["callsign"]
+    "anyOf": [
+        {
+            "required": ["callsign"]
+        },
+        {
+            "required": ["rda"]
+        }
+    ]
 },
-
 "cfmRequestQso": {
     "type": "object",
     "properties": {

@@ -2624,15 +2624,34 @@ a#adx_link{
 	margin: 20px auto 200px auto;
 	text-align: center;
 }
-#our_base input#call_search{
+table#call_search_table{
+	margin: 0px auto 20px auto;
+ 	border-collapse: collapse;
+}
+table#callsign_rda td.note{
+	vertical-align: top;
+	text-align: center;
+	font-size: 12px;
+	color: #999;
+}
+table#call_search_table input#rda_search{
+	width: 80px;
 	font-weight: bold;
 	font-size: 18px;
 	padding: 3px;
 	margin-right: 10px;
-	margin-bottom: 20px;
+	background-color: #fff;
+	color: #900;
+}
+table#call_search_table input#call_search{
+	width: 200px;
+	font-weight: bold;
+	font-size: 18px;
+	padding: 3px;
+	margin-right: 10px;
 	background-color: #fff;
 }
-#our_base input#call_search.error{
+table#call_search_table input#call_search.error{
 	background-color: #fff;
 }
 
@@ -2700,14 +2719,16 @@ table#callsign_rda td.add_line{
 }
 table#callsign_rda td.admin{
 	color: #777;
-}
-table#callsign_rda td.admin span{
 	font-size: 12px;
-	color: #999;
+	padding: 3px;
 }
 table#callsign_rda td.no_border{
 	border: none;
 	vertical-align: bottom;
+}
+table#callsign_rda td.del{
+	padding-left: 3px;
+	padding-right: 3px;
 }
 table#callsign_rda td.del img{
 	cursor: pointer;
@@ -2718,14 +2739,16 @@ table#callsign_rda td.del img{
 	font-size: 20px;
 	text-decoration: underline;
 	color: #900;
+	cursor: pointer;
 }
 
-#need_check span{
+#need_check span, #need_check span a{
 	font-weight: bold;
-	color: #009;
+	color: #339;
 	padding: 0 20px;
 	text-decoration: underline;
 	cursor: pointer;
+	line-height: 2em;
 }
 
 
