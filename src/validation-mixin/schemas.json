@@ -310,55 +310,79 @@
 },
 "callsignsRda": {
     "type": "object",
-    "properties": {
-        "token": { 
-            "type": "string",
-            "minLength": 3
-        },
-        "callsign": {
-            "type": "string",
-            "pattern": "$reCallsignFull$"
-        },
-        "rda": {
-            "enum": "$rdaValues$"
-        }
-    },
-    "not": {"allOf": [
+    "oneOf": [
         {
             "properties": {
-                "delete": {
-                    "type": "integer"
+                "callsign": {
+                    "type": "string",
+                    "pattern": "$reCallsignFull$"
+                },
+                "rda": {
+                    "enum": "$rdaValues$"
                 }
             },
-            "required": ["delete", "token"]
-        },
-        {
-            "properties": {
-                "conflict": {
-                    "type": "boolean"
-                }
-            },
-            "required": ["conflict", "token"]
-        },
-        {
-            "properties": {
-                "new": {
-                    "type": "object",
-                    "properties": {
-                        "rda":{"enum": "$rdaValues$"}
-                    },
+            "anyOf": [
+                {
+                    "required": ["callsign"]
+                },
+                {
                     "required": ["rda"]
                 }
-            },
-            "required": ["new", "token"]
-        }
-    ]},
-    "anyOf": [
-        {
-            "required": ["callsign"]
+            ],
+            "additionalProperties": false
         },
         {
-            "required": ["rda"]
+            "properties": {
+                "token": { 
+                    "type": "string",
+                    "minLength": 3
+                }
+            },
+            "required": ["token"],
+            "addtionalProperties": false,
+            "oneOf":[ 
+                {
+                    "properties": {
+                        "delete": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": ["delete"]
+                },
+                {
+                    "properties": {
+                        "conflict": {
+                            "type": "boolean"
+                        }
+                    },
+                    "required": ["conflict"]
+                },
+                {
+                    "properties": {
+                        "new": {
+                            "type": "object",
+                            "properties": {
+                                "rda":{
+                                    "oneOf": [
+                                        {
+                                            "enum": "$rdaValues$"
+                                        },
+                                        {
+                                            "enum": ["***"]
+                                        }
+                                    ]
+                                }
+                            },
+                            "required": ["rda"]
+                        },
+                        "callsign": {
+                            "type": "string",
+                            "pattern": "$reCallsignFull$"
+                        }
+                    },
+                    "required": ["new", "token", "callsign"]
+                }
+            ]
         }
     ]
 },

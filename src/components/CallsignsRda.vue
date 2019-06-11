@@ -26,52 +26,66 @@
         </span>
 
         <table id="callsign_rda" v-if="rdaRecords">
-            <tr v-if="callsign && callsign.length">
-                <td class="top" colspan="5">{{callsign}}</td>
+            <tr>
+                <td class="top" colspan="5">
+                    {{callsign && callsign.length ? callsign : rda}}
+                </td>
             </tr>
             <tr v-for="(item, idx) in rdaRecords" :key="idx">
-                <td class="callsign" v-if="!callsign || !callsign.length">{{item.callsign}}</td>
-                <td class="rda">{{item.rda}}</td>
+                <td class="rda" v-if="!callsign || !callsign.length" @click="doSearch(item.callsign)">{{item.callsign}}</td>
+                <td class="rda" v-else>{{item.rda}}</td>
                 <td class="time_period">{{item.period}}</td>
-                <td class="admin">{{item.source}} <span>{{item.ts}}</span></td>
+                <td class="admin">
+                    <template v-if="item.comment">{{item.comment}}<br/></template>
+                    {{item.source}} {{item.ts}}
+                </td>
                 <td class="del" >
                     <img src="/images/icon_delete.png" title="Удалить эту строку - Delete this line"
                     v-if="admin" @click="deleteRecord(item)">
                 </td>
             </tr>
-            <tr v-if="admin && callsign && callsign.length">
-                <td class="rda no_border">
-                    <rda-input v-model="newEntry.rda" :class="{error: !$options.parseRDA(newEntry.rda)}">
-                    </rda-input>
-                </td>
-                <td class="time_period no_border">
-                <u>Добавление новой записи для <b>{{callsign}}</b></u><br/>
-                    <select v-model="newEntry.periodType" @change="periodTypeChange"
-                        :class="{error: !newEntry.periodType}">
-                        <option disabled value="null">Выберите период</option>
-                        <option value="all">Всё время</option>
-                        <option value="till">До даты</option>
-                        <option value="from">После даты</option>
-                        <option value="period">С... по...</option>
-                    </select>
-                    <datepicker v-if="newEntry.periodType === 'from' || newEntry.periodType === 'period'"
-                        v-model="newEntry.dtStart" :input-class="{error: !newEntry.dtStart}" :use-utc="true">
-                    </datepicker>
-                    <datepicker v-if="newEntry.periodType === 'till' || newEntry.periodType === 'period'"
-                        v-model="newEntry.dtStop" :input-class="{error: !newEntry.dtStop}" :use-utc="true">
-                    </datepicker>
-                </td>
-                <td class="comment no_border"><input type="text" value="" placeholder="Комментарий"></td>
-                    </tr>
-                    <tr>  
-                <td colspan="5" class="no_border">
-                    <input type="button" name="save_call_rda" id="save_call_rda" value="Сохранить" class="btn"
-                        @click="save()" :disabled="!saveEnabled">
-                </td>
-            </tr>
+            <template v-if="admin && callsign && callsign.length">
+                <tr>
+                    <td class="rda no_border">
+                        <rda-input v-model="newEntry.rda" :class="{error: validationErrors['new.rda']}">
+                        </rda-input>
+                    </td>
+                    <td class="time_period no_border">
+                    <u>Добавление новой записи для <b>{{callsign}}</b></u><br/>
+                        <select v-model="newEntry.periodType" @change="periodTypeChange"
+                            :class="{error: !newEntry.periodType}">
+                            <option disabled value="null">Выберите период</option>
+                            <option value="all">Всё время</option>
+                            <option value="till">До даты</option>
+                            <option value="from">После даты</option>
+                            <option value="period">С... по...</option>
+                        </select>
+                        <datepicker v-if="newEntry.periodType === 'from' || newEntry.periodType === 'period'"
+                            v-model="newEntry.dtStart" :input-class="{error: !newEntry.dtStart}" :use-utc="true">
+                        </datepicker>
+                        <datepicker v-if="newEntry.periodType === 'till' || newEntry.periodType === 'period'"
+                            v-model="newEntry.dtStop" :input-class="{error: !newEntry.dtStop}" :use-utc="true">
+                        </datepicker>
+                    </td>
+                    <td class="comment no_border">
+                        <input type="text" v-model="newEntry.comment" placeholder="Комментарий">
+                    </td>
+                </tr>
+                <tr>  
+                    <td colspan="5" class="no_border">
+                        <input type="button" name="save_call_rda" id="save_call_rda" value="Сохранить" class="btn"
+                            @click="save()" :disabled="!saveEnabled">
+                    </td>
+                </tr>
+            </template>
         </table>
 
         <div v-if="response" id="message" :class="{success: success}" v-html="response"></div>
+
+        <div id="need_check" v-if="admin && conflict">
+            <h4>Необходима проверка</h4>
+            <span v-for="(item, idx) in conflict" :key="idx" @click="doSearch(item)">{{item}}</span>
+        </div>
 
     </div>
     </div>
@@ -84,6 +98,8 @@ import Datepicker from 'vuejs-datepicker'
 import {callsignsRda} from '../api'
 import {parseRDA, validCallsignFull} from '../ham-radio'
 
+import ValidationMixin from '../validation-mixin'
+
 import RdaInput from './RDAinput'
 
 
@@ -91,29 +107,42 @@ export default {
   name: 'CallsignsRda',
   parseRDA: parseRDA,
   components: {RdaInput, Datepicker},
+  mixins: [ValidationMixin],
   props: ['extSearchCallsign'],
   data () {
+    const newEntry = {
+      rda: null,
+      dtStart: null,
+      dtStop: null,
+      periodType: null,
+      comment: null
+    }
     return {
       search: {
         callsign: null,
         rda: null
       },
       callsign: null,
+      rda: null,
       suffixes: [],
-      rdaRecords: [],
+      conflict: null,
+      rdaRecords: null,
       pending: false,
-      newEntry: {
-        rda: null,
-        dtStart: null,
-        dtStop: null,
-        periodType: null
-      },
-      response: null
+      newEntry: newEntry,
+      response: null,
+      validationSchema: 'callsignsRda',
+      validationData: {
+        callsign: this.callsign,
+        token: this.userToken,
+        new: newEntry
+      }
     }
   },
   mounted () {
     if (this.extSearchCallsign)
       this.doSearch(this.extSearchCallsign)
+    this.validationData.token = this.userToken
+    this.getConflict()
   },
   computed: {
     ...mapGetters(['userToken', 'admin']),
@@ -124,7 +153,15 @@ export default {
       const ne = this.newEntry
       const pt = ne.periodType
       return (pt === 'all' || ((ne.dtStart || pt == 'till') && (ne.dtStop || pt === 'from'))) &&
-        parseRDA(ne.rda)
+        this.validated
+    }
+  },
+  watch: {
+    userToken (newVal) {
+      this.validationData.token = newVal
+    },
+    callsign (newVal) {
+      this.validationData.callsign = newVal
     }
   },
   methods: {
@@ -149,6 +186,12 @@ export default {
           this.pending = false
         })
     },
+    getConflict () {
+      this.post({conflict: true, token: this.userToken})
+        .then(data => {
+          this.conflict = data
+        })
+    }, 
     editPost (data) {
       data.callsign = this.callsign
       data.token = this.userToken
@@ -158,20 +201,26 @@ export default {
         })
     },
     doSearch (searchCallsign) {
-      if (searchCallsign && this.search.callsign !== searchCallsign)
+      if (searchCallsign && this.search.callsign !== searchCallsign) {
         this.search.callsign = searchCallsign
+        this.search.rda = null
+      }
       this.callsign = null
+      this.rda = null      
+      this.rdaRecords = null
       const searchData = {}
       for (const field in this.search) {
         if (this.search[field])
           searchData[field] = this.search[field]
       }
-      this.post(searchData)
-        .then(data => {
-          this.suffixes = data.suffixes
-          this.rdaRecords = data.rdaRecords
-          this.callsign = this.search.callsign
-        })
+      if (!this.pending)
+        this.post(searchData)
+          .then(data => {
+            this.suffixes = data.suffixes
+            this.rdaRecords = data.rdaRecords
+            this.callsign = this.search.callsign
+            this.rda = this.search.rda
+          })
     },
     deleteRecord (item) {
       if (confirm('Вы действительно хотите удалить эту запись?')) {
@@ -185,6 +234,7 @@ export default {
           this.newEntry.dtStart = null
           this.newEntry.dtStop = null
           this.newEntry.periodType = null
+          this.newEntry.comment = null
         })
     }
   }
