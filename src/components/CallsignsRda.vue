@@ -2,15 +2,14 @@
     <div class="list">
     <div id="our_base">
         <table id="call_search_table">
-          <tr>
+          <tr @keyup.enter="searchEnabled && doSearch()">
             <td>
-                <rda-input id="rda_search" :class="{error: !searchEnabled}" v-model="search.rda"
-                    @keyup.enter="searchEnabled && doSearch()">
+                <rda-input id="rda_search" :class="{error: !searchEnabled}" v-model="search.rda">
                 </rda-input>
             </td>
             <td>
               <input type="text" id="call_search" v-model="search.callsign" v-capitalize
-                :class="{error: !searchEnabled}" @keyup.enter="searchEnabled && doSearch()" >
+                :class="{error: !searchEnabled}">
             </td>
             <td>
               <input type="submit" class="btn" value="Search" @click="doSearch()"
@@ -27,7 +26,7 @@
 
         <table id="callsign_rda" v-if="rdaRecords">
             <tr>
-                <td class="top" colspan="5">
+                <td class="top" colspan="4">
                     {{callsign && callsign.length ? callsign : rda}}
                 </td>
             </tr>
@@ -46,12 +45,15 @@
             </tr>
             <template v-if="admin && callsign && callsign.length">
                 <tr>
+                    <td colspan="4" class="no_border"><br/><u>Добавление новой записи для <b>{{callsign}}</b></u></td>
+                </tr>
+                <tr>
                     <td class="rda no_border">
-                        <rda-input v-model="newEntry.rda" :class="{error: validationErrors['new.rda']}">
+                        <rda-input v-model="newEntry.rda" :class="{error: validationErrors['new.rda']}"
+                            placeholder="RDA">
                         </rda-input>
                     </td>
                     <td class="time_period no_border">
-                    <u>Добавление новой записи для <b>{{callsign}}</b></u><br/>
                         <select v-model="newEntry.periodType" @change="periodTypeChange"
                             :class="{error: !newEntry.periodType}">
                             <option disabled value="null">Выберите период</option>
@@ -72,7 +74,7 @@
                     </td>
                 </tr>
                 <tr>  
-                    <td colspan="5" class="no_border">
+                    <td colspan="4" class="no_border">
                         <input type="button" name="save_call_rda" id="save_call_rda" value="Сохранить" class="btn"
                             @click="save()" :disabled="!saveEnabled">
                     </td>
