@@ -1,12 +1,12 @@
 <template>
-  <input :value="value" v-capitalize @input="rdaChange($event)" placeholder="RDA"/>
+  <input :value="value" v-capitalize @input="rdaChange($event)" :placeholder="placeholder"/>
 </template>
 <script>
 import {parseRDA} from '../ham-radio'
 
 export default {
   name: 'RdaInput',
-  props: ['value'],
+  props: ['value', 'placeholder'],
   data () {
     return {}
   },

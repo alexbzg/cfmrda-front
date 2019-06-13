@@ -1926,10 +1926,13 @@ table#paper_qsl_check td.qsl_links, table#paper_qsl_check td.qsl_card{
 table#paper_qsl_check td.qsl_callsign, table#paper_qsl_check td.qsl_new_callsign, table#paper_qsl_check td.qsl_rda_callsign {
 	font-weight: bold;
 }
-table#paper_qsl_check td.qsl_rda_callsign{
+table#paper_qsl_check td.qsl_rda_callsign a{
 	color: #009;
+	text-decoration: none;
+}
+table#paper_qsl_check td.qsl_rda_callsign a:hover{
+	color: #00f;
 	text-decoration: underline;
-	cursor: pointer;
 }
 table#paper_qsl_check td.qsl_rda_callsign.top{
 	color: #333;
@@ -2621,15 +2624,34 @@ a#adx_link{
 	margin: 20px auto 200px auto;
 	text-align: center;
 }
-#our_base input#call_search{
+table#call_search_table{
+	margin: 0px auto 20px auto;
+ 	border-collapse: collapse;
+}
+table#callsign_rda td.note{
+	vertical-align: top;
+	text-align: center;
+	font-size: 12px;
+	color: #999;
+}
+table#call_search_table input#rda_search{
+	width: 80px;
 	font-weight: bold;
 	font-size: 18px;
 	padding: 3px;
 	margin-right: 10px;
-	margin-bottom: 20px;
+	background-color: #fff;
+	color: #900;
+}
+table#call_search_table input#call_search{
+	width: 200px;
+	font-weight: bold;
+	font-size: 18px;
+	padding: 3px;
+	margin-right: 10px;
 	background-color: #fff;
 }
-#our_base input#call_search.error{
+table#call_search_table input#call_search.error{
 	background-color: #fff;
 }
 
@@ -2674,7 +2696,7 @@ table#callsign_rda td.time_period{
 }
 table#callsign_rda td.time_period.no_border{
 	text-align: center;	
-	padding-top: 30px; 
+	padding-top: 10px; 
 }
 table#callsign_rda td.time_period select, table#callsign_rda td.time_period .vdp-datepicker{
 	margin: 10px 10px 0 10px;
@@ -2697,32 +2719,43 @@ table#callsign_rda td.add_line{
 }
 table#callsign_rda td.admin{
 	color: #777;
-}
-table#callsign_rda td.admin span{
 	font-size: 12px;
-	color: #999;
+	padding: 3px;
 }
 table#callsign_rda td.no_border{
 	border: none;
 	vertical-align: bottom;
 }
+table#callsign_rda td.del{
+	padding-left: 3px;
+	padding-right: 3px;
+}
 table#callsign_rda td.del img{
 	cursor: pointer;
 }
 
-#need_check h4{
-	margin: 100px 0 20px 0;
+#our_base #need_check{
+	width: 90%;
+	display: block;
+	margin: 100px auto 0 auto;
+	padding: 0;
+	line-height: 2em;
+}
+#our_base #need_check h4{
+	margin: 0 0 20px 0;
+	padding: 0;
 	font-size: 20px;
-	text-decoration: underline;
 	color: #900;
 }
 
-#need_check span{
+#our_base #need_check span{
+	display: inline-block;
+	width: 100px;
+	padding: 5px 10px;
 	font-weight: bold;
-	color: #009;
-	padding: 0 20px;
 	text-decoration: underline;
-	cursor: pointer;
+	cursor: pointer;	
+	color: #339;
 }
 
 
@@ -2782,59 +2815,74 @@ table.elog_stats td.elog{
 /* ==========================================     A N N O U N C E   B L O C K  ====================================================== */
 
 
-#anons_link{
-	font-size: 20px;
-	margin: 20px 0 20px 0;
-	color: #009;
-	cursor: pointer;
-	text-decoration: underline;
-	font-weight: bold;
-}
 .anons_block{
-	margin: 0;
-	color: #333;
-}
-.anons1{
+	position: relative;
 	width: 90%;
-	margin: 40px auto 0px auto;
+	margin: 0px auto 40px auto;
 	padding: 0 0 20px 0;
 	border: 1px solid #dfedfd;
 	box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Параметры тени */
+	color: #333;
 }
-.anons1 .delete{
-	float: right;
+.anons_block .delete{
+	position: absolute;
+	right: 0;
 	margin: 5px;
 	cursor: pointer;
 }
-.anons1 .announcer{
-	float: left;
-	padding: 5px 0;
-	width: 200px;
+.anons_block .announcer{
+	position: absolute;
+	left: 0;
+	line-height: 1em;
+	padding: 10px;
 	font-weight: bold;
 	background-color: #dfedfd;
 }
-.anons1 .announcer span{
+.anons_block .announcer span{
 	font-weight: normal;
 	font-size: 12px;
-	margin-left: 20px;
 }
-.anons1 h4{
-	margin: 35px 0 0 0;
-	padding: 0;
-}
-.anons1 .date{
+.anons_block .anons_link{
+	font-size: 22px;
+	margin: 10px 0 0px 0;
+	color: #009;
+	cursor: pointer;
 	font-weight: bold;
-	margin-bottom: 10px;
+	line-height: 1em;
+	text-decoration: underline;
 }
-.anons1 .text{
+.anons_block .anons_link .date{
+	font-size: 16px;
+	font-weight: normal;
+}
+
+
+
+.anons_block .anons_text{
 	display: block;
-	margin: 0 auto;
+	margin: 20px auto;
 	width: 80%;
 	text-align: left;
 }
-.anons1 .text pre{
+.anons_block .anons_text pre{
 	font-size: 16px;
 	font-family: 'Open Sans', sans-serif;
+	word-wrap: normal;
+	white-space: pre-wrap;
+}
+
+
+#add_anons_link{
+	text-decoration: underline;
+	color: #55c;
+	cursor: pointer;
+}
+#anons_note{
+	display: block;
+	margin-top: 20px;
+	color: #c55;
+	font-style: italic;
+	font-weight: bold;
 }
 
 table#anons_form{
@@ -2876,12 +2924,5 @@ table#anons_form textarea{
 
 
 
-#anons_note{
-	display: block;
-	margin-top: 50px;
-	color: #f77;
-	font-style: italic;
-	font-weight: bold;
-}
 
 

@@ -310,41 +310,82 @@
 },
 "callsignsRda": {
     "type": "object",
-    "properties": {
-        "token": { 
-            "type": "string",
-            "minLength": 3
-        },
-        "callsign": {
-            "type": "string",
-            "pattern": "$reCallsignFull$"
-        }
-    },
-    "not": {"allOf": [
+    "oneOf": [
         {
             "properties": {
-                "delete": {
-                    "type": "integer"
+                "callsign": {
+                    "type": "string",
+                    "pattern": "$reCallsignFull$"
+                },
+                "rda": {
+                    "enum": "$rdaValues$"
                 }
             },
-            "required": ["delete", "token"]
-        },
-        {
-            "properties": {
-                "new": {
-                    "type": "object",
-                    "properties": {
-                        "rda":{"enum": "$rdaValues$"}
-                    },
+            "anyOf": [
+                {
+                    "required": ["callsign"]
+                },
+                {
                     "required": ["rda"]
                 }
+            ],
+            "additionalProperties": false
+        },
+        {
+            "properties": {
+                "token": { 
+                    "type": "string",
+                    "minLength": 3
+                }
             },
-            "required": ["new", "token"]
+            "required": ["token"],
+            "addtionalProperties": false,
+            "oneOf":[ 
+                {
+                    "properties": {
+                        "delete": {
+                            "type": "integer"
+                        }
+                    },
+                    "required": ["delete"]
+                },
+                {
+                    "properties": {
+                        "conflict": {
+                            "type": "boolean"
+                        }
+                    },
+                    "required": ["conflict"]
+                },
+                {
+                    "properties": {
+                        "new": {
+                            "type": "object",
+                            "properties": {
+                                "rda":{
+                                    "oneOf": [
+                                        {
+                                            "enum": "$rdaValues$"
+                                        },
+                                        {
+                                            "enum": ["***"]
+                                        }
+                                    ]
+                                }
+                            },
+                            "required": ["rda"]
+                        },
+                        "callsign": {
+                            "type": "string",
+                            "pattern": "$reCallsignFull$"
+                        }
+                    },
+                    "required": ["new", "token", "callsign"]
+                }
+            ]
         }
-    ]},
-    "required": ["callsign"]
+    ]
 },
-
 "cfmRequestQso": {
     "type": "object",
     "properties": {
