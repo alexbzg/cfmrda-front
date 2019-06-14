@@ -24,7 +24,7 @@
             {{suffix}}
         </span>
 
-        <table id="callsign_rda" v-if="rdaRecords">
+        <table id="callsign_rda" v-if="callsign || rda">
             <tr>
                 <td class="top" colspan="4">
                     {{callsign && callsign.length ? callsign : rda}}
@@ -222,6 +222,8 @@ export default {
             this.rdaRecords = data.rdaRecords
             this.callsign = this.search.callsign
             this.rda = this.search.rda
+            const el = document.getElementById('call_search_table')
+            el.scrollIntoView()
           })
     },
     deleteRecord (item) {

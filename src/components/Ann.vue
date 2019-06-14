@@ -2,16 +2,23 @@
     <div class="list">
 
         <div id="anons">
-            <h4>RDA-экспедиции</h4>
-            <div class="anons_block" v-for="(item, idx) in ann" :key="idx" @click="item.expand = !item.expand">
-                <img class="delete" src="/images/icon_delete.png" title="Удалить это сообщение" v-if="admin"
-                    @click="deletAnn(item)">
-                <div class="announcer">{{item.callsign}}<br/><span>{{item.date}}</span></div>
-                <div class="anons_link">{{item.caption}}<br/><span class="date">{{item.period}}</span></div>
-                <div class="anons_text" v-show="item.expand">
-                    <pre>{{item.text}}</pre>
-                </div>
-            </div>
+            <table class="anons_block" v-for="(item, idx) in ann" :key="idx" @click="item.expand = !item.expand">
+                <tr>
+                  <td class="announcer">{{item.callsign}}<br/><span>{{item.date}}</span></td>
+                  <td class="anons_link">{{item.caption}}<br/><span class="date">{{item.period}}</span></td>
+                  <td class="anons_del">
+                      <img class="delete" src="/images/icon_delete.png" title="Удалить это сообщение" 
+                        v-if="admin" @click.stop="deleteAnn(item)">
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                    <div class="anons_text" v-show="item.expand">
+                        <pre>{{item.text}}</pre>
+                    </div>
+                  </td>
+                </tr>
+            </table>
 
             <div id="add_anons">
                 <div id="add_anons_link" @click="showForm = !showForm">Добавить анонс RDA экспедиции</div>
