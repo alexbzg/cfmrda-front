@@ -308,6 +308,42 @@
         }
     ]
 },
+"extLoggers": {
+    "type": "object",
+    "properties": {
+        "token": {
+            "type": "string",
+            "minLength": 3
+        },
+        "update": {
+            "type": "object",
+            "properties": {
+                "loginData": {
+                    "type": "object"
+                },
+                "logger": {
+                    "enum": ["LOTW"]
+                }
+            },
+            "required": ["loginData", "logger"]
+        }
+    },
+    "required": ["token"]
+},
+"extLoggersLoginDefault": {
+    "type": "object",
+    "properties": {
+        "login": {
+            "type": "string",
+            "minLength": 1
+        },
+        "password": {
+            "type": "string",
+            "minLength": 1
+        }
+    },
+    "required": ["login", "password"]
+},
 "callsignsRda": {
     "type": "object",
     "oneOf": [
