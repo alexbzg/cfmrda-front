@@ -1905,7 +1905,7 @@ table#paper_qsl_check{
  	border-collapse: collapse;
 }
 table#paper_qsl_check td{
-	padding: 10px;
+	padding: 10px 15px;
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
@@ -1941,7 +1941,7 @@ table#paper_qsl_check td.qsl_rda_callsign.top{
 }
 table#paper_qsl_check td.qsl_cfm, table#paper_qsl_check td.qsl_not_cfm{
 	background-color: #ffffca;
-	width: 80px;
+	padding: 5px;
 }
 table#paper_qsl_check td.top.qsl_cfm, table#paper_qsl_check td.top.qsl_not_cfm{
 	background-color: #e7f2ff;
@@ -2857,6 +2857,7 @@ table.anons_block td.anons_link:hover{
 table.anons_block td.anons_link .date{
 	font-size: 16px;
 	font-weight: normal;
+	color: #77a;
 }
 table.anons_block td.anons_del{
 	width: 100px;
@@ -2873,7 +2874,7 @@ table.anons_block td.anons_del img{
 .anons_block .anons_text{
 	display: block;
 	margin: 20px auto;
-	width: 80%;
+	padding: 0 130px;
 	text-align: left;
 }
 .anons_block .anons_text pre{

@@ -108,6 +108,9 @@ export function annPost (data) {
   return dataPost('ann', data)
 }
 
+export function loggersPost (data) {
+  return dataPost('loggers', data)
+}
 
 export function callsignsRda (data) {
   return dataPost('callsigns_rda', data)
