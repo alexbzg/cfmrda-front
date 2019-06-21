@@ -322,7 +322,7 @@
                     "type": "object"
                 },
                 "logger": {
-                    "enum": ["LOTW"]
+                    "enum": ["LoTW"]
                 }
             },
             "required": ["loginData", "logger"]

@@ -2766,6 +2766,9 @@ table#callsign_rda td.del img{
 #elogs_cfm{
 	padding-bottom: 100px;
 }
+#elogs_cfm h4{
+	margin: 20px 0;
+}
 table.elog_stats{
 	margin: 50px auto;
 	border-collapse: collapse;
@@ -2866,7 +2869,11 @@ table.anons_block td.anons_del{
 	text-align: right;
 }
 table.anons_block td.anons_del img{
+	visibility: hidden;	
 	cursor: pointer;
+}
+table.anons_block td.anons_del:hover img{
+	visibility: visible;
 }
 
 
