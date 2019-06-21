@@ -19,6 +19,7 @@ import CallsignsRda from './../components/CallsignsRda'
 const CFM = () => import(/* webpackChunkName: "cfm" */ './../components/CFM.vue')
 const EmailCFM = () => import(/* webpackChunkName: "cfm" */ './../components/EmailCFM.vue')
 const PaperCFM = () => import(/* webpackChunkName: "cfm" */ './../components/PaperCFM.vue')
+const LoggersCFM = () => import(/* webpackChunkName: "cfm" */ './../components/LoggersCFM.vue')
 
 const ManageUploads = () => import(/* webpackChunkName: "uploader" */ './../components/ManageUploads.vue')
 const NewUpload = () => import(/* webpackChunkName: "uploader" */ './../components/NewUpload.vue')
@@ -66,6 +67,11 @@ const router = new Router({
           path: '',
           name: 'EmailCFM',
           component: EmailCFM
+        },
+        {
+          path: 'loggers',
+          name: 'LoggersCFM',
+          component: LoggersCFM
         }
       ]
     },

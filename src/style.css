@@ -1905,7 +1905,7 @@ table#paper_qsl_check{
  	border-collapse: collapse;
 }
 table#paper_qsl_check td{
-	padding: 10px;
+	padding: 10px 15px;
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
@@ -1941,7 +1941,7 @@ table#paper_qsl_check td.qsl_rda_callsign.top{
 }
 table#paper_qsl_check td.qsl_cfm, table#paper_qsl_check td.qsl_not_cfm{
 	background-color: #ffffca;
-	width: 80px;
+	padding: 5px;
 }
 table#paper_qsl_check td.top.qsl_cfm, table#paper_qsl_check td.top.qsl_not_cfm{
 	background-color: #e7f2ff;
@@ -2766,6 +2766,9 @@ table#callsign_rda td.del img{
 #elogs_cfm{
 	padding-bottom: 100px;
 }
+#elogs_cfm h4{
+	margin: 20px 0;
+}
 table.elog_stats{
 	margin: 50px auto;
 	border-collapse: collapse;
@@ -2815,45 +2818,62 @@ table.elog_stats td.elog{
 /* ==========================================     A N N O U N C E   B L O C K  ====================================================== */
 
 
-.anons_block{
-	position: relative;
+table.anons_block{	
 	width: 90%;
-	margin: 0px auto 40px auto;
-	padding: 0 0 20px 0;
-	border: 1px solid #dfedfd;
-	box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Параметры тени */
-	color: #333;
+	margin: 10px auto 30px auto;
+	padding: 0;
+	border: 1px solid #eef;
+	border-collapse: collapse;
 }
-.anons_block .delete{
-	position: absolute;
-	right: 0;
-	margin: 5px;
-	cursor: pointer;
+table.anons_block td{	
+	padding: 0;
+	margin: 0;
+	color: #333;	
+	vertical-align: top;
+	text-align: center;
 }
-.anons_block .announcer{
-	position: absolute;
-	left: 0;
+
+table.anons_block td.announcer{
+	width: 100px;
 	line-height: 1em;
 	padding: 10px;
+	vertical-align: middle;
 	font-weight: bold;
 	background-color: #dfedfd;
 }
-.anons_block .announcer span{
+table.anons_block td.announcer span{
 	font-weight: normal;
 	font-size: 12px;
 }
-.anons_block .anons_link{
-	font-size: 22px;
-	margin: 10px 0 0px 0;
+table.anons_block td.anons_link{
+	font-size: 20px;
+	padding-top: 7px;
 	color: #009;
 	cursor: pointer;
 	font-weight: bold;
 	line-height: 1em;
+}
+table.anons_block td.anons_link:hover{
+	color: #00c;
 	text-decoration: underline;
 }
-.anons_block .anons_link .date{
+table.anons_block td.anons_link .date{
 	font-size: 16px;
 	font-weight: normal;
+	color: #77a;
+}
+table.anons_block td.anons_del{
+	width: 100px;
+	padding: 5px;
+	vertical-align: top;
+	text-align: right;
+}
+table.anons_block td.anons_del img{
+	visibility: hidden;	
+	cursor: pointer;
+}
+table.anons_block td.anons_del:hover img{
+	visibility: visible;
 }
 
 
@@ -2861,7 +2881,7 @@ table.elog_stats td.elog{
 .anons_block .anons_text{
 	display: block;
 	margin: 20px auto;
-	width: 80%;
+	padding: 0 130px;
 	text-align: left;
 }
 .anons_block .anons_text pre{
@@ -2874,7 +2894,7 @@ table.elog_stats td.elog{
 
 #add_anons_link{
 	text-decoration: underline;
-	color: #55c;
+	color: #777;
 	cursor: pointer;
 }
 #anons_note{
