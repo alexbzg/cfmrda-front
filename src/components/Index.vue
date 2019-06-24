@@ -236,9 +236,11 @@
                     </view-upload-link>
                 </td>
                 <td class="activator">
-                    <span v-for="(activator, actIdx) in item.activators" :key="actIdx">
-                        {{replace0(activator)}}
-                    </span>
+                    <template v-if="item.uploadType !== 'LoTW'">
+                        <span v-for="(activator, actIdx) in item.activators" :key="actIdx">
+                            {{replace0(activator)}}
+                        </span>
+                    </template>
                 </td>
                 <td class="uploader">
                     {{replace0(item.uploader)}}
