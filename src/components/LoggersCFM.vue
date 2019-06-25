@@ -12,7 +12,7 @@
                 <td class="pass">Password</td>
                 <td class="ok"> </td>
                 <td class="status"></td>
-                    <td class="qso top">CFMD QSO</td>
+                    <td class="qso top">CFM QSO</td>
                 <td class="date top">Last Check Date</td>
             </tr>
             <loggers-cfm-item v-for="(logger, idx) in loggers" :key="idx" :logger="logger" 

@@ -144,7 +144,8 @@ export default {
     if (this.extSearchCallsign)
       this.doSearch(this.extSearchCallsign)
     this.validationData.token = this.userToken
-    this.getConflict()
+    if (this.admin)
+      this.getConflict()
   },
   computed: {
     ...mapGetters(['userToken', 'admin']),
