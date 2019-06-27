@@ -35,7 +35,7 @@
                 <td class="rda" v-else>{{item.rda}}</td>
                 <td class="time_period">{{item.period}}</td>
                 <td class="admin">
-                    <template v-if="item.comment">{{item.comment}}<br/></template>
+                    <template v-if="item.comment"><span>{{item.comment}}</span><br/></template>
                     {{item.source}} {{item.ts}}
                 </td>
                 <td class="del" >

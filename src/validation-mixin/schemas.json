@@ -322,7 +322,7 @@
                     "type": "object"
                 },
                 "logger": {
-                    "enum": ["LoTW"]
+                    "enum": ["LoTW", "HamLOG"]
                 }
             },
             "required": ["loginData", "logger"]
@@ -344,6 +344,21 @@
     },
     "required": ["login", "password"]
 },
+"extLoggersLoginHamLOG": {
+    "type": "object",
+    "properties": {
+        "email": {
+            "type": "string",
+            "minLength": 1
+        },
+        "password": {
+            "type": "string",
+            "minLength": 1
+        }
+    },
+    "required": ["email", "password"]
+},
+
 "callsignsRda": {
     "type": "object",
     "oneOf": [

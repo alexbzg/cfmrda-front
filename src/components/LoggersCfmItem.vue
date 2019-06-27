@@ -2,12 +2,10 @@
     <tr>
         <td class="elog">{{logger.logger}}</td>
         <td class="login">
-            <input type="text" id="lotw_login" v-model="loginData.login"
-                :class='{error: validationErrors.login}'/>
-        </td>
-        <td class="pass">
-            <input type="password" id="lotw_pass" v-model="loginData.password"
-                :class='{error: validationErrors.password}'/>
+            <input :type="field === 'password' ? 'password' : 'text'" 
+                v-for="field in logger.loginDataFields" :key="field" 
+                v-model="loginData[field]" :placeholder="field"                
+                :class='{error: validationErrors[field]}'/>
         </td>
         <td class="ok">
             <input type="submit" class="btn" value="OK" :disabled="!validated || logger.pending" @click="update">
@@ -43,7 +41,11 @@ export default {
   props: ['logger'],
   name: 'LoggersCfmItem',
   data () {
-    const loginData = JSON.parse(JSON.stringify(this.logger.loginData))
+    const loginData = this.logger.loginData ? 
+        JSON.parse(JSON.stringify(this.logger.loginData)) : {}
+    if (!this.loggerLoginData)
+      for (const field of this.logger.loginDataFields)
+        loginData[field] = null
     return { 
       loginData: loginData,
       validationData: loginData,
