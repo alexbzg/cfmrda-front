@@ -1230,7 +1230,7 @@ table#admin td{
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
-	vertical-align: middle;
+	vertical-align: top;
 }
 table#admin a{
 	color: #009;
@@ -1244,7 +1244,7 @@ table#admin td.menu{
 }
 table#admin td.allow{
 	width: 70px;
-	padding: 7px 0;
+	padding: 10px 0 0 0;
 	font-size: 12px;	
 }
 table#admin td.rda input, table#admin td.rda{
@@ -1290,7 +1290,6 @@ table#admin td.search_result{
 }
 table#admin td.search_result img, table#admin td.del img{
 	cursor: pointer;
-	padding-top: 12px;
 }
 .del_btn{
 	background-color: #FF4500;
@@ -1910,18 +1909,20 @@ table#paper_qsl_check td{
 	color: #333;
 	border: 1px solid #dfedfd;
 	border-bottom: 2px solid #dfedfd;
-	vertical-align: middle;
+	vertical-align: top;
 }
 table#paper_qsl_check td.top{
 	font-weight: bold;	
 	background-color: #e7f2ff;
 }
 table#paper_qsl_check td.qsl_links, table#paper_qsl_check td.qsl_card{
-	padding: 0 5px;
-	vertical-align: middle;
+	padding: 10px 5px;
 	line-height: 10px;
 	font-size: 12px;
 	cursor: pointer;
+}
+table#paper_qsl_check td.qsl_card.top{
+	vertical-align: middle;
 }
 table#paper_qsl_check td.qsl_callsign, table#paper_qsl_check td.qsl_new_callsign, table#paper_qsl_check td.qsl_rda_callsign {
 	font-weight: bold;
@@ -1941,7 +1942,6 @@ table#paper_qsl_check td.qsl_rda_callsign.top{
 }
 table#paper_qsl_check td.qsl_cfm, table#paper_qsl_check td.qsl_not_cfm{
 	background-color: #ffffca;
-	padding: 5px;
 }
 table#paper_qsl_check td.top.qsl_cfm, table#paper_qsl_check td.top.qsl_not_cfm{
 	background-color: #e7f2ff;
@@ -1957,8 +1957,9 @@ table#paper_qsl_check tr.not_cfm_checked td.qsl_not_cfm{
 	background-color: #fbd0d0;
 }
 table#paper_qsl_check td.qsl_comm{
-	padding: 2px 2px 0px 2px;
+	padding: 2px 5px 0px 5px;
 	vertical-align: middle;
+	font-size: 12px;
 }
 table#paper_qsl_check td.qsl_comm textarea{
 	font-size: 12px;

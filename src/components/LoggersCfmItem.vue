@@ -10,12 +10,13 @@
                 :class='{error: validationErrors.password}'/>
         </td>
         <td class="ok">
-            <input type="submit" class="btn" value="OK" :disabled="!validated" @click="update">
+            <input type="submit" class="btn" value="OK" :disabled="!validated || logger.pending" @click="update">
         </td>
         <td class="status">
             <img v-if="logger.state in $options.STATES" 
                 :src="'/images/icon_' + $options.STATES[logger.state].image +'.png'" 
-                :title="$options.STATES[logger.state].title">
+                :title="$options.STATES[logger.state].title"/>
+            <img v-if="logger.pending" src="/images/spinner2.gif"/> 
         </td>
         <td class="qso">{{logger.qsoCount}}</td>
         <td class="date">{{logger.lastUpdated}}</td>
@@ -48,6 +49,9 @@ export default {
       validationData: loginData,
       validationSchema: this.logger.schema
     }
+  },
+  mounted () {
+    this.validate()
   },
   methods: {
     update () {

@@ -43,6 +43,8 @@ export default {
   mounted () {
     this.post()
       .then(data => {
+        for (const logger of data)
+          logger.pending = false
         this.loggers = data
       })
   },
@@ -57,8 +59,11 @@ export default {
       return loggersPost(data)
     },
     loggerUpdate (logger, loginData) {
+      if (logger.pending)
+        return
       logger.loginData = loginData
       logger.state = null
+      logger.pending = true
       this.post({
         update: {
           logger: logger.logger,
@@ -67,6 +72,9 @@ export default {
       })
         .then(data => {
           this.$set(logger, 'state', data)
+        })
+        .finally(() => {
+          this.$set(logger, 'pending', false)
         })
     }
   }
