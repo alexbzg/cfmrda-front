@@ -104,7 +104,7 @@ const USERS_POST_INT = 5 * 1000  //ms
 const chatService = dataService('/json/chat.json', 'chat-update')
 const usersService = dataService('/json/active_users.json', 'users-update')
 
-const reMSG_TO = /(:?\u21d2\s?\w+\s?)+(:?\s|$)/
+const reMSG_TO = /(:?\u21d2\s?\w+(:?\/\w+)*\s?)+(:?\s|$)/
 const MSG_SANITIZE_HTML_SETTINGS = {
     allowedTags: ['h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
         'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',

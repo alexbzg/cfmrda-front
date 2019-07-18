@@ -181,11 +181,11 @@
 
         </div>
 
-    <ann></ann>
 
     <div id="banner" v-async-html="'banner/index'">
     </div>
 
+    <ann></ann>
 
     <rank-table :rank-data-top="rankData" :callsign-rankings="hunterData ? hunterData.rank : null" 
         :callsign="callsignValid" @callsign-click="callsignClick"/>
