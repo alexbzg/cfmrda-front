@@ -326,6 +326,9 @@
                 }
             },
             "required": ["loginData", "logger"]
+        },
+        "delete": {
+            "type":"number"
         }
     },
     "required": ["token"]
