@@ -1,14 +1,26 @@
 <template>
     <tr>
-        <td class="elog">{{logger.logger}}</td>
+        <td class="elog" v-if="logger">
+            {{logger}}
+        </td>
+        <td class="elog" v-else>
+            <select v-model="logger">
+                <option value="null">- - -</option>                
+                <option v-for="(params, logger) in loggers" :key="logger" :value="logger">
+                    {{logger}}
+                </option>
+            </select>
+        </td>
         <td class="login">
-            <input :type="field === 'password' ? 'password' : 'text'" 
-                v-for="field in logger.loginDataFields" :key="field" 
-                v-model="loginData[field]" :placeholder="field"                
-                :class='{error: validationErrors[field]}'/>
+            <template v-if="logger">
+                <input :type="field === 'password' ? 'password' : 'text'" 
+                    v-for="field in loggers[logger].loginDataFields" :key="field" 
+                    v-model="loginData[field]" :placeholder="field"                
+                    :class='{error: validationErrors[field]}'/>
+            </template>
         </td>
         <td class="ok">
-            <input type="submit" class="btn" value="OK" :disabled="!validated || logger.pending" @click="update">
+            <input type="submit" class="btn" value="OK" :disabled="!validated || account.pending" @click="update">
         </td>
         <td class="status">
             <img v-if="logger.state in $options.STATES" 
@@ -47,6 +59,7 @@ export default {
       for (const field of this.logger.loginDataFields)
         loginData[field] = null
     return { 
+      logger: this.account.logger,
       loginData: loginData,
       validationData: loginData,
       validationSchema: this.logger.schema
