@@ -4,8 +4,8 @@
             {{logger}}
         </td>
         <td class="elog" v-else>
-            <select v-model="logger">
-                <option value="null">- - -</option>                
+            <select v-model="logger" @change="loggerSelected()">
+                <option disabled selected value="null">Выберите eLog</option>                
                 <option v-for="(params, logger) in loggers" :key="logger" :value="logger">
                     {{logger}}
                 </option>
@@ -20,16 +20,20 @@
             </template>
         </td>
         <td class="ok">
-            <input type="submit" class="btn" value="OK" :disabled="!validated || account.pending" @click="update">
+            <input type="submit" class="btn" value="OK" :disabled="!validated || account.pending" 
+                @click="updateAccount()">
         </td>
         <td class="status">
-            <img v-if="logger.state in $options.STATES" 
-                :src="'/images/icon_' + $options.STATES[logger.state].image +'.png'" 
-                :title="$options.STATES[logger.state].title"/>
-            <img v-if="logger.pending" src="/images/spinner2.gif"/> 
+            <img v-if="account.state in $options.STATES" 
+                :src="'/images/icon_' + $options.STATES[account.state].image +'.png'" 
+                :title="$options.STATES[account.state].title"/>
+            <img v-if="account.pending" src="/images/spinner2.gif"/> 
         </td>
-        <td class="qso">{{logger.qsoCount}}</td>
-        <td class="date">{{logger.lastUpdated}}</td>
+        <td class="del" @click="deleteAccount()">
+            <img src="/images/icon_delete.png" title="Удалить строку - Delete this line">
+        </td>
+        <td class="qso">{{account.qsoCount}}</td>
+        <td class="date">{{account.lastUpdated}}</td>
     </tr>
 </template>
 
@@ -50,29 +54,51 @@ const STATES = {
 export default {
   STATES: STATES,
   mixins: [validationMixin],
-  props: ['logger'],
+  props: ['account', 'loggers'],
   name: 'LoggersCfmItem',
   data () {
-    const loginData = this.logger.loginData ? 
-        JSON.parse(JSON.stringify(this.logger.loginData)) : {}
-    if (!this.loggerLoginData)
-      for (const field of this.logger.loginDataFields)
-        loginData[field] = null
+    const loginData = {}
     return { 
       logger: this.account.logger,
       loginData: loginData,
       validationData: loginData,
-      validationSchema: this.logger.schema
     }
   },
   mounted () {
-    this.validate()
+    this.loginDataInit()
+    this.setValidationSchema()
+    if (this.validationSchema)
+      this.validate()
   },
   methods: {
-    update () {
-      this.$emit('logger-update', JSON.parse(JSON.stringify(this.loginData)))
+    setValidationSchema () {
+      if (this.logger)
+        this.validationSchema = this.loggers[this.logger].schema
+    },
+    loggerSelected () {
+      this.loginDataInit()
+      this.setValidationSchema()
+      this.validate()
+    },
+    loginDataInit () {
+      for (const field of Object.keys(this.loginData))
+        delete this.loginData[field]
+      if (this.account && this.account.loginData) {
+        for (const field of Object.keys(this.account.loginData))
+          this.$set(this.loginData, field, this.account.loginData[field])
+      } else if (this.logger) {
+        for (const field of this.loggers[this.logger].loginDataFields)
+          this.$set(this.loginData, field, null)
+      }
+    },
+    updateAccount () {
+        this.$emit('account-update', 
+          {logger: this.logger, loginData: JSON.parse(JSON.stringify(this.loginData))})
+    },
+    deleteAccount () {
+      this.$emit('account-delete')
     }
-  }
+ }
 }
 </script>
 

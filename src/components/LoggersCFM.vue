@@ -21,10 +21,10 @@
                 <td class="qso top">CFM QSO</td>
                 <td class="date top">Last Check Date</td>
             </tr>
-            <loggers-cfm-item v-for="(account, idx) in accounts" :key="idx" :account="logger" 
+            <loggers-cfm-item v-for="(account, idx) in accounts" :key="idx" :account="account" 
                 :loggers="loggers"
-                @account-update="onAccountUpdate(logger, $event)"
-                @account-delete="onAccountDelete(logger)">
+                @account-update="onAccountUpdate(account, $event)"
+                @account-delete="onAccountDelete(account)">
             </loggers-cfm-item>
             <tr>
                 <td id="add_line" colspan="7" @click="addAccount()">
@@ -73,18 +73,18 @@ export default {
       data.token = this.userToken
       return loggersPost(data)
     },
-    onAccountUpdate (account, logger, loginData) {
-      if (logger.pending)
+    onAccountUpdate (account, evtPayload) {
+      if (account.pending)
         return
-      account.loginData = loginData
-      account.logger = logger
+      account.loginData = evtPayload.loginData
+      account.logger = evtPayload.logger
       account.state = null
       account.pending = true
       this.post({
         update: {
           id: account.id,
-          logger: logger,
-          loginData: loginData
+          logger: account.logger,
+          loginData: account.loginData
         }
       })
         .then(data => {
@@ -108,7 +108,7 @@ export default {
           .then(() => {
             this.removeAccount(account)
           })
-          .catch(() => {
+          .finally(() => {
             this.$set(account, 'pending', false)
           })
       }
@@ -116,6 +116,9 @@ export default {
     removeAccount (account) {
       const idx = this.accounts.indexOf(account)
       this.accounts.splice(idx, 1)
+    },
+    addAccount () {
+      this.accounts.push({pending: false, state: null})     
     }
   }
 }
