@@ -10,11 +10,11 @@
             <router-link to="/awards">Awards</router-link>
             <router-link to="/callsignsRda">RDA Search</router-link>
             <router-link to="/cluster">Cluster</router-link>
-            <router-link to="/cfm" v-if="userCallsign">CFM RDA</router-link>
+            <router-link to="/cfm" v-if="userCallsign" id="chat">CFM RDA</router-link>
             <router-link to="/uploads" v-if="userCallsign">Загрузки</router-link>
             <router-link to="/stats">Stats</router-link>
             <router-link to="/static/faq">FAQ</router-link>
-            <router-link to="/chat" id="chat">Chat</router-link>
+            <router-link to="/chat">Chat</router-link>
             <router-link to="/contact">Contact</router-link>
             <router-link to="/login" v-if="!userCallsign">Login</router-link>
             <a @click="logout()" v-else id="logout_link">Logout</a>

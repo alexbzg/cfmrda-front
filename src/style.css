@@ -1833,7 +1833,14 @@ table#qsl_data_form td.add_line{
 }
 table#qsl_data_form td.card_upload, 
 table#qsl_data_form td.qsl_message{
+	font-size: 14px;	
 	border: none;
+	vertical-align: top;
+}
+table#qsl_data_form td.card_upload input{
+	padding: 0;
+	margin-bottom: 7px;
+	width: 750px;
 }
 table#qsl_data_form textarea{
 	width: 100%;
@@ -2512,7 +2519,7 @@ table#table_stats td.stats_detail a{
 }
 #icon_select img{
 	position: absolute;
-	right: 20px;
+	right: -20px;
 	top: 10px;
 	cursor: pointer;
 }
@@ -2558,6 +2565,13 @@ table#cluster td.band span{
     font-weight: bold;	
     padding-right: 2px;
     color:#333;
+}
+table#cluster td.user{ 
+	padding-right: 2px;
+	padding-left: 2px;
+}
+table#cluster td.user img{ 
+	margin: 0 2px;
 }
 table#cluster td.callsign{
     width: 180px;
@@ -2701,6 +2715,36 @@ table#callsign_rda td.top span{
 	font-size: 12px;
 	text-align: center;
 }
+
+table#callsign_rda tr#admin_note td{
+	vertical-align: middle;
+	padding: 0;
+	border: none;
+	font-size: 12px;
+	color: #900;
+	background-color: #ffffca;
+}
+table#callsign_rda tr#admin_note td#any_rda{	
+	border-left: 1px solid #dfedfd;
+	line-height: 14px;
+}
+table#callsign_rda tr#admin_note td#save_note{	
+	border-right: 1px solid #dfedfd;
+}
+table#callsign_rda tr#admin_note textarea{
+	width: 500px;
+	background-color: #ffffca;
+	color: #900;
+	border: none;
+	font-weight: bold;
+}
+table#callsign_rda tr#admin_note input{
+	font-size: 10px;
+	padding: 3px;
+	cursor: pointer;
+}
+
+
 table#callsign_rda td.rda{
 	padding-left: 0;
 	padding-right: 0;
@@ -2732,13 +2776,13 @@ table#callsign_rda td.add_line{
 	border: none;
 }
 table#callsign_rda td.admin{
-	color: #777;
-	font-size: 12px;
+	font-size: 12px;	
 	padding: 3px;
+	color: #000;
 }
 table#callsign_rda td.admin span{
-	color: #333;
-	font-size: 14px;
+	color: #777;
+
 }
 table#callsign_rda td.no_border{
 	border: none;

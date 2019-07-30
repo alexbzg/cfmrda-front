@@ -2,13 +2,9 @@
     <div id="elogs_cfm">
     
         <h4>eLogs CFM</h4>
-        <p>
-            Укажите свой логин/пароль доступа к системам LoTW и eQSL.<br/>
-            После проверки по нашей базе RDA подтвержденные QSO будут добавлены к вашей статистике CFMRDA.
-        </p>
+        <p>Укажите свой логин/пароль доступа к системе LoTW или HAMLOG. После нажатия «OK» пройдет проверка связи с eLOG-сервером. Если всё прошло хорошо, появится значок <img src="/images/icon_connected.png" width="12">. CFMD QSO скачаются <u>в течение суток</u> и после проверки по нашей базе RDA будут добавлены к вашей статистике. Увидеть то, что скачалось, можно будет в разделе "Мои загрузки". В дальнейшем новые CFM QSO будут скачиваться один раз в неделю.</p>
         <p class="grey_note">
-            Enter your login/password for LoTW and eQSL systems.<br/>
-            Verified QSOs will be added to your CFMRDA statistics аfter checking with our RDA database.
+            Enter your login/password to access the LoTW or HAMLOG system. After clicking “OK” the connection with the eLOG-server will be checked. If everything went well, an icon <img src="/images/icon_connected.png" width="12"> will appear. CFMD QSO will be downloaded within 24 hours and after checking on our RDA database will be added to your statistics. In the future new CFM QSO will be downloaded once a week.
         </p>
 
         <table class="elog_stats">
@@ -118,7 +114,7 @@ export default {
       this.accounts.splice(idx, 1)
     },
     addAccount () {
-      this.accounts.push({pending: false, state: null})     
+      this.accounts.push({pending: false, state: null, logger: null})     
     }
   }
 }
