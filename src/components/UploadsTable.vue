@@ -11,14 +11,17 @@
                     v-model="upload.enabled" @click="changeEnabled(upload, $event)">
             </td>
             <td class="rda">
-                <template v-if="upload.uploadType === 'adif' || upload.uploadType == 'email CFM'">
-                    <view-upload-link :id="upload.id">
+                <view-upload-link :id="upload.id">
+                    <template v-if="upload.extLoggerId">
+                        {{upload.uploadType}}
+                    </template>
+                    <template v-else>
                         <span v-for="(rda, idx) in upload.rda" :key="idx">{{rda}}</span>
-                    </view-upload-link>
-                </template>
+                    </template>
+                </view-upload-link>
             </td>
             <td class="callsign">
-                <template v-if="upload.uploadType === 'adif' || upload.uploadType == 'email CFM'">
+                <template v-if="!upload.extLoggerId">
                     <span v-for="(callsign, idx) in upload.stations" :key="idx">
                         {{replace0(callsign)}}
                     </span>
