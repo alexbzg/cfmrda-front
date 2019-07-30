@@ -1230,7 +1230,7 @@ table#admin td{
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
-	vertical-align: middle;
+	vertical-align: top;
 }
 table#admin a{
 	color: #009;
@@ -1244,7 +1244,7 @@ table#admin td.menu{
 }
 table#admin td.allow{
 	width: 70px;
-	padding: 7px 0;
+	padding: 10px 0 0 0;
 	font-size: 12px;	
 }
 table#admin td.rda input, table#admin td.rda{
@@ -1290,7 +1290,6 @@ table#admin td.search_result{
 }
 table#admin td.search_result img, table#admin td.del img{
 	cursor: pointer;
-	padding-top: 12px;
 }
 .del_btn{
 	background-color: #FF4500;
@@ -1834,7 +1833,14 @@ table#qsl_data_form td.add_line{
 }
 table#qsl_data_form td.card_upload, 
 table#qsl_data_form td.qsl_message{
+	font-size: 14px;	
 	border: none;
+	vertical-align: top;
+}
+table#qsl_data_form td.card_upload input{
+	padding: 0;
+	margin-bottom: 7px;
+	width: 750px;
 }
 table#qsl_data_form textarea{
 	width: 100%;
@@ -1910,18 +1916,20 @@ table#paper_qsl_check td{
 	color: #333;
 	border: 1px solid #dfedfd;
 	border-bottom: 2px solid #dfedfd;
-	vertical-align: middle;
+	vertical-align: top;
 }
 table#paper_qsl_check td.top{
 	font-weight: bold;	
 	background-color: #e7f2ff;
 }
 table#paper_qsl_check td.qsl_links, table#paper_qsl_check td.qsl_card{
-	padding: 0 5px;
-	vertical-align: middle;
+	padding: 10px 5px;
 	line-height: 10px;
 	font-size: 12px;
 	cursor: pointer;
+}
+table#paper_qsl_check td.qsl_card.top{
+	vertical-align: middle;
 }
 table#paper_qsl_check td.qsl_callsign, table#paper_qsl_check td.qsl_new_callsign, table#paper_qsl_check td.qsl_rda_callsign {
 	font-weight: bold;
@@ -1941,7 +1949,6 @@ table#paper_qsl_check td.qsl_rda_callsign.top{
 }
 table#paper_qsl_check td.qsl_cfm, table#paper_qsl_check td.qsl_not_cfm{
 	background-color: #ffffca;
-	padding: 5px;
 }
 table#paper_qsl_check td.top.qsl_cfm, table#paper_qsl_check td.top.qsl_not_cfm{
 	background-color: #e7f2ff;
@@ -1957,8 +1964,9 @@ table#paper_qsl_check tr.not_cfm_checked td.qsl_not_cfm{
 	background-color: #fbd0d0;
 }
 table#paper_qsl_check td.qsl_comm{
-	padding: 2px 2px 0px 2px;
+	padding: 2px 5px 0px 5px;
 	vertical-align: middle;
+	font-size: 12px;
 }
 table#paper_qsl_check td.qsl_comm textarea{
 	font-size: 12px;
@@ -2511,7 +2519,7 @@ table#table_stats td.stats_detail a{
 }
 #icon_select img{
 	position: absolute;
-	right: 20px;
+	right: -20px;
 	top: 10px;
 	cursor: pointer;
 }
@@ -2557,6 +2565,13 @@ table#cluster td.band span{
     font-weight: bold;	
     padding-right: 2px;
     color:#333;
+}
+table#cluster td.user{ 
+	padding-right: 2px;
+	padding-left: 2px;
+}
+table#cluster td.user img{ 
+	margin: 0 2px;
 }
 table#cluster td.callsign{
     width: 180px;
@@ -2686,7 +2701,50 @@ table#callsign_rda td.top{
 	font-weight: bold;	
 	background-color: #e7f2ff;
 	font-size: 24px;
+	line-height: 16px;
+	padding: 10px;
+	position: relative;
 }
+table#callsign_rda td.top span{
+	display: block;
+	width: 70px;
+	position: absolute;
+	right: 5px;
+	top: 3px;
+	font-weight: normal;	
+	font-size: 12px;
+	text-align: center;
+}
+
+table#callsign_rda tr#admin_note td{
+	vertical-align: middle;
+	padding: 0;
+	border: none;
+	font-size: 12px;
+	color: #900;
+	background-color: #ffffca;
+}
+table#callsign_rda tr#admin_note td#any_rda{	
+	border-left: 1px solid #dfedfd;
+	line-height: 14px;
+}
+table#callsign_rda tr#admin_note td#save_note{	
+	border-right: 1px solid #dfedfd;
+}
+table#callsign_rda tr#admin_note textarea{
+	width: 500px;
+	background-color: #ffffca;
+	color: #900;
+	border: none;
+	font-weight: bold;
+}
+table#callsign_rda tr#admin_note input{
+	font-size: 10px;
+	padding: 3px;
+	cursor: pointer;
+}
+
+
 table#callsign_rda td.rda{
 	padding-left: 0;
 	padding-right: 0;
@@ -2718,9 +2776,13 @@ table#callsign_rda td.add_line{
 	border: none;
 }
 table#callsign_rda td.admin{
-	color: #777;
-	font-size: 12px;
+	font-size: 12px;	
 	padding: 3px;
+	color: #000;
+}
+table#callsign_rda td.admin span{
+	color: #777;
+
 }
 table#callsign_rda td.no_border{
 	border: none;
@@ -2785,27 +2847,40 @@ table.elog_stats td.top{
 	background-color: #e7f2ff;
 }
 
-table.elog_stats td.login, table.elog_stats td.pass{
-	width: 200px;
+table.elog_stats td.login{
+	width: 420px;
 	padding: 5px 0;
 	border: none;
 }
-table.elog_stats td.login input, table.elog_stats td.pass input{
+table.elog_stats td.login input{
 	width: 180px;
-	margin: 0;
+	margin: 0 10px 0 0;
 	font-weight: bold;
 }
-table.elog_stats td.ok, table.elog_stats td.status{
+table.elog_stats td.ok{
 	text-align: left;
 	border: none;
 }
-table.elog_stats td.status{
-	padding-right: 70px;
+table.elog_stats td.status, table.elog_stats td.del{
+	width: 30px;
+	border: none;
+}
+table.elog_stats td.del img{
+	cursor: pointer;
 }
 table.elog_stats td.elog{
 	font-weight: bold;
 	font-size: 18px;
 	border: none;
+}
+table.elog_stats td.elog select, table.elog_stats td.elog option{
+	font-weight: bold;
+	text-align: center;
+}
+table.elog_stats td#add_line{
+	border: none;
+	padding: 30px 0 0 0;
+	text-align: center;
 }
 
 

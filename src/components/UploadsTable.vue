@@ -12,11 +12,20 @@
             </td>
             <td class="rda">
                 <view-upload-link :id="upload.id">
-                    <span v-for="(rda, idx) in upload.rda" :key="idx">{{rda}}</span>
+                    <template v-if="upload.extLoggerId">
+                        {{upload.uploadType}}
+                    </template>
+                    <template v-else>
+                        <span v-for="(rda, idx) in upload.rda" :key="idx">{{rda}}</span>
+                    </template>
                 </view-upload-link>
             </td>
             <td class="callsign">
-                <span v-for="(callsign, idx) in upload.stations" :key="idx">{{replace0(callsign)}}</span>
+                <template v-if="!upload.extLoggerId">
+                    <span v-for="(callsign, idx) in upload.stations" :key="idx">
+                        {{replace0(callsign)}}
+                    </span>
+                </template>
             </td>
             <td class="callsign">
                 <span v-for="(callsign, idx) in upload.activators" :key="idx">{{replace0(callsign)}}</span>

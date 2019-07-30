@@ -5,14 +5,14 @@
             <td class="top qsl_callsign">Callsign</td>
             <td class="top qsl_rda_callsign">Activator</td>
             <td class="top qsl_rda">RDA</td>
-            <td class="top qsl_rda_qrz">QRZ.ru</td>
+            <td class="top qsl_rda_qrz">CFMRDA</td>
             <td class="top qsl_date">Date</td>
             <td class="top qsl_gmt">GMT</td>
             <td class="top qsl_band">MHz</td>
             <td class="top qsl_mode">Mode</td>
             <td class="top qsl_card">QSL</td>
-            <td class="top qsl_cfm">CFM</td>
-            <td class="top qsl_not_cfm">NOT CFM</td>
+            <td class="top qsl_cfm"> CFM </td>
+            <td class="top qsl_not_cfm">REJECT</td>
             <td class="top qsl_comm">Comment</td>
         </tr>
         <tbody v-for="item in qslList" :key="item.id">
