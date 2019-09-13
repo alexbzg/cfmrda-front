@@ -98,6 +98,9 @@
 
 
             <table id="rda_table" v-if="showDetails">
+                <a :href="'/aiohttp/download/qso/' + callsignValid" target="_blank" rel="noopener">
+                    Download .csv file
+                </a>
                 <template v-for="(group, idxGr) in rda">
                     <tr :key="idxGr">
                         <td class="rda_letters">{{group.group}}</td>
@@ -127,7 +130,7 @@
                                     <td class="rda_top">{{rdaValue.value}}</td>
                                     <td class="time top">GMT</td>
                                     <td class="mode top">Mode</td>
-                                    <td class="band top">МГц</td>
+                                    <td class="band top">MHz</td>
                                     <td class="call top">CFM QSO</td>
                                     <td class="uploader top">Uploader</td>
                                 </tr>
@@ -153,8 +156,8 @@
                                 </tr>
                                 <tr>
                                     <td class="rda_top">{{replace0(rdaValue.value)}}</td>
-                                    <td class="band top">МГц</td>
                                     <td class="mode top">Mode</td>
+                                    <td class="band top">MHz</td>
                                     <td class="call top">QSOs</td>
                                     <td class="uploader top">Uploader</td>
                                 </tr>

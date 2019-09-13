@@ -11,10 +11,12 @@
                 <tbody>
                     <tr>
                         <td>
-                            <input type="text" id="your_call" v-model.trim="callsign" v-capitalize/>
+                            <input type="text" id="your_call" v-model.trim="callsign" v-capitalize
+                                @blur="csNameBlur"/>
                         </td>
                         <td>
-                            <input type="text" id="your_name" v-model.trim="name"/>
+                            <input type="text" id="your_name" v-model.trim="name"
+                                @blur="csNameBlur"/>
                         </td>
                         <td>
                             <input type="text" id="your_text" v-model.trim="message" @keyup="typing"/>
@@ -56,8 +58,9 @@
                                     @mouseout="messageMouseOver(false,$event)">
                                     <img class="delete_btn" src="/images/icon_delete20.png" 
                                         title="Удалить сообщение" @click="deleteMessage(message.ts)"/>
-                                    <span class="message_to" v-for="callsign in message.to" :key="callsign">
-                                        &rArr; {{callsign}}
+                                    <span class="message_to" v-for="callsignTo in message.to" :key="callsignTo"
+                                        :class="{personal: callsignTo === callsign}">
+                                        &rArr; {{callsignTo}}
                                     </span>
                                     <span class="message_text" v-html="message.text"></span>
                                 </td>
@@ -156,10 +159,10 @@ export default {
             msg.text = sanitizeHTML(msg.text, MSG_SANITIZE_HTML_SETTINGS)
             let match = null
             if (match = reMSG_TO.exec(msg.text)) {
-            const to = match[0]
-            msg.text = msg.text.substring(to.length, msg.text.length)
-            msg.to = to.split(/\s?\u21d2\s?/)
-            msg.to.shift()
+              const to = match[0]
+              msg.text = msg.text.substring(to.length, msg.text.length)
+              msg.to = to.split(/\s?\u21d2\s?/).map(item => item.trim())
+              msg.to.shift()
             }
         }
         this.messages = chatService.data
@@ -172,22 +175,24 @@ export default {
         data.callsign = this.callsign
       return chatPost(data)
     },
-    buttonClick () {
-      if (this.buttonDisabled) return
+    csNameBlur () {
       storage.save(CHAT_STORAGE_KEY, 
         {callsign: this.callsign,
         name: this.name}, 
         'local')
-        this.pending = true
-        this.post({'message': this.message,
-          'name': this.name})
-          .then(() => { 
-            this.message = null
-            chatService.load()
-          })
-          .finally(() => {
-            this.pending = false
-          })
+    },
+    buttonClick () {
+      if (this.buttonDisabled) return
+      this.pending = true
+      this.post({'message': this.message,
+        'name': this.name})
+        .then(() => { 
+          this.message = null
+          chatService.load()
+        })
+        .finally(() => {
+          this.pending = false
+        })
     },
     reloadUsers () {
       usersService.load()
