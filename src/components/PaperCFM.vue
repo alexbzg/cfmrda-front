@@ -2,9 +2,8 @@
     <div id="paper_qsl">
         <h4>CFM RDA по бумажным QSL-карточкам</h4>
         <p>Введите данные QSO из полученной QSL, подтверждающей необходимый вам RDA. Если QSL карточка выписана вам на старый позывной, то в поле "New callsign" можно указать ваш новый позывной, чтобы это QSO пошло в зачёт и новому позывному.<br/>
-        После проверки модератором данные будут добавлены в  базу CFMRDA. Принимаются фото бумажных QSL и изображения eQSL и HamLog.<br/>
-        Карточки спецпозывных принимаются <u>только</u> в виде фото/сканов бумажных QSL. RDA должен быть прописан за каждое QSO.</p>
-        <p class="grey_note">Fill in the input form with data from the received QSL card confirming the QSO with the RDA you need. If a QSL card is issued to your old callsign, you can enter your new callsign in the "New callsign" field so that this QSO will go on to the new callsign. Your data will be added to CFMRDA database after the check by the moderator.<br/> <b>Photos of paper QSLs</b> and <b>eQSL</b> images are taken only.</p>
+        После проверки модератором данные будут добавлены в  базу CFMRDA. Принимаются фото бумажных QSL и изображения eQSL и HamLog.</p>
+        <p class="grey_note">Fill in the input form with data from the received QSL card confirming the QSO with the RDA you need. If a QSL card is issued to your old callsign, you can enter your new callsign in the "New callsign" field so that this QSO will go on to the new callsign. Your data will be added to CFMRDA database after the check by the moderator.<br/> <b>Photos of paper QSLs</b>, <b>eQSL</b>, <b>HamLog</b> images are taken only.</p>
         <table id="add_paper_qsl">
             <tr>
                 <td class="top qsl_callsign">Station's callsign</td>
@@ -19,7 +18,7 @@
             </tr>
             <tr>
                 <td class="qsl_callsign">
-                    <input type="text" name="qsl_callsign" id="qsl_callsign" v-model="qso.stationCallsign" 
+                    <input type="text" name="qsl_callsign" id="qsl_callsign" v-model="qso.stationCallsign"
                         v-capitalize
                         :class="{error: validationErrors.stationCallsign}"/>
                 </td>
@@ -32,8 +31,8 @@
                     </datepicker>
                 </td>
                 <td class="qsl_time">
-                    <the-mask mask="##:##" type="text" name="qso_time" id="qso_time" 
-                        placeholder="hh:mm" v-model="qso.time" 
+                    <the-mask mask="##:##" type="text" name="qso_time" id="qso_time"
+                        placeholder="hh:mm" v-model="qso.time"
                         :class="{error: validationErrors.time}">
                     </the-mask>
                 </td>
@@ -56,14 +55,14 @@
                         :class="{error: validationErrors.newCallsign}"/>
                 </td>
                 <td rowspan="2" class="del">
-                    <input type="button" name="save_qsl" id="save_qsl" value="OK" class="btn" 
+                    <input type="button" name="save_qsl" id="save_qsl" value="OK" class="btn"
                         @click="buttonClick" :disabled="pending || !validated"/>
                 </td>
             </tr>
             <tr>
                 <td colspan="9" class="qsl_upload">
-                    <b>Загрузите скан или фото QSL-карточки!</b> 
-                    <input type="file" name="qsl_callsign" @change="qslImageChange" 
+                    <b>Загрузите скан или фото QSL-карточки!</b>
+                    <input type="file" name="qsl_callsign" @change="qslImageChange"
                         ref="fileInput"
                         :class="{error: validationErrors['image.name']}"
                         accept=".png,.jpg,.gif"/>
@@ -98,9 +97,9 @@
                             v-if="qso.state === null">
                             <img src="/images/icon_qsl.png" title="Просмотр QSL">
                         </a>
-                        <img v-if="qso.state" src="/images/icon_qsl_cfm.png" 
+                        <img v-if="qso.state" src="/images/icon_qsl_cfm.png"
                             title="QSL проверена. Информация добавлена в базу CFMRDA."/>
-                        <img v-if="qso.state === false" src="/images/icon_qsl_not_cfm.png" 
+                        <img v-if="qso.state === false" src="/images/icon_qsl_not_cfm.png"
                             title="QSL не прошла проверку."/>
                         <span v-if="qso.comment"><br/>{{qso.comment}}</span>
                     </td>
@@ -187,7 +186,7 @@ export default {
       const reader = new FileReader()
       const vm = this
       this.qso.image.name = files[0].name
-        
+
       reader.onload = function (e) {
         vm.qso.image.file = e.target.result
         vm.validate()

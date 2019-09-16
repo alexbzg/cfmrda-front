@@ -8,7 +8,7 @@
                 <tr>
                 <td class="btn_space"></td>
                 <td>
-                    <input type="text" name="check_call_input" id="check_call_input" 
+                    <input type="text" name="check_call_input" id="check_call_input"
                         v-capitalize v-model="callsign" @input="callsignChange()">
                 </td>
                 <td class="btn_space">
@@ -19,10 +19,10 @@
                 <tr>
                     <td></td>
                     <td id="ex_calls" v-if="hunterData &&
-                        (hunterData.oldCallsigns.length || 
-                        (callsign && callsign === callsignValid && 
+                        (hunterData.oldCallsigns.length ||
+                        (callsign && callsign === callsignValid &&
                         callsignValid === $store.getters.userCallsign))">
-                        <b>ex-callsigns</b>: 
+                        <b>ex-callsigns</b>:
                         <span v-for="item in hunterData.oldCallsigns" :key="item">{{item}} </span>
                         <span id="ex_calls_link" v-if="(callsign && callsign === $store.getters.userCallsign)"
                             @click="showCallsignsEdit = !showCallsignsEdit">
@@ -32,21 +32,21 @@
                     <td></td>
                 </tr>
             </table>
-            <div id="ex_calls_form" v-if="callsignValid && callsignValid === $store.getters.userCallsign && 
+            <div id="ex_calls_form" v-if="callsignValid && callsignValid === $store.getters.userCallsign &&
                 showCallsignsEdit">
-                Укажите (<b>через пробел</b>) свои старые <b>постояные</b> позывные после 1991 года. 
+                Укажите (<b>через пробел</b>) свои старые <b>постояные</b> позывные после 1991 года.
                 <b>Временные</b> (спец) позывные вносит <b>только владелец</b> лицензии.<br/>
-                Позывной нужно указывать <b>без дроби</b>. 
+                Позывной нужно указывать <b>без дроби</b>.
                 <span>(Например, R7AB/M или 5B4/R7AB и так будет автоматически засчитываться за R7AB)</span>.<br/>
-                <b>После утверждения модератором</b> статистика дополнительных позывных будет объединена 
+                <b>После утверждения модератором</b> статистика дополнительных позывных будет объединена
                 с основным позывным RDA Охотника.<br/>
                 <span id="help_eng">
                    Type (<b>separating by spaces</b>) your old <b>constant</b> callsign issued after 1991.
                    <b>Temporary</b> (special) callsigns are typed <b>only by the owner</b> of the license.<br/>
-                   The callsign must be given <b>without a fraction</b>. 
+                   The callsign must be given <b>without a fraction</b>.
                    <span>(For example, R7AB/M ок 5B4/R7AB will be automatically counted for R7AB anyway)</span>
                    .<br/>
-                   The statistics of additional callsigns will be merged with the main callsign of RDA Hunter 
+                   The statistics of additional callsigns will be merged with the main callsign of RDA Hunter
                    <b>after approval by the moderator</b>.
                 </span>
                 <textarea v-model="callsignsEdit" v-capitalize></textarea><br/>
@@ -90,21 +90,28 @@
                 </tbody>
             </table>
 
-            <span class="show_details" @click="showDetails = !showDetails" 
+            <span class="show_details" @click="showDetails = !showDetails"
                 v-if="callsignValid && hunterData">
                 {{showDetails ? 'Свернуть' : 'Подробно по RDA районам для ' + replace0(callsignValid)}}
             </span>
 
 
 
+
             <table id="rda_table" v-if="showDetails">
+            <tr><td colspan="2" id="csv_link">
+                <a :href="'/aiohttp/download/qso/' + callsignValid" target="_blank" rel="noopener">
+                    <img src="/images/download.png" title="Download CSV file" />
+                </a>
+            </td></tr>
+
                 <template v-for="(group, idxGr) in rda">
                     <tr :key="idxGr">
                         <td class="rda_letters">{{group.group}}</td>
                         <td>
-                            <div v-for="(val, idxVal) in group.values" :key="idxVal" class="rda" 
-                                :class="{cfm: rdaCfm[val.value] === 'cfm', 
-                                    partial: rdaCfm[val.value] === 'partial'}" 
+                            <div v-for="(val, idxVal) in group.values" :key="idxVal" class="rda"
+                                :class="{cfm: rdaCfm[val.value] === 'cfm',
+                                    partial: rdaCfm[val.value] === 'partial'}"
                                 @click="setRdaValue(rdaValue === val ? null : val)">
                                 {{val.displayValue}}
                             </div>
@@ -114,7 +121,7 @@
                         :key="idxGr + '-actVal'">
                         <td colspan="2">
 
-                          
+
                             <div id="close_stat1rda">
                                 <img src="images/icon_close.png" title="Close" @click="setRdaValue(null)">
                             </div>
@@ -127,7 +134,7 @@
                                     <td class="rda_top">{{rdaValue.value}}</td>
                                     <td class="time top">GMT</td>
                                     <td class="mode top">Mode</td>
-                                    <td class="band top">МГц</td>
+                                    <td class="band top">MHz</td>
                                     <td class="call top">CFM QSO</td>
                                     <td class="uploader top">Uploader</td>
                                 </tr>
@@ -153,8 +160,8 @@
                                 </tr>
                                 <tr>
                                     <td class="rda_top">{{replace0(rdaValue.value)}}</td>
-                                    <td class="band top">МГц</td>
                                     <td class="mode top">Mode</td>
+                                    <td class="band top">MHz</td>
                                     <td class="call top">QSOs</td>
                                     <td class="uploader top">Uploader</td>
                                 </tr>
@@ -173,7 +180,7 @@
                                     </td>
                                 </tr>
                             </table>
-                          
+
                         </td>
                     </tr>
                 </template>
@@ -187,7 +194,7 @@
 
     <ann></ann>
 
-    <rank-table :rank-data-top="rankData" :callsign-rankings="hunterData ? hunterData.rank : null" 
+    <rank-table :rank-data-top="rankData" :callsign-rankings="hunterData ? hunterData.rank : null"
         :callsign="callsignValid" @callsign-click="callsignClick"/>
 
     <div class="list" v-if="mscData.userActivity">
@@ -214,7 +221,7 @@
             </table>
         </div>
     </div>
-   
+
 
     <div class="list">
       <h4>Latest uploads</h4>
@@ -246,7 +253,7 @@
                     {{replace0(item.uploader)}}
                     <span v-if="item.uploadType !== 'adif'">({{item.uploadType}})</span>
                 </td>
-                <td class="uploaded">{{item.uploadDate}} 
+                <td class="uploaded">{{item.uploadDate}}
                     <span>{{item.uploadTime}}</span>
                 </td>
             </tr>
@@ -311,11 +318,11 @@ export default {
   mixins: [rankDataMixin, replaceZerosMixin],
   components: {RankTable, Selector, ViewUploadLink, Ann},
   data () {
-    getRankings() 
+    getRankings()
       .then((data) => {this.rankData = data})
-    getRecentUploads() 
+    getRecentUploads()
       .then((data) => {this.recentUploads = data})
-    getMscData() 
+    getMscData()
       .then((data) => {this.mscData = data})
     getDeletedUploads()
       .then((data) => {this.deletedUploads = data})
@@ -477,6 +484,9 @@ export default {
       }
       return r
     },
+    activatorThreshold () {
+      return this.isMeta(this.band) ? 99 : 49
+    },
     rdaCfm () {
       const r ={}
       if (this.hunterData) {
@@ -495,11 +505,11 @@ export default {
         else {
           if (this.hunterData.rda.activator) {
             for (const rda in this.hunterData.rda.activator) {
-              let count = 0
+              let count = 0              
               for (const item of this.hunterData.rda.activator[rda]) {
                 if (this.rdaFilter(item)) {
                   count += item.count
-                  if (count > 99) {
+                  if (count > this.activatorThreshold) {
                     r[rda] = 'cfm'
                     break
                   }
