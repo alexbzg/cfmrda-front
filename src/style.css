@@ -1,7 +1,7 @@
 body{
 	font-size: 16px;
 	font-family: 'Open Sans', sans-serif;
-	color:#000;	
+	color:#000;
 	margin:0; padding:0;
 	text-align: left;
 	background-color: #EDF3FA;
@@ -22,7 +22,7 @@ input, button, textarea, select{
     background-color: #6180e3;
     color: #fff;
     text-align: center;
-    box-shadow: 3px 3px 6px rgba(0,0,0,0.3); 
+    box-shadow: 3px 3px 6px rgba(0,0,0,0.3);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -33,7 +33,7 @@ input, button, textarea, select{
     background-color: #f0f0f0;
     color: #333;
     text-align: center;
-    box-shadow: 1px 1px 2px rgba(0,0,0,0.1); 
+    box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
@@ -169,7 +169,7 @@ a#logout_link{
 	width: 800px;
 }
 .list1{
-	
+
 }
 
 
@@ -450,7 +450,7 @@ table#files td{
 	vertical-align: top;
 }
 table#files td.top{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #EDF3FA;
 }
 table#files td.error{
@@ -612,11 +612,11 @@ table#new_old td{
 table#new_old td.top{
 	padding: 5px 10px;
 	border: 1px solid #dfedfd;
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 }
 table#new_old td.new{
-	font-weight: bold;	
+	font-weight: bold;
 }
 table#new_old td.btns{
 	padding-left: 10px;
@@ -645,7 +645,7 @@ table#new_old textarea{
 }
 table#select_mode{
 	float: right;
-	margin: 0 0 10px 0; 
+	margin: 0 0 10px 0;
  	border-collapse: collapse;
 }
 table#select_mode td{
@@ -659,7 +659,7 @@ table#select_mode td{
 	cursor: pointer;
 }
 table#select_mode td.selected{
-	background-color: #ffffca; 
+	background-color: #ffffca;
 }
 
 
@@ -709,7 +709,7 @@ table.select_view td{
 	border: 1px solid #dfedfd;
 }
 table.select_view td.menu{
-	font-weight: bold;	
+	font-weight: bold;
 	color: #009;
 	background-color: #e7f2ff;
 	text-decoration: underline;
@@ -720,7 +720,7 @@ table.select_view td.no_click{
 	cursor: default;
 }
 table.select_view td.selected{
-	background-color: #ffffca; 
+	background-color: #ffffca;
 	font-weight: bold;
 	color: #333;
 	text-decoration: none;
@@ -755,7 +755,7 @@ table.select_view td.separator{
 	padding: 7px 25px;
 	margin-bottom: 10px;
 	color: #009;
-	font-weight: bold;	
+	font-weight: bold;
 	border: 1px solid #dfedfd;
 	background-color: #e7f2ff;
 	text-decoration: underline;
@@ -793,12 +793,12 @@ table.select_view td.separator{
 	color: #009;
 	text-decoration: underline;
 	border: 1px solid #dfedfd;
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 	cursor: pointer;
 }
 .radio_btns_mode div.selected{
-	background-color: #ffffca; 
+	background-color: #ffffca;
 	color: #333;
 	text-decoration: none;
 	cursor: default;
@@ -864,15 +864,9 @@ span.show_details{
 
 
 
-
-
-
-
-
-
 table#rda_table{
 	width: 1100px;
-	margin: 50px auto 20px auto;
+	margin: 20px auto 20px auto;
 	border-collapse: collapse;
 }
 table#rda_table td{
@@ -888,11 +882,20 @@ table#rda_table td.rda_letters{
 	font-size: 20px;
 	font-weight: bold;
 }
+
+table#rda_table td#csv_link{
+	text-align: center;
+}
+table#rda_table td#csv_link img{
+	width: 70px;
+}
+
 table#rda_table .rda{
 	display: inline-block;
 	width: 20px;
-	height: 20px;
+	height: 17px;
 	margin: 2px;
+	padding-top: 3px;
 	border: 1px solid #8ddb9b;
 	color: #8ddb9b;
 	text-align: center;
@@ -1025,7 +1028,7 @@ table#stat1rda_activator{
 	border: none;
 }
 #index_issued_awards table#select_award td.top{
-	font-weight: bold;	
+	font-weight: bold;
 	color: #009;
 	background-color: #e7f2ff;
 	text-decoration: underline;
@@ -1034,7 +1037,7 @@ table#stat1rda_activator{
 	font-weight: bold;
 }
 #index_issued_awards table#select_award td.active{
-	background-color: #ffffca; 
+	background-color: #ffffca;
 }
 #index_issued_awards table#select_award td.separator{
 	padding: 0;
@@ -1051,7 +1054,7 @@ table#stat1rda_activator{
 	font-weight: bold;
 }
 #index_issued_awards .active{
-	background-color: #ffffca; 
+	background-color: #ffffca;
 }
 #index_issued_awards table#select_award td#award_result{
 	font-size: 24px;
@@ -1082,17 +1085,17 @@ table#cfm_rda_check td{
     text-align: center;
 }
 table#cfm_rda_check td.top{
-	font-weight: bold;	
+	font-weight: bold;
 	padding: 3px;
     border: 1px solid #a6def8;
     color: #333;
     background-color: #e7f2ff;
-    font-size: 16px;   
+    font-size: 16px;
 }
 table#cfm_rda_check td.top2{
 	padding: 3px 20px;
 	line-height: 14px;
-    font-size: 14px;   
+    font-size: 14px;
     font-weight: normal;
 }
 table#cfm_rda_check td.callsign {
@@ -1172,7 +1175,7 @@ table#last_uploads td.rda a span{
 }
 table#last_uploads td.menu{
 	font-size: 16px;
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 	color: #333;
 }
@@ -1239,13 +1242,13 @@ table#admin tr#search td{
 	padding: 15px 5px;
 }
 table#admin td.menu{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 }
 table#admin td.allow{
 	width: 70px;
 	padding: 10px 0 0 0;
-	font-size: 12px;	
+	font-size: 12px;
 }
 table#admin td.rda input, table#admin td.rda{
 	width: 60px;
@@ -1332,11 +1335,11 @@ table#rda_log td{
 	border: 1px solid #dfedfd;
 }
 table#rda_log td.menu{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 }
 table#rda_log td.call{
-	font-weight: bold;	
+	font-weight: bold;
 }
 
 
@@ -1431,7 +1434,7 @@ table#cfm_qso_request td{
 	vertical-align: top;
 }
 table#cfm_qso_request td.menu{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 }
 table#cfm_qso_request td.no_border{
@@ -1543,11 +1546,11 @@ table#cfm_email_list td{
 	vertical-align: middle;
 }
 table#cfm_email_list td.top{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 }
 table#cfm_email_list td.rda, table#cfm_email_list td.rda_callsign{
-	font-weight: bold;	
+	font-weight: bold;
 }
 table#cfm_email_list td.status, table#cfm_email_list td.status_date{
 	font-size: 16px;
@@ -1600,7 +1603,7 @@ table#cfm_qso td{
 	vertical-align: middle;
 }
 table#cfm_qso td.menu{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 }
 
@@ -1728,7 +1731,7 @@ table#add_paper_qsl td{
 	vertical-align: middle;
 }
 table#add_paper_qsl td.top{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 }
 table#add_paper_qsl td.no_border{
@@ -1800,7 +1803,7 @@ table#qsl_data_form td{
 	vertical-align: middle;
 }
 table#qsl_data_form td.top{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 }
 table#qsl_data_form td.qsl_rda input, table#qsl_data_form td.qsl_time input{
@@ -1817,7 +1820,7 @@ table#qsl_data_form td.qsl_callsign input{
 table#qsl_data_form input.qsl_radio_btns{
 	margin-left: 20px;
 }
-table#qsl_data_form input#my_callsign, 
+table#qsl_data_form input#my_callsign,
 table#qsl_data_form select#select_my_callsign{
 	width: 150px;
 	font-weight: bold;
@@ -1831,9 +1834,9 @@ table#qsl_data_form td.add_line{
 	padding: 15px 0;
 	border-bottom: none;
 }
-table#qsl_data_form td.card_upload, 
+table#qsl_data_form td.card_upload,
 table#qsl_data_form td.qsl_message{
-	font-size: 14px;	
+	font-size: 14px;
 	border: none;
 	vertical-align: top;
 }
@@ -1871,12 +1874,12 @@ table#qsl_list td{
 	vertical-align: middle;
 }
 table#qsl_list td.top{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 }
-table#qsl_list td.qsl_callsign, 
+table#qsl_list td.qsl_callsign,
 table#qsl_list td.qsl_rda{
-	font-weight: bold;	
+	font-weight: bold;
 }
 table#qsl_list td.qsl_image img{
 	max-width: 1000px;
@@ -1919,7 +1922,7 @@ table#paper_qsl_check td{
 	vertical-align: top;
 }
 table#paper_qsl_check td.top{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 }
 table#paper_qsl_check td.qsl_links, table#paper_qsl_check td.qsl_card{
@@ -1953,13 +1956,13 @@ table#paper_qsl_check td.qsl_cfm, table#paper_qsl_check td.qsl_not_cfm{
 table#paper_qsl_check td.top.qsl_cfm, table#paper_qsl_check td.top.qsl_not_cfm{
 	background-color: #e7f2ff;
 }
-table#paper_qsl_check tr.cfm_checked, 
-table#paper_qsl_check tr.cfm_checked td.qsl_cfm, 
+table#paper_qsl_check tr.cfm_checked,
+table#paper_qsl_check tr.cfm_checked td.qsl_cfm,
 table#paper_qsl_check tr.cfm_checked td.qsl_not_cfm{
 	background-color: #a7ffad;
 }
-table#paper_qsl_check tr.not_cfm_checked, 
-table#paper_qsl_check tr.not_cfm_checked td.qsl_cfm, 
+table#paper_qsl_check tr.not_cfm_checked,
+table#paper_qsl_check tr.not_cfm_checked td.qsl_cfm,
 table#paper_qsl_check tr.not_cfm_checked td.qsl_not_cfm{
 	background-color: #fbd0d0;
 }
@@ -2198,7 +2201,7 @@ table.requests_list td.top{
 	background-color: #e7f2ff;
 }
 table.requests_list td.request_call, table.requests_list td.del img{
-	font-weight: bold;	
+	font-weight: bold;
 	color: #009;
 	text-decoration: underline;
 	cursor: pointer;
@@ -2237,7 +2240,7 @@ table#paper_qsl_list td{
 	vertical-align: middle;
 }
 table#paper_qsl_list td.top{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 }
 table#paper_qsl_list td.qsl_callsign, table#paper_qsl_list td.qsl_my_call, table#paper_qsl_list td.qsl_my_new_call{
@@ -2403,6 +2406,12 @@ table#chat_window td.call span.name{
 table#chat_window span.message_to{
     color: #999;
     margin-right: 15px;
+    display: inline-block;
+    padding: 1px 3px;
+}
+table#chat_window span.personal {
+    background-color: #FBFD9C;
+    font-weight: bold;
 }
 table#chat_window tr.admin td.call span.call{
     color: #A00;
@@ -2435,7 +2444,7 @@ table#table_stats td, table#table_stats_list td{
 	vertical-align: middle;
 }
 table#table_stats td.top{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 }
 table#table_stats td.rda, table#table_stats_list td.rda{
@@ -2556,21 +2565,21 @@ table#cluster td{
 table#cluster td.time, table#cluster td.mode{
     width: 80px;
 }
-table#cluster td.band{ 
+table#cluster td.band{
 	width: 80px;
-	font-size: 14px;   
+	font-size: 14px;
 }
-table#cluster td.band span{ 
-	font-size: 18px;   
-    font-weight: bold;	
+table#cluster td.band span{
+	font-size: 18px;
+    font-weight: bold;
     padding-right: 2px;
     color:#333;
 }
-table#cluster td.user{ 
+table#cluster td.user{
 	padding-right: 2px;
 	padding-left: 2px;
 }
-table#cluster td.user img{ 
+table#cluster td.user img{
 	margin: 0 2px;
 }
 table#cluster td.callsign{
@@ -2578,7 +2587,7 @@ table#cluster td.callsign{
 }
 table#cluster td.callsign a{
     font-size: 18px;
-    font-weight: bold;	
+    font-weight: bold;
     color:#333;
     text-decoration: none;
 }
@@ -2588,8 +2597,8 @@ table#cluster td.callsign a:hover{
 }
 table#cluster td.rda{
     width: 80px;
-	font-size: 18px;   
-    font-weight: bold;	
+	font-size: 18px;
+    font-weight: bold;
     color: #900;
 }
 table#cluster td.text{
@@ -2609,12 +2618,12 @@ table#cluster td.spotter{
     font-size: 14px;
 }
 table#cluster td.top{
-	font-weight: bold;	
+	font-weight: bold;
 	padding: 3px;
     border: 1px solid #a6def8;
     color: #fff;
     background-color: #0091c9;
-    font-size: 16px;   
+    font-size: 16px;
 }
 table#cluster tr.odd {
     background-color: #eff9fe;
@@ -2698,7 +2707,7 @@ table#callsign_rda td{
 	margin: 0;
 }
 table#callsign_rda td.top{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 	font-size: 24px;
 	line-height: 16px;
@@ -2711,7 +2720,7 @@ table#callsign_rda td.top span{
 	position: absolute;
 	right: 5px;
 	top: 3px;
-	font-weight: normal;	
+	font-weight: normal;
 	font-size: 12px;
 	text-align: center;
 }
@@ -2724,11 +2733,11 @@ table#callsign_rda tr#admin_note td{
 	color: #900;
 	background-color: #ffffca;
 }
-table#callsign_rda tr#admin_note td#any_rda{	
+table#callsign_rda tr#admin_note td#any_rda{
 	border-left: 1px solid #dfedfd;
 	line-height: 14px;
 }
-table#callsign_rda tr#admin_note td#save_note{	
+table#callsign_rda tr#admin_note td#save_note{
 	border-right: 1px solid #dfedfd;
 }
 table#callsign_rda tr#admin_note textarea{
@@ -2750,11 +2759,11 @@ table#callsign_rda td.rda{
 	padding-right: 0;
 }
 table#callsign_rda td.time_period{
-	text-align: left;	
+	text-align: left;
 }
 table#callsign_rda td.time_period.no_border{
-	text-align: center;	
-	padding-top: 10px; 
+	text-align: center;
+	padding-top: 10px;
 }
 table#callsign_rda td.time_period select, table#callsign_rda td.time_period .vdp-datepicker{
 	margin: 10px 10px 0 10px;
@@ -2776,7 +2785,7 @@ table#callsign_rda td.add_line{
 	border: none;
 }
 table#callsign_rda td.admin{
-	font-size: 12px;	
+	font-size: 12px;
 	padding: 3px;
 	color: #000;
 }
@@ -2816,7 +2825,7 @@ table#callsign_rda td.del img{
 	padding: 5px 10px;
 	font-weight: bold;
 	text-decoration: underline;
-	cursor: pointer;	
+	cursor: pointer;
 	color: #339;
 }
 
@@ -2843,7 +2852,7 @@ table.elog_stats td{
 	border: 1px solid #dfedfd;
 }
 table.elog_stats td.top{
-	font-weight: bold;	
+	font-weight: bold;
 	background-color: #e7f2ff;
 }
 
@@ -2893,17 +2902,17 @@ table.elog_stats td#add_line{
 /* ==========================================     A N N O U N C E   B L O C K  ====================================================== */
 
 
-table.anons_block{	
+table.anons_block{
 	width: 90%;
 	margin: 10px auto 30px auto;
 	padding: 0;
 	border: 1px solid #eef;
 	border-collapse: collapse;
 }
-table.anons_block td{	
+table.anons_block td{
 	padding: 0;
 	margin: 0;
-	color: #333;	
+	color: #333;
 	vertical-align: top;
 	text-align: center;
 }
@@ -2944,7 +2953,7 @@ table.anons_block td.anons_del{
 	text-align: right;
 }
 table.anons_block td.anons_del img{
-	visibility: hidden;	
+	visibility: hidden;
 	cursor: pointer;
 }
 table.anons_block td.anons_del:hover img{
@@ -2994,7 +3003,7 @@ table#anons_form td.note{
     vertical-align: top;
     color: #777;
     line-height: 14px;
-    font-style: italic;	
+    font-style: italic;
 }
 table#anons_form input#anons_call{
 	width: 100px;
