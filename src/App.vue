@@ -6,7 +6,9 @@
         <div id="top_menu" >
             <router-link to="/" id="callsign" v-if="userCallsign" exact>{{userCallsign}}</router-link>
             <router-link to="/" v-if="$route.name !== 'Index'" id="home" exact>Home</router-link>
-            <router-link to="/admin/qsl" v-if="admin" id="admin">Admin</router-link>
+            <router-link to="/admin/qsl" v-if="admin" id="admin">
+            Admin <template v-if="mscData.unsortedQsl">({{mscData.unsortedQsl}})</template>
+            </router-link>
             <router-link to="/awards">Awards</router-link>
             <router-link to="/callsignsRda">RDA Search</router-link>
             <router-link to="/cluster">Cluster</router-link>
@@ -28,7 +30,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters,mapState} from 'vuex'
 
 import './style.css'
 
@@ -39,6 +41,7 @@ export default {
   components: {
   },
   computed: {
+    ...mapState(['mscData']),
     ...mapGetters(['userCallsign', 'admin'])
   },
   methods: {

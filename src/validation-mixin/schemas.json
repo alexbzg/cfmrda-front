@@ -387,6 +387,10 @@
                 },
                 "rda": {
                     "enum": "$rdaValues$"
+                },
+                "token": { 
+                    "type": "string",
+                    "minLength": 3
                 }
             },
             "anyOf": [
@@ -416,6 +420,27 @@
                         }
                     },
                     "required": ["delete"]
+                },
+                {
+                    "properties": {
+                        "meta": {
+                            "type": "object",
+                            "properties": {
+                                "disableAutocfm": {
+                                    "type": "boolean"
+                                },
+                                "comments": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["disableAutocfm", "comments"]
+                        },
+                        "callsign": {
+                            "type": "string",
+                            "pattern": "$reCallsignFull$"
+                        }
+                    },
+                    "required": ["meta", "token", "callsign"]
                 },
                 {
                     "properties": {

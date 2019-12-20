@@ -12,10 +12,10 @@
                 :class="{error: !searchEnabled}">
             </td>
             <td>
-              <input type="submit" class="btn" value="Search" @click="doSearch()"
-            :disabled="!searchEnabled">
+              <input type="submit" class="btn" value="Search" @click="doSearch()" :disabled="!searchEnabled">
             </td>
-          <tr/><tr>
+          <tr/>
+          <tr>
             <td class="note">RDA</td><td class="note">Callsign</td><td></td>
           </tr>
         </table>
@@ -30,6 +30,19 @@
                     {{callsign && callsign.length ? callsign : rda}}
                 </td>
             </tr>
+            <tr id="admin_note" v-if="admin && callsign">
+                <td id="any_rda">
+                    No AutoCFM<br/><input type="checkbox" v-model="meta.disableAutocfm">
+                </td>
+                <td colspan="2">
+                    <textarea v-model="meta.comments"></textarea>
+                </td>
+                <td id="save_note">
+                    <input type="button" name="" value="OK" @click="saveMeta"
+                        :disabled="pending">
+                </td>
+            </tr>
+
             <tr v-for="(item, idx) in rdaRecords" :key="idx">
                 <td class="rda" v-if="!callsign || !callsign.length" @click="doSearch(item.callsign)">{{item.callsign}}</td>
                 <td class="rda" v-else>{{item.rda}}</td>
@@ -124,6 +137,10 @@ export default {
         callsign: null,
         rda: null
       },
+      meta: {
+        disableAutocfm: false,
+        comments: ''
+      },
       callsign: null,
       rda: null,
       suffixes: [],
@@ -203,6 +220,9 @@ export default {
           this.rdaRecords = rsp.rdaRecords
         })
     },
+    saveMeta () {
+      this.editPost({meta: this.meta})
+    },
     doSearch (searchCallsign) {
       if (searchCallsign && this.search.callsign !== searchCallsign) {
         this.search.callsign = searchCallsign
@@ -216,6 +236,8 @@ export default {
         if (this.search[field])
           searchData[field] = this.search[field]
       }
+      if (this.admin)
+        searchData.token = this.userToken
       if (!this.pending)
         this.post(searchData)
           .then(data => {
@@ -223,6 +245,13 @@ export default {
             this.rdaRecords = data.rdaRecords
             this.callsign = this.search.callsign
             this.rda = this.search.rda
+            if (data.meta) {
+              this.meta.disableAutocfm = data.meta.disable_autocfm
+              this.meta.comments = data.meta.comments
+            } else {
+              this.meta.disableAutocfm = false
+              this.meta.comments = ''
+            }
             const el = document.getElementById('call_search_table')
             el.scrollIntoView()
           })
