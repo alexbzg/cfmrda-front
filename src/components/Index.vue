@@ -291,9 +291,9 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 
-import {getRankings, getHunterDetails, getRecentUploads, getMscData, oldCallsigns, getQSO, getDeletedUploads} from '../api'
+import {getRankings, getHunterDetails, getRecentUploads, oldCallsigns, getQSO, getDeletedUploads} from '../api'
 import storage from '../storage'
 import {arrayUnique, arraysEqSets} from '../utils'
 import {orderedBands, stripCallsign} from '../ham-radio'
@@ -322,8 +322,6 @@ export default {
       .then((data) => {this.rankData = data})
     getRecentUploads()
       .then((data) => {this.recentUploads = data})
-    getMscData()
-      .then((data) => {this.mscData = data})
     getDeletedUploads()
       .then((data) => {this.deletedUploads = data})
 
@@ -355,9 +353,6 @@ export default {
       rdaQso: {hunter: null, activator: null},
       recentUploads: [],
       deletedUploads: [],
-      mscData: {
-        qsoCount: null
-      },
       hunterData: null,
       role: 'hunter',
       band: 'total',
@@ -454,6 +449,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['mscData']),
     ...mapGetters(['userCallsign', 'userToken', 'oldCallsigns']),
     rdaFilter () {
       const allModes = this.isMeta(this.mode)

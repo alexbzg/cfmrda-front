@@ -1718,6 +1718,20 @@ table#cfm_qso td.cfm_btn input#cfm_btn{
 #paper_qsl{
 	text-align: centr;
 }
+
+#qsl_rules{
+	width: 800px;
+	margin: 0 auto;
+	padding: 10px 20px;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: left;
+	border: 1px solid #900;
+	background-color: #f8ffc0;
+}
+
+
+
 table#add_paper_qsl{
 	margin: 30px auto 100px auto;
  	border-collapse: collapse;
@@ -2744,7 +2758,7 @@ table#callsign_rda tr#admin_note textarea{
 	width: 500px;
 	background-color: #ffffca;
 	color: #900;
-	border: none;
+	border: 1px solid #eee;
 	font-weight: bold;
 }
 table#callsign_rda tr#admin_note input{
@@ -2828,6 +2842,21 @@ table#callsign_rda td.del img{
 	cursor: pointer;
 	color: #339;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

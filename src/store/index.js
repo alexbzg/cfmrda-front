@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 import storage from '../storage'
 import {BANDS, MODES} from '../ham-radio'
-import {getDx, getHunterDetails} from '../api'
+import {getDx, getHunterDetails, getMscData} from '../api'
 import playSound from '../play-sound'
 
 const STORAGE_KEY_USER = 'user'
@@ -20,7 +20,9 @@ export const SET_DX_FILTER_MUTATION = 'setDxFilter'
 export const DX_LISTENERS_MUTATION = 'dxListeners'
 const SET_USER_RDA_MUTATION = 'setUserRda'
 const SET_DX_MUTATION = 'setDx'
+const SET_MSC_MUTATION = 'setMsc'
 
+const MSC_UPDATE_ACTION = 'mscUpdate'
 const DX_UPDATE_ACTION = 'dxUpdate'
 const LOAD_USER_RDA_ACTION = 'userRdaLoad'
 
@@ -34,7 +36,10 @@ const store = new Vuex.Store({
     remember: true,
     dxFilter: null,
     dx: [],
-    userRda: {}
+    userRda: {},
+    mscData: {
+      qsoCount: null
+    }
   },
   getters: {
     userCallsign: state => {
@@ -99,8 +104,10 @@ const store = new Vuex.Store({
       if (state.user && state.user.callsign)
         store.dispatch(LOAD_USER_RDA_ACTION)
       store.dispatch(DX_UPDATE_ACTION)
-      state.dxUpdateInterval = setInterval(function () {store.dispatch(DX_UPDATE_ACTION)}, 
-        DX_UPDATE_INTERVAL)
+      state.dxUpdateInterval = setInterval(function () {
+        store.dispatch(DX_UPDATE_ACTION)
+        store.dispatch(MSC_UPDATE_ACTION)   
+      }, DX_UPDATE_INTERVAL)
     },
     [SET_DX_FILTER_MUTATION] (state, payload) {
       const dxfNew = JSON.parse(JSON.stringify(payload))
@@ -145,6 +152,9 @@ const store = new Vuex.Store({
         }
       }
     },
+    [SET_MSC_MUTATION] (state, payload) {
+      state.mscData = payload
+    },
     [SET_DX_MUTATION] (state, payload) {
       if (payload.length) {
         const newDx0 = JSON.stringify(payload[0])
@@ -174,7 +184,12 @@ const store = new Vuex.Store({
     [DX_UPDATE_ACTION] ({commit}) {
       getDx()
         .then(data => { commit(SET_DX_MUTATION, data) })
+    },
+    [MSC_UPDATE_ACTION] ({commit}) {
+      getMscData()
+        .then(data => { commit(SET_MSC_MUTATION, data) })
     }
+
   },
   strict: process.env.NODE_ENV !== 'production'
 })
