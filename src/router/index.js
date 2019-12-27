@@ -160,6 +160,12 @@ const router = new Router({
           props: {page: 'rules'}
         },
         {
+          path: 'gallery',
+          name: 'AwardsGallery',
+          component: StaticPage,
+          props: {page: 'awardsGallery'}
+        },
+        {
           path: '',
           name: 'AwardsIssued',
           component: AwardsIssued

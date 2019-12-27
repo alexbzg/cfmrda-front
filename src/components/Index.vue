@@ -408,6 +408,7 @@ export default {
         getHunterDetails(this.callsign)
           .then((data) => {
             this.hunterData = data
+            this.updateRdaCfm()
             if (data.newCallsign) {
               this.callsign = data.newCallsign
               this.setCallsignValid()
@@ -428,10 +429,51 @@ export default {
           .then((data) => {
             this.rdaQso = data
           })
+      } else {
+        this.rdaQso = {}
       }
     },
     selectorChange(type, value) {
       this[type] = value
+      this.updateRdaCfm()
+      this.setRdaValue(null)
+    },
+    updateRdaCfm () {
+      const r = {}
+      if (this.hunterData) {
+        if (this.role === 'hunter') {
+          if (this.hunterData.rda.hunter) {
+            for (const rda in this.hunterData.rda.hunter) {
+              for (const item of this.hunterData.rda.hunter[rda]) {
+                if (this.rdaFilter(item)) {
+                  r[rda] = 'cfm'
+                  break
+                }
+              }
+            }
+          }
+        }
+        else {
+          if (this.hunterData.rda.activator) {
+            for (const rda in this.hunterData.rda.activator) {
+              let count = 0              
+              for (const item of this.hunterData.rda.activator[rda]) {
+                if (this.rdaFilter(item)) {
+                  count += item.count
+                  if (count > this.activatorThreshold) {
+                    r[rda] = 'cfm'
+                    break
+                  }
+                }
+              }
+              if (!r[rda] && count > 0) {
+                r[rda] = 'partial'
+              }
+            }
+          }
+        }
+      }
+      this.rdaCfm = r
     },
     callsignClick (callsign) {
       this.callsign = callsign
@@ -482,43 +524,6 @@ export default {
     },
     activatorThreshold () {
       return this.isMeta(this.band) ? 99 : 49
-    },
-    rdaCfm () {
-      const r ={}
-      if (this.hunterData) {
-        if (this.role === 'hunter') {
-          if (this.hunterData.rda.hunter) {
-            for (const rda in this.hunterData.rda.hunter) {
-              for (const item of this.hunterData.rda.hunter[rda]) {
-                if (this.rdaFilter(item)) {
-                  r[rda] = 'cfm'
-                  break
-                }
-              }
-            }
-          }
-        }
-        else {
-          if (this.hunterData.rda.activator) {
-            for (const rda in this.hunterData.rda.activator) {
-              let count = 0              
-              for (const item of this.hunterData.rda.activator[rda]) {
-                if (this.rdaFilter(item)) {
-                  count += item.count
-                  if (count > this.activatorThreshold) {
-                    r[rda] = 'cfm'
-                    break
-                  }
-                }
-              }
-              if (!r[rda] && count > 0) {
-                r[rda] = 'partial'
-              }
-            }
-          }
-        }
-      }
-      return r
     }
   }
 }

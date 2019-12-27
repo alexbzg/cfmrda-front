@@ -103,11 +103,8 @@ const store = new Vuex.Store({
       state.dxFilter = dxfStor ? merge(dxfDef, dxfStor) : dxfDef
       if (state.user && state.user.callsign)
         store.dispatch(LOAD_USER_RDA_ACTION)
-      store.dispatch(DX_UPDATE_ACTION)
-      state.dxUpdateInterval = setInterval(function () {
-        store.dispatch(DX_UPDATE_ACTION)
-        store.dispatch(MSC_UPDATE_ACTION)   
-      }, DX_UPDATE_INTERVAL)
+      getAdditionalData()
+      state.dxUpdateInterval = setInterval(getAdditionalData, DX_UPDATE_INTERVAL)
     },
     [SET_DX_FILTER_MUTATION] (state, payload) {
       const dxfNew = JSON.parse(JSON.stringify(payload))
@@ -195,5 +192,10 @@ const store = new Vuex.Store({
 })
 
 store.commit(INIT_MUTATION)
+
+function getAdditionalData () {
+  store.dispatch(DX_UPDATE_ACTION)
+  store.dispatch(MSC_UPDATE_ACTION)   
+}
 
 export default store

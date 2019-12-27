@@ -3,6 +3,7 @@
     <div id="list_menu">
         <router-link to="/awards/rules">Правила/Rules</router-link>
         <router-link to="/awards/">Выданные дипломы/Issued awards</router-link>
+        <router-link to="/awards/gallery">Галерея/Gallery</router-link>
     </div>
     <router-view></router-view>
   </div>
