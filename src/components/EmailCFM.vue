@@ -163,6 +163,7 @@ import {TheMask} from 'vue-the-mask'
 import validationMixin from '../validation-mixin'
 import recaptchaMixin from '../recaptcha-mixin'
 import requireLoginMixin from '../require-login-mixin'
+import latinizeMixin from '../latinize-mixin'
 
 import RdaInput from './RDAinput'
 
@@ -185,7 +186,7 @@ const CORRESPONDENT_ERRORS = {
 export default {
   BANDS: orderedBands(),
   MODES: MODES,
-  mixins: [validationMixin, recaptchaMixin, requireLoginMixin],
+  mixins: [validationMixin, recaptchaMixin, requireLoginMixin, latinizeMixin],
   components: {Datepicker, RdaInput, TheMask},
   name: 'EmailCFM',
   data () {

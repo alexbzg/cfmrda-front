@@ -114,15 +114,15 @@ import {callsignsRda} from '../api'
 import {parseRDA, validCallsignFull} from '../ham-radio'
 
 import ValidationMixin from '../validation-mixin'
+import LatinizeMixin from '../latinize-mixin'
 
 import RdaInput from './RDAinput'
-
 
 export default {
   name: 'CallsignsRda',
   parseRDA: parseRDA,
   components: {RdaInput, Datepicker},
-  mixins: [ValidationMixin],
+  mixins: [ValidationMixin, LatinizeMixin],
   props: ['extSearchCallsign'],
   data () {
     const newEntry = {

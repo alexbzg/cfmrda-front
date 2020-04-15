@@ -266,6 +266,17 @@ a#logout_link{
 	text-decoration: underline;
 }
 
+a#new_rda_list{
+	font-weight: bold;
+	color: #c00;
+	display: block;
+	margin: 20px auto 50px auto;
+}
+a#new_rda_list:hover{
+	color: #00F;
+}
+
+
 
 table#upload_files{
 	margin: 30px auto 0px auto;
@@ -3057,5 +3068,22 @@ table#anons_form textarea{
 
 
 
+
+
+/* ==========================================     G A L L E R Y  ====================================================== */
+
+table#gallery{
+	margin: 30px auto 100px auto;
+	border-collapse: collapse;
+}
+table#gallery td{
+	text-align: center;
+	padding: 0 10px 30px 10px;
+	font-weight: bold;
+}
+table#gallery img{
+	border: 1px solid #ccc;
+	box-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+}
 
 

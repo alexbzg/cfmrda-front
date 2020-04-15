@@ -139,11 +139,12 @@ import SelectMode from './SelectMode'
 
 import validationMixin from '../validation-mixin'
 import requireLoginMixin from '../require-login-mixin'
+import latinizeMixin from '../latinize-mixin'
 
 import {cfmQslQso} from '../api'
 
 export default {
-  mixins: [validationMixin, requireLoginMixin],
+  mixins: [validationMixin, requireLoginMixin, latinizeMixin],
   components: {Datepicker, RdaInput, SelectBand, SelectMode, TheMask},
   name: 'PaperCFM',
   data () {

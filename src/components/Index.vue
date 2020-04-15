@@ -34,15 +34,15 @@
             </table>
             <div id="ex_calls_form" v-if="callsignValid && callsignValid === $store.getters.userCallsign &&
                 showCallsignsEdit">
-                Укажите (<b>через пробел</b>) свои старые <b>постояные</b> позывные после 1991 года.
-                <b>Временные</b> (спец) позывные вносит <b>только владелец</b> лицензии.<br/>
+                Укажите (<b>через пробел</b>) свои старые <b>постояные</b> позывные после 1991 года.<br/>
+                Временные (спец) позывные вносите, если <b>только</b> вы работали этим позывным.<br/>
                 Позывной нужно указывать <b>без дроби</b>.
-                <span>(Например, R7AB/M или 5B4/R7AB и так будет автоматически засчитываться за R7AB)</span>.<br/>
+                <span style="font-size: 14px;">(Например, R7AB/M или 5B4/R7AB и так будет автоматически засчитываться за R7AB)</span>.<br/>
                 <b>После утверждения модератором</b> статистика дополнительных позывных будет объединена
                 с основным позывным RDA Охотника.<br/>
                 <span id="help_eng">
                    Type (<b>separating by spaces</b>) your old <b>constant</b> callsign issued after 1991.
-                   <b>Temporary</b> (special) callsigns are typed <b>only by the owner</b> of the license.<br/>
+                   Enter temporary (special) callsigns if <b> only </b> you worked as this callsign.<br/>
                    The callsign must be given <b>without a fraction</b>.
                    <span>(For example, R7AB/M ок 5B4/R7AB will be automatically counted for R7AB anyway)</span>
                    .<br/>
@@ -301,6 +301,7 @@ import {SET_OLD_CALLSIGNS_ALL} from '../store'
 
 import rankDataMixin from '../rank-data-mixin'
 import replaceZerosMixin from '../replace-zeros-mixin'
+import latinizeMixin from '../latinize-mixin'
 
 import RankTable from './RankTable.vue'
 import Selector from './Selector.vue'
@@ -315,7 +316,7 @@ import rdaShort from '../rdaShort.json'
 export default {
   BANDS: orderedBands(),
   name: 'Index',
-  mixins: [rankDataMixin, replaceZerosMixin],
+  mixins: [rankDataMixin, replaceZerosMixin, latinizeMixin],
   components: {RankTable, Selector, ViewUploadLink, Ann},
   data () {
     getRankings()
@@ -456,7 +457,7 @@ export default {
         else {
           if (this.hunterData.rda.activator) {
             for (const rda in this.hunterData.rda.activator) {
-              let count = 0              
+              let count = 0
               for (const item of this.hunterData.rda.activator[rda]) {
                 if (this.rdaFilter(item)) {
                   count += item.count

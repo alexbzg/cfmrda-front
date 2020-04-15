@@ -65,10 +65,11 @@ import Datepicker from 'vuejs-datepicker'
 import UploadsTable from './UploadsTable'
 
 import ValidationMixin from '../validation-mixin'
+import latinizeMixin from '../latinize-mixin'
 
 export default {
   name: 'ManageUploads',
-  mixins: [ValidationMixin],
+  mixins: [ValidationMixin, latinizeMixin],
   props: ['admin'],
   components: {Datepicker, UploadsTable},
   data () {

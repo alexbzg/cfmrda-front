@@ -3,10 +3,14 @@
 
         <div id="upload_form" v-if="!pending">
           Позывной
-          <input type="text" name="callsign_input" id="callsign_input" 
+          <input type="text" name="callsign_input" id="callsign_input"
                 v-model.trim="adif.stationCallsign" v-capitalize
                 :class="{error: !adif.stationCallsignFieldEnable && validationErrors.stationCallsign}"
-                :disabled="adif.stationCallsignFieldEnable"/>
+                :disabled="adif.stationCallsignFieldEnable"/><br/>
+
+          <a id="new_rda_list" href="http://rdaward.org/rda_rus.txt" target="_blank">
+            1 января 2020 изменился список RDA. Перед загрузкой ADIF проверьте свой RDA!
+          </a>
 
           <div id="upload_setup_link" @click="showSetup = !showSetup">
               Расширенные настройки загрузки
@@ -14,25 +18,25 @@
           <div id="upload_setup" v-show="showSetup">
             <span id="activator_check">
                 <input type="checkbox" name="activator_check" v-model="adif.stationCallsignFieldEnable"
-                  @change="stationCallsignTypeChange"/> 
+                  @change="stationCallsignTypeChange"/>
                 Брать <b>позывной</b> в ADIF из поля
-                <input type="text" name="callsign_field" id="callsign_field" 
+                <input type="text" name="callsign_field" id="callsign_field"
                   v-model="adif.stationCallsignField" v-capitalize
                   :class="{error: adif.stationCallsignFieldEnable && validationErrors.stationCallsignField}"
                   :disabled="!adif.stationCallsignFieldEnable"/>
             </span><br/>
             <span id="rda_check">
-                <input type="checkbox" name="rda_check" v-model="adif.rdaFieldEnable"/> 
+                <input type="checkbox" name="rda_check" v-model="adif.rdaFieldEnable"/>
                 Брать <b>RDA район</b> в ADIF из поля
                 <input type="text" name="rda_field" id="rda_field" v-model="adif.rdaField"
                   :class="{error: adif.rdaFieldEnable && validationErrors.rdaField}"
                   v-capitalize :disabled="!adif.rdaFieldEnable"/>
             </span><br/>
             <span id="operators_check">
-                <input type="checkbox" name="operators_check" 
+                <input type="checkbox" name="operators_check"
                   v-model="adif.additionalActivatorsEnable"/>
                  Подтвердить RDA районы <b>для операторов вашей экспедиции</b> или для вашего <b>нового позывного</b><br/>
-                <input type="text" name="operators_callsigns" id="operators_callsigns" 
+                <input type="text" name="operators_callsigns" id="operators_callsigns"
                   :disabled="!adif.additionalActivatorsEnable"
                   v-capitalize v-model.trim="adif.additionalActivators"/>
             </span>
@@ -51,7 +55,7 @@
             </tr>
             <tr v-for="(file, index) in adif.files" :key="index">
               <td class="file">{{file.name}}</td>
-              <td class="rda_input"><rda-input name="rda_input" id="rda_input" v-model.trim="file.rda" 
+              <td class="rda_input"><rda-input name="rda_input" id="rda_input" v-model.trim="file.rda"
                 v-capitalize :disabled="adif.rdaFieldEnable"
                 :class="{error: !adif.rdaFieldEnable && validationErrors['files.'+index+'.rda']}">
                 </rda-input>
@@ -65,7 +69,7 @@
           <input type="button" name="upload_btn" id="upload_btn" v-if="check"
             value="Загрузить в базу данных CFMRDA" class="btn" @click="uploadADIF"><br/><br/>
             <span id="upload_email">Если при загрузке ADIF появляется ошибка, пришлите свой ADI файл на <b><u>support@cfmrda.ru</u></b>. Мы загрузим его сами.</span>
-        </div> 
+        </div>
 
         <div id="uploading_info" v-if="pending">
           Идёт загрузка файла...<br/>
@@ -82,7 +86,7 @@
                     <td class="top rda">RDA</td>
                     <td class="top error">Статус</td>
                 </tr>
-                <template v-for="(file, index) in response.files"> 
+                <template v-for="(file, index) in response.files">
                     <tr :key="index">
                         <td class="file">{{file.file}}</td>
                         <td class="rda">{{file.rda}}</td>
@@ -104,7 +108,7 @@
                 </template>
             </table>
         </div>
-        
+
       </div>
 </template>
 
@@ -116,6 +120,7 @@ import {parseRDA} from '../ham-radio'
 import RdaInput from './RDAinput'
 
 import validationMixin from '../validation-mixin'
+import latinizeMixin from '../latinize-mixin'
 
 const STORAGE_KEY_STATION_CALLSIGN_SETTINGS = 'station_callsign_settings'
 const STORAGE_KEY_RDA_SETTINGS = 'rda_settings'
@@ -123,7 +128,7 @@ const DEF_STATION_CALLSIGN_FIELD = 'STATION_CALLSIGN'
 const RDA_DETECT_SKIP = ['TO-20', 'OM-20', 'TO-19', 'OM-19']
 
 export default {
-  mixins: [validationMixin],
+  mixins: [validationMixin, latinizeMixin],
   components: {RdaInput},
   name: 'Upload',
   data () {
@@ -185,14 +190,14 @@ export default {
       if (!files.length) {
         return
       }
-      this.adif.files = []  
+      this.adif.files = []
 
       for (let i = 0; i < files.length; i++) {
         const reader = new FileReader()
         const vm = this
-        const rda = parseRDA(files[i].name)        
+        const rda = parseRDA(files[i].name)
         const file = {
-          name: files[i].name, 
+          name: files[i].name,
           rda: RDA_DETECT_SKIP.includes(rda) ? null : rda
         }
         this.adif.files.push(file)
@@ -221,7 +226,7 @@ export default {
       this.pending = true
       this.check = false
       apiUploadADIF(this.adif)
-        .then((response) => { 
+        .then((response) => {
           let qso = 0
           this.response.files = []
           for (const file of response) {
@@ -233,7 +238,7 @@ export default {
             this.response.message = 'Успешно загружено qso: ' + qso +
               '.<br/> Статистика будет обновлена в течение 24 часов.'
             this.response.success = true
-          } else 
+          } else
             this.response.message = 'Не найдено корректных qso.'
         })
         .catch((e) => {
