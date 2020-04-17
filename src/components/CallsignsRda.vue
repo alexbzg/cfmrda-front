@@ -27,7 +27,10 @@
         <table id="callsign_rda" v-if="callsign || rda">
             <tr>
                 <td class="top" colspan="4">
-                    {{callsign && callsign.length ? callsign : rda}}
+                    <a v-if="callsign && callsign.length" 
+                       :href="'https://www.qrz.ru/db/' + callsign"
+                       target="_blank" rel="nofollower">{{callsign}}</a>
+                    <template v-else>{{rda}}</template>
                 </td>
             </tr>
             <tr id="admin_note" v-if="admin && callsign">
