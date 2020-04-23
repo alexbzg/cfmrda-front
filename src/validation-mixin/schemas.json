@@ -223,28 +223,39 @@
 "cfmQslQso": {
     "type": "object",
     "properties": {
-        "callsign": {
-            "type": "string",
-            "pattern": "[A-Z]+\\d+[A-Z]+"
-        },
-        "newCallsign": {
-            "type": "string",
-            "pattern": "[A-Z]+\\d+[A-Z]+"
-        },
-        "stationCallsign": {
-            "type": "string",
-            "pattern": "$reCallsignFull$"
-        },
-        "rda": {"enum": "$rdaValues$"},
-        "time": {
-            "type": "string",
-            "pattern": "\\d\\d\\d\\d"
-        },
-        "band": {
-            "enum": ["1.8", "3.5", "7", "10", "14", "18", "21", "24", "28"]
-        },
-        "mode": {
-            "enum": ["CW", "SSB", "DIGI"]
+        "qso": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "callsign": {
+                        "type": "string",
+                        "pattern": "[A-Z]+\\d+[A-Z]+"
+                    },
+                    "newCallsign": {
+                        "type": "string",
+                        "pattern": "[A-Z]+\\d+[A-Z]+"
+                    },
+                    "stationCallsign": {
+                        "type": "string",
+                        "pattern": "$reCallsignFull$"
+                    },
+                    "rda": {"enum": "$rdaValues$"},
+                    "time": {
+                        "type": "string",
+                        "pattern": "\\d\\d\\d\\d"
+                    },
+                    "band": {
+                        "enum": ["1.8", "3.5", "7", "10", "14", "18", "21", "24", "28"]
+                    },
+                    "mode": {
+                        "enum": ["CW", "SSB", "DIGI"]
+                    }
+                },
+                "required": ["callsign", "stationCallsign", "rda", "band", "mode", "date", 
+                    "time"]
+            },
+            "minItems": 1
         },
         "image": {
             "type": "object",
@@ -256,10 +267,20 @@
                 "file": {}
             },
             "required": ["name", "file"]
+        },
+        "imageBack": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 5
+                },
+                "file": {}
+            },
+            "required": ["name", "file"]
         }
     },
-    "required": ["callsign", "stationCallsign", "rda", "band", "mode", "date", 
-        "time", "image"]
+    "required": ["qso", "image"]
 },
 "ann": {
     "type": "object",

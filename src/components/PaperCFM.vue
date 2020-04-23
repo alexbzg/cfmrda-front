@@ -1,129 +1,102 @@
 <template>
     <div id="paper_qsl">
-        <h4>CFM RDA по бумажным QSL-карточкам</h4>
-        <p>Введите данные QSO из полученной QSL, подтверждающей необходимый вам RDA. Если QSL карточка выписана вам на старый позывной, то в поле "New callsign" можно указать ваш новый позывной, чтобы это QSO пошло в зачёт и новому позывному.<br/>
-        После проверки модератором данные будут добавлены в  базу CFMRDA. Принимаются фото бумажных QSL и изображения eQSL и HamLog.</p>
-
-        <div id="qsl_rules"><b>Правило проверки <i>электронных</i> QSL</b><br/>
-        Если заявленый RDA и тот, что указан в нашей базе RDA Search, <i>совпадают</i>, то карточка идет в зачёт.<br/>
-        Если в нашей базе по позывному указаны <i>"три звездочки"</i>, определение RDA невозможно и карточка в зачёт не идет.<br/>
-        Если заявленый RDA и тот, что указан в нашей базе, <i>не совпадают</i>, то карточка откладывается до выяснения.<br/>
-        Если позывного нет в нашей базе, то зачет идет по тому RDA, который написан на карточке.
-        </div>
-
-        <p class="grey_note">Fill in the input form with data from the received QSL card confirming the QSO with the RDA you need. If a QSL card is issued to your old callsign, you can enter your new callsign in the "New callsign" field so that this QSO will go on to the new callsign. Your data will be added to CFMRDA database after the check by the moderator.<br/> <b>Photos of paper QSLs</b>, <b>eQSL</b>, <b>HamLog</b> images are taken only.</p>
-        <table id="add_paper_qsl">
-            <tr>
-                <td class="top qsl_callsign">Station's callsign</td>
-                <td class="top qsl_rda">RDA</td>
-                <td class="top qsl_date">Date</td>
-                <td class="top qsl_time">GMT</td>
-                <td class="top qsl_band">MHz</td>
-                <td class="top qsl_mode">Mode</td>
-                <td class="top qsl_my_call">Your сallsign</td>
-                <td class="top qsl_my_new_call" colspan="2">New callsign</td>
-                <td class="top del"></td>
-            </tr>
-            <tr>
-                <td class="qsl_callsign">
-                    <input type="text" name="qsl_callsign" id="qsl_callsign" v-model="qso.stationCallsign"
-                        v-capitalize
-                        :class="{error: validationErrors.stationCallsign}"/>
-                </td>
-                <td class="qsl_rda">
-                    <rda-input type="text" name="qsl_rda" id="qsl_rda" v-model="qso.rda"
-                        :class="{error: validationErrors.rda}"/>
-                </td>
-                <td class="qsl_date">
-                    <datepicker v-model="qso.date" :input-class="{error: !qso.date}" :use-utc="true">
-                    </datepicker>
-                </td>
-                <td class="qsl_time">
-                    <the-mask mask="##:##" type="text" name="qso_time" id="qso_time"
-                        placeholder="hh:mm" v-model="qso.time"
-                        :class="{error: validationErrors.time}">
-                    </the-mask>
-                </td>
-                <td class="qsl_band">
-                    <select-band v-model="qso.band" :class="{error: validationErrors.band}">
-                    </select-band>
-                </td>
-                <td class="qsl_mode">
-                    <select-mode v-model="qso.mode" :class="{error: validationErrors.mode}">
-                    </select-mode>
-                </td>
-                <td class="qsl_my_call">
-                    <input type="text" name="qsl_my_call" id="qsl_my_call" v-model="qso.callsign"
-                        v-capitalize
-                        :class="{error: validationErrors.callsign}"/>
-                </td>
-                <td class="qsl_my_new_call" colspan="2">
-                    <input type="text" name="qsl_my_new_call" id="qsl_my_new_call" v-model="qso.newCallsign"
-                        v-capitalize
-                        :class="{error: validationErrors.newCallsign}"/>
-                </td>
-                <td rowspan="2" class="del">
-                    <input type="button" name="save_qsl" id="save_qsl" value="OK" class="btn"
-                        @click="buttonClick" :disabled="pending || !validated"/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="9" class="qsl_upload">
-                    <b>Загрузите скан или фото QSL-карточки!</b>
-                    <input type="file" name="qsl_callsign" @change="qslImageChange"
-                        ref="fileInput"
-                        :class="{error: validationErrors['image.name']}"
-                        accept=".png,.jpg,.gif"/>
-                </td>
-            </tr>
-
-            <tr><td colspan="10" class="no_border"></td></tr>
-            <tr v-if="response">
-                <td colspan="10" class="response no_border">
-                    <div v-if="response" id="message" v-html="response"></div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="10" class="no_border2">
-                Удаление <b>проверенной и утвержденной</b> QSL карточки из списка <b>не влияет</b> на вашу статистику CFM RDA.
-                </td>
-            </tr>
-
-            <tbody v-for="qso in qsoList" :key="qso.id">
-                <tr :class="{cfmd: qso.state, not_cfmd: qso.state === false}">
-                    <td class="qsl_callsign">{{qso.stationCallsign}}</td>
-                    <td class="qsl_rda">{{qso.rda}}</td>
-                    <td class="qsl_date">{{qso.date}}</td>
-                    <td class="qsl_time">{{qso.time}}</td>
-                    <td class="qsl_band">{{qso.band}}</td>
-                    <td class="qsl_mode">{{qso.mode}}</td>
-                    <td class="qsl_my_call">{{qso.callsign}}</td>
-                    <td class="qsl_my_new_call">{{qso.newCallsign}}</td>
-                    <td class="qsl_card">
-                        <div class="moderator" v-if="qso.admin">{{qso.admin}}</div>
-                        <a href="#" @click="showImage = (showImage === qso ? null : qso)"
-                            v-if="qso.state === null">
-                            <img src="/images/icon_qsl.png" title="Просмотр QSL">
-                        </a>
-                        <img v-if="qso.state" src="/images/icon_qsl_cfm.png"
-                            title="QSL проверена. Информация добавлена в базу CFMRDA."/>
-                        <img v-if="qso.state === false" src="/images/icon_qsl_not_cfm.png"
-                            title="QSL не прошла проверку."/>
-                        <span v-if="qso.comment"><br/>{{qso.comment}}</span>
-                    </td>
-                    <td class="del">
-                        <img src="/images/icon_delete.png" title="Удалить эту строку - Delete this line"
-                            @click="deleteQso(qso.id)"/>
-                    </td>
-                </tr>
-                <tr v-if="showImage === qso">
-                    <td colspan="10" class="qsl_image">
-                        <img :src="'/qsl_images/' + qso.id + '_' + qso.image" @click="showImage = null"/>
-                    </td>
-                </tr>
-            </tbody>
+            <h4>CFM RDA по бумажным QSL-карточкам</h4>
+            <p>Заполните форму ввода данными из полученной QSL-карточки, подтверждающей QSO с необходимым вам RDA.<br/>
+            После проверки модератором данные будут добавлены в  базу CFMRDA.</p>
+            <p class="grey_note">Fill in the input form with data from the received QSL card confirming the QSO with the RDA you need.<br/>
+            Your data will be added to CFMRDA database after the check by the moderator.</p>
+        <table id="qsl_data_form">
+        <tr>
+            <td class="top qsl_callsign">Station's callsign</td>
+            <td class="top qsl_rda">RDA</td>
+            <td class="top qsl_date">Date</td>
+            <td class="top qsl_time">Time</td>
+            <td class="top qsl_band">MHz</td>
+            <td class="top qsl_mode">Mode</td>
+            <td class="top qsl_my_call" colspan="2">Your сallsign</td>
+            <td class="top del"></td>
+        </tr>
+        <tr v-for="(qso, idx) in qsl" :key="idx">
+            <td class="qsl_callsign">
+                <input type="text" name="qsl_callsign" id="qsl_callsign" v-model="qso.stationCallsign"
+                    v-capitalize
+                    :class="{error: validationErrors.stationCallsign}"/>
+            </td>
+            <td class="qsl_rda">
+                <rda-input type="text" name="qsl_rda" id="qsl_rda" v-model="qso.rda"
+                    :class="{error: validationErrors.rda}"/>
+            </td>
+            <td class="qsl_date">
+                <datepicker v-model="qso.date" :input-class="{error: !qso.date}" :use-utc="true">
+                </datepicker>
+            </td>
+            <td class="qsl_time">
+                <the-mask mask="##:##" type="text" name="qso_time" id="qso_time"
+                    placeholder="hh:mm" v-model="qso.time"
+                    :class="{error: validationErrors.time}">
+                </the-mask>
+            </td>
+            <td class="qsl_band">
+                <select-band v-model="qso.band" :class="{error: validationErrors.band}">
+                </select-band>
+            </td>
+            <td class="qsl_mode">
+                <select-mode v-model="qso.mode" :class="{error: validationErrors.mode}">
+                </select-mode>
+            </td>
+            <td class="qsl_my_call" colspan="2">
+                <input type="radio" name="qsl_callsign1" class="qsl_radio_btns" :value="false"
+                    v-model="qso.manualCallsign">
+                <select id="select_my_callsign" v-model="qso.callsign">
+                    <option v-for="(callsign, idx) in userCallsigns" :value="callsign" :key="idx">{{callsign}}</option>
+                </select>
+                <input type="radio" name="qsl_callsign1" class="qsl_radio_btns" :value="true"
+                    v-model="qso.manualCallsign">
+                <input type="text" name="qsl_callsign" id="my_callsign" :disabled="qso.manualCallsign"
+                    v-model="qso.manualCallsignValue">
+            </td>
+            <td class="del"><img src="/images/icon_delete.png" title="Удалить эту строку - Delete this line"></td>
+        </tr>
+        <tr>
+            <td colspan="9" class="add_line">Добавить ещё одну строку QSO на этой QSL - Add one more QSO line on this QSL</td>
+        </tr>
+        <tr>
+            <td colspan="7" class="card_upload">
+                Photo/scan of this QSL<br/>
+                <input type="file" name="qsl_back"><br/><input type="file" name="qsl_front"></td>
+            <td colspan="2" class="qsl_message">Your comment<br/><textarea name="qsl_message"></textarea></td>
+        </tr>
         </table>
 
+        <input type="button" name="save_qsl" id="save_qsl" value="Отправить QSL на проверку - Send this QSL for check" class="btn">
+        <br/>
+
+        <table id="qsl_list">
+        <tr v-for="(qso, idx) in qslList" :key="idx">
+            <td class="qsl_callsign">{{qso.callsign}}</td>
+            <td class="qsl_rda">{{qso.rda}}</td>
+            <td class="qsl_date">{{qso.date}}</td>
+            <td class="qsl_time">{{qso.time}}</td>
+            <td class="qsl_band">{{qso.band}}</td>
+            <td class="qsl_mode">{{qso.mode}}</td>
+            <td class="qsl_my_call">{{qso.callsign}}</td>
+            <td class="qsl_card">
+                <div class="moderator" v-if="qso.admin">{{qso.admin}}</div>
+                <a href="#" @click="showImage = (showImage === qso ? null : qso)"
+                    v-if="qso.state === null">
+                    <img src="/images/icon_qsl.png" title="Просмотр QSL">
+                </a>
+                <img v-if="qso.state" src="/images/icon_qsl_cfm.png"
+                    title="QSL проверена. Информация добавлена в базу CFMRDA."/>
+                <img v-if="qso.state === false" src="/images/icon_qsl_not_cfm.png"
+                    title="QSL не прошла проверку."/>
+                <span v-if="qso.comment"><br/>{{qso.comment}}</span>
+            </td>
+            <td class="qsl_message">комментарий к карточке...
+            </td>
+            <td class="del"><img src="/images/icon_delete.png" title="Удалить эту строку - Delete this line"></td>
+        </tr>
+        </table>
     </div>
 </template>
 
