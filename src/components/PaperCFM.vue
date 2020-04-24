@@ -16,53 +16,60 @@
             <td class="top qsl_my_call" colspan="2">Your сallsign</td>
             <td class="top del"></td>
         </tr>
-        <tr v-for="(qso, idx) in qsl.qso" :key="idx">
-            <td class="qsl_callsign">
-                <input type="text" name="qsl_callsign" id="qsl_callsign" v-model="qso.stationCallsign"
-                    v-capitalize
-                    :class="{error: validationErrors['qso.' + idx + '.stationCallsign']}"/>
-            </td>
-            <td class="qsl_rda">
-                <rda-input type="text" name="qsl_rda" id="qsl_rda" v-model="qso.rda"
-                    :class="{error: validationErrors['qso.' + idx + '.rda']}"/>
-            </td>
-            <td class="qsl_date">
-                <datepicker v-model="qso.date" :input-class="{error: !qso.date}" :use-utc="true">
-                </datepicker>
-            </td>
-            <td class="qsl_time">
-                <the-mask mask="##:##" type="text" name="qso_time" id="qso_time"
-                    placeholder="hh:mm" v-model="qso.time"
-                    :class="{error: validationErrors['qso.' + idx + '.time']}">
-                </the-mask>
-            </td>
-            <td class="qsl_band">
-                <select-band v-model="qso.band" :class="{error: validationErrors['qso.' + idx + '.band']}">
-                </select-band>
-            </td>
-            <td class="qsl_mode">
-                <select-mode v-model="qso.mode" :class="{error: validationErrors['qso.' + idx + '.mode']}">
-                </select-mode>
-            </td>
-            <td class="qsl_my_call" colspan="2">
-                <input type="radio" :name="'qsl_callsign_rb_' + idx" class="qsl_radio_btns" :value="false"
-                    v-model="qso.manualCallsign" @input="setQsoCallsign(qso)">
-                <select id="select_my_callsign" v-model="qso.listCallsign" :disabled="qso.manualCallsign"
-                     @input="setQsoCallsign(qso)" 
-                     :class="{error: !qso.manualCallsign && validationErrors['qso.' + idx + '.callsign']}">
-                    <option v-for="(callsign, idx) in userCallsigns" :value="callsign" :key="idx">{{callsign}}</option>
-                </select>
-                <input type="radio" :name="'qsl_callsign_rb_' + idx" class="qsl_radio_btns" :value="true"
-                    v-model="qso.manualCallsign" @input="setQsoCallsign(qso)">
-                <input type="text" name="qsl_callsign" id="my_callsign" :disabled="!qso.manualCallsign"
-                    v-capitalize @input="setQsoCallsign(qso)"
-                    :class="{error: qso.manualCallsign && validationErrors['qso.' + idx + '.callsign']}"
-                    v-model="qso.manualCallsignValue">
-            </td>
-            <td class="del" @click="deleteQso(idx)">
-                <img src="/images/icon_delete.png" title="Удалить эту строку - Delete this line">
-            </td>
-        </tr>
+        <tbody v-for="(qso, idx) in qsl.qso" :key="idx">
+            <tr>
+                <td class="qsl_callsign">
+                    <input type="text" name="qsl_callsign" id="qsl_callsign" v-model="qso.stationCallsign"
+                        v-capitalize
+                        :class="{error: validationErrors['qso.' + idx + '.stationCallsign']}"/>
+                </td>
+                <td class="qsl_rda">
+                    <rda-input type="text" name="qsl_rda" id="qsl_rda" v-model="qso.rda"
+                        :class="{error: validationErrors['qso.' + idx + '.rda']}"/>
+                </td>
+                <td class="qsl_date">
+                    <datepicker v-model="qso.date" :input-class="{error: !qso.date}" :use-utc="true">
+                    </datepicker>
+                </td>
+                <td class="qsl_time">
+                    <the-mask mask="##:##" type="text" name="qso_time" id="qso_time"
+                        placeholder="hh:mm" v-model="qso.time"
+                        :class="{error: validationErrors['qso.' + idx + '.time']}">
+                    </the-mask>
+                </td>
+                <td class="qsl_band">
+                    <select-band v-model="qso.band" :class="{error: validationErrors['qso.' + idx + '.band']}">
+                    </select-band>
+                </td>
+                <td class="qsl_mode">
+                    <select-mode v-model="qso.mode" :class="{error: validationErrors['qso.' + idx + '.mode']}">
+                    </select-mode>
+                </td>
+                <td class="qsl_my_call" colspan="2">
+                    <input type="radio" :name="'qsl_callsign_rb_' + idx" class="qsl_radio_btns" :value="false"
+                        v-model="qso.manualCallsign" @input="setQsoCallsign(qso)">
+                    <select id="select_my_callsign" v-model="qso.listCallsign" :disabled="qso.manualCallsign"
+                        @input="setQsoCallsign(qso)" 
+                        :class="{error: !qso.manualCallsign && validationErrors['qso.' + idx + '.callsign']}">
+                        <option v-for="(callsign, idx) in userCallsigns" :value="callsign" :key="idx">{{callsign}}</option>
+                    </select>
+                    <input type="radio" :name="'qsl_callsign_rb_' + idx" class="qsl_radio_btns" :value="true"
+                        v-model="qso.manualCallsign" @input="setQsoCallsign(qso)">
+                    <input type="text" name="qsl_callsign" id="my_callsign" :disabled="!qso.manualCallsign"
+                        v-capitalize @input="setQsoCallsign(qso)"
+                        :class="{error: qso.manualCallsign && validationErrors['qso.' + idx + '.callsign']}"
+                        v-model="qso.manualCallsignValue">
+                </td>
+                <td class="del" @click="deleteQso(idx)">
+                    <img src="/images/icon_delete.png" title="Удалить эту строку - Delete this line">
+                </td>
+            </tr>
+            <tr v-if="qso.response">
+                <td colspan="9" class="response no_border">
+                    {{qso.response}}
+                </td>
+            </tr>
+        </tbody>
         <tr>
             <td colspan="9" class="add_line" @click="addQso">
                 Добавить ещё одну строку QSO на этой QSL - Add one more QSO line on this QSL
@@ -79,8 +86,12 @@
                     ><br/>
                 </span>
             </td>
-            <td colspan="2" class="qsl_message">Your comment<br/><textarea name="qsl_message"></textarea></td>
+            <td colspan="2" class="qsl_message">
+                Your comment<br/>
+                <textarea name="qsl_message" v-model="qsl.comment"></textarea>
+            </td>
         </tr>
+        
         </table>
 
         <input type="button" name="save_qsl" id="save_qsl" value="Отправить QSL на проверку - Send this QSL for check" class="btn"
@@ -108,9 +119,10 @@
                             title="QSL проверена. Информация добавлена в базу CFMRDA."/>
                         <img v-if="qso.state === false" src="/images/icon_qsl_not_cfm.png"
                             title="QSL не прошла проверку."/>
-                        <span v-if="qso.comment"><br/>{{qso.comment}}</span>
                     </td>
                     <td class="qsl_message">
+                        <span class="admin" v-if="qso.commentQso">{{qso.commentQso}}</span>
+                        <span class="user" v-if="qso.commentQsl">{{qso.commentQsl}}</span>
                     </td>
                     <td class="del" @click="deleteQsl(qso.id)">
                         <img src="/images/icon_delete.png" title="Удалить эту строку - Delete this line">
@@ -152,7 +164,8 @@ export default {
       image: {
         file: null,
         name: null
-      }
+      },
+      comment: null
     }
     return {
       qsl: qsl,
@@ -257,9 +270,23 @@ export default {
       this.pending = true
       this.response = null
       this.post({qsl: this.qsl})
-        .then(() => {
-          this.qso = [this.newQso()]
-          this.$refs.fileInput.value = ''
+        .then((response) => {
+          const unsaved = []
+          for (let co = 0; co++; co < response.length) {
+            if (response[co] !== 'ok') {
+              this.qsl.qso[co].response = response[co]
+              unsaved.push(this.qsl.qso[co])
+            }
+          }
+          if (unsaved.length) {
+            this.qsl.qso = unsaved
+          } else {
+            this.qsl.qso = [this.newQso()]
+            for (const imgType of ['image', 'imageBack']) {
+              this.$refs['fileInput' + imgType].value = ''
+              this.qsl[imgType] = {name: null, file: null}
+            }
+          }
           this.loadList()
         })
         .catch((e) => {
