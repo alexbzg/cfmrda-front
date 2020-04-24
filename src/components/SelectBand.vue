@@ -1,5 +1,5 @@
 <template>
-    <select-array v-model="value" @input="selectChange" :options="$options.BANDS">
+    <select-array :value="value" @input="selectChange" :options="$options.BANDS">
     </select-array>
 </template>
 <script>

@@ -6,15 +6,15 @@
             </div>
             <table id="check_call">
                 <tr>
-                <td class="btn_space"></td>
-                <td>
-                    <input type="text" name="check_call_input" id="check_call_input"
-                        v-capitalize v-model="callsign" @input="callsignChange()">
-                </td>
-                <td class="btn_space">
-                    <input type="button" name="check_call_btn" value="OK" class="btn"
-                        @click="loadHunter()">
-                </td>
+                    <td class="btn_space"></td>
+                    <td>
+                        <input type="text" name="check_call_input" id="check_call_input"
+                            v-capitalize v-model="callsign" @input="callsignChange()">
+                    </td>
+                    <td class="btn_space">
+                        <input type="button" name="check_call_btn" value="OK" class="btn"
+                            @click="loadHunter()">
+                    </td>
                 </tr>
                 <tr>
                     <td></td>
@@ -94,9 +94,6 @@
                 v-if="callsignValid && hunterData">
                 {{showDetails ? 'Свернуть' : 'Подробно по RDA районам для ' + replace0(callsignValid)}}
             </span>
-
-
-
 
             <table id="rda_table" v-if="showDetails">
             <tr><td colspan="2" id="csv_link">
