@@ -15,7 +15,7 @@
             <td class="top qsl_not_cfm">REJECT</td>
             <td class="top qsl_comm">Comment</td>
         </tr>
-        <tbody v-for="item in qslList" :key="item.id">
+        <tbody v-for="item in qslList" :key="'qsl_' + item.id">
             <tr :class="{cfm_checked: item.cfm, not_cfm_checked: item.not_cfm}">
                 <td class="qsl_callsign" @keyup.enter="submit" >{{item.callsign}}</td>
                 <td class="qsl_rda_callsign">
@@ -28,7 +28,7 @@
                 </td>
                 <td class="qsl_rda_qrz">
                     <template v-for="(rda, idx) in item.callsignRda">
-                        <span :key="idx">{{rda}}</span><br :key="idx"/>
+                        <span :key="'rda_' + idx">{{rda}}</span><br :key="idx"/>
                     </template>
                 </td>
                 <td class="qsl_date">{{item.date}}</td>
@@ -36,8 +36,8 @@
                 <td class="qsl_band">{{item.band}}</td>
                 <td class="qsl_mode">{{item.mode}}</td>
                 <td class="qsl_card">
-                    <img src="/images/icon_qsl.png" title="Просмотр QSL"
-                        @click="showImage = showImage === item ? null : item"/>
+                    <qsl-images :qso="item" @show-qsl-image="showImage">
+                    </qsl-images>
                 </td>
                 <td class="qsl_cfm">
                     <input type="checkbox" v-model="item.cfm" 
@@ -49,13 +49,14 @@
                 </td>
                 <td class="qsl_comm">
                     <div class="moderator" v-if="item.cfm || item.not_cfm">{{userCallsign}}</div>
+                    <div class="user_comment" v-if="item.commentQsl">{{item.commentQsl}}</div>
                     <textarea v-if="item.not_cfm" v-model="item.comment">
                     </textarea>
                 </td>
             </tr>
-            <tr v-if="showImage === item">
+            <tr v-if="activeImage && activeImage.qso === item">
                 <td colspan="12" class="qsl_image">
-                    <img :src="'/qsl_images/' + item.id + '_' + item.image" @click="showImage = null"/>
+                    <img :src="activeImage.src" @click="activeImage = null"/>
                 </td>
             </tr>
         </tbody>
@@ -76,9 +77,11 @@
 import {mapGetters} from 'vuex'
 
 import {qslAdmin} from '../api'
+import QslImages from './QslImages'
 
 export default {
   name: 'QslAdmin',
+  components: {QslImages},
   data () {
     this.loadList()
     return {
@@ -86,7 +89,7 @@ export default {
       pending: false,
       success: false,
       response: null,
-      showImage: null
+      activeImage: null
     }
   },
   methods: {
@@ -121,6 +124,9 @@ export default {
     showRdaLog (callsign) {
       this.$refs.rdAwardForm.callsign.value = callsign
       this.$refs.rdAwardForm.submit()
+    },
+    showImage (imgData) {
+      this.activeImage = imgData
     }
   },
   computed: {
@@ -131,6 +137,7 @@ export default {
         if (qsl.cfm || qsl.not_cfm) {
           r.push({id: qsl.id, 
             state: !!qsl.cfm,
+            qslId: qsl.qslId,
             comment: qsl.comment})
         }
       }

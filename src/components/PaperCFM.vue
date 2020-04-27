@@ -110,11 +110,8 @@
                     <td class="qsl_my_call">{{qso.callsign}}</td>
                     <td class="qsl_card">
                         <div class="moderator" v-if="qso.admin">{{qso.admin}}</div>
-                        <a href="#" v-for="imgType in ['image', 'imageBack']"
-                            @click="showImage(qso, imgType)" :key="imgType"
-                            v-if="qso.state === null && qso[imgType]">
-                            <img src="/images/icon_qsl.png" title="Просмотр QSL">
-                        </a>
+                        <qsl-images :qso="qso" @show-qsl-image="showImage">
+                        </qsl-images>
                         <img v-if="qso.state" src="/images/icon_qsl_cfm.png"
                             title="QSL проверена. Информация добавлена в базу CFMRDA."/>
                         <img v-if="qso.state === false" src="/images/icon_qsl_not_cfm.png"
@@ -128,7 +125,7 @@
                         <img src="/images/icon_delete.png" title="Удалить эту строку - Delete this line">
                     </td>
                 </tr>
-                <tr v-if="activeImage.qso === qso">
+                <tr v-if="activeImage && activeImage.qso === qso">
                     <td colspan="10" class="qsl_image">
                         <img :src="activeImage.src" @click="showImage(null)"/>
                     </td>
@@ -147,6 +144,7 @@ import {TheMask} from 'vue-the-mask'
 import RdaInput from './RDAinput'
 import SelectBand from './SelectBand'
 import SelectMode from './SelectMode'
+import QslImages from './QslImages'
 
 import validationMixin from '../validation-mixin'
 import requireLoginMixin from '../require-login-mixin'
@@ -156,7 +154,7 @@ import {cfmQslQso} from '../api'
 
 export default {
   mixins: [validationMixin, requireLoginMixin, latinizeMixin],
-  components: {Datepicker, RdaInput, SelectBand, SelectMode, TheMask},
+  components: {Datepicker, RdaInput, SelectBand, SelectMode, TheMask, QslImages},
   name: 'PaperCFM',
   data () {
     const qsl = {
@@ -192,11 +190,8 @@ export default {
     this.loadList()
   },
   methods: {
-    showImage(qso, imgType) {
-      this.activeImage.qso = qso
-      if (qso) {
-        this.activeImage.src = `/qsl_images/${qso.qslId}_${imgType}_${qso[imgType]}`
-      }
+    showImage(imgData) {
+      this.activeImage = imgData
     },
     post(data) {
       data.token = this.userToken
