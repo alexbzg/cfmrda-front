@@ -47,14 +47,14 @@
                 </td>
                 <td class="qsl_my_call" colspan="2">
                     <input type="radio" :name="'qsl_callsign_rb_' + idx" class="qsl_radio_btns" :value="false"
-                        v-model="qso.manualCallsign" @input="setQsoCallsign(qso)">
+                        v-model="qso.manualCallsign" @change="setQsoCallsign(qso)">
                     <select id="select_my_callsign" v-model="qso.listCallsign" :disabled="qso.manualCallsign"
-                        @input="setQsoCallsign(qso)" 
+                        @change="setQsoCallsign(qso)" 
                         :class="{error: !qso.manualCallsign && validationErrors['qso.' + idx + '.callsign']}">
                         <option v-for="(callsign, idx) in userCallsigns" :value="callsign" :key="idx">{{callsign}}</option>
                     </select>
                     <input type="radio" :name="'qsl_callsign_rb_' + idx" class="qsl_radio_btns" :value="true"
-                        v-model="qso.manualCallsign" @input="setQsoCallsign(qso)">
+                        v-model="qso.manualCallsign" @change="setQsoCallsign(qso)">
                     <input type="text" name="qsl_callsign" id="my_callsign" :disabled="!qso.manualCallsign"
                         v-capitalize @input="setQsoCallsign(qso)"
                         :class="{error: qso.manualCallsign && validationErrors['qso.' + idx + '.callsign']}"
@@ -80,28 +80,30 @@
                 Photo/scan of this QSL<br/>
                 <span v-for="imgType in ['image', 'imageBack']" :key="imgType">
                     <input type="file" :name="imgType"
-                        :ref="'fileInput' + imgType"
+                        :ref="'fileInput_' + imgType"
                         :class="{error: validationErrors[imgType + '.name']}"
                         @change="qslImageChange(imgType, $event)"
-                    ><br/>
+                    /><br/>
                 </span>
             </td>
             <td colspan="2" class="qsl_message">
                 Your comment<br/>
-                <textarea name="qsl_message" v-model="qsl.comment"></textarea>
+                <textarea name="qsl_message" v-model="qsl.comment" class="no_latinize">
+                </textarea>
             </td>
         </tr>
         
         </table>
 
-        <input type="button" name="save_qsl" id="save_qsl" value="Отправить QSL на проверку - Send this QSL for check" class="btn"
+        <input type="button" name="save_qsl" id="save_qsl" 
+            value="Отправить QSL на проверку - Send this QSL for check" class="btn"
             :disabled="pending || !validated" @click="buttonClick">
         <br/>
 
         <table id="qsl_list" v-if="qslList">
             <tbody v-for="(qso, idx) in qslList" :key="idx">
-                <tr>
-                    <td class="qsl_callsign">{{qso.callsign}}</td>
+                <tr :class="{confirmed: qso.state === true, rejected: qso.state === false}">
+                    <td class="qsl_callsign">{{qso.stationCallsign}}</td>
                     <td class="qsl_rda">{{qso.rda}}</td>
                     <td class="qsl_date">{{qso.date}}</td>
                     <td class="qsl_time">{{qso.time}}</td>
@@ -110,7 +112,7 @@
                     <td class="qsl_my_call">{{qso.callsign}}</td>
                     <td class="qsl_card">
                         <div class="moderator" v-if="qso.admin">{{qso.admin}}</div>
-                        <qsl-images :qso="qso" @show-qsl-image="showImage">
+                        <qsl-images :qso="qso" :active-image="activeImage" @show-qsl-image="showImage">
                         </qsl-images>
                         <img v-if="qso.state" src="/images/icon_qsl_cfm.png"
                             title="QSL проверена. Информация добавлена в базу CFMRDA."/>
@@ -228,6 +230,7 @@ export default {
     },
     setQsoCallsign (qso) {
       qso.callsign = qso.manualCallsign ? qso.manualCallsignValue : qso.listCallsign
+      this.validate()
     },
     qslImageChange (imgType, e) {
       const files = e.target.files || e.dataTransfer.files
@@ -267,7 +270,7 @@ export default {
       this.post({qsl: this.qsl})
         .then((response) => {
           const unsaved = []
-          for (let co = 0; co++; co < response.length) {
+          for (let co = 0; co < response.length; co++) {
             if (response[co] !== 'ok') {
               this.qsl.qso[co].response = response[co]
               unsaved.push(this.qsl.qso[co])
@@ -278,9 +281,12 @@ export default {
           } else {
             this.qsl.qso = [this.newQso()]
             for (const imgType of ['image', 'imageBack']) {
-              this.$refs['fileInput' + imgType].value = ''
-              this.qsl[imgType] = {name: null, file: null}
+              const fileInput = this.$refs['fileInput_' + imgType][0]
+              fileInput.value = ''
             }
+            this.qsl.image = {name: null, file: null}
+            this.$delete(this.qsl, 'imageBack')
+            this.qsl.comment = ''
           }
           this.loadList()
         })

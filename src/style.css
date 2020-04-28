@@ -1783,7 +1783,9 @@ table#add_paper_qsl td.qsl_callsign input{
 	width: 150px;
 	font-weight: bold;
 }
-table#add_paper_qsl td.qsl_my_call input, table#add_paper_qsl td.qsl_my_new_call input{
+table#add_paper_qsl td.qsl_my_call input,
+table#add_paper_qsl td.qsl_my_new_call input,
+table#add_paper_qsl td.qsl_my_new_call input{
 	width: 120px;
 	font-weight: bold;
 }
@@ -1847,7 +1849,7 @@ table#qsl_data_form input.qsl_radio_btns{
 }
 table#qsl_data_form input#my_callsign,
 table#qsl_data_form select#select_my_callsign{
-	width: 150px;
+	width: 130px;
 	font-weight: bold;
 	text-align: center;
 }
@@ -1877,9 +1879,15 @@ table#qsl_data_form textarea{
 }
 table#qsl_data_form td.del{
 	width: 30px;
+	padding-left: 0;
+	padding-right: 0;
 }
 table#qsl_data_form td.del img{
 	cursor: pointer;
+}
+table#qsl_data_form td.response{
+	background-color: red;
+	color: #ffffca;
 }
 
 
@@ -1910,14 +1918,22 @@ table#qsl_list td.qsl_image img{
 	max-width: 1000px;
 	max-height: 700px;
 }
-table#qsl_list tr.cfmd{
+table#qsl_list tr.confirmed{
 	background-color: #caffcd;
 }
-table#qsl_list tr.not_cfmd{
+table#qsl_list tr.rejected{
 	background-color: #fce2e2;
 }
-table#qsl_list td.qsl_card, table#qsl_list td.qsl_message{
+table#qsl_list td.qsl_card{
 	font-size: 12px;
+}
+table#qsl_list td.qsl_message{
+	font-size: 12px;
+	color: #000;
+}
+table#qsl_list td.qsl_message span.user{
+	font-size: 10px;
+	color: #777;
 }
 table#qsl_list td.del img{
 	cursor: pointer;

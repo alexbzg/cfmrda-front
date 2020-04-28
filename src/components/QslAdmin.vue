@@ -36,7 +36,7 @@
                 <td class="qsl_band">{{item.band}}</td>
                 <td class="qsl_mode">{{item.mode}}</td>
                 <td class="qsl_card">
-                    <qsl-images :qso="item" @show-qsl-image="showImage">
+                    <qsl-images :qso="item" :active-image="activeImage"  @show-qsl-image="showImage">
                     </qsl-images>
                 </td>
                 <td class="qsl_cfm">
