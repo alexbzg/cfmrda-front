@@ -65,8 +65,7 @@
                 </td>
             </tr>
             <tr v-if="qso.response">
-                <td colspan="9" class="response no_border">
-                    {{qso.response}}
+                <td colspan="9" class="response no_border" v-html="qso.response">
                 </td>
             </tr>
         </tbody>
@@ -120,8 +119,11 @@
                             title="QSL не прошла проверку."/>
                     </td>
                     <td class="qsl_message">
-                        <span class="admin" v-if="qso.commentQso">{{qso.commentQso}}</span>
-                        <span class="user" v-if="qso.commentQsl">{{qso.commentQsl}}</span>
+                        <template v-if="qsl.state !== true">
+                            <span class="user" v-if="qso.commentQsl">{{qso.commentQsl}}</span>
+                            <br v-if="qso.commentQsl && qso.commentQso"/>
+                            <span class="admin" v-if="qso.commentQso">{{qso.commentQso}}</span>
+                        </template>
                     </td>
                     <td class="del" @click="deleteQsl(qso.id)">
                         <img src="/images/icon_delete.png" title="Удалить эту строку - Delete this line">

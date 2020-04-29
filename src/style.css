@@ -2870,7 +2870,10 @@ table#callsign_rda td.del img{
 	color: #339;
 }
 
-
+table#callsign_rda td.top a{
+	color: #009;
+	text-decoration: none;
+}
 
 
 
