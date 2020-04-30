@@ -272,9 +272,10 @@
                         <span v-for="(rda, rdaIdx) in item.rda" :key="'rda_' + rdaIdx">{{rda}} </span>
                     </td>
                     <td class="activator">
-                        <span v-for="(activator, actIdx) in item.activators" :key="'act_' + actIdx">
+                        <span v-for="(activator, actIdx) in item.activators" :key="'act_' + actIdx" v-if="actIdx < 10">
                             {{replace0(activator)}}
                         </span>
+                        <span v-if="item.activators && item.activators.length > 10">...</span>
                     </td>
                     <td class="uploader">{{item.delBy}}</td>
                     <td class="uploaded">{{item.delDate}}<span>{{item.delTime}}</span></td>
