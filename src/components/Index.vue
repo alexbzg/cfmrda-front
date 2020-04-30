@@ -230,7 +230,8 @@
                 <td class="uploader menu">Uploader</td>
                 <td class="uploaded menu">Uploaded</td>
             </tr>
-            <tr v-for="(item, idx) in recentUploads" :key="idx">
+            <tr v-for="(item, idx) in recentUploads" :key="idx" 
+                :class="{not_activator: item.activators && item.activators.filter(act => !act.includes(item.uploader)).length}">
                 <td class="rda">
                     <view-upload-link v-for="(rda, rdaIdx) in item.rda" :key="rdaIdx"
                         :id="rda.id">

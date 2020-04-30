@@ -76,12 +76,12 @@
         </tr>
         <tr>
             <td colspan="7" class="card_upload">
-                Photo/scan of this QSL<br/>
-                <span v-for="imgType in ['image', 'imageBack']" :key="imgType">
-                    <input type="file" :name="imgType"
-                        :ref="'fileInput_' + imgType"
-                        :class="{error: validationErrors[imgType + '.name']}"
-                        @change="qslImageChange(imgType, $event)"
+                <span v-for="img in $options.images" :key="img">
+                    {{img.caption}}
+                    <input type="file" :name="img.type"
+                        :ref="'fileInput_' + img.type"
+                        :class="{error: validationErrors[img.type + '.name']}"
+                        @change="qslImageChange(img.type, $event)"
                     /><br/>
                 </span>
             </td>
@@ -157,6 +157,10 @@ import latinizeMixin from '../latinize-mixin'
 import {cfmQslQso} from '../api'
 
 export default {
+  images: [
+    {type: 'image', caption: 'Изображение стороны QSL-карточки c данными QSO - Image of the QSL card\'s side with QSO data'},
+    {type: 'imageBack', caption: 'Вторая сторона этой QSL - The other side of this QSL'},
+  ],
   mixins: [validationMixin, requireLoginMixin, latinizeMixin],
   components: {Datepicker, RdaInput, SelectBand, SelectMode, TheMask, QslImages},
   name: 'PaperCFM',
