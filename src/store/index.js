@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 import storage from '../storage'
 import {BANDS, MODES} from '../ham-radio'
-import {getDx, getHunterDetails, getMscData} from '../api'
+import {getDx, getHunterDetails, getMscData, userData} from '../api'
 import playSound from '../play-sound'
 
 const STORAGE_KEY_USER = 'user'
@@ -21,10 +21,12 @@ export const DX_LISTENERS_MUTATION = 'dxListeners'
 const SET_USER_RDA_MUTATION = 'setUserRda'
 const SET_DX_MUTATION = 'setDx'
 const SET_MSC_MUTATION = 'setMsc'
+export const SET_USER_DATA_MUTATION = 'setUsrDataMtn'
 
 const MSC_UPDATE_ACTION = 'mscUpdate'
 const DX_UPDATE_ACTION = 'dxUpdate'
 const LOAD_USER_RDA_ACTION = 'userRdaLoad'
+export const USER_DATA_ACTION = 'userDataActn'
 
 const DX_UPDATE_INTERVAL = 60 * 1000
 
@@ -57,6 +59,10 @@ const store = new Vuex.Store({
     dxFilter: state => () => {
       return JSON.parse(JSON.stringify(state.dxFilter))
     }, 
+    userDefs: state => {
+      return state.user && state.user.defs ? JSON.parse(JSON.stringify(state.user.defs)) :
+        {qsl: {}}
+    },
     dx: state => {
       if (state.dx) {
         return state.dx.filter(item => {
@@ -130,8 +136,15 @@ const store = new Vuex.Store({
           payload.remember ? 'local' : 'session')
         state.remember = payload.remember
       }
-      if (state.user && state.user.callsign)
+      if (state.user && state.user.callsign) {
         store.dispatch(LOAD_USER_RDA_ACTION)
+        store.dispatch(USER_DATA_ACTION)
+      }
+    },
+    [SET_USER_DATA_MUTATION] (state, payload) {
+      for (const field in payload) {
+        Vue.set(state.user, field, payload[field])
+      }
     },
     [SET_OLD_CALLSIGNS_ALL] (state, callsigns) {
       state.user.oldCallsigns.all = JSON.parse(JSON.stringify(callsigns))
@@ -185,8 +198,15 @@ const store = new Vuex.Store({
     [MSC_UPDATE_ACTION] ({commit}) {
       getMscData()
         .then(data => { commit(SET_MSC_MUTATION, data) })
+    },
+    [USER_DATA_ACTION] ({commit, state}, payload) {
+      if (state.user && state.user.token) {
+        const data = payload ? JSON.parse(JSON.stringify(payload)) : {}
+        data['token'] = state.user.token
+        userData(data)
+          .then(data => { commit(SET_USER_DATA_MUTATION, data) })
+      }
     }
-
   },
   strict: process.env.NODE_ENV !== 'production'
 })
@@ -195,7 +215,8 @@ store.commit(INIT_MUTATION)
 
 function getAdditionalData () {
   store.dispatch(DX_UPDATE_ACTION)
-  store.dispatch(MSC_UPDATE_ACTION)   
+  store.dispatch(MSC_UPDATE_ACTION)
+  store.dispatch(USER_DATA_ACTION)
 }
 
 export default store

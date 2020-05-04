@@ -13,7 +13,7 @@
             <td class="top qsl_time">Time</td>
             <td class="top qsl_band">MHz</td>
             <td class="top qsl_mode">Mode</td>
-            <td class="top qsl_my_call" colspan="2">Your сallsign</td>
+            <td class="top qsl_my_call">Your сallsign</td>
             <td class="top del"></td>
         </tr>
         <tbody v-for="(qso, idx) in qsl.qso" :key="idx">
@@ -45,11 +45,11 @@
                     <select-mode v-model="qso.mode" :class="{error: validationErrors['qso.' + idx + '.mode']}">
                     </select-mode>
                 </td>
-                <td class="qsl_my_call" colspan="2">
+                <td class="qsl_my_call">
                     <input type="radio" :name="'qsl_callsign_rb_' + idx" class="qsl_radio_btns" :value="false"
                         v-model="qso.manualCallsign" @change="setQsoCallsign(qso)">
                     <select id="select_my_callsign" v-model="qso.listCallsign" :disabled="qso.manualCallsign"
-                        @change="setQsoCallsign(qso)" 
+                        @change="setQsoCallsign(qso)"
                         :class="{error: !qso.manualCallsign && validationErrors['qso.' + idx + '.callsign']}">
                         <option v-for="(callsign, idx) in userCallsigns" :value="callsign" :key="idx">{{callsign}}</option>
                     </select>
@@ -65,18 +65,18 @@
                 </td>
             </tr>
             <tr v-if="qso.response">
-                <td colspan="9" class="response no_border" v-html="qso.response">
+                <td colspan="8" class="response no_border" v-html="qso.response">
                 </td>
             </tr>
         </tbody>
         <tr>
-            <td colspan="9" class="add_line" @click="addQso">
+            <td colspan="8" class="add_line" @click="addQso">
                 Добавить ещё одну строку QSO на этой QSL - Add one more QSO line on this QSL
             </td>
         </tr>
         <tr>
-            <td colspan="7" class="card_upload">
-                <span v-for="img in $options.images" :key="img">
+            <td colspan="6" class="card_upload">
+                <span v-for="img in $options.images" :key="img.type">
                     {{img.caption}}
                     <input type="file" :name="img.type"
                         :ref="'fileInput_' + img.type"
@@ -91,10 +91,9 @@
                 </textarea>
             </td>
         </tr>
-        
         </table>
 
-        <input type="button" name="save_qsl" id="save_qsl" 
+        <input type="button" name="save_qsl" id="save_qsl"
             value="Отправить QSL на проверку - Send this QSL for check" class="btn"
             :disabled="pending || !validated" @click="buttonClick">
         <br/>
@@ -140,7 +139,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from 'vuex'
+import {mapGetters, mapState, mapActions} from 'vuex'
 
 import Datepicker from 'vuejs-datepicker'
 import {TheMask} from 'vue-the-mask'
@@ -155,6 +154,7 @@ import requireLoginMixin from '../require-login-mixin'
 import latinizeMixin from '../latinize-mixin'
 
 import {cfmQslQso} from '../api'
+import {USER_DATA_ACTION} from '../store'
 
 export default {
   images: [
@@ -187,7 +187,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userToken']),
+    ...mapGetters(['userToken', 'userDefs']),
     ...mapState(['user']),
     userCallsigns () {
       return [this.user.callsign].concat(this.user.oldCallsigns.confirmed)
@@ -198,6 +198,7 @@ export default {
     this.loadList()
   },
   methods: {
+    ...mapActions([USER_DATA_ACTION]),
     showImage(imgData) {
       this.activeImage = imgData
     },
@@ -210,24 +211,26 @@ export default {
         .then((data) => {this.qslList = data})
     },
     newQso () {
+      const prevQso = this.qsl && this.qsl.qso && this.qsl.qso.length ? this.qsl.qso[this.qsl.qso.length - 1] : null
+      const qslDefs = prevQso ? prevQso : this.$store.getters.userDefs.qsl
       const qso = {
         callsign: null,
         stationCallsign: null,
         listCallsign: null,
         manualCallsign: false,
         manualCallsignValue: null,
-        band: null,
-        mode: null,
-        date: null,
+        band: qslDefs.band,
+        mode: qslDefs.mode,
+        date: qslDefs.date,
         time: null,
         rda: null
       }
-      if (this.qsl && this.qsl.qso && this.qsl.qso.length) {
-        const prevQso = this.qsl.qso[this.qsl.qso.length - 1]
+      if (prevQso) {
         qso.listCallsign = prevQso.listCallsign
         qso.manualCallsign = prevQso.manualCallsign
         qso.manualCallsignValue = prevQso.manualCallsignValue
         this.setQsoCallsign(qso)
+        qso.stationCallsign = prevQso.stationCallsign
       }
       return qso
     },
@@ -271,6 +274,12 @@ export default {
       }
     },
     buttonClick () {
+      const qso = this.qsl.qso[this.qsl.qso.length - 1]
+      this[USER_DATA_ACTION]({data: {defs: {qsl: {
+        band: qso.band,
+        mode: qso.mode,
+        date: qso.date
+      }}}})
       this.pending = true
       this.response = null
       this.post({qsl: this.qsl})

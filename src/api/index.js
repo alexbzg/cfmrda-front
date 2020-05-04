@@ -52,6 +52,10 @@ function dataPost(url, data) {
     })
 }
 
+export function userData (data) {
+  return dataPost('user_data', data)
+}
+
 export function manageUploads (data) {
   return dataPost('manage_uploads', data)
 }
