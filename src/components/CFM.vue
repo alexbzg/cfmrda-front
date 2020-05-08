@@ -1,8 +1,7 @@
 <template>
   <div class="list">
     <div id="list_menu">
-        <router-link to="/cfm/">Email CFM</router-link>
-        <router-link to="/cfm/paper">QSL card CFM</router-link>
+        <router-link to="/cfm/">QSL card CFM</router-link>
         <router-link to="/cfm/loggers">eLogs CFM</router-link>
     </div>
     <keep-alive>

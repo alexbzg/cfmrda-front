@@ -202,18 +202,15 @@
                 <tr>
                     <td class="top" rowspan="2"></td>
                     <td class="top" colspan="2">QSL CFM</td>
-                    <td class="top">Email CFM</td>
                 </tr>
                 <tr>
                     <td class="top top2">на проверке</td>
                     <td class="top top2">проверено</td>
-                    <td class="top top2">будет отправлено</td>
                 </tr>
                 <tr v-for="item in mscData.userActivity" :key="item.callsign">
                     <td class="callsign">{{item.callsign}}</td>
                     <td class="">{{item.qslWait}}</td>
                     <td class="">{{item.qslToday}}</td>
-                    <td class="">{{item.email}}</td>
                 </tr>
             </table>
         </div>

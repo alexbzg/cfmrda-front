@@ -1876,7 +1876,6 @@ table#qsl_data_form td.qsl_my_call select#select_my_callsign{
 
 
 table#qsl_data_form td.add_line{
-	font-weight: bold;
 	text-decoration: underline;
 	color: #009;
 	cursor: pointer;
@@ -1890,21 +1889,20 @@ table#qsl_data_form td.qsl_message{
 	vertical-align: top;
 }
 table#qsl_data_form td.card_upload{
-	font-weight: bold;
-	color: #999;
-
+	color: #777;
+	font-style: italic;
 }
 table#qsl_data_form td.card_upload input{
 	padding: 0;
-	margin-bottom: 7px;
-	margin-top: 5px;
+	margin-bottom: 10px;
+	margin-top: 0px;
 	width: 750px;
 	color: #000;
 }
 table#qsl_data_form textarea{
 	width: 380px;
 	text-align: left;
-	height: 60px;
+	height: 65px;
 	display: inline-block;
 }
 table#qsl_data_form td.del{
