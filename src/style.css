@@ -3024,6 +3024,7 @@ table#rda_wanted_list{
  	border-collapse: collapse;
 }
 table#rda_wanted_list td{
+	width: 350px;
 	vertical-align: top;
 	text-align: center;
 	border: 1px solid #dfedfd;
@@ -3040,6 +3041,7 @@ table#rda_wanted_list td.call span{
 }
 table#rda_wanted_list td.admin_delete{
 	border: none;
+	width: 50px;
 }
 table#rda_wanted_list td.admin_delete img{
 	cursor: pointer;

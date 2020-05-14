@@ -8,7 +8,7 @@
             <td class="top qsl_rda_qrz">CFMRDA</td>
             <td class="top qsl_date">Date</td>
             <td class="top qsl_gmt">GMT</td>
-            <td class="top qsl_band">MHz</td>
+            <td class="top qsl_band">Band</td>
             <td class="top qsl_mode">Mode</td>
             <td class="top qsl_card">QSL</td>
             <td class="top qsl_cfm"> CFM </td>
@@ -33,7 +33,7 @@
                 </td>
                 <td class="qsl_date">{{item.date}}</td>
                 <td class="qsl_date">{{item.time}}</td>
-                <td class="qsl_band">{{item.band}}</td>
+                <td class="qsl_band">{{bandWl(item.band)}}</td>
                 <td class="qsl_mode">{{item.mode}}</td>
                 <td class="qsl_card">
                     <qsl-images :qso="item" :active-image="activeImage"  @show-qsl-image="showImage">
@@ -79,6 +79,8 @@ import {mapGetters} from 'vuex'
 import {qslAdmin} from '../api'
 import QslImages from './QslImages'
 
+import {bandWl} from '../ham-radio'
+
 export default {
   name: 'QslAdmin',
   components: {QslImages},
@@ -93,6 +95,9 @@ export default {
     }
   },
   methods: {
+    bandWl (band) {
+      return bandWl(band)
+    },
     post(data) {
       data.token = this.$store.getters.userToken
       return qslAdmin(data)

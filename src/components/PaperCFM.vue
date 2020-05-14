@@ -13,7 +13,7 @@
             <td class="top qsl_rda">RDA</td>
             <td class="top qsl_date">Date</td>
             <td class="top qsl_time">Time</td>
-            <td class="top qsl_band">MHz</td>
+            <td class="top qsl_band">Band</td>
             <td class="top qsl_mode">Mode</td>
             <td class="top qsl_my_call">Your сallsign</td>
             <td class="top del"></td>
@@ -40,8 +40,9 @@
                     </the-mask>
                 </td>
                 <td class="qsl_band">
-                    <select-band v-model="qso.band" :class="{error: validationErrors['qso.' + idx + '.band']}">
-                    </select-band>
+                    <select v-model="qso.band" :class="{error: validationErrors['qso.' + idx + '.band']}">
+                        <option v-for="(band, wl) in $options.BANDS_WL" :value="band" :key="band">{{wl}}</option>
+                    </select>
                 </td>
                 <td class="qsl_mode">
                     <select-mode v-model="qso.mode" :class="{error: validationErrors['qso.' + idx + '.mode']}">
@@ -107,7 +108,7 @@
                     <td class="qsl_rda">{{qso.rda}}</td>
                     <td class="qsl_date">{{qso.date}}</td>
                     <td class="qsl_time">{{qso.time}}</td>
-                    <td class="qsl_band">{{qso.band}}</td>
+                    <td class="qsl_band">{{bandWl(qso.band)}}</td>
                     <td class="qsl_mode">{{qso.mode}}</td>
                     <td class="qsl_my_call">{{qso.callsign}}</td>
                     <td class="qsl_card">
@@ -147,7 +148,6 @@ import Datepicker from 'vuejs-datepicker'
 import {TheMask} from 'vue-the-mask'
 
 import RdaInput from './RDAinput'
-import SelectBand from './SelectBand'
 import SelectMode from './SelectMode'
 import QslImages from './QslImages'
 
@@ -157,14 +157,16 @@ import latinizeMixin from '../latinize-mixin'
 
 import {cfmQslQso} from '../api'
 import {USER_DATA_ACTION} from '../store'
+import {BANDS_WL, bandWl} from '../ham-radio'
 
 export default {
+  BANDS_WL: BANDS_WL,
   images: [
     {type: 'image', caption: 'Изображение стороны QSL-карточки c данными QSO - Image of the QSL card\'s side with QSO data'},
     {type: 'imageBack', caption: 'Вторая сторона этой QSL - The other side of this QSL'},
   ],
   mixins: [validationMixin, requireLoginMixin, latinizeMixin],
-  components: {Datepicker, RdaInput, SelectBand, SelectMode, TheMask, QslImages},
+  components: {Datepicker, RdaInput, SelectMode, TheMask, QslImages},
   name: 'PaperCFM',
   data () {
     const qsl = {
@@ -201,6 +203,9 @@ export default {
   },
   methods: {
     ...mapActions([USER_DATA_ACTION]),
+    bandWl (band) {
+      return bandWl(band)
+    },
     showImage(imgData) {
       this.activeImage = imgData
     },

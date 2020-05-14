@@ -2,7 +2,7 @@
   <div class="list">
       <div id="chat_cluster_view">
         <img src="/images/icon_chat_cluster.png" @click="showCluster = !showCluster"/>
-      </div>   
+      </div>
       <div id="chat_cluster" v-if="showCluster">
           <cluster-table rows="3"></cluster-table>
       </div>
@@ -19,7 +19,7 @@
                                 @blur="csNameBlur"/>
                         </td>
                         <td>
-                            <input type="text" id="your_text" v-model.trim="message" @keyup="typing"
+                            <input type="text" id="your_text" v-model="message" @keyup="typing"
                                 ref="msgTextInput"/>
                         </td>
                         <td>
@@ -42,7 +42,7 @@
             <div id="smiles" v-show="showSmiles">
                 <div id="close_smiles"><img src="/images/icon_delete20.png" @click="showSmiles = false"></div>
                 <div id="smiles_block">
-                    <template v-for="n in 60">
+                    <template v-for="n in 70">
                         <div class="smile" :key="'smile_' + n" @click="insertSmile(n)">
                             <span>{{smile(n)}}</span>
                             <img :src="'/images/smiles/' + smile(n) + '.gif'">
@@ -52,30 +52,30 @@
                 </div>
                 <div id="smiles_link"><a href="http://www.kolobok.us/" target="_blank">www.kolobok.us</a></div>
             </div>
-            
+
             <table id="chat_layout">
                 <tr>
                     <td>
                         <table id="chat_window">
-                            <tr v-for="message in messages" :key="message.ts"> 
+                            <tr v-for="message in messages" :key="message.ts">
                                 <td class="call">
-                                    <span class="call" @click="replyTo(message.callsign)" 
+                                    <span class="call" @click="replyTo(message.callsign)"
                                         :class="{admin: message.admin}">
                                         {{replace0(message.callsign)}}
                                     </span><br/>
                                     <span class="name" v-if="message.name" @click="replyTo(message.callsign)">
                                         {{message.name}}
                                     </span>
-                                    <a :href="'http://qrz.com/db/' + message.callsign" target="_blank" 
+                                    <a :href="'http://qrz.com/db/' + message.callsign" target="_blank"
                                         rel="noopener" title="Link to QRZ.com">
                                         <img src="/images/icon_qrz.png"/>
                                     </a>
                                     <br/>
                                     <span class="date_time">{{message.date}} {{message.time}}</span>
                                 </td>
-                                <td @mouseover="messageMouseOver(true,$event)"  
+                                <td @mouseover="messageMouseOver(true,$event)"
                                     @mouseout="messageMouseOver(false,$event)">
-                                    <img class="delete_btn" src="/images/icon_delete20.png" 
+                                    <img class="delete_btn" src="/images/icon_delete20.png"
                                         title="Удалить сообщение" @click="deleteMessage(message.ts)"/>
                                     <span class="message_to" v-for="callsignTo in message.to" :key="callsignTo"
                                         :class="{personal: callsignTo === callsign}">
@@ -86,11 +86,11 @@
                             </tr>
                         </table>
                     </td>
-                    <td>                   
+                    <td>
                         <div id="chat_info">
                             <div class="chat_info_title">Online</div>
                             <div class="chat_info_users1">
-                                <span v-for="user in users" :key="user.callsign" 
+                                <span v-for="user in users" :key="user.callsign"
                                     :class="{admin: user.admin, typing:user.typing}"
                                     @click="replyTo(user.callsign)">
                                     {{replace0(user.callsign)}}<br/>
@@ -124,9 +124,6 @@ const CHAT_RELOAD_INT = 5 * 1000 //ms
 const USERS_RELOAD_INT = 5 * 1000 //ms
 const USERS_POST_INT = 5 * 1000  //ms
 
-const chatService = dataService('/json/chat.json', 'chat-update')
-const usersService = dataService('/json/active_users.json', 'users-update')
-
 const reMSG_TO = /(:?\u21d2\s?\w+(:?\/\w+)*\s?)+(:?\s|$)/
 const MSG_SANITIZE_HTML_SETTINGS = {
     allowedTags: ['h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
@@ -145,12 +142,6 @@ export default {
       callsign = stored.callsign
     else if (this.$store.getters.userCallsign)
       callsign = this.$store.getters.userCallsign
-    chatService.onUpdate(this.chatUpdate)
-    chatService.load()
-    this.reloadUsers()
-    this.$chatReloadInterval = setInterval(chatService.load, CHAT_RELOAD_INT)
-    this.$usersReloadInterval = setInterval(this.reloadUsers, USERS_RELOAD_INT)
-    this.$usersPostInterval = setInterval(this.postUsers, USERS_POST_INT)
     return {
       showSmiles: false,
       tabId: 'chat',
@@ -163,6 +154,16 @@ export default {
       pending: false,
       showCluster: false
     }
+  },
+  mounted () {
+    this.chatService = dataService('/json/chat.json', 'chat-update')
+    this.usersService = dataService('/json/active_users.json', 'users-update')
+    this.chatService.onUpdate(this.chatUpdate)
+    this.chatService.load()
+    this.reloadUsers()
+    this.$chatReloadInterval = setInterval(this.chatService.load, CHAT_RELOAD_INT)
+    this.$usersReloadInterval = setInterval(this.reloadUsers, USERS_RELOAD_INT)
+    this.$usersPostInterval = setInterval(this.postUsers, USERS_POST_INT)
   },
   beforeRouteLeave (to, from, next) {
     this.post({'exit': true})
@@ -181,8 +182,8 @@ export default {
       insertTextAtCursor(this.$refs.msgTextInput, ':' + this.smile(n) + ':')
     },
     chatUpdate () {
-      if (chatService.data && chatService.data.length) {
-        for (const msg of chatService.data) {
+      if (this.chatService.data && this.chatService.data.length) {
+        for (const msg of this.chatService.data) {
             msg.text = sanitizeHTML(msg.text, MSG_SANITIZE_HTML_SETTINGS)
             let match = null
             if (match = reMSG_TO.exec(msg.text)) {
@@ -193,7 +194,7 @@ export default {
             }
             msg.text = msg.text.replace(/:(\d\d):/g, '<image src="/images/smiles/$1.gif"/>')
         }
-        this.messages = chatService.data
+        this.messages = this.chatService.data
       }
     },
     post (data) {
@@ -204,9 +205,9 @@ export default {
       return chatPost(data)
     },
     csNameBlur () {
-      storage.save(CHAT_STORAGE_KEY, 
+      storage.save(CHAT_STORAGE_KEY,
         {callsign: this.callsign,
-        name: this.name}, 
+        name: this.name},
         'local')
     },
     buttonClick () {
@@ -215,19 +216,19 @@ export default {
       this.showSmiles = false
       this.post({'message': this.message,
         'name': this.name})
-        .then(() => { 
+        .then(() => {
           this.message = null
-          chatService.load()
+          this.chatService.load()
         })
         .finally(() => {
           this.pending = false
         })
     },
     reloadUsers () {
-      usersService.load()
+      this.usersService.load()
         .then(() => {
           const ts = Date.now() / 1000
-          const data = usersService.data
+          const data = this.usersService.data
           for (const cs in data) {
             if (data[cs].typing && ts - data[cs].ts > TYPING_INT) {
               data[cs].typing = false
@@ -264,7 +265,7 @@ export default {
     deleteMessage (ts) {
       if (this.admin && window.confirm('Вы действительно хотите удалить сообщение?')) {
         this.post({'delete': ts})
-          .then(chatService.load)
+          .then(this.chatService.load)
       }
     },
     replyTo (callsign) {
@@ -286,7 +287,7 @@ export default {
   computed: {
     ...mapGetters(['userToken', 'userCallsign', 'admin']),
     buttonDisabled () {
-      return this.pending || (this.message === null || this.message.length === 0) 
+      return this.pending || (this.message === null || this.message.length === 0)
         || (this.callsign === null || this.callsign.length === 0)
     }
   }

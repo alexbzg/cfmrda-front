@@ -38,7 +38,7 @@
                     No AutoCFM<br/><input type="checkbox" v-model="meta.disableAutocfm">
                 </td>
                 <td colspan="2">
-                    <textarea v-model="meta.comments"></textarea>
+                    <textarea v-model="meta.comments" class="no_latinize"></textarea>
                 </td>
                 <td id="save_note">
                     <input type="button" name="" value="OK" @click="saveMeta"

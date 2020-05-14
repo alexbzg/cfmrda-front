@@ -10,7 +10,7 @@
             Admin <template v-if="mscData.unsortedQsl">({{mscData.unsortedQsl}})</template>
             </router-link>
             <router-link to="/awards">Awards</router-link>
-            <router-link to="/callsignsRda">RDA_search</router-link>
+            <router-link to="/callsignsRda">RDAsearch</router-link>
             <router-link to="/cluster">Cluster</router-link>
             <router-link to="/cfm" v-if="userCallsign" id="chat">CFM RDA</router-link>
             <router-link to="/uploads" v-if="userCallsign">Загрузки</router-link>
@@ -22,7 +22,7 @@
             <a @click="logout()" v-else id="logout_link">Logout</a>
        </div>
     </div>
-    
+
     <keep-alive :include="['Index', 'Contact', 'Uploads', 'CFM', 'Admin', 'AutoRegistration']">
         <router-view></router-view>
     </keep-alive>
