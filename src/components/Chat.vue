@@ -19,7 +19,12 @@
                                 @blur="csNameBlur"/>
                         </td>
                         <td>
-                            <input type="text" id="your_text" v-model.trim="message" @keyup="typing"/>
+                            <input type="text" id="your_text" v-model.trim="message" @keyup="typing"
+                                ref="msgTextInput"/>
+                        </td>
+                        <td>
+                            <img id="smile_btn" src="/images/smiles/01.gif"
+                                @click="showSmiles = !showSmiles"/>
                         </td>
                         <td>
                             <button @click="buttonClick()" :disabled="buttonDisabled">OK</button>
@@ -33,6 +38,20 @@
                     </tr>
                 </tbody>
             </table>
+
+            <div id="smiles" v-show="showSmiles">
+                <div id="close_smiles"><img src="/images/icon_delete20.png" @click="showSmiles = false"></div>
+                <div id="smiles_block">
+                    <template v-for="n in 60">
+                        <div class="smile" :key="'smile_' + n" @click="insertSmile(n)">
+                            <span>{{smile(n)}}</span>
+                            <img :src="'/images/smiles/' + smile(n) + '.gif'">
+                        </div>
+                        <br v-if="n % 10 == 0" :key="'smile_br_' + n"/>
+                    </template>
+                </div>
+                <div id="smiles_link"><a href="http://www.kolobok.us/" target="_blank">www.kolobok.us</a></div>
+            </div>
             
             <table id="chat_layout">
                 <tr>
@@ -90,6 +109,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import sanitizeHTML from 'sanitize-html'
+import insertTextAtCursor from 'insert-text-at-cursor'
 
 import replaceZerosMixin from '../replace-zeros-mixin'
 import storage from '../storage'
@@ -132,6 +152,7 @@ export default {
     this.$usersReloadInterval = setInterval(this.reloadUsers, USERS_RELOAD_INT)
     this.$usersPostInterval = setInterval(this.postUsers, USERS_POST_INT)
     return {
+      showSmiles: false,
       tabId: 'chat',
       callsign: callsign,
       name: stored && stored.name ? stored.name : null,
@@ -153,6 +174,12 @@ export default {
     clearInterval(this.$usersPostInterval)
   },
   methods: {
+    smile (n) {
+      return n < 10 ? '0' + n : n
+    },
+    insertSmile (n) {
+      insertTextAtCursor(this.$refs.msgTextInput, ':' + this.smile(n) + ':')
+    },
     chatUpdate () {
       if (chatService.data && chatService.data.length) {
         for (const msg of chatService.data) {
@@ -164,6 +191,7 @@ export default {
               msg.to = to.split(/\s?\u21d2\s?/).map(item => item.trim())
               msg.to.shift()
             }
+            msg.text = msg.text.replace(/:(\d\d):/g, '<image src="/images/smiles/$1.gif"/>')
         }
         this.messages = chatService.data
       }
@@ -184,6 +212,7 @@ export default {
     buttonClick () {
       if (this.buttonDisabled) return
       this.pending = true
+      this.showSmiles = false
       this.post({'message': this.message,
         'name': this.name})
         .then(() => { 

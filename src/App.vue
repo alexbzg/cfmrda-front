@@ -10,7 +10,7 @@
             Admin <template v-if="mscData.unsortedQsl">({{mscData.unsortedQsl}})</template>
             </router-link>
             <router-link to="/awards">Awards</router-link>
-            <router-link to="/callsignsRda">RDA Search</router-link>
+            <router-link to="/callsignsRda">RDA_search</router-link>
             <router-link to="/cluster">Cluster</router-link>
             <router-link to="/cfm" v-if="userCallsign" id="chat">CFM RDA</router-link>
             <router-link to="/uploads" v-if="userCallsign">Загрузки</router-link>

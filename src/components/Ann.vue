@@ -26,8 +26,14 @@
                     <span id="anons_note">Раздел предназначен <u>только</u> для анонса RDA-экспедиций.</span>
                     <table id="anons_form">
                         <tr>
-                            <td><input type="text" id="anons_title" v-model="newAnn.caption"></td>
-                            <td><input type="text" id="anons_date" v-model="newAnn.period"></td>
+                            <td>
+                                <input type="text" id="anons_title" v-model="newAnn.caption"
+                                    class="no_latinize"/>
+                            </td>
+                            <td>
+                                <input type="text" id="anons_date" v-model="newAnn.period"
+                                    class="no_latinize">
+                            </td>
                         </tr>
                         <tr>
                             <td class="note">название сообщения</td>
@@ -35,7 +41,8 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <textarea id="anons_text" v-model="newAnn.text"></textarea><br/>
+                                <textarea id="anons_text" v-model="newAnn.text" class="no_latinize">
+                                </textarea><br/>
                                 <input type="submit" class="btn" value="Отправить" 
                                     :disabled="!validated" @click="postAnn()">
                             </td>

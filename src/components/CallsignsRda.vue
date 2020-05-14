@@ -86,7 +86,8 @@
                         </datepicker>
                     </td>
                     <td class="comment no_border">
-                        <input type="text" v-model="newEntry.comment" placeholder="Комментарий">
+                        <input type="text" v-model="newEntry.comment" placeholder="Комментарий" 
+                            class="no_latinize">
                     </td>
                 </tr>
                 <tr>  

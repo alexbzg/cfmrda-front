@@ -2359,6 +2359,9 @@ table#paper_qsl_list td.checked{
 
 /* ==========================================     C H A T  ====================================================== */
 
+#chat{
+	position: relative;
+}
 
 table#message_form{
     width: 1010px;
@@ -2403,6 +2406,48 @@ table#message_form button{
     width: 50px;
     padding: 3px;
 }
+
+table#message_form #smile_btn{
+    margin: 0 30px 0 10px;
+    cursor: pointer;
+}
+
+
+#smiles{
+	position: absolute;
+	top: 50px;
+	left: 150px;
+	border: 1px solid #777;
+	box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* Параметры тени */
+	background-color: #fff;
+}
+#smiles_block{
+	padding: 0 20px;
+}
+.smile{
+	width: 80px;
+	display: inline-block;
+	font-size: 10px;
+	color: #777;
+	padding: 0 0 30px 0;
+	text-align: center;
+	cursor: pointer;
+}
+#close_smiles{
+	text-align: right;
+	cursor: pointer;
+	padding: 3px 3px 0 0;
+}
+#smiles_link{
+	text-align: right;
+	font-size: 10px;
+}
+#smiles_link a{
+	color: #777;
+	text-decoration: none;
+}
+
+
 
 
 
@@ -2469,6 +2514,7 @@ table#chat_window td{
 }
 table#chat_window tr{
     border: 1px solid #eee;
+    padding-bottom: 5px;
 }
 table#chat_window td.call{
 	padding: 5px 5px;
@@ -2926,6 +2972,122 @@ table#callsign_rda td.top a{
 	text-decoration: none;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================     R D A   W A N T E D  ====================================================== */
+
+
+#rda_wanted{
+	margin: 20px auto 200px auto;
+	text-align: center;
+}
+table#add_call_table{
+	margin: 0px auto 20px auto;
+ 	border-collapse: collapse;
+}
+table#add_call_table td.note{
+	vertical-align: top;
+	text-align: center;
+	font-size: 12px;
+	color: #999;
+}
+
+table#add_call_table input#add_call{
+	width: 200px;
+	font-weight: bold;
+	font-size: 18px;
+	padding: 3px;
+	margin-right: 10px;
+}
+table#add_call_table input#add_comment{
+	width: 200px;
+	padding: 3px;
+	margin-right: 10px;
+}
+table#add_call_table input#add_call.error{
+	background-color: #fff;
+}
+
+table#rda_wanted_list{
+	margin: 30px auto;
+ 	border-collapse: collapse;
+}
+table#rda_wanted_list td{
+	vertical-align: top;
+	text-align: center;
+	border: 1px solid #dfedfd;
+	padding: 20px;
+}
+table#rda_wanted_list td.call{
+	font-weight: bold;
+	padding: 20px 30px;
+	font-size: 22px;
+}
+table#rda_wanted_list td.call span{
+	font-weight: normal;
+	font-size: 12px;
+}
+table#rda_wanted_list td.admin_delete{
+	border: none;
+}
+table#rda_wanted_list td.admin_delete img{
+	cursor: pointer;
+}
+table#rda_wanted_list td.info{
+	font-size: 12px;
+	color: #999;
+}
+table#rda_wanted_list td.info input.informer_call{
+	width: 300px;
+	font-weight: bold;
+}
+table#rda_wanted_list td.info input.rda_data{
+	width: 300px;
+	margin-top: 10px;
+}
+table#rda_wanted_list td.top{
+	font-weight: bold;
+	background-color: #e7f2ff;
+	font-size: 16px;
+	color: #333;
+}
+
+table#rda_wanted_list input.btn{
+	margin-top: 10px;
+}
+
+table#rda_wanted_list td.messages{
+	padding: 20px 0;
+}
+
+.rda_message{
+	border-top: 1px solid #e7f2ff;
+	text-align: left;
+	padding: 0;
+}
+.rda_informer{
+	font-weight: bold;
+	font-size: 12px;
+	padding: 3px 10px;
+	background-color: #e7f2ff;
+	display: block;
+}
+
+.rda_info{
+	padding: 10px 20px 20px 20px;
+	display: block;
+}
 
 
 
