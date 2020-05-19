@@ -24,7 +24,7 @@
                         </td>
                         <td>
                             <img id="smile_btn" src="/images/smiles/01.gif"
-                                @click="showSmiles = !showSmiles"/>
+                                @click="showSmilies = !showSmilies"/>
                         </td>
                         <td>
                             <button @click="buttonClick()" :disabled="buttonDisabled">OK</button>
@@ -39,19 +39,8 @@
                 </tbody>
             </table>
 
-            <div id="smiles" v-show="showSmiles">
-                <div id="close_smiles"><img src="/images/icon_delete20.png" @click="showSmiles = false"></div>
-                <div id="smiles_block">
-                    <template v-for="n in 70">
-                        <div class="smile" :key="'smile_' + n" @click="insertSmile(n)">
-                            <span>{{smile(n)}}</span>
-                            <img :src="'/images/smiles/' + smile(n) + '.gif'">
-                        </div>
-                        <br v-if="n % 10 == 0" :key="'smile_br_' + n"/>
-                    </template>
-                </div>
-                <div id="smiles_link"><a href="http://www.kolobok.us/" target="_blank">www.kolobok.us</a></div>
-            </div>
+            <smilies v-show="showSmilies" @hide="hideSmilies" @smilie-click="insertSmilie">
+            </smilies>
 
             <table id="chat_layout">
                 <tr>
@@ -116,6 +105,7 @@ import storage from '../storage'
 import {dataService, chatPost} from '../api'
 
 import ClusterTable from './ClusterTable'
+import Smilies from './Smilies'
 
 const CHAT_STORAGE_KEY = 'chat'
 
@@ -133,7 +123,7 @@ const MSG_SANITIZE_HTML_SETTINGS = {
 
 export default {
   mixins: [replaceZerosMixin],
-  components: {ClusterTable},
+  components: {ClusterTable, Smilies},
   name: 'Chat',
   data () {
     const stored = storage.load(CHAT_STORAGE_KEY)
@@ -143,7 +133,7 @@ export default {
     else if (this.$store.getters.userCallsign)
       callsign = this.$store.getters.userCallsign
     return {
-      showSmiles: false,
+      showSmilies: false,
       tabId: 'chat',
       callsign: callsign,
       name: stored && stored.name ? stored.name : null,
@@ -175,11 +165,11 @@ export default {
     clearInterval(this.$usersPostInterval)
   },
   methods: {
-    smile (n) {
-      return n < 10 ? '0' + n : n
+    insertSmilie (smilie) {
+      insertTextAtCursor(this.$refs.msgTextInput, ':' + smilie + ':')
     },
-    insertSmile (n) {
-      insertTextAtCursor(this.$refs.msgTextInput, ':' + this.smile(n) + ':')
+    hideSmilies () {
+      this.showSmilies = false
     },
     chatUpdate () {
       if (this.chatService.data && this.chatService.data.length) {
