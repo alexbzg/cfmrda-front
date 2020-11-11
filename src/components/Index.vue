@@ -97,8 +97,15 @@
 
             <table id="rda_table" v-if="showDetails">
             <tr><td colspan="2" id="csv_link">
-                <a :href="'/aiohttp/download/qso/' + callsignValid" target="_blank" rel="noopener">
-                    <img src="/images/download.png" title="Download CSV file" />
+                <a :href="'/aiohttp/download/qso/' + callsignValid + '/csv'"
+                    target="_blank" rel="noopener">
+                    <img src="/images/download.png" title="Download your CSV file" />
+                </a>
+                <a href="/html/csv.html" target="_blank" rel="noopener">
+                    <img src="/images/icon_compare_csv.png" title="Compare two CSV files" />
+                </a>
+                <a href="/html/csv_search.html" target="_blank" rel="noopener">
+                    <img src="/images/icon_search_csv.jpg" title="Search CFMD RDA in the CSV file" />
                 </a>
             </td></tr>
 
@@ -227,7 +234,7 @@
                 <td class="uploader menu">Uploader</td>
                 <td class="uploaded menu">Uploaded</td>
             </tr>
-            <tr v-for="(item, idx) in recentUploads" :key="idx" 
+            <tr v-for="(item, idx) in recentUploads" :key="idx"
                 :class="{not_activator: item.activators && item.activators.filter(act => !act.includes(item.uploader)).length}">
                 <td class="rda">
                     <view-upload-link v-for="(rda, rdaIdx) in item.rda" :key="rdaIdx"

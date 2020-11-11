@@ -3,7 +3,7 @@ import rdaShort from '../rdaShort.json'
 export const BANDS = ['1.8', '3.5', '7', '10', '14', '18', '21', '24', '28']
 
 export const BANDS_WL = {'160M': '1.8', '80M': '3.5', '40M': '7', 
-        '30M': '10', '20M': '14', '14M': '20', '17M': '18', '15M': '21', 
+        '30M': '10', '20M': '14', '17M': '18', '15M': '21', 
         '12M': '24', '10M': '28'}
 
 export function orderedBands() {

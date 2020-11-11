@@ -29,6 +29,8 @@ const CfmQso = () => import(/* webpackChunkName: "cfm_qso" */ './../components/C
 const Admin = () => import(/* webpackChunkName: "admin" */ './../components/Admin.vue')
 const QslAdmin = () => import(/* webpackChunkName: "admin" */ './../components/QslAdmin.vue')
 const CallsignsAdmin = () => import(/* webpackChunkName: "admin" */ './../components/CallsignsAdmin.vue')
+const UsrRegAdmin = () => import(/* webpackChunkName: "admin" */ './../components/UsrRegAdmin.vue')
+
 
 const AutoRegistration = () => import(/* webpackChunkName: "auto_reg" */ './../components/AutoRegistration.vue')
 
@@ -92,6 +94,11 @@ const router = new Router({
           path: 'callsigns',
           name: 'CallsignsAdmin',
           component: CallsignsAdmin
+        },
+        {
+          path: 'usr_reg',
+          name: 'UsrRegAdmin',
+          component: UsrRegAdmin
         },
         {
           path: 'uploads',

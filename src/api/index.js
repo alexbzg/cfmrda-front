@@ -45,7 +45,7 @@ export function get (URL) {
     .catch(onError)
 }
 
-function dataPost(url, data) {
+export function dataPost(url, data) {
   return post (url, data)
     .then(response => {
       return response.data

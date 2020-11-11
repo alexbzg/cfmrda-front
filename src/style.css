@@ -897,6 +897,9 @@ table#rda_table td.rda_letters{
 table#rda_table td#csv_link{
 	text-align: center;
 }
+table#rda_table td#csv_link a{
+	margin: 0 25px;
+}
 table#rda_table td#csv_link img{
 	width: 70px;
 }
@@ -3024,10 +3027,10 @@ table#rda_wanted_list{
  	border-collapse: collapse;
 }
 table#rda_wanted_list td{
-	width: 350px;
+	width: 400px;
 	vertical-align: top;
 	text-align: center;
-	border: 1px solid #dfedfd;
+	border: 1px solid #bfdbfd;
 	padding: 20px;
 }
 table#rda_wanted_list td.call{
@@ -3046,49 +3049,39 @@ table#rda_wanted_list td.admin_delete{
 table#rda_wanted_list td.admin_delete img{
 	cursor: pointer;
 }
-table#rda_wanted_list td.info{
-	font-size: 12px;
-	color: #999;
-}
-table#rda_wanted_list td.info input.informer_call{
-	width: 300px;
-	font-weight: bold;
-}
-table#rda_wanted_list td.info input.rda_data{
-	width: 300px;
-	margin-top: 10px;
-}
 table#rda_wanted_list td.top{
 	font-weight: bold;
 	background-color: #e7f2ff;
 	font-size: 16px;
 	color: #333;
 }
-
 table#rda_wanted_list input.btn{
 	margin-top: 10px;
 }
 
-table#rda_wanted_list td.messages{
-	padding: 20px 0;
-}
-
-.rda_message{
-	border-top: 1px solid #e7f2ff;
-	text-align: left;
-	padding: 0;
-}
-.rda_informer{
-	font-weight: bold;
+table#rda_wanted_list td.messages .only_registered{
+	border: 1px solid #c77;
+	color: #555;
+	background-color: #fff5c1;
+	padding: 10px;
 	font-size: 12px;
-	padding: 3px 10px;
-	background-color: #e7f2ff;
-	display: block;
+}
+table#rda_wanted_list td.messages .add_comment_form{
+	font-size: 12px;
+	color: #999;
+	font-style: italic;
+
 }
 
-.rda_info{
-	padding: 10px 20px 20px 20px;
+table#rda_wanted_list td.messages input.rda_data{
+	width: 400px;
+	margin-top: 10px;
+}
+
+table#rda_wanted_list td.messages span.rda_message{
 	display: block;
+	margin: 0 0 20px 0;
+	text-align: left;
 }
 
 
@@ -3319,5 +3312,32 @@ table#gallery img{
 	border: 1px solid #ccc;
 	box-shadow: 3px 3px 6px rgba(0,0,0,0.3);
 }
+
+
+
+
+
+
+/* ==========================================     U S E R   R E G I S T E R  ========================================= */
+
+#usr_reg{
+	width: 400px;
+	text-align: left;
+	margin: 50px auto;
+}
+#usr_reg input{
+	margin: 0 20px 30px 20px;
+	font-weight: bold;
+}
+
+#usr_reg span{
+	font-size: 10px;
+	color: #777;
+}
+
+
+
+
+
 
 
