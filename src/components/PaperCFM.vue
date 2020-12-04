@@ -83,6 +83,7 @@
                     {{img.caption}}
                     <input type="file" :name="img.type"
                         :ref="'fileInput_' + img.type"
+                        accept="image/png, image/jpeg"
                         :class="{error: validationErrors[img.type + '.name']}"
                         @change="qslImageChange(img.type, $event)"
                     /><br/>
