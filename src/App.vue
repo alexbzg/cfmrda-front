@@ -12,7 +12,8 @@
             <router-link to="/awards">Awards</router-link>
             <router-link to="/callsignsRda">RDAsearch</router-link>
             <router-link to="/cluster">Cluster</router-link>
-            <router-link to="/cfm" v-if="userCallsign" id="chat">CFM RDA</router-link>
+            <a href="http://cfmrda.ru:8000" target="_balnk" rel="nofollow">Cabinet</a>
+            <router-link to="/cfm" v-if="userCallsign">CFM RDA</router-link>
             <router-link to="/uploads" v-if="userCallsign">Загрузки</router-link>
             <router-link to="/stats">Stats</router-link>
             <router-link to="/static/faq">FAQ</router-link>
