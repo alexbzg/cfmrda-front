@@ -1815,9 +1815,37 @@ table#add_paper_qsl td.qsl_image img, table#paper_qsl_check td.qsl_image img{
 	max-width: 1000px;
 	max-height: 700px;
 }
+table#paper_qsl_check td.qsl_image img{
+	border: 1px solid #aaa;
+}
 table#add_paper_qsl td.qsl_upload input{
 	margin-left: 10px;
 }
+
+
+div#rotate_btns{
+	display: float;
+	float: right;
+	width: 30px;
+	cursor: pointer;
+	margin-left: 10px;
+}
+table#paper_qsl_check td.qsl_image div#rotate_btns img{
+	border: none;
+	margin-bottom: 10px;
+}
+table#paper_qsl_check td.qsl_image img.rotate_left{
+	transform: rotate(-90deg);
+}
+table#paper_qsl_check td.qsl_image img.rotate_right{
+	transform: rotate(90deg);
+}
+
+
+
+
+
+
 
 
 

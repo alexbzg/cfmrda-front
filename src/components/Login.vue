@@ -3,35 +3,30 @@
         <div id="login_register">
 
             <template v-if="mode !== 'passwordChange'">
-                <b>Позывной</b><br/>
-                <input type="text" name="callsign_input" id="callsign_input" v-model.trim="login.callsign" 
+                <b>Callsign</b><br/>
+                <input type="text" name="callsign_input" id="callsign_input" v-model.trim="login.callsign"
                     :class="{error: validationErrors.callsign}" v-capitalize/>
                 <br/>
             </template>
 
             <template v-if="mode !== 'passwordRequest'">
-                <b>Пароль</b> <span class="note">(минимум 8 символов)</span><br/>
-                <input type="password" name="password_input" id="password_input" 
+                <b>Password</b> <span class="note"> (min. 8 symbols)</span><br/>
+                <input type="password" name="password_input" id="password_input"
                     :class="{error: validationErrors.password}"
                     v-model="login.password"><br/>
             </template>
 
             <div id="register" v-if="mode === 'register'">
-<!--                <br/><span class="red"><b><u>Регистрация необходима только активаторам для загрузки логов!</u></b></span><br/><br/>  -->
                 <b>Email</b><br/>
-                <input type="text" name="email_input" id="email_input" 
+                <input type="text" name="email_input" id="email_input"
                     :class="{error: validationErrors.email}"
                     v-model.trim="login.email"><br/>
                 <span class="note_red">
-                    Email должен быть <b>обязательно</b> тот, который показывается на вашей странице на <b>QRZ.com</b>!<br/>
-                    На этот email будет отправлено письмо с ссылкой. Кликните по ней для завершения регистрации.<br/><br/>                    
+                    Email должен быть <b>обязательно</b> тот, который показывается на вашей странице на <b>QRZ.com</b>!<br/>На этот email будет отправлено письмо с ссылкой. Кликните по ней для завершения регистрации.<br/><b>Если вы не зарегистрированы на QRZ.com</b> или <b>просто не получается зарегистрироваться</b>,<br/>напишите нам через форму Contact (см. меню).<br/><br/>
                 </span>
                 <span class="note_grey">
-                    Так сделано для дополнительной проверки подлинности регистрируемого позывного.<br/>
-                    QRZ.com выбран потому, что по запросу отправляет email позывного. QRZ.ru такой возможности не даёт.<br/><br/>
-                </span>
-                <span class="note_red">
-                    <b>Если вы не зарегистрированы на QRZ.com</b> или <b>просто не получается зарегистрироваться</b>,<br/>напишите нам через форму Contact (см. меню).
+                    Email is <b>required</b> that the one shown on your page at <b> QRZ.com </b>! <br/>Confirmation link will be sent to this email. Click on it to complete registration.
+                    <br/><b>If you are not registered on QRZ.com</b> or <b>simply cannot register</b> write to us via the Contact form (see Мenu).<br/><br/>
                 </span>
             </div>
 
@@ -45,26 +40,26 @@
             </div>
 
             <template v-if="mode == 'login'">
-                <input type="checkbox" name="remember_input" id="remember_input" 
-                    v-model="remember"> Запомнить меня<br/>
+                <input type="checkbox" name="remember_input" id="remember_input"
+                    v-model="remember"> Keep me logged<br/>
             </template>
-            <input type="button" name="login_btn" id="login1_btn" 
+            <input type="button" name="login_btn" id="login1_btn"
                 value="OK" class="btn"
                 v-show="!pending && validated" @click="loginClick()"/>
             <div v-if="response" id="message" v-html="response"></div>
             <div id="login_bottom" v-if="mode !== 'passwordChange'">
-                <a id="pass_recovery" href="#" 
+                <a id="pass_recovery" href="#"
                     @click="mode = (mode === 'passwordRequest' ? 'login' : 'passwordRequest')">
-                    {{mode === 'passwordRequest' ? 'Вход/Регистрация' : 'Восстановление пароля'}}
+                    {{mode === 'passwordRequest' ? 'Login/Regisration' : 'Password recovery'}}
                 </a>
-                <input type="button" name="register_btn" id="login2_btn" 
+                <input type="button" name="register_btn" id="login2_btn"
                     v-if="mode !== 'passwordRequest'"
-                    :value="mode === 'register' ? 'Вход' : 'Регистрация'" class="btn"
+                    :value="mode === 'register' ? 'Login' : 'Regisration'" class="btn"
                     @click="mode = mode === 'register' ? 'login' : 'register'"/>
             </div>
         </div>
     </div>
-   
+
 </template>
 
 <script>
@@ -127,7 +122,7 @@ export default {
               this.mode = 'login'
           }
         })
-        .catch((e) => { 
+        .catch((e) => {
           if (this.mode === 'register' || this.mode === 'passwordRequest') {
             this.resetRecaptcha()
           }
@@ -135,8 +130,8 @@ export default {
             this.response = e.message
           }
         })
-        .finally(() => { 
-          this.pending = false 
+        .finally(() => {
+          this.pending = false
         })
     },
     loginClick: debounce(function () {

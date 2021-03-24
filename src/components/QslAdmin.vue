@@ -40,11 +40,11 @@
                     </qsl-images>
                 </td>
                 <td class="qsl_cfm">
-                    <input type="checkbox" v-model="item.cfm" 
+                    <input type="checkbox" v-model="item.cfm"
                         @change="item.not_cfm = item.cfm ? false : item.not_cfm">
                 </td>
                 <td class="qsl_not_cfm">
-                    <input type="checkbox" v-model="item.not_cfm" 
+                    <input type="checkbox" v-model="item.not_cfm"
                         @change="item.cfm = item.not_cfm ? false : item.cfm">
                 </td>
                 <td class="qsl_comm">
@@ -56,7 +56,17 @@
             </tr>
             <tr v-if="activeImage && activeImage.qso === item">
                 <td colspan="12" class="qsl_image">
-                    <img :src="activeImage.src" @click="activeImage = null"/>
+                    <div id="rotate_btns">
+                      <img id="icon_rotate_left" src="/images/icon_rotate_left.jpg"
+                        @click="setImageRotate('left')"
+                        title="Повернуть QSL" />
+                      <img id="icon_rotate_right" src="/images/icon_rotate_right.jpg"
+                        @click="setImageRotate('right')"
+                        title="Повернуть QSL" /><br/>
+                    </div>
+                    <img :src="activeImage.src" @click="activeImage = null"
+                        :class="{rotate_left: imageRotate === 'left',
+                            rotate_right: imageRotate ===  'right'}"/>
                 </td>
             </tr>
         </tbody>
@@ -91,7 +101,8 @@ export default {
       pending: false,
       success: false,
       response: null,
-      activeImage: null
+      activeImage: null,
+      imageRotate: null
     }
   },
   methods: {
@@ -101,6 +112,9 @@ export default {
     post(data) {
       data.token = this.$store.getters.userToken
       return qslAdmin(data)
+    },
+    setImageRotate (dir) {
+      this.imageRotate = (this.imageRotate === dir ? null : dir)
     },
     loadList() {
       this.post({})
@@ -132,6 +146,7 @@ export default {
     },
     showImage (imgData) {
       this.activeImage = imgData
+      this.imageRotate = null
     }
   },
   computed: {
@@ -140,7 +155,7 @@ export default {
       const r = []
       for (const qsl of this.qslList) {
         if (qsl.cfm || qsl.not_cfm) {
-          r.push({id: qsl.id, 
+          r.push({id: qsl.id,
             state: !!qsl.cfm,
             qslId: qsl.qslId,
             comment: qsl.comment})

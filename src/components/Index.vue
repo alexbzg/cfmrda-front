@@ -346,8 +346,10 @@ export default {
       }
       rda.push(fullGroup)
     }
+    
+    const callsign = this.$route.query.callsign ? this.$route.query.callsign :
+        storage.load(STORAGE_KEY_CALLSIGN)
 
-    const callsign = storage.load(STORAGE_KEY_CALLSIGN)
     return {
       callsign: callsign,
       callsignError: false,
