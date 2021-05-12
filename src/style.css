@@ -739,6 +739,7 @@ table.select_view td.selected{
 }
 table.select_view td.no_border{
 	border: none;
+	line-height: 12px;
 }
 table.select_view td.col_no_border{
 	padding: 0;
@@ -871,6 +872,11 @@ span.show_details{
 	font-weight: bold;
 	cursor: pointer;
 	padding: 20px 0;
+	line-height: 12px;
+}
+span.show_details a.span{
+	font-weight: normal;
+	font-size: 12px;
 }
 
 
@@ -2597,6 +2603,21 @@ table#chat_window td.message{
 
 
 
+
+#links_to_rda {
+	padding-top: 20px;
+	width: 1142px;
+	margin: 0 auto;
+}
+#links_to_rda span{
+	padding: 0 5px;
+	font-size: 14px;
+	color: #777;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+
 table#table_stats{
 	margin: 15px auto 50px auto;
  	border-collapse: collapse;
@@ -2606,11 +2627,12 @@ table#table_stats_list{
 }
 table#table_stats td, table#table_stats_list td{
 	width: 100px;
-	padding: 10px 0px;
+	padding: 5px 0px;
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
 	vertical-align: middle;
+	line-height: 16px;
 }
 table#table_stats td.top{
 	font-weight: bold;
@@ -2641,7 +2663,7 @@ table#table_stats td.stats_detail a{
 
 
 #window_stats{
-	height: 500px;
+	height: 600px;
 	overflow: auto;
 }
 
@@ -3319,6 +3341,11 @@ table#anons_form textarea{
 	margin: 20px auto;
 	text-align: left;
 	padding: 10px 50px;
+}
+
+table#anons_form input:disabled{
+	background-color: #aaa;
+	cursor: default;
 }
 
 

@@ -76,7 +76,7 @@
                             {{hunterRank[_band].count}}</td>
                     </tr>
                     <tr>
-                        <td class="no_border">Место в рейтинге</td>
+                        <td class="no_border">Место в рейтинге<br/><span class="note">Ranking place</span></td>
                         <td>{{hunterRank['9BAND'].rank}}</td>
                         <td>{{hunterRank.bandsSum.rank}}</td>
                         <td class="col_no_border"></td>
@@ -92,7 +92,7 @@
 
             <span class="show_details" @click="showDetails = !showDetails"
                 v-if="callsignValid && hunterData">
-                {{showDetails ? 'Свернуть' : 'Подробно по RDA районам для ' + replace0(callsignValid)}}
+                {{showDetails ? 'Свернуть - Close' : 'Подробно по RDA районам для ' + replace0(callsignValid) + ' &nbsp;&nbsp; - &nbsp;&nbsp; Details on RDA regions for ' + replace0(callsignValid) + ' '}}
             </span>
 
             <table id="rda_table" v-if="showDetails">
@@ -199,7 +199,7 @@
     <ann></ann>
 
     <rank-table :rank-data-top="rankData" :callsign-rankings="hunterData ? hunterData.rank : null"
-        :callsign="callsignValid" @callsign-click="callsignClick"/>
+        :callsign="callsignValid" @callsign-click="callsignClick" :loading="rankingsLoading"/>
 
     <div class="list" v-if="mscData.userActivity">
 
@@ -323,7 +323,10 @@ export default {
   components: {RankTable, Selector, ViewUploadLink, Ann},
   data () {
     getRankings()
-      .then((data) => {this.rankData = data})
+      .then((data) => {
+        this.rankData = data
+        this.rankingsLoading = false
+      })
     getRecentUploads()
       .then((data) => {this.recentUploads = data})
     getDeletedUploads()
@@ -346,7 +349,7 @@ export default {
       }
       rda.push(fullGroup)
     }
-    
+
     const callsign = this.$route.query.callsign ? this.$route.query.callsign :
         storage.load(STORAGE_KEY_CALLSIGN)
 
@@ -368,7 +371,8 @@ export default {
       showCallsignsEdit: false,
       callsignsEdit: null,
       callsignsEditError: null,
-      message: null
+      message: null,
+      rankingsLoading: true
     }
   },
   mounted () {
