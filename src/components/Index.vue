@@ -211,8 +211,14 @@
                     <td class="top" colspan="2">QSL CFM</td>
                 </tr>
                 <tr>
-                    <td class="top top2">на проверке</td>
-                    <td class="top top2">проверено</td>
+                    <td class="top top2">
+                        на проверке<br/>
+                        {{mscData.userActivityTotal.qslWait}}
+                    </td>
+                    <td class="top top2">
+                        проверено<br/>
+                        {{mscData.userActivityTotal.qslToday}}
+                    </td>
                 </tr>
                 <tr v-for="item in mscData.userActivity" :key="item.callsign">
                     <td class="callsign">{{item.callsign}}</td>

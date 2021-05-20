@@ -164,6 +164,15 @@ const store = new Vuex.Store({
     },
     [SET_MSC_MUTATION] (state, payload) {
       state.mscData = payload
+      state.mscData.userActivityTotal = {qslWait: 0, qslToday: 0}
+      if (payload.userActivity) {
+        state.mscData.userActivityTotal = payload.userActivity.reduce((acc, val) => {
+          return {
+            qslWait: acc.qslWait + val.qslWait,
+            qslToday: acc.qslToday + val.qslToday
+          }
+        }, {qslWait: 0, qslToday: 0})
+      }
     },
     [SET_DX_MUTATION] (state, payload) {
       if (payload.length) {
