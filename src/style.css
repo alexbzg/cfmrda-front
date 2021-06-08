@@ -757,6 +757,32 @@ table.select_view td.separator{
 
 
 
+#rating_menu select{
+	border: 1px solid #dfedfd;
+	border-radius: 0;
+	margin: 0 15px;
+	font-weight: bold;
+	background-color: #e7f2ff;
+	color: #009;
+	padding: 7px 15px;
+	text-decoration: underline;
+}
+
+#rating_menu option {
+  background-color: #fff;
+  vertical-align: middle;
+}
+#rating_menu option:checked {
+  background-color: #ffffca;
+  color: #333;
+}
+
+
+
+
+
+
+
 .view_menu{
 	text-align: center;
 	width: 1030px;

@@ -174,9 +174,12 @@
                                     <td class="mode">{{item.mode}}</td>
                                     <td class="band">{{item.band}}</td>
                                     <td class="call">
-                                         <view-upload-link :id="item.uploadId">
+                                         <view-upload-link :id="item.uploadId" v-if="item.uploadId">
                                             {{item.count}}
                                         </view-upload-link>
+                                        <span class="qso_count" v-else>
+                                            {{item.count}}
+                                        </span>
                                     </td>
                                     <td class="uploader">
                                         {{item.uploader}}

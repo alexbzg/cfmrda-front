@@ -1,7 +1,48 @@
 <template>
     <div class="list" v-if="rankDataTop">
 
-        <h4>AutoCFM RDA rating</h4>
+        <h4>The CFMRDA rating</h4>
+
+
+        <div id="rating_menu">
+
+          <select id="awards">
+            <option>9BAND RDA</option>
+            <option>RDA CHALLENGE</option>
+          </select>
+
+          <select id="country">
+            <option>World</option>
+            <option>Russia</option>
+          </select>
+
+          <select id="rda_band">
+            <option>RDA</option>
+            <option>7</option>
+            <option>10</option>
+          </select>
+
+          <select id="mode">
+            <option>MIX</option>
+            <option>CW</option>
+            <option>SSB</option>
+            <option>DIGI</option>
+          </select>
+
+          <select id="hunter_activator">
+            <option>Hunter</option>
+            <option>Activator</option>
+          </select>
+
+          <select id="place">
+            <option>TOP</option>
+            <option>Callsign</option>
+          </select>
+
+        </div>
+
+        <br/><br/><br/>
+
 
 
         <div class="view_menu">
