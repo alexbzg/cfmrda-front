@@ -128,8 +128,10 @@ export function getRDAValues () {
     })
 }
 
-export function getRankings () {
-  return get('/json/rankings.json')
+export function getRankings (countryId) {
+  const url = countryId ? `/json/countries_rankings/${countryId}.json` :
+    '/json/rankings.json'
+  return get(url)
     .then(response => {
       return response.data
     })

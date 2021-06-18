@@ -202,7 +202,9 @@
     <ann></ann>
 
     <rank-table :rank-data-top="rankData" :callsign-rankings="hunterData ? hunterData.rank : null"
-        :callsign="callsignValid" @callsign-click="callsignClick" :loading="rankingsLoading"/>
+        :callsign="callsignValid" :loading="rankingsLoading" @callsign-click="callsignClick"
+        :callsign-country="hunterData ? hunterData.country : null"
+        />
 
     <div class="list" v-if="mscData.userActivity">
 
@@ -331,16 +333,6 @@ export default {
   mixins: [rankDataMixin, replaceZerosMixin, latinizeMixin],
   components: {RankTable, Selector, ViewUploadLink, Ann},
   data () {
-    getRankings()
-      .then((data) => {
-        this.rankData = data
-        this.rankingsLoading = false
-      })
-    getRecentUploads()
-      .then((data) => {this.recentUploads = data})
-    getDeletedUploads()
-      .then((data) => {this.deletedUploads = data})
-
     const rda = []
     for (const group of rdaShort) {
       const fullGroup = {group: group.group, values: []}
@@ -366,7 +358,10 @@ export default {
       callsign: callsign,
       callsignError: false,
       callsignValid: callsign,
-      rankData: {},
+      rankData: {
+        world: null,
+        country: null
+      },
       rda: rda,
       rdaQso: {hunter: null, activator: null},
       recentUploads: [],
@@ -385,6 +380,15 @@ export default {
     }
   },
   mounted () {
+    getRankings()
+      .then((data) => {
+        this.rankData.world = data
+        this.rankingsLoading = false
+      })
+    getRecentUploads()
+      .then((data) => {this.recentUploads = data})
+    getDeletedUploads()
+      .then((data) => {this.deletedUploads = data})
     this.loadHunter()
   },
   beforeDestroy () {
@@ -422,17 +426,25 @@ export default {
         this.hunterData = null
         this.showDetails = false
         this.callsignError = false
+        this.rankData.country = null
         if (this.callsign === this.userCallsign)
           this.callsignsEdit = this.oldCallsigns.all.join(' ')
         getHunterDetails(this.callsign)
           .then((data) => {
             this.hunterData = data
             this.updateRdaCfm()
-            if (data.newCallsign) {
-              this.callsign = data.newCallsign
-              this.setCallsignValid()
-            }
-            if (!data) {
+            if (data) {
+                if (data.newCallsign) {
+                  this.callsign = data.newCallsign
+                  this.setCallsignValid()
+                }
+                if (data && data.country) {
+                  this.getRankings(data.country.id)
+                    .then((data) => {
+                      this.rankData.country = data
+                  })
+                }
+            } else {
               this.callsignError = true
               this.$callsignErrorTimeout =
                 setTimeout(() => { this.callsignError = false }, 10000)

@@ -122,20 +122,22 @@ export default {
   name: 'rankTable',
   components: {RadioBtnsMode},
   mixins: [rankDataMixin, replaceZerosMixin],
-  props: ['rankDataTop', 'callsignRankings', 'callsign', 'loading'],
+  props: ['rankDataTop', 'callsignRankings', 'callsignCountry', 'callsign', 'loading'],
   data () {
     return {
       params: {
         role: 'hunter',
         mode: 'total',
         band: '9BAND',
-        type: 'top'
+        type: 'top',
+        country: 'world'
       },
       rankDataSlice: null,
       sliceParams: {
         role: null,
         mode: null,
-        band: null
+        band: null,
+        country: 'world'
       }
     }
   },
@@ -145,7 +147,8 @@ export default {
         role: 'hunter',
         mode: 'total',
         band: '9BAND',
-        type: this.params.type
+        type: this.params.type,
+        country: this.params.country
       }
     }
   },
@@ -154,18 +157,21 @@ export default {
       handler () {
         if (this.params.type === 'callsign') {
           if (this.params.role !== this.sliceParams.role || this.params.mode !== this.sliceParams.mode ||
-            this.params.band !== this.sliceParams.band) {
-            if (this.callsignRankings && this.callsignRankings[this.params.role] &&
-              this.callsignRankings[this.params.role][this.params.mode] &&
-              this.callsignRankings[this.params.role][this.params.mode][this.params.band]) {
+            this.params.band !== this.sliceParams.band || this.params.country !== this.sliceParamsCountry) {
+            if (this.callsignRankings && this.callsignRankings[this.params.country] && 
+              this.callsignRankings[this.params.country][this.params.role] &&
+              this.callsignRankings[this.params.country][this.params.role][this.params.mode] &&
+              this.callsignRankings[this.params.country][this.params.role][this.params.mode][this.params.band]) {
               this.sliceParams.role = this.params.role
               this.sliceParams.mode = this.params.mode
               this.sliceParams.band = this.params.band
-              const sliceCentre = this.callsignRankings[this.params.role][this.params.mode][this.params.band][0].row
+              this.sliceParams.country = this.params.country
+              const sliceCentre = this.callsignRankings[this.params.country][this.params.role][this.params.mode][this.params.band][0].row
               const sliceRadius = Math.ceil(COLUMNS_COUNT * ROWS_COUNT / 2)
               const sliceStart = Math.max(1, sliceCentre - sliceRadius)
               getRankingsSlice([this.params.role, this.params.mode, this.params.band,
-                sliceStart, sliceCentre + sliceRadius])
+                sliceStart, sliceCentre + sliceRadius, 
+                this.params.country === 'country' ? this.callsignCountry.id : null])
                 .then((data) => {this.rankDataSlice = data})
             } else {
               this.params.type = 'top'
@@ -179,7 +185,7 @@ export default {
   computed: {
     rows () {
       const rows = []
-      const dataSrc = this.params.type === 'top' ? this.rankDataTop : this.rankDataSlice
+      const dataSrc = this.params.type === 'top' ? this.rankDataTop[this.params.country] : this.rankDataSlice
       if (dataSrc && dataSrc[this.params.role] && dataSrc[this.params.role] && dataSrc[this.params.role][this.params.mode] &&
         dataSrc[this.params.role][this.params.mode][this.params.band]) {
         const data = dataSrc[this.params.role][this.params.mode][this.params.band]
