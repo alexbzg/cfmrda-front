@@ -6,42 +6,29 @@
 
         <div id="rating_menu">
 
-          <select id="awards">
-            <option>9BAND RDA</option>
-            <option>RDA CHALLENGE</option>
+          <select id="awards" @change="awardChange" v-model="award">
+            <option value="9BAND">9BAND RDA</option>
+            <option value="bandsSum">RDA CHALLENGE</option>
           </select>
 
-          <select id="country">
-            <option>World</option>
-            <option>Russia</option>
+          <select id="country" v-model="params.country">
+            <option value="world">World</option>
+            <option value="country" v-if="callsignCountry">{{callsignCountry.name}}</option>
           </select>
 
-          <select id="rda_band">
-            <option>RDA</option>
-            <option>7</option>
-            <option>10</option>
+          <select id="mode" v-if="award != '9BAND'" v-model="params.mode">
+            <option value="total">MIX</option>
+            <option v-for="_mode in $options.MODES" :key="_mode" :value="_mode">{{_mode}}</option>
           </select>
 
-          <select id="mode">
-            <option>MIX</option>
-            <option>CW</option>
-            <option>SSB</option>
-            <option>DIGI</option>
-          </select>
-
-          <select id="hunter_activator">
-            <option>Hunter</option>
-            <option>Activator</option>
-          </select>
-
-          <select id="place">
-            <option>TOP</option>
-            <option>Callsign</option>
+          <select id="place" v-model="params.type">
+            <option value="top">TOP</option>
+            <option value="callsign">{{callsign}}</option>
           </select>
 
         </div>
 
-        <br/><br/><br/>
+        <!--br/><br/><br/>
 
 
 
@@ -79,7 +66,7 @@
                 </div>
             </template>
 
-       </div>
+       </div-->
 
        <div id="loader" v-if="loading">
         <img src="/images/spinner.gif" />
@@ -122,9 +109,10 @@ export default {
   name: 'rankTable',
   components: {RadioBtnsMode},
   mixins: [rankDataMixin, replaceZerosMixin],
-  props: ['rankDataTop', 'callsignRankings', 'callsignCountry', 'callsign', 'loading'],
+  props: ['rankDataTop', 'callsignRankings', 'callsignCountry', 'callsign', 'topLoading'],
   data () {
     return {
+      award: '9BAND',
       params: {
         role: 'hunter',
         mode: 'total',
@@ -132,6 +120,7 @@ export default {
         type: 'top',
         country: 'world'
       },
+      sliceLoading: false,
       rankDataSlice: null,
       sliceParams: {
         role: null,
@@ -142,15 +131,26 @@ export default {
     }
   },
   methods: {
-    switch9BAND () {
-      this.params = {
-        role: 'hunter',
-        mode: 'total',
-        band: '9BAND',
-        type: this.params.type,
-        country: this.params.country
+    awardChange () {
+      if (this.award === '9BAND') {
+        this.params = {
+          role: 'hunter',
+          mode: 'total',
+          band: '9BAND',
+          type: this.params.type,
+          country: this.params.country
+        }
+      } else if (this.award === 'bandsSum') {
+        this.params = {
+          role: 'hunter',
+          mode: 'total',
+          band: 'bandsSum',
+          type: this.params.type,
+          country: this.params.country
+        }
       }
     }
+
   },
   watch: {
     params: {
@@ -169,10 +169,14 @@ export default {
               const sliceCentre = this.callsignRankings[this.params.country][this.params.role][this.params.mode][this.params.band][0].row
               const sliceRadius = Math.ceil(COLUMNS_COUNT * ROWS_COUNT / 2)
               const sliceStart = Math.max(1, sliceCentre - sliceRadius)
+              this.sliceLoading = true
               getRankingsSlice([this.params.role, this.params.mode, this.params.band,
                 sliceStart, sliceCentre + sliceRadius, 
                 this.params.country === 'country' ? this.callsignCountry.id : null])
-                .then((data) => {this.rankDataSlice = data})
+                .then((data) => {
+                  this.rankDataSlice = data
+                  this.sliceLoading = false
+                })
             } else {
               this.params.type = 'top'
             }
@@ -201,6 +205,9 @@ export default {
         }
       }
       return rows
+    },
+    loading () {
+      return this.params.type === 'top' ? this.topLoading[this.params.country] : this.sliceLoading
     }
   }
 }

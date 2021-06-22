@@ -202,7 +202,7 @@
     <ann></ann>
 
     <rank-table :rank-data-top="rankData" :callsign-rankings="hunterData ? hunterData.rank : null"
-        :callsign="callsignValid" :loading="rankingsLoading" @callsign-click="callsignClick"
+        :callsign="callsignValid" :top-loading="rankingsLoading" @callsign-click="callsignClick"
         :callsign-country="hunterData ? hunterData.country : null"
         />
 
@@ -376,14 +376,18 @@ export default {
       callsignsEdit: null,
       callsignsEditError: null,
       message: null,
-      rankingsLoading: true
+      rankingsLoading: {
+        'world': false,
+        'country': false
+      }
     }
   },
   mounted () {
+    this.rankingsLoading.world = true
     getRankings()
       .then((data) => {
         this.rankData.world = data
-        this.rankingsLoading = false
+        this.rankingsLoading.world = false
       })
     getRecentUploads()
       .then((data) => {this.recentUploads = data})
@@ -439,9 +443,11 @@ export default {
                   this.setCallsignValid()
                 }
                 if (data && data.country) {
-                  this.getRankings(data.country.id)
+                  this.rankingsLoading.country = true
+                  getRankings(data.country.id)
                     .then((data) => {
                       this.rankData.country = data
+                      this.rankingsLoading.country = false
                   })
                 }
             } else {
