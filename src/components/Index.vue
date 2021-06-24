@@ -10,6 +10,9 @@
                     <td>
                         <input type="text" name="check_call_input" id="check_call_input"
                             v-capitalize v-model="callsign" @input="callsignChange()">
+                        <div class="preloader" v-if="loading">
+                            <img src="images/spinner3.gif"/>
+                        </div>
                     </td>
                     <td class="btn_space">
                         <input type="button" name="check_call_btn" value="OK" class="btn"
@@ -203,6 +206,7 @@
 
     <rank-table :rank-data-top="rankData" :callsign-rankings="hunterData ? hunterData.rank : null"
         :callsign="callsignValid" :top-loading="rankingsLoading" @callsign-click="callsignClick"
+        :callsign-loading="loading"
         :callsign-country="hunterData ? hunterData.country : null"
         />
 
@@ -332,6 +336,8 @@ export default {
   name: 'Index',
   mixins: [rankDataMixin, replaceZerosMixin, latinizeMixin],
   components: {RankTable, Selector, ViewUploadLink, Ann},
+  last_req_id: 0,
+  pending: {},
   data () {
     const rda = []
     for (const group of rdaShort) {
@@ -376,6 +382,7 @@ export default {
       callsignsEdit: null,
       callsignsEditError: null,
       message: null,
+      loading: false,
       rankingsLoading: {
         'world': false,
         'country': false
@@ -433,8 +440,17 @@ export default {
         this.rankData.country = null
         if (this.callsign === this.userCallsign)
           this.callsignsEdit = this.oldCallsigns.all.join(' ')
+        for (const req_id in this.$options.pending) {
+          this.$options.pending[req_id].cancel = true
+        }
+        const req_id = this.$options.last_req_id++
+        this.loading = true
+        this.$options.pending[req_id] = {}
         getHunterDetails(this.callsign)
           .then((data) => {
+            if (this.$options.pending[req_id].cancel) {
+              return
+            }
             this.hunterData = data
             this.updateRdaCfm()
             if (data) {
@@ -456,6 +472,15 @@ export default {
                 setTimeout(() => { this.callsignError = false }, 10000)
             }
           })
+        .finally(() => {
+          delete this.$options.pending[req_id]
+          for (const req_id in this.$options.pending) {
+            if (!this.$options.pending[req_id].cancel) {
+              return
+            }
+          }
+          this.loading = false
+        })
       }
     },
     setRdaValue (value) {
@@ -541,9 +566,9 @@ export default {
         return {count: 0, rank: '-' }
       }
       const r = {'total': emptyField(), 'bandsSum': emptyField(), '9BAND': emptyField()}
-      if (this.hunterData && this.hunterData.rank && this.hunterData.rank[this.role] &&
-        this.hunterData.rank[this.role][this.mode]) {
-        const data = this.hunterData.rank[this.role][this.mode]
+      if (this.hunterData && this.hunterData.rank && this.hunterData.rank.world &&
+        this.hunterData.rank.world[this.role] && this.hunterData.rank.world[this.role][this.mode]) {
+        const data = this.hunterData.rank.world[this.role][this.mode]
         for (const field in r) {
             if (data[field]) {
             r[field] = data[field][0]

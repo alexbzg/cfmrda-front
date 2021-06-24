@@ -68,9 +68,7 @@
 
        </div-->
 
-       <div id="loader" v-if="loading">
-        <img src="/images/spinner.gif" />
-       </div>
+       <div class="preloader" v-if="loading"><img src="images/spinner3.gif"/></div>
 
        <table class="top_100">
             <tr v-for="(row, rowIndex) in rows" :key="'topRow' + rowIndex">
@@ -109,7 +107,7 @@ export default {
   name: 'rankTable',
   components: {RadioBtnsMode},
   mixins: [rankDataMixin, replaceZerosMixin],
-  props: ['rankDataTop', 'callsignRankings', 'callsignCountry', 'callsign', 'topLoading'],
+  props: ['rankDataTop', 'callsignRankings', 'callsignCountry', 'callsign', 'topLoading', 'callsignLoading'],
   data () {
     return {
       award: '9BAND',
@@ -158,7 +156,7 @@ export default {
         if (this.params.type === 'callsign') {
           if (this.params.role !== this.sliceParams.role || this.params.mode !== this.sliceParams.mode ||
             this.params.band !== this.sliceParams.band || this.params.country !== this.sliceParamsCountry) {
-            if (this.callsignRankings && this.callsignRankings[this.params.country] && 
+            if (this.callsignRankings && this.callsignRankings[this.params.country] &&
               this.callsignRankings[this.params.country][this.params.role] &&
               this.callsignRankings[this.params.country][this.params.role][this.params.mode] &&
               this.callsignRankings[this.params.country][this.params.role][this.params.mode][this.params.band]) {
@@ -171,7 +169,7 @@ export default {
               const sliceStart = Math.max(1, sliceCentre - sliceRadius)
               this.sliceLoading = true
               getRankingsSlice([this.params.role, this.params.mode, this.params.band,
-                sliceStart, sliceCentre + sliceRadius, 
+                sliceStart, sliceCentre + sliceRadius,
                 this.params.country === 'country' ? this.callsignCountry.id : null])
                 .then((data) => {
                   this.rankDataSlice = data
@@ -207,7 +205,8 @@ export default {
       return rows
     },
     loading () {
-      return this.params.type === 'top' ? this.topLoading[this.params.country] : this.sliceLoading
+      return this.callsignLoading || (this.params.type === 'top' ? this.topLoading[this.params.country] :
+        this.sliceLoading)
     }
   }
 }

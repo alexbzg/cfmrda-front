@@ -76,7 +76,10 @@ textarea.error, input.error, select.error {
 
 
 
-
+.preloader img{
+	margin-top: 30px;
+	opacity: 0.5
+}
 
 
 
@@ -544,6 +547,7 @@ table#check_call td{
 	padding: 0 20px 0 0;
 	text-align: center;
 	color: #777;
+	vertical-align: top;
 }
 table#check_call input#check_call_input{
 	font-weight: bold;
@@ -852,7 +856,7 @@ table.select_view td.separator{
 
 table.top_100{
 	width: 95%;
-	margin: 0px auto 50px auto;
+	margin: 20px auto 50px auto;
 	border-collapse: collapse;
 }
 table.top_100 td{
