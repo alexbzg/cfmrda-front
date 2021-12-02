@@ -17,13 +17,18 @@
             <option value="country" v-if="callsignCountry">{{callsignCountry.name}}</option>
           </select>
 
+          <select id="place" v-model="params.type">
+            <option value="top">TOP</option>
+            <option value="callsign">{{callsign}}</option>
+          </select>
+
           <select id="mode" v-if="award != '9BAND'" v-model="params.mode">
             <option value="total">MIX</option>
             <option v-for="_mode in $options.MODES" :key="_mode" :value="_mode">{{_mode}}</option>
           </select>
 
           <select id="band" v-if="award === 'rating'" v-model="params.band">
-            <option value="total">TOTAL</option>
+            <option value="total">ALL</option>
             <option v-for="_band in $options.BANDS" :key="_band" :value="_band">{{_band}}</option>
           </select>
 
@@ -31,11 +36,6 @@
             <option v-for="_role in ['hunter', 'activator']" :key="_role" :value="_role">
                 {{$options.ROLES[_role]}}
             </option>
-          </select>
-
-          <select id="place" v-model="params.type">
-            <option value="top">TOP</option>
-            <option value="callsign">{{callsign}}</option>
           </select>
 
         </div>
