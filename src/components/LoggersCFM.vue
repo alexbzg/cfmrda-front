@@ -19,8 +19,8 @@
             </tr>
             <loggers-cfm-item v-for="(account, idx) in accounts" :key="idx" :account="account" 
                 :loggers="loggers"
-                @account-update="onAccountUpdate(account, $event)"
-                @account-delete="onAccountDelete(account)">
+                @account-update="onAccountUpdate(idx, $event)"
+                @account-delete="onAccountDelete(idx)">
             </loggers-cfm-item>
             <tr>
                 <td id="add_line" colspan="7" @click="addAccount()">
@@ -69,7 +69,8 @@ export default {
       data.token = this.userToken
       return loggersPost(data)
     },
-    onAccountUpdate (account, evtPayload) {
+    onAccountUpdate (idx, evtPayload) {
+      const account = this.accounts[idx]
       if (account.pending)
         return
       account.loginData = evtPayload.loginData
@@ -91,26 +92,26 @@ export default {
           this.$set(account, 'pending', false)
         })
     },
-    onAccountDelete (account) {
+    onAccountDelete (idx) {
+      const account = this.accounts[idx]
       if (account.pending)
         return
       if (!account.id) {
-        this.removeAccount(account)
+        this.removeAccount(idx)
         return
       }
       if (confirm("Вы действительно хотите удалить доступ? Do you really want to delete the account?")) {
         account.pending = true
         this.post({delete: account.id})
           .then(() => {
-            this.removeAccount(account)
+            this.removeAccount(idx)
           })
           .finally(() => {
             this.$set(account, 'pending', false)
           })
       }
     },
-    removeAccount (account) {
-      const idx = this.accounts.indexOf(account)
+    removeAccount (idx) {
       this.accounts.splice(idx, 1)
     },
     addAccount () {
