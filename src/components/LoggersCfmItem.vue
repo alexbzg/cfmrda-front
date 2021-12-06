@@ -15,7 +15,7 @@
             <template v-if="logger">
                 <input :type="field.includes('assword') ? 'password' : 'text'" 
                     v-for="field in loggers[logger].loginDataFields" :key="field" 
-                    v-model="loginData[field]" :placeholder="field"                
+                    v-model.trim="loginData[field]" :placeholder="field"                
                     :class='{error: validationErrors[field]}'/>
             </template>
         </td>
