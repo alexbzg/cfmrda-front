@@ -338,15 +338,27 @@
         },
         "update": {
             "type": "object",
-            "properties": {
-                "loginData": {
-                    "type": "object"
+            "oneOf": [
+                {
+                    "properties": {
+                        "loginData": {
+                            "type": "object"
+                         },
+                        "logger": {
+                            "enum": ["LoTW", "eQSL", "HAMLOG"]
+                        }
+                    },
+                    "required": ["loginData", "logger"]
                 },
-                "logger": {
-                    "enum": ["LoTW", "eQSL", "HAMLOG"]
+                {
+                    "properties": {
+                        "updateRequest": {
+                            "type": "number"
+                        }
+                    },
+                    "required": ["updateRequest"]
                 }
-            },
-            "required": ["loginData", "logger"]
+            ]
         },
         "delete": {
             "type":"number"

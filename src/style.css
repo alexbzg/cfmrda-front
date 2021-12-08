@@ -3204,12 +3204,12 @@ table.elog_stats td.top{
 }
 
 table.elog_stats td.login{
-	width: 420px;
+	width: 380px;
 	padding: 5px 0;
 	border: none;
 }
 table.elog_stats td.login input{
-	width: 180px;
+	width: 160px;
 	margin: 0 10px 0 0;
 	font-weight: bold;
 }
@@ -3218,7 +3218,7 @@ table.elog_stats td.ok{
 	border: none;
 }
 table.elog_stats td.status, table.elog_stats td.del{
-	width: 30px;
+	width: 20px;
 	border: none;
 }
 table.elog_stats td.del img{
@@ -3237,6 +3237,18 @@ table.elog_stats td#add_line{
 	border: none;
 	padding: 30px 0 0 0;
 	text-align: center;
+}
+
+table.elog_stats td.update_req{
+	border: none;
+}
+table.elog_stats td.update_req input{
+	font-size: 12px;
+	font-style: normal;
+}
+
+table.elog_stats td.update_req.top{
+	background-color: white;
 }
 
 

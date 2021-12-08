@@ -5,7 +5,7 @@
         </td>
         <td class="elog" v-else>
             <select v-model="logger" @change="loggerSelected()">
-                <option disabled selected value="null">Выберите eLog</option>                
+                <option disabled selected value="null">Выберите eLog</option>
                 <option v-for="(params, logger) in loggers" :key="logger" :value="logger">
                     {{logger}}
                 </option>
@@ -13,27 +13,28 @@
         </td>
         <td class="login">
             <template v-if="logger">
-                <input :type="field.includes('assword') ? 'password' : 'text'" 
-                    v-for="field in loggers[logger].loginDataFields" :key="field" 
-                    v-model.trim="loginData[field]" :placeholder="field"                
+                <input :type="field.includes('assword') ? 'password' : 'text'"
+                    v-for="field in loggers[logger].loginDataFields" :key="field"
+                    v-model.trim="loginData[field]" :placeholder="field"
                     :class='{error: validationErrors[field]}'/>
             </template>
         </td>
         <td class="ok">
-            <input type="submit" class="btn" value="OK" :disabled="!validated || account.pending" 
+            <input type="submit" class="btn" value="OK" :disabled="!validated || account.pending"
                 @click="updateAccount()">
         </td>
         <td class="status">
-            <img v-if="account.state in $options.STATES" 
-                :src="'/images/icon_' + $options.STATES[account.state].image +'.png'" 
+            <img v-if="account.state in $options.STATES"
+                :src="'/images/icon_' + $options.STATES[account.state].image +'.png'"
                 :title="$options.STATES[account.state].title"/>
-            <img v-if="account.pending" src="/images/spinner2.gif"/> 
+            <img v-if="account.pending" src="/images/spinner2.gif"/>
         </td>
         <td class="del" @click="deleteAccount()">
             <img src="/images/icon_delete.png" title="Удалить строку - Delete this line">
         </td>
         <td class="qso">{{account.qsoCount}}</td>
         <td class="date">{{account.lastUpdated}}</td>
+        <td class="update_req"><input type="button" class="btn" value="Обновить - Update" @click="updateRequest"/></td>
     </tr>
 </template>
 
@@ -58,7 +59,7 @@ export default {
   name: 'LoggersCfmItem',
   data () {
     const loginData = {}
-    return { 
+    return {
       logger: this.account.logger,
       loginData: loginData,
       validationData: loginData,
@@ -92,12 +93,16 @@ export default {
       }
     },
     updateAccount () {
-        this.$emit('account-update', 
+        this.$emit('account-update',
           {logger: this.logger, loginData: JSON.parse(JSON.stringify(this.loginData))})
     },
     deleteAccount () {
       this.$emit('account-delete')
+    },
+    updateRequest () {
+      this.$emit('account-request-update')
     }
+
  }
 }
 </script>
