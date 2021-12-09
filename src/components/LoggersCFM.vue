@@ -130,6 +130,7 @@ export default {
       })
         .then(() => {
           this.$set(account, 'lastUpdated', null)
+          this.$set(account, 'qsoCount', null)
         })
         .finally(() => {
           this.$set(account, 'pending', false)
