@@ -1,12 +1,10 @@
 <template>
     <div id="paper_qsl">
-            <h4>CFM RDA по QSL-карточкам (paper, eQSL, HAMLOG)</h4>
+            <h4>CFM RDA по QSL-карточкам (paper, eQSL, Hamlog)</h4>
             <p>Заполните форму ввода данными из полученной QSL-карточки, подтверждающей QSO с необходимым вам RDA.<br/>
-            После проверки модератором данные будут добавлены в  базу CFMRDA.<br/>
-            <b>На карточке спец.позывного обязательно указание RDA.</b></p>
+            После проверки модератором данные будут добавлены в  базу CFMRDA. На карточке спец.позывного <b>обязательно указание RDA</b>.<br/>На проверку принимаются карточки с датой <b>не менее 10 дней</b> до текущей даты.<br/>Для получения CFM QSO с недавней датой используйте зачёт из eLog'ов (<i>кнопка Обновить</i>).</p>
             <p class="grey_note">Fill in the input form with data from the received QSL card confirming the QSO with the RDA you need.<br/>
-            Your data will be added to CFMRDA database after the check by the moderator.<br/>
-            <b>On the special call sign card the RDA is required.</b></p>
+            Your data will be added to CFMRDA database after the check by the moderator.  On the special callsign card <b>the RDA is required</b>.<br/>Cards with a date of <b>at least 10 days</b> before the current date are accepted for verification.<br/>To receive CFM QSOs with a recent date use the autodownload system from eLogs (<i>the Update button</i>).</p>
         <table id="qsl_data_form">
         <tr>
             <td class="top qsl_callsign">Station's callsign</td>
