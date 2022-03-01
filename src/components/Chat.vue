@@ -114,7 +114,7 @@ const CHAT_RELOAD_INT = 5 * 1000 //ms
 const USERS_RELOAD_INT = 5 * 1000 //ms
 const USERS_POST_INT = 5 * 1000  //ms
 
-const reMSG_TO = /(:?\u21d2\s?\w+(:?\/\w+)*\s?)+(:?\s|$)/
+const reMSG_TO = /(\u21d2\s?\w+(\/\w+)*\s?)+(\s|$)/
 const MSG_SANITIZE_HTML_SETTINGS = {
     allowedTags: ['h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
         'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
@@ -180,8 +180,8 @@ export default {
             msg.text = sanitizeHTML(msg.text, MSG_SANITIZE_HTML_SETTINGS)
             let match = null
             if (match = reMSG_TO.exec(msg.text)) {
-              const to = match[0]
-              msg.text = msg.text.substring(to.length, msg.text.length)
+              const to = match[0]              
+              msg.text = msg.text.replace(to, '')
               msg.to = to.split(/\s?\u21d2\s?/).map(item => item.trim())
               msg.to.shift()
             }
