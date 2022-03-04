@@ -55,7 +55,7 @@
                                     <span class="name" v-if="message.name" @click="replyTo(message.callsign)">
                                         {{message.name}}
                                     </span>
-                                    <a :href="'http://qrz.com/db/' + message.callsign" target="_blank"
+                                    <a :href="'http://qrz.ru/db/' + message.callsign" target="_blank"
                                         rel="noopener" title="Link to QRZ.com">
                                         <img src="/images/icon_qrz.png"/>
                                     </a>
