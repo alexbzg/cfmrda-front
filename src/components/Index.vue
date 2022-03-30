@@ -9,7 +9,8 @@
                     <td class="btn_space"></td>
                     <td>
                         <input type="text" name="check_call_input" id="check_call_input"
-                            v-capitalize v-model="callsign" @input="callsignChange()">
+                            v-capitalize v-model="callsign" @input="callsignChange()"
+                            @keydown.enter="loadHunter()">
                         <div class="preloader" v-if="loading">
                             <img src="images/spinner3.gif"/>
                         </div>
