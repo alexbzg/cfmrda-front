@@ -3,7 +3,7 @@ module.exports = {
 	    disableHostCheck: true,
         public: 'dev.cfmrda.ru',
 	    watchOptions: {
-	        ignored: /public/
+	        ignored: "*.json"
 	    }
     },
     pages: {

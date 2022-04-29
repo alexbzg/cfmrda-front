@@ -70,15 +70,15 @@ const store = new Vuex.Store({
             return false
           if (!state.dxFilter.modes.mix && !state.dxFilter.modes[item.mode])
             return false
-          if (state.dxFilter.allRda && item.awards.RDA)
+          if (state.dxFilter.allRda && item.rda)
             return true
           if (state.dxFilter.dxped && item.dxped)
             return true
-          if (item.awards.RDA) {
-            if (state.userRda[item.awards.RDA.value] &&
-              state.userRda[item.awards.RDA.value][item.band] &&
+          if (item.rda) {
+            if (state.userRda[item.rda] &&
+              state.userRda[item.rda][item.band] &&
               (state.dxFilter.modes.mix || 
-                state.userRda[item.awards.RDA.value][item.band][item.mode]))
+                state.userRda[item.rda][item.band][item.mode]))
               return false
             else
               return true

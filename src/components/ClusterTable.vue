@@ -22,7 +22,7 @@
                     {{item.cs}}
                 </a>
             </td>
-            <td class="rda">{{item.awards.RDA ? item.awards.RDA.value : ''}}</td>
+            <td class="rda">{{item.rda}}</td>
             <td class="text">
                 <a v-if="item.dxped" :href="item.dxped.link" target="_blank" rel="noopener">
                     INFO
