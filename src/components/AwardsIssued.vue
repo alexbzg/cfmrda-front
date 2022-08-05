@@ -9,7 +9,12 @@
             <template v-for="(issued, idx) in (award.tiers ? awardsData[award.title][award.activeTier] : 
                 awardsData[award.title])">
                 <span class="number" :key="'no_' + idx">{{issued[0]}}</span>
-                <a :href="diploma_href(award.title, issued[1])" :key="'lnk_' + idx">{{issued[1]}}</a>&nbsp;
+                <a 
+                    :href="diploma_href(award.title, issued[1])" 
+                    :key="'lnk_' + idx"
+                    target="_blank">
+                    {{issued[1]}}
+                </a>&nbsp;
                 <span class="date" :key="'dt_' + idx">{{issued[2]}}</span><br :key="'br_' + idx"/>
             </template>
         </div>
