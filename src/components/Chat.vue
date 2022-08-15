@@ -195,7 +195,6 @@ export default {
         data.token = this.userToken
       else
         data.callsign = this.callsign
-      this.hideSmilies()
       return chatPost(data)
     },
     csNameBlur () {
@@ -207,7 +206,7 @@ export default {
     buttonClick () {
       if (this.buttonDisabled) return
       this.pending = true
-      this.showSmiles = false
+      this.hideSmilies()
       this.post({'message': this.message,
         'name': this.name})
         .then(() => {

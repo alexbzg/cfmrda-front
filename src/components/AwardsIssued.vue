@@ -19,7 +19,9 @@
                 v-for="award in searchResults"
                 :key="award.title">
                 <tr><td colspan="3">
-                  <a :href="diploma_href(award.title, searchCallsign)">
+                  <a 
+                    :href="diploma_href(award.title, searchCallsign)"
+                    target="_blank">
                   {{award.title}}
                   </a>
                 </td></tr>
