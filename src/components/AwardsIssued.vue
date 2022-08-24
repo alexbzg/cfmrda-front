@@ -19,10 +19,10 @@
                 v-for="award in searchResults"
                 :key="award.title">
                 <tr><td colspan="3">
-                  <a 
+                  <a
                     :href="diploma_href(award.title, searchCallsign)"
                     target="_blank">
-                  {{award.title}}
+                  {{award.title}}<img src="/images/icon_download.jpg" title="Download the award / Cкачать диплом" />
                   </a>
                 </td></tr>
                 <tr
@@ -43,14 +43,14 @@
             </h4>
             <template v-for="(issued, idx) in award.latest[award.activeTier]">
                 <span class="number" :key="'no_' + idx">{{issued[0]}}</span>&nbsp;
-                <a
+                <!--<a
                     :href="diploma_href(award.title, issued[1])"
                     :key="'lnk_' + idx"
-                    target="_blank" title="Скачать диплом / Download the award">
+                    target="_blank" title="Скачать диплом / Download the award">-->
 
                     {{issued[1]}}
                     <span class="date" :key="'dt_' + idx">{{issued[2]}}</span><br :key="'br_' + idx"/>
-                </a>
+                <!--</a>-->
 
             </template>
         </div>

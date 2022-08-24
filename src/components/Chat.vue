@@ -1,11 +1,5 @@
 <template>
   <div class="list">
-      <div id="chat_cluster_view">
-        <img src="/images/icon_chat_cluster.png" @click="showCluster = !showCluster"/>
-      </div>
-      <div id="chat_cluster" v-if="showCluster">
-          <cluster-table rows="3"></cluster-table>
-      </div>
       <div id="chat">
             <table id="message_form">
                 <tbody>
@@ -104,7 +98,6 @@ import replaceZerosMixin from '../replace-zeros-mixin'
 import storage from '../storage'
 import {dataService, chatPost} from '../api'
 
-import ClusterTable from './ClusterTable'
 import Smilies from './Smilies'
 
 const CHAT_STORAGE_KEY = 'chat'
@@ -126,7 +119,7 @@ const MSG_SANITIZE_HTML_SETTINGS = {
 
 export default {
   mixins: [replaceZerosMixin],
-  components: {ClusterTable, Smilies},
+  components: {Smilies},
   name: 'Chat',
   data () {
     const stored = storage.load(CHAT_STORAGE_KEY)
@@ -144,8 +137,7 @@ export default {
       users: [],
       messages: [],
       typingTs: null,
-      pending: false,
-      showCluster: false
+      pending: false
     }
   },
   mounted () {

@@ -2197,7 +2197,7 @@ table#paper_qsl_check td.qsl_rda.wrong{
 	width: 80%;
 }
 #awards_rules img{
-	margin: 50px 50px 0 50px;
+	margin: 50px 20px 0 20px;
 }
 #awards_rules p{
 	text-align: left;
@@ -2254,10 +2254,6 @@ table#paper_qsl_check td.qsl_rda.wrong{
 	text-decoration: none;
 	color: #009;
 }
-.award_block a:hover{
-	border-bottom: 1px solid #009;
-}
-
 
 
 
@@ -2294,7 +2290,7 @@ table#paper_qsl_check td.qsl_rda.wrong{
 #issued_awards #search_results table.search_award_block a{
 	font-weight: bold;
 	font-size: 20px;
-	color: #009;
+	color: #00b;
 }
 
 #issued_awards #search_results table.search_award_block td.tier{
@@ -2311,6 +2307,11 @@ table#paper_qsl_check td.qsl_rda.wrong{
 #search_results_empty{
 	padding: 0 0 100px 0;
 	font-size: 20px;
+}
+
+table.search_award_block img{
+	margin-left: 20px;
+	vertical-align: -2px;
 }
 
 
