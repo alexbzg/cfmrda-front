@@ -8,6 +8,7 @@
 
           <select id="awards" @change="awardChange" v-model="award">
             <option value="9BAND">9BAND RDA</option>
+            <option value="9BAND-X">9BAND RDA EXTREME</option>
             <option value="bandsSum">RDA CHALLENGE</option>
             <option value="rating">CFMRDA RATING</option>
           </select>
@@ -22,7 +23,7 @@
             <option value="callsign">{{callsign}}</option>
           </select>
 
-          <select id="mode" v-if="award != '9BAND'" v-model="params.mode">
+          <select id="mode" v-if="award != '9BAND' && award !='9BAND-X'" v-model="params.mode">
             <option value="total">MIX</option>
             <option v-for="_mode in $options.MODES" :key="_mode" :value="_mode">{{_mode}}</option>
           </select>
@@ -142,11 +143,11 @@ export default {
   },
   methods: {
     awardChange () {
-      if (this.award === '9BAND') {
+      if (this.award === '9BAND' || this.award === '9BAND-X') {
         this.params = {
           role: 'hunter',
           mode: 'total',
-          band: '9BAND',
+          band: this.award,
           type: this.params.type,
           country: this.params.country
         }

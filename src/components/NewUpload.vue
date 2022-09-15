@@ -21,14 +21,14 @@
                   @change="stationCallsignTypeChange"/>
                 Брать <b>позывной</b> в ADIF из поля
                 <input type="text" name="callsign_field" id="callsign_field"
-                  v-model="adif.stationCallsignField" v-capitalize
+                  v-model.trim="adif.stationCallsignField" v-capitalize
                   :class="{error: adif.stationCallsignFieldEnable && validationErrors.stationCallsignField}"
                   :disabled="!adif.stationCallsignFieldEnable"/>
             </span><br/>
             <span id="rda_check">
                 <input type="checkbox" name="rda_check" v-model="adif.rdaFieldEnable"/>
                 Брать <b>RDA район</b> в ADIF из поля
-                <input type="text" name="rda_field" id="rda_field" v-model="adif.rdaField"
+                <input type="text" name="rda_field" id="rda_field" v-model.trim="adif.rdaField"
                   :class="{error: adif.rdaFieldEnable && validationErrors.rdaField}"
                   v-capitalize :disabled="!adif.rdaFieldEnable"/>
             </span><br/>

@@ -72,7 +72,7 @@
                 <tbody>
                     <tr>
                         <td class="no_border">AutoCFM RDA</td>
-                        <td>{{hunterRank['9BAND'].count}}</td>
+                        <td>{{hunterRank[_9band].count}}</td>
                         <td>{{hunterRank.bandsSum.count}}</td>
                         <td class="col_no_border"> </td>
                         <td :class="{selected: band === 'total'}">
@@ -84,7 +84,7 @@
                     </tr>
                     <tr>
                         <td class="no_border">Место в рейтинге<br/><span class="note">Ranking place</span></td>
-                        <td>{{hunterRank['9BAND'].rank}}</td>
+                        <td>{{hunterRank[_9band].rank}}</td>
                         <td>{{hunterRank.bandsSum.rank}}</td>
                         <td class="col_no_border"></td>
                         <td :class="{selected: band === 'total'}">
@@ -380,6 +380,7 @@ export default {
       role: 'hunter',
       band: 'total',
       mode: 'total',
+      specialMode: null,
       rdaValue: null,
       showDetails: false,
       showCallsignsEdit: false,
@@ -500,20 +501,47 @@ export default {
       }
     },
     selectorChange(type, value) {
-      this[type] = value
+      if (type === 'special') {
+        this.specialMode = value
+        if (value) {
+          this.role = 'hunter'
+          this.band = 'total'
+          this.mode = 'total'
+        }
+      } else {
+        this[type] = value
+        if (this.specialMode) {
+          this.specialMode = null
+        }
+      }
       this.updateRdaCfm()
       this.setRdaValue(null)
     },
     updateRdaCfm () {
       const r = {}
+      this.loading = true
       if (this.hunterData) {
         if (this.role === 'hunter') {
           if (this.hunterData.rda.hunter) {
             for (const rda in this.hunterData.rda.hunter) {
-              for (const item of this.hunterData.rda.hunter[rda]) {
-                if (this.rdaFilter(item)) {
-                  r[rda] = 'cfm'
-                  break
+              if (this.specialMode === '9BAND-X') {
+                const bands = new Set()
+                for (const item of this.hunterData.rda.hunter[rda]) {
+                  bands.add(item.band)
+                  if (bands.size === 9) {
+                    r[rda] = 'cfm'
+                    break
+                  }
+                }
+                if (!r[rda] && bands.size > 0) {
+                  r[rda] = 'partial'
+                }
+              } else {
+                for (const item of this.hunterData.rda.hunter[rda]) {
+                  if (this.rdaFilter(item)) {
+                    r[rda] = 'cfm'
+                    break
+                  }
                 }
               }
             }
@@ -539,6 +567,7 @@ export default {
           }
         }
       }
+      this.loading = false
       this.rdaCfm = r
     },
     callsignClick (callsign) {
@@ -559,6 +588,9 @@ export default {
   computed: {
     ...mapState(['mscData']),
     ...mapGetters(['userCallsign', 'userToken', 'oldCallsigns']),
+    _9band () {
+      return this.specialMode === '9BAND-X' ? '9BAND-X' : '9BAND'
+    },
     rdaFilter () {
       const allModes = this.isMeta(this.mode)
       const allBands = this.isMeta(this.band)
@@ -569,7 +601,12 @@ export default {
       function emptyField () {
         return {count: 0, rank: '-' }
       }
-      const r = {'total': emptyField(), 'bandsSum': emptyField(), '9BAND': emptyField()}
+      const r = {
+        'total': emptyField(), 
+        'bandsSum': emptyField(), 
+        '9BAND': emptyField(),
+        '9BAND-X': emptyField()
+      }
       if (this.hunterData && this.hunterData.rank && this.hunterData.rank.world &&
         this.hunterData.rank.world[this.role] && this.hunterData.rank.world[this.role][this.mode]) {
         const data = this.hunterData.rank.world[this.role][this.mode]

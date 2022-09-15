@@ -42,16 +42,7 @@
                 </select-array>
             </h4>
             <template v-for="(issued, idx) in award.latest[award.activeTier]">
-                <span class="number" :key="'no_' + idx">{{issued[0]}}</span>&nbsp;
-                <!--<a
-                    :href="diploma_href(award.title, issued[1])"
-                    :key="'lnk_' + idx"
-                    target="_blank" title="Скачать диплом / Download the award">-->
-
-                    {{issued[1]}}
-                    <span class="date" :key="'dt_' + idx">{{issued[2]}}</span><br :key="'br_' + idx"/>
-                <!--</a>-->
-
+                <span class="number" :key="'no_' + idx">{{issued[0]}}</span>{{issued[1]}}<span class="date" :key="'dt_' + idx">{{issued[2]}}</span><br :key="'br_' + idx"/>
             </template>
         </div>
     </div>

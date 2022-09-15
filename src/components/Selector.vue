@@ -2,7 +2,7 @@
     <tbody>
         <tr>
             <td class="no_border" colspan="4"></td>
-            <td class="menu" :class="{selected: mode === 'total'}" 
+            <td class="menu" :class="{selected: mode === 'total'}"
                 @click="select('mode', 'total')">Mix</td>
             <td class="menu" v-for="(_mode, idx) in $options.MODES" :key="idx"
                 @click="select('mode', _mode)" :class="{selected: mode === _mode}">{{_mode}}</td>
@@ -17,13 +17,23 @@
         </tr>
         <tr>
             <td class="no_border"></td>
-            <td class="menu no_click">9 BAND</td>   
-            <td class="menu no_click">Challenge</td>   
+            <td class="menu no_click extreme">
+                 BAND<br/>
+                 <span>
+                    <input 
+                        type="checkbox"
+                        @checked="special === '9BAND-X'"
+                        @click="toggleSpecial('9BAND-X')"
+                        />
+                    extreme
+                </span>
+            </td>
+            <td class="menu no_click">Challenge</td>
             <td class="col_no_border"></td>
-            <td class="menu" :class="{selected: band === 'total'}" 
-                @click="select('band', 'total')">RDA</td>            
-            <td class="menu" v-for="(_band, index) in $options.BANDS" :key="index" 
-                :class="{selected: _band === band}" 
+            <td class="menu" :class="{selected: band === 'total'}"
+                @click="select('band', 'total')">RDA</td>
+            <td class="menu" v-for="(_band, index) in $options.BANDS" :key="index"
+                :class="{selected: _band === band}"
                 @click="select('band',_band)">{{_band}}</td>
         </tr>
     </tbody>
@@ -41,15 +51,30 @@ export default {
     return {
       role: 'hunter',
       mode: 'total',
-      band: 'total'
+      band: 'total',
+      special: null
     }
   },
   methods: {
     select (type, value) {
       if (this[type] !== value) {
+        if (this.special) {
+          this.special = null
+        }
         this[type] = value
         this.$emit('selector-change', type, value)
       }
+    },
+    toggleSpecial(special) {
+      if (this.special) {
+        this.special = null
+      } else {
+        this.special = special
+        this.role = 'hunter'
+        this.mode = 'total'
+        this.band = 'total'
+      }
+      this.$emit('selector-change', 'special', this.special)
     }
   }
 }

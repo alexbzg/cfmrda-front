@@ -537,11 +537,11 @@ table#files td.error span.count{
 	top: 5px;
 	right: 5px;
 	text-align: right;
-	font-size: 11px;
-	color: #777;
+	font-size: 12px;
+	color: #555;
 }
 #qso_in_database span{
-	color: #bbb;
+	color: #999;
 	display: block;
 	margin-bottom: 3px;
 }
@@ -751,7 +751,8 @@ table.select_view td.selected{
 }
 table.select_view td.no_border{
 	border: none;
-	line-height: 12px;
+	line-height: 14px;
+	font-size: 14px;
 }
 table.select_view td.col_no_border{
 	padding: 0;
@@ -763,6 +764,31 @@ table.select_view td.separator{
 	padding: 0;
 	height: 7px;
 }
+
+
+table.select_view td.extreme{
+	padding: 15px 20px 2px 20px;
+	line-height: 14px;
+	min-width: 70px;
+}
+table.select_view td.extreme span{
+	font-weight: normal;
+	font-size: 12px;
+}
+table.select_view td.extreme input{
+	vertical-align: -10%;
+	margin-right: 5px;
+	background-color: #ffffca;
+}
+
+
+
+
+
+
+
+
+
 
 
 /*                                                  V I E W   M E N U             */
@@ -1516,6 +1542,7 @@ table#cfm_qso_request td.menu{
 }
 table#cfm_qso_request td.no_border{
 	border: none;
+
 }
 table#cfm_qso_request td.rda_callsign_note{
 	height: 30px;
@@ -2217,28 +2244,27 @@ table#paper_qsl_check td.qsl_rda.wrong{
 
 
 
-
-
-
 .award_block{
 	display: inline-block;
 	vertical-align: top;
-	padding: 0 50px;
+	padding: 0 30px;
 	line-height: 1.8em;
 	text-align: left;
-	color: #009;
+	color: #333;
 	font-weight: bold;
-	font-size: 22px;
+	font-size: 18px;
 }
 .award_block h4{
 	padding: 0px;
 	margin: 10px 0px;
-	color: #000;
+	font-size: 20px;
+	color: #009;
 }
 .award_block select{
 	display: inline-block;
 	font-weight: bold;
-	font-size: 24px;
+	font-size: 18px;
+	background-color: #ffffca;
 }
 .award_block .number{
 	color: #900;
@@ -2248,7 +2274,8 @@ table#paper_qsl_check td.qsl_rda.wrong{
 .award_block .date{
 	font-weight: normal;
 	font-size: 12px;
-	color: #999;
+	color: #777;
+	padding-left: 10px;
 }
 .award_block a{
 	text-decoration: none;
@@ -2275,7 +2302,7 @@ table#paper_qsl_check td.qsl_rda.wrong{
 
 #issued_awards #search_results table.search_award_block{
 	display: inline-block;
-	margin: 0 30px 100px 30px;
+	margin: 0 20px 100px 20px;
 	vertical-align: top;
 }
 #issued_awards #search_results table.search_award_block td{
@@ -2283,14 +2310,14 @@ table#paper_qsl_check td.qsl_rda.wrong{
 	text-align: left;
 	color: #333;
 	font-weight: normal;
-	font-size: 18px;
-	vertical-align: top;
+	font-size: 14px;
+	vertical-align: middle;
 	padding-right: 20px;
 }
 #issued_awards #search_results table.search_award_block a{
 	font-weight: bold;
-	font-size: 20px;
 	color: #00b;
+	font-size: 20px;
 }
 
 #issued_awards #search_results table.search_award_block td.tier{
@@ -2301,7 +2328,6 @@ table#paper_qsl_check td.qsl_rda.wrong{
 }
 #issued_awards #search_results table.search_award_block td.date{
 	color: #777;
-	font-size: 14px;
 }
 
 #search_results_empty{
