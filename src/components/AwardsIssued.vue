@@ -55,6 +55,7 @@ import SelectArray from './SelectArray'
 
 const AWARD_PREFIXES = {
   '9 BAND RDA': '9band_rda',
+  '9 BAND EXTREME': '9band_rda_extreme',
   '5 BAND RDA': '5band_rda',
   'RDA Challenge': 'rda_challenge'
 }
