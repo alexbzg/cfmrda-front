@@ -114,6 +114,9 @@
                 <a href="/html/csv_search.html" target="_blank" rel="noopener">
                     <img src="/images/icon_search_csv.jpg" title="Search CFMD RDA in the CSV file" />
                 </a>
+                <a :href="'/aiohttp/download/hunter_rda/' + callsignValid + '/csv'" target="_blank" rel="noopener">
+                    <img src="/images/icon_bands_modes.png" title="Download your CSV file with RDA by bands+modes" />
+                </a>
             </td></tr>
 
                 <template v-for="(group, idxGr) in rda">
@@ -602,8 +605,8 @@ export default {
         return {count: 0, rank: '-' }
       }
       const r = {
-        'total': emptyField(), 
-        'bandsSum': emptyField(), 
+        'total': emptyField(),
+        'bandsSum': emptyField(),
         '9BAND': emptyField(),
         '9BAND-X': emptyField()
       }
