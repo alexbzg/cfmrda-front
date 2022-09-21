@@ -990,7 +990,12 @@ table#rda_table .cfm{
 	cursor: pointer;
 }
 table#rda_table .partial{
-	background-color: #3cfaff;
+	background-color: #8afcff;
+	color: #333;
+	cursor: pointer;
+}
+table#rda_table .bands8{
+	background-color: #fcff66;
 	color: #333;
 	cursor: pointer;
 }

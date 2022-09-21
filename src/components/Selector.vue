@@ -18,12 +18,11 @@
         <tr>
             <td class="no_border"></td>
             <td class="menu no_click extreme">
-                 BAND<br/>
+                 9 BAND<br/>
                  <span>
                     <input 
                         type="checkbox"
-                        @checked="special === '9BAND-X'"
-                        @click="toggleSpecial('9BAND-X')"
+                        v-model="special_9BAND_X"
                         />
                     extreme
                 </span>
@@ -64,17 +63,24 @@ export default {
         this[type] = value
         this.$emit('selector-change', type, value)
       }
-    },
-    toggleSpecial(special) {
-      if (this.special) {
-        this.special = null
-      } else {
-        this.special = special
-        this.role = 'hunter'
-        this.mode = 'total'
-        this.band = 'total'
+    }
+  },
+  computed: {
+    special_9BAND_X: {
+      get() {
+        return this.special == '9BAND-X'
+      },
+      set (val) {
+        if (!val) {
+          this.special = null
+        } else {
+          this.special = '9BAND-X'
+          this.role = 'hunter'
+          this.mode = 'total'
+          this.band = 'total'
+        }
+        this.$emit('selector-change', 'special', this.special)
       }
-      this.$emit('selector-change', 'special', this.special)
     }
   }
 }

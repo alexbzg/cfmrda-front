@@ -124,8 +124,7 @@
                         <td class="rda_letters">{{group.group}}</td>
                         <td>
                             <div v-for="(val, idxVal) in group.values" :key="idxVal" class="rda"
-                                :class="{cfm: rdaCfm[val.value] === 'cfm',
-                                    partial: rdaCfm[val.value] === 'partial'}"
+                                :class="rdaCfm[val.value] ? rdaCfm[val.value] : ''"
                                 @click="setRdaValue(rdaValue === val ? null : val)">
                                 {{val.displayValue}}
                             </div>
@@ -537,7 +536,7 @@ export default {
                   }
                 }
                 if (!r[rda] && bands.size > 0) {
-                  r[rda] = 'partial'
+                  r[rda] = bands.size === 8 ? 'bands8' : 'partial'
                 }
               } else {
                 for (const item of this.hunterData.rda.hunter[rda]) {

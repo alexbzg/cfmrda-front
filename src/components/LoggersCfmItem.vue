@@ -34,7 +34,15 @@
         </td>
         <td class="qso">{{account.qsoCount}}</td>
         <td class="date">{{account.lastUpdated}}</td>
-        <td class="update_req"><input type="button" class="btn" value="Обновить - Update" @click="updateRequest"/></td>
+        <td class="update_req">
+            <img 
+                v-if="update_queue" 
+                src="/images/spinner2.gif"/>
+            <input 
+                v-else 
+                type="button" class="btn" value="Обновить - Update" 
+                @click="updateRequest"/>
+        </td>
     </tr>
 </template>
 
@@ -102,7 +110,12 @@ export default {
     updateRequest () {
       this.$emit('account-request-update')
     }
-
+ },
+ computed: {
+   update_queue () {
+    return this.account.lastUpdated === null || 
+        (Date.now() - Date.parse(this.account.lastUpdated))/1000 > 604800
+   }
  }
 }
 </script>
