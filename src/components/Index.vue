@@ -66,6 +66,7 @@
                 No callsign in the database
             </div>
 
+
             <table class="select_view" v-if="callsignValid && hunterData">
                 <selector @selector-change="selectorChange">
                 </selector>
@@ -96,6 +97,11 @@
                     </tr>
                 </tbody>
             </table>
+
+
+            <callsign-awards :callsign="callsignValid"/>
+
+
 
             <span class="show_details" @click="showDetails = !showDetails"
                 v-if="callsignValid && hunterData">
@@ -329,6 +335,7 @@ import latinizeMixin from '../latinize-mixin'
 
 import RankTable from './RankTable.vue'
 import Selector from './Selector.vue'
+import CallsignAwards from './CallsignAwards.vue'
 import ViewUploadLink from './ViewUploadLink.vue'
 import Ann from './Ann.vue'
 
@@ -341,7 +348,7 @@ export default {
   BANDS: orderedBands(),
   name: 'Index',
   mixins: [rankDataMixin, replaceZerosMixin, latinizeMixin],
-  components: {RankTable, Selector, ViewUploadLink, Ann},
+  components: {RankTable, Selector, ViewUploadLink, Ann, CallsignAwards},
   last_req_id: 0,
   pending: {},
   data () {

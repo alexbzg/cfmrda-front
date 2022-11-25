@@ -150,7 +150,8 @@ const router = new Router({
       component: Awards,
       children: [
         {
-          path: 'rules',
+          path: '',
+          alias: ['rules'],
           name: 'Awards',
           component: StaticPage,
           props: {page: 'rules'}
@@ -162,7 +163,7 @@ const router = new Router({
           props: {page: 'awardsGallery'}
         },
         {
-          path: '',
+          path: 'issued',
           name: 'AwardsIssued',
           component: AwardsIssued
         }

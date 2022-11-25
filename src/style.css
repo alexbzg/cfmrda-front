@@ -1,6 +1,7 @@
 body{
-	font-size: 16px;
-	font-family: 'Open Sans', sans-serif;
+	font-size: 18px;
+/*	font-family: 'Open Sans', sans-serif;*/
+	font-family: 'Jost', sans-serif;
 	color:#000;
 	margin:0; padding:0;
 	text-align: left;
@@ -9,8 +10,8 @@ body{
 }
 
 input, button, textarea, select{
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
+    font-family: 'Jost', sans-serif;
+    font-size: 18px;
     text-align: center;
     padding: 5px;
     margin: 0;
@@ -29,7 +30,7 @@ input, button, textarea, select{
 }
 .btn_white{
     padding: 2px 5px;
-    font-size: 14px;
+    font-size: 16px;
     background-color: #f0f0f0;
     color: #333;
     text-align: center;
@@ -39,17 +40,17 @@ input, button, textarea, select{
     cursor: pointer;
 }
 .note{
-	font-size: 12px;
+	font-size: 14px;
 	color: #999;
 	font-style: italic;
 }
 .note_red{
-	font-size: 14px;
+	font-size: 16px;
 	color: #900;
 	font-style: italic;
 }
 .note_grey{
-	font-size: 14px;
+	font-size: 16px;
 	color: #777;
 	font-style: italic;
 }
@@ -59,7 +60,7 @@ input, button, textarea, select{
 }
 .grey_note{
 	color: #999;
-	font-size: 14px;
+	font-size: 16px;
 }
 h4{
 	text-align: center;
@@ -129,7 +130,7 @@ a#logout_link{
 }
 #top_menu{
 	width: 1220px;
-	margin: 10px auto;
+	margin: 10px auto 0 auto;
 	padding: 10px 0px 10px 20px;
 	text-align: right;
 	font-weight: bold;
@@ -163,7 +164,7 @@ a#logout_link{
 
 .list{
 	width: 1200px;
-	margin: 10px auto 50px auto;
+	margin: 0px auto 50px auto;
 	padding: 15px 20px 20px 20px;
 	background-color: #fff;
 	box-shadow: 3px 3px 6px rgba(0,0,0,0.3); /* Параметры тени */
@@ -182,7 +183,7 @@ a#logout_link{
 	margin-bottom: 10px;
 	padding: 10px 0px;
 	border: 1px solid #eee;
-	background-color: #f5f5f5;
+	background-color: #eee;
 }
 #list_menu span{
 	font-weight: bold;
@@ -197,7 +198,7 @@ a#logout_link{
 	padding: 0 20px;
 }
 #list_menu a.router-link-exact-active{
-	color: #555;
+	color: #333;
 	text-decoration: none;
 }
 
@@ -537,7 +538,7 @@ table#files td.error span.count{
 	top: 5px;
 	right: 5px;
 	text-align: right;
-	font-size: 12px;
+	font-size: 14px;
 	color: #555;
 }
 #qso_in_database span{
@@ -593,7 +594,7 @@ table#check_call span#ex_calls_link{
 	font-style: normal;
 	display: block;
 	margin: 20px 0;
-	font-size: 14px;
+	font-size: 16px;
 	color: #777;
 }
 #ex_calls_form textarea{
@@ -601,6 +602,18 @@ table#check_call span#ex_calls_link{
 	height: 40px;
 	color: #333;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -726,7 +739,7 @@ table.select_view{
  	border-collapse: collapse;
 }
 table.select_view td{
-	padding: 7px 20px;
+	padding: 7px 15px;
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
@@ -773,7 +786,7 @@ table.select_view td.extreme{
 }
 table.select_view td.extreme span{
 	font-weight: normal;
-	font-size: 12px;
+	font-size: 14px;
 }
 table.select_view td.extreme input{
 	vertical-align: -10%;
@@ -906,7 +919,7 @@ table.top_100 td.selected{
 	box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
 }
 table.top_100 td span.rank{
-	font-size: 12px;
+	font-size: 14px;
 	color: #aaa;
 }
 table.top_100 td span.call_result{
@@ -933,14 +946,13 @@ span.show_details{
 	text-align: center;
 	color: #009;
 	text-decoration: underline;
-	font-weight: bold;
 	cursor: pointer;
-	padding: 20px 0;
-	line-height: 12px;
+	padding: 20px 0 0px 0;
+	line-height: 14px;
 }
 span.show_details a.span{
 	font-weight: normal;
-	font-size: 12px;
+	font-size: 14px;
 }
 
 
@@ -953,7 +965,8 @@ table#rda_table{
 table#rda_table td{
 	padding: 0 0 20px 0;
 	text-align: left;
-	font-size: 13px;
+	font-size: 14px;
+	line-height: 16px;
 	vertical-align: top;
 }
 table#rda_table td.rda_letters{
@@ -979,7 +992,7 @@ table#rda_table .rda{
 	width: 20px;
 	height: 17px;
 	margin: 2px;
-	padding-top: 3px;
+	padding: 2px;
 	border: 1px solid #8ddb9b;
 	color: #8ddb9b;
 	text-align: center;
@@ -1017,7 +1030,7 @@ table#stat1rda_hunter{
 table#stat1rda_hunter td, table#stat1rda_activator td{
 	padding: 7px 20px;
 	text-align: center;
-	font-size: 16px;
+	font-size: 18px;
 	color: #000;
 	vertical-align: top;
 	border: 1px solid #dfedfd;
@@ -1089,6 +1102,39 @@ table#stat1rda_activator{
 
 
 
+
+#index_awards {
+	margin: 50px 0 30px 0;
+}
+table.search_award_block{
+	display: inline-block;
+	margin: 0 20px;
+	vertical-align: top;
+}
+table.search_award_block td{
+	line-height: 1em;
+	text-align: center;
+	color: #777;
+	font-weight: normal;
+	font-size: 14px;
+	vertical-align: middle;
+	padding-right: 20px;
+}
+table.search_award_block a{
+	font-weight: bold;
+	color: #009;
+	font-size: 20px;
+}
+table.search_award_block span.date{
+	font-style: italic;
+	margin-left: 20px;
+}
+
+
+#search_results_empty{
+	padding: 0 0 100px 0;
+	font-size: 20px;
+}
 
 
 
@@ -1195,12 +1241,12 @@ table#cfm_rda_check td.top{
     border: 1px solid #a6def8;
     color: #333;
     background-color: #e7f2ff;
-    font-size: 16px;
+    font-size: 18px;
 }
 table#cfm_rda_check td.top2{
 	padding: 3px 20px;
-	line-height: 14px;
-    font-size: 14px;
+	line-height: 16px;
+    font-size: 16px;
     font-weight: normal;
 }
 table#cfm_rda_check td.callsign {
@@ -2570,32 +2616,33 @@ table#message_form tr, table#message_form td{
     padding: 0;
 }
 table#message_form td.note{
-    font-size: 12px;
+    font-size: 14px;
     vertical-align: top;
     color: #999;
-    line-height: 12px;
+    line-height: 14px;
 }
 table#message_form input#your_call, table#message_form input#your_name{
     width: 130px;
     font-weight: bold;
-    font-size: 18px;
-    padding: 3px;
+    padding: 0px;
     margin: 0 10px;
-    border: 1px solid #999;
+    border: none;
+    border-radius: 0px;
+    border-bottom: 1px solid #999;
 }
 table#message_form input#your_call{
     color: #009;
 }
 table#message_form input#your_name{
-    font-size: 16px;
     font-weight: normal;
 }
 table#message_form input#your_text{
     width: 600px;
     text-align: left;
-    border: 1px solid #999;
-    font-size: 16px;
-    padding: 3px;
+    border: none;
+    border-radius: 0px;
+    border-bottom: 1px solid #999;
+    padding: 0px;
 }
 table#message_form button{
     width: 50px;
@@ -2668,7 +2715,7 @@ table#chat_layout td{
     font-weight: bold;
     line-height: 1.5em;
     color: #777;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .chat_info_users2{
@@ -2676,7 +2723,7 @@ table#chat_layout td{
     font-weight: bold;
     line-height: 1.5em;
     color: #999;
-    font-size: 16px;
+    font-size: 18px;
 }
 .chat_info_users1 span.admin, .chat_info_users2 span.admin{
     color: #b24c4c;
@@ -2700,22 +2747,23 @@ table#chat_window{
     padding: 0px;
     margin: 20px 20px 20px 20px;
     border: 1px solid #ccc;
-    font-size: 16px;
+    font-size: 18px;
     border-collapse: collapse;
 }
 table#chat_window td{
     text-align: left;
     vertical-align: top;
+    padding: 10px 0px;
 }
 table#chat_window tr{
     border: 1px solid #eee;
     padding-bottom: 5px;
 }
 table#chat_window td.call{
-	padding: 5px 5px;
+	padding: 10px 5px;
     font-weight: bold;
     width: 150px;
-    line-height: 14px;
+    line-height: 16px;
     color: #009;
 }
 table#chat_window td.call span.date_time{
@@ -2790,7 +2838,8 @@ table#table_stats td, table#table_stats_list td{
 	color: #333;
 	border: 1px solid #dfedfd;
 	vertical-align: middle;
-	line-height: 16px;
+	font-size: 16px;
+	line-height: 18px;
 }
 table#table_stats td.top{
 	font-weight: bold;
@@ -3004,7 +3053,7 @@ table#call_search_table{
 table#callsign_rda td.note{
 	vertical-align: top;
 	text-align: center;
-	font-size: 12px;
+	font-size: 14px;
 	color: #999;
 }
 table#call_search_table input#rda_search{
@@ -3312,6 +3361,10 @@ table#rda_wanted_list td.messages span.rda_message{
 #elogs_cfm{
 	padding-bottom: 100px;
 }
+#elogs_cfm p{
+	text-align: left;
+	padding: 0 50px;
+}
 #elogs_cfm h4{
 	margin: 20px 0;
 }
@@ -3414,7 +3467,7 @@ table.anons_block td.announcer{
 }
 table.anons_block td.announcer span{
 	font-weight: normal;
-	font-size: 12px;
+	font-size: 14px;
 }
 table.anons_block td.anons_link{
 	font-size: 20px;

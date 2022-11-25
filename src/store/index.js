@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 import storage from '../storage'
 import {BANDS, MODES} from '../ham-radio'
-import {getDx, getHunterDetails, getMscData, userData} from '../api'
+import { getDx, getHunterDetails, getMscData, userData, getIssuedAwards } from '../api'
 import playSound from '../play-sound'
 
 const STORAGE_KEY_USER = 'user'
@@ -21,11 +21,13 @@ export const DX_LISTENERS_MUTATION = 'dxListeners'
 const SET_USER_RDA_MUTATION = 'setUserRda'
 const SET_DX_MUTATION = 'setDx'
 const SET_MSC_MUTATION = 'setMsc'
+const SET_ISSUED_AWARDS_MUTATION = 'setIssuedAwards'
 export const SET_USER_DATA_MUTATION = 'setUsrDataMtn'
 
 const MSC_UPDATE_ACTION = 'mscUpdate'
 const DX_UPDATE_ACTION = 'dxUpdate'
 const LOAD_USER_RDA_ACTION = 'userRdaLoad'
+const LOAD_ISSUED_AWARDS_ACTION = 'loadIssuedAwards'
 export const USER_DATA_ACTION = 'userDataActn'
 
 const DX_UPDATE_INTERVAL = 60 * 1000
@@ -37,6 +39,7 @@ const store = new Vuex.Store({
     user: null,
     remember: true,
     dxFilter: null,
+    issuedAwards: {},
     dx: [],
     userRda: {},
     mscData: {
@@ -191,6 +194,9 @@ const store = new Vuex.Store({
           }
         }
       }
+    }, 
+    [SET_ISSUED_AWARDS_MUTATION] (state, payload) {
+        state.issuedAwards = payload
     }
   },
   actions: {
@@ -215,7 +221,12 @@ const store = new Vuex.Store({
         userData(data)
           .then(data => { commit(SET_USER_DATA_MUTATION, data) })
       }
+    },
+    [LOAD_ISSUED_AWARDS_ACTION] ({commit}) {
+      getIssuedAwards()
+        .then(data => commit(SET_ISSUED_AWARDS_MUTATION, data))
     }
+
   },
   strict: process.env.NODE_ENV !== 'production'
 })
@@ -226,6 +237,7 @@ function getAdditionalData () {
   store.dispatch(DX_UPDATE_ACTION)
   store.dispatch(MSC_UPDATE_ACTION)
   store.dispatch(USER_DATA_ACTION)
+  store.dispatch(LOAD_ISSUED_AWARDS_ACTION)
 }
 
 export default store
