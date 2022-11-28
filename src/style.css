@@ -1108,7 +1108,7 @@ table#stat1rda_activator{
 }
 table.search_award_block{
 	display: inline-block;
-	margin: 0 20px;
+	margin: 0 15px;
 	vertical-align: top;
 }
 table.search_award_block td{
@@ -1123,11 +1123,10 @@ table.search_award_block td{
 table.search_award_block a{
 	font-weight: bold;
 	color: #009;
-	font-size: 20px;
+	font-size: 18px;
 }
-table.search_award_block span.date{
-	font-style: italic;
-	margin-left: 20px;
+table.search_award_block span.number{
+	margin-right: 15px;
 }
 
 

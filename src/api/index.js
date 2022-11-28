@@ -45,6 +45,15 @@ export function get (URL) {
     .catch(onError)
 }
 
+export function head (URL) {
+  if (!URL.startsWith('/') && !URL.startsWith('http')) {
+    URL = window.location.pathname + '/' + URL
+  }
+  return axios.head(URL)
+    .catch(onError)
+}
+
+
 export function dataPost(url, data) {
   return post (url, data)
     .then(response => {

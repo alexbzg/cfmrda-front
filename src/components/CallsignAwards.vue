@@ -10,13 +10,16 @@
                         :href="diploma_href(award.title, callsign)"
                         target="_blank"
                         title="Download the award / Cкачать диплом">
-                        {{award.title}} {{award.issued[3]}}
+                        {{award.title + (award.issued[3] ? ' ' + award.issued[3] : '')}}
                     </a>
                 </td>
             </tr>
             <tr>
                 <td>
-                  #{{award.issued[0]}} <span class="date">{{award.issued[2]}}</span>
+                    <template v-if="award.issued[0]">
+                        <span class="number">#{{award.issued[0]}}</span>
+                    </template>
+                    {{award.issued[2]}}
                 </td>
             </tr>
         </table>
@@ -26,11 +29,14 @@
 <script>
 import {mapState} from 'vuex'
 
+import {head} from '../api'
+
 const AWARD_PREFIXES = {
   '9 BAND RDA': '9band_rda',
   '9 BAND EXTREME': '9band_rda_extreme',
   '5 BAND RDA': '5band_rda',
-  'RDA Challenge': 'rda_challenge'
+  'RDA Challenge': 'rda_challenge',
+  'RDA Hunter': 'rda_hunter'
 }
 
 export default {
@@ -38,7 +44,11 @@ export default {
   props: ['callsign'],
   data () {
     return {
+      rda_hunter: null
     }
+  },
+  mounted() {
+    this.update_rda_hunter()
   },
   computed: {
     ...mapState(['issuedAwards']),
@@ -63,6 +73,9 @@ export default {
             })
           }
         }
+        if (this.rda_hunter) {
+            sr.unshift(this.rda_hunter)
+        }
         return sr
       } else {
         return null
@@ -72,6 +85,26 @@ export default {
   methods: {
     diploma_href (award, callsign) {
       return `${location.origin}/files/${AWARD_PREFIXES[award]}_${callsign.toLowerCase()}.pdf`
+    },
+    update_rda_hunter () {
+      if (this.callsign) {
+        this.rda_hunter = null
+        head(this.diploma_href('RDA Hunter', this.callsign))
+          .then( (rsp) => {
+            this.rda_hunter = {
+              title: 'RDA Hunter',
+              issued: [null, null,
+                new Date(rsp.headers['last-modified']).toLocaleDateString(
+                    "ru", {dateStyle: "long"}).slice(0, -3),
+                null]
+            }
+          })
+      }
+    }
+  },
+  watch: {
+    callsign() {
+      this.update_rda_hunter()
     }
   }
 }
