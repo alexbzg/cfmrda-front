@@ -4,7 +4,7 @@
         <h4>The CFMRDA rating</h4>
 
 
-        <div id="rating_menu">
+        <div class="rating_menu">
 
           <select id="awards" @change="awardChange" v-model="award">
             <option value="9BAND">9BAND RDA</option>
@@ -41,45 +41,8 @@
 
         </div>
 
-        <!--br/><br/><br/>
 
 
-
-        <div class="view_menu">
-            <div class="menu" :class="{selected: params.band === '9BAND'}"
-                @click="switch9BAND()">9BAND</div>
-            <div class="menu menu_info"><router-link to="/static/faq#count_9band">i</router-link></div>
-
-            <div class="menu tab" :class="{selected: params.band === 'bandsSum'}"
-                @click="params.band = 'bandsSum'">Challenge</div>
-            <div class="menu menu_info"><router-link to="/static/rules#challenge">i</router-link></div>
-
-            <div class="menu tab" :class="{selected: params.band === 'total'}"
-                @click="params.band = 'total'">RDA</div>
-            <div class="menu" v-for="(_band, index) in $options.BANDS" :key="'band' + index"
-                :class="{selected: _band === params.band}" @click="params.band = _band">{{_band}}</div>
-
-            <br/>
-
-            <radio-btns-mode v-model="params.mode" :hide-modes="params.band === '9BAND'">
-            </radio-btns-mode>
-
-            <div class="menu" :class="{selected: params.type === 'top'}"
-                @click="params.type = 'top'" >TOP</div>
-            <div class="menu" :class="{selected: params.type === 'callsign'}"
-                v-if="callsignRankings && callsignRankings[params.role] &&
-                    callsignRankings[params.role][params.mode] &&
-                    callsignRankings[params.role][params.mode][params.band]"
-                @click="params.type = 'callsign'" >{{callsign}}</div>
-
-            <template v-if="params.band !== '9BAND' && params.band !== 'bandsSum'">
-                <div class="menu right" v-for="(_role, idx) in ['activator', 'hunter']" :key="'role' + idx"
-                    :class="{selected: params.role === _role}" @click="params.role = _role">
-                    {{$options.ROLES[_role]}}
-                </div>
-            </template>
-
-       </div-->
 
        <div class="preloader" v-if="loading"><img src="images/spinner3.gif"/></div>
 

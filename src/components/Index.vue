@@ -222,6 +222,8 @@
         :callsign-country="hunterData ? hunterData.country : null"
         />
 
+    <rank-table-activators :callsign="callsignValid" @callsign-click="callsignClick"/>
+
     <div class="list" v-if="mscData.userActivity">
 
         <div id="qsl_check_list">
@@ -334,6 +336,8 @@ import replaceZerosMixin from '../replace-zeros-mixin'
 import latinizeMixin from '../latinize-mixin'
 
 import RankTable from './RankTable.vue'
+import RankTableActivators from './RankTableActivators.vue'
+
 import Selector from './Selector.vue'
 import CallsignAwards from './CallsignAwards.vue'
 import ViewUploadLink from './ViewUploadLink.vue'
@@ -348,7 +352,7 @@ export default {
   BANDS: orderedBands(),
   name: 'Index',
   mixins: [rankDataMixin, replaceZerosMixin, latinizeMixin],
-  components: {RankTable, Selector, ViewUploadLink, Ann, CallsignAwards},
+  components: {RankTable, RankTableActivators, Selector, ViewUploadLink, Ann, CallsignAwards},
   last_req_id: 0,
   pending: {},
   data () {

@@ -16,6 +16,12 @@ module.exports = {
             entry: 'src/viewUpload.js',
             template: 'src/html/viewUpload.html',
             filename: 'viewUpload.html'
+        },
+        viewActivatorRatingDetail: {
+            entry: 'src/activatorsRatingDetail.js',
+            template: 'src/html/index.html',
+            filename: 'activatorsRatingDetail.html'
         }
+
    }
 }

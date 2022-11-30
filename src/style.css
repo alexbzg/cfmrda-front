@@ -808,7 +808,7 @@ table.select_view td.extreme input{
 
 
 
-#rating_menu select{
+.rating_menu select{
 	border: 1px solid #dfedfd;
 	border-radius: 0;
 	margin: 0 15px;
@@ -819,11 +819,11 @@ table.select_view td.extreme input{
 	text-decoration: underline;
 }
 
-#rating_menu option {
+.rating_menu option {
   background-color: #fff;
   vertical-align: middle;
 }
-#rating_menu option:checked {
+.rating_menu option:checked {
   background-color: #ffffca;
   color: #333;
 }
@@ -930,6 +930,10 @@ table.top_100 td span.call_result{
 
 table.top_100 td span.callsign{
 	cursor: pointer;
+}
+table.top_100 a{
+	text-decoration: none;
+	color: #333;
 }
 
 
