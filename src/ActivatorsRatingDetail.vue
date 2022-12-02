@@ -1,7 +1,7 @@
 <template>
     <div id="app" v-if="data.length" class="list">
-        <b>{{activator}} = {{pointsTotal}} points</b><br/>
-        {{year === 'total' ? 'ALL' : year}}
+        <b>{{activator}} {{year === 'total' ? 'ALL' : year}}</b><br/>
+        {{pointsTotal}} points * {{data.length}} RDA = {{pointsTotal*data.length}}
 
         <table id="rda_log">
             <tr>
