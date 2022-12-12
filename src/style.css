@@ -1020,9 +1020,14 @@ table#rda_table .bands8{
 
 #close_stat1rda{
 	width: 80%;
-	margin: 20px auto 0px auto;
-	text-align: right;
+	margin: 20px auto 30px auto;
+	text-align: center;
+	font-size: 20px;
+}
+#close_stat1rda img{
+	float: right;
 	cursor: pointer;
+	vertical-align: -10px;
 }
 
 table#stat1rda_hunter{

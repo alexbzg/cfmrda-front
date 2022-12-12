@@ -142,6 +142,7 @@
 
 
                             <div id="close_stat1rda">
+                                {{rdaTitles[rdaValue.value]}}
                                 <img src="images/icon_close.png" title="Close" @click="setRdaValue(null)">
                             </div>
 
@@ -325,7 +326,7 @@
 <script>
 import {mapGetters, mapState} from 'vuex'
 
-import {getRankings, getHunterDetails, getRecentUploads, oldCallsigns, getQSO, getDeletedUploads} from '../api'
+import {get, getRankings, getHunterDetails, getRecentUploads, oldCallsigns, getQSO, getDeletedUploads} from '../api'
 import storage from '../storage'
 import {arrayUnique, arraysEqSets} from '../utils'
 import {orderedBands, stripCallsign} from '../ham-radio'
@@ -395,6 +396,7 @@ export default {
       mode: 'total',
       specialMode: null,
       rdaValue: null,
+      rdaTitles: [],
       showDetails: false,
       showCallsignsEdit: false,
       callsignsEdit: null,
@@ -419,6 +421,9 @@ export default {
     getDeletedUploads()
       .then((data) => {this.deletedUploads = data})
     this.loadHunter()
+    get('/json/rda_titles.json')
+        .then((rsp) => this.rdaTitles = rsp.data)
+
   },
   beforeDestroy () {
     if (this.$callsignErrorTimeout) {
