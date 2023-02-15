@@ -31,7 +31,7 @@
                         </a>
                         <template v-else>&nbsp;</template>
                     </span>
-                    <span class="call_result">{{item ? item.rating : '&nbsp;'}}</span>
+                    <span class="call_result">{{item ? item.rating.toLocaleString() : '&nbsp;'}}</span>
                 </td>
             </tr>
        </table>
