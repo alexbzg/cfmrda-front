@@ -579,7 +579,18 @@
         "properties": {
             "id": {"type": "number"},
             "qslId": {"type": "number"},
-            "state": {"type": "boolean"},
+            "state": {
+                "oneOf": [
+                    {"type": "boolean"},
+                    {"type": "null"}
+                ]
+            },
+            "hold": {
+                "oneOf": [
+                    {"type": "boolean"},
+                    {"type": "null"}
+                ]
+            },
             "comment": {
                 "oneOf": [
                     {"type": "string"},
@@ -587,7 +598,7 @@
                 ]
             }
         },
-        "required": ["id", "state", "qslId"]
+        "required": ["id", "state", "qslId", "hold"]
     }
 },
 "oldCallsigns": {

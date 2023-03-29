@@ -2,6 +2,7 @@
   <div id="paper_qsl">
     <table id="paper_qsl_check">
         <tr>
+            <td class="top qsl_hold">Hold</td>
             <td class="top qsl_callsign">Callsign</td>
             <td class="top qsl_rda_callsign">Activator</td>
             <td class="top qsl_rda">RDA</td>
@@ -16,7 +17,14 @@
             <td class="top qsl_comm">Comment</td>
         </tr>
         <tbody v-for="item in qslList" :key="'qsl_' + item.id">
-            <tr :class="{cfm_checked: item.cfm, not_cfm_checked: item.not_cfm}">
+            <tr :class="{cfm_checked: item.cfm, not_cfm_checked: item.not_cfm, hold: item.hold }">
+                <td class="qsl_hold">
+                    <input type="checkbox" 
+                        v-model="item.hold"
+                        @change="holdQsl(item)"
+                        /><br/>
+                    <span class="holder" v-if="item.hold">{{item.admin}}</span>
+                </td>
                 <td class="qsl_callsign" @keyup.enter="submit" >{{item.callsign}}</td>
                 <td class="qsl_rda_callsign">
                     <router-link :to="'/callsignsRda/' + item.stationCallsign.replace('/', '%2F')" target="_blank">
@@ -40,12 +48,18 @@
                     </qsl-images>
                 </td>
                 <td class="qsl_cfm">
-                    <input type="checkbox" v-model="item.cfm"
-                        @change="item.not_cfm = item.cfm ? false : item.not_cfm">
+                    <input type="checkbox" 
+                        v-model="item.cfm"
+                        @change="item.not_cfm = item.cfm ? false : item.not_cfm"
+                        :disabled="item.hold"
+                        >
                 </td>
                 <td class="qsl_not_cfm">
-                    <input type="checkbox" v-model="item.not_cfm"
-                        @change="item.cfm = item.not_cfm ? false : item.cfm">
+                    <input type="checkbox" 
+                        v-model="item.not_cfm"
+                        @change="item.cfm = item.not_cfm ? false : item.cfm"
+                        :disabled="item.hold"
+                        >
                 </td>
                 <td class="qsl_comm">
                     <div class="moderator" v-if="item.cfm || item.not_cfm">{{userCallsign}}</div>
@@ -55,7 +69,7 @@
                 </td>
             </tr>
             <tr v-if="activeImage && activeImage.qso === item">
-                <td colspan="12" class="qsl_image">
+                <td colspan="13" class="qsl_image">
                     <div id="rotate_btns">
                       <img id="icon_rotate_left" src="/images/icon_rotate_left.jpg"
                         @click="setImageRotate('left')"
@@ -71,7 +85,7 @@
             </tr>
         </tbody>
         <tr>
-            <td colspan="13" class="cfm_btn">
+            <td colspan="14" class="cfm_btn">
                 <input type="button" name="cfm_btn" id="cfm_btn" value="OK" class="btn"
                     @click="buttonClick()" :disabled="pending || qsl.length === 0">
             </td>
@@ -108,6 +122,12 @@ export default {
   methods: {
     bandWl (band) {
       return bandWl(band)
+    },
+    holdQsl (item) {
+      if (item.hold) {
+        item.cfm = false
+        item.not_cfm = false
+      }
     },
     post(data) {
       data.token = this.$store.getters.userToken
@@ -154,9 +174,10 @@ export default {
     qsl () {
       const r = []
       for (const qsl of this.qslList) {
-        if (qsl.cfm || qsl.not_cfm) {
+        if (qsl.cfm || qsl.not_cfm || qsl.hold) {
           r.push({id: qsl.id,
-            state: !!qsl.cfm,
+            hold: qsl.hold,
+            state: qsl.cfm ? true : (qsl.not_cfm ? false : null),
             qslId: qsl.qslId,
             comment: qsl.comment})
         }

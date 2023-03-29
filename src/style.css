@@ -1922,6 +1922,7 @@ table#add_paper_qsl td.no_border2{
 	vertical-align: bottom;
 	color: #777;
 }
+
 table#add_paper_qsl td.qsl_callsign, table#add_paper_qsl td.qsl_my_call, table#add_paper_qsl td.qsl_my_new_call{
 	font-weight: bold;
 }
@@ -2203,6 +2204,20 @@ table#paper_qsl_check td.qsl_links, table#paper_qsl_check td.qsl_card{
 table#paper_qsl_check td.qsl_card.top{
 	vertical-align: middle;
 }
+table#paper_qsl_check td.qsl_hold{
+	font-size: 12px;
+	line-height: 10px;
+	vertical-align: middle;
+}
+table#paper_qsl_check td.qsl_hold span{
+	font-size: 10px;
+	color: #777;
+}
+table#paper_qsl_check tr.hold td{
+	border-color: #fbe8cc;
+	background-color: #fbe8cc;
+}
+
 table#paper_qsl_check td.qsl_callsign, table#paper_qsl_check td.qsl_new_callsign, table#paper_qsl_check td.qsl_rda_callsign {
 	font-weight: bold;
 }
