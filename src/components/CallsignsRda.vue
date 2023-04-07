@@ -26,7 +26,7 @@
 
         <table id="callsign_rda" v-if="callsign || rda">
             <tr>
-                <td class="top" colspan="4">
+                <td class="top" colspan="5">
                     <a v-if="callsign && callsign.length" 
                        :href="'https://www.qrz.ru/db/' + callsign"
                        target="_blank" rel="nofollower">{{callsign}}</a>
@@ -37,7 +37,7 @@
                 <td id="any_rda">
                     No AutoCFM<br/><input type="checkbox" v-model="meta.disableAutocfm">
                 </td>
-                <td colspan="2">
+                <td colspan="3">
                     <textarea v-model="meta.comments" class="no_latinize"></textarea>
                 </td>
                 <td id="save_note">
@@ -50,6 +50,13 @@
                 <td class="rda" v-if="!callsign || !callsign.length" @click="doSearch(item.callsign)">{{item.callsign}}</td>
                 <td class="rda" v-else>{{item.rda}}</td>
                 <td class="time_period">{{item.period}}</td>
+                <td class="bands">
+                    <template v-if="item.bands_list">
+                        <span
+                            v-for="band in item.bands_list"
+                            :key="band">{{band}}</span>
+                    </template>
+                </td>
                 <td class="admin">
                     <template v-if="item.comment"><span>{{item.comment}}</span><br/></template>
                     {{item.source}} {{item.ts}}
@@ -109,13 +116,14 @@
     </div>
     </div>
 </template>
+
 <script>
 import {mapGetters} from 'vuex'
 
 import Datepicker from 'vuejs-datepicker'
 
 import {callsignsRda} from '../api'
-import {parseRDA, validCallsignFull} from '../ham-radio'
+import {parseRDA, validCallsignFull, BANDS} from '../ham-radio'
 
 import ValidationMixin from '../validation-mixin'
 import LatinizeMixin from '../latinize-mixin'
@@ -125,6 +133,7 @@ import RdaInput from './RDAinput'
 export default {
   name: 'CallsignsRda',
   parseRDA: parseRDA,
+  BANDS: BANDS,
   components: {RdaInput, Datepicker},
   mixins: [ValidationMixin, LatinizeMixin],
   props: ['extSearchCallsign'],
@@ -247,6 +256,11 @@ export default {
           .then(data => {
             this.suffixes = data.suffixes
             this.rdaRecords = data.rdaRecords
+            for (const record of this.rdaRecords) {
+              if (record.bands_list) {
+                record.bands_list.sort((a, b) => a - b)
+              }
+            }
             this.callsign = this.search.callsign
             this.rda = this.search.rda
             if (data.meta) {

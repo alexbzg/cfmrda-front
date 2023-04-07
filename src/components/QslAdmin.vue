@@ -142,6 +142,7 @@ export default {
           for (const qsl of data) {
             qsl.cfm = false
             qsl.not_cfm = false
+            qsl.hold_srv = qsl.hold
           }
           this.qslList = data
         })
@@ -174,7 +175,7 @@ export default {
     qsl () {
       const r = []
       for (const qsl of this.qslList) {
-        if (qsl.cfm || qsl.not_cfm || qsl.hold) {
+        if (qsl.cfm || qsl.not_cfm || qsl.hold !== qsl.hold_srv) {
           r.push({id: qsl.id,
             hold: qsl.hold,
             state: qsl.cfm ? true : (qsl.not_cfm ? false : null),
