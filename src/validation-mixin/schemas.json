@@ -418,6 +418,17 @@
     },
     "required": ["call"]
 },
+"extLoggersLoginRDAWARD": {
+    "type": "object",
+    "properties": {
+        "cs": {
+            "type": "string",
+            "minLength": 1
+        }
+    },
+    "required": ["cs"]
+},
+
 
 
 "callsignsRda": {

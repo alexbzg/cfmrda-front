@@ -50,11 +50,11 @@
             <div id="login_bottom" v-if="mode !== 'passwordChange'">
                 <a id="pass_recovery" href="#"
                     @click="mode = (mode === 'passwordRequest' ? 'login' : 'passwordRequest')">
-                    {{mode === 'passwordRequest' ? 'Login/Regisration' : 'Password recovery'}}
+                    {{mode === 'passwordRequest' ? 'Login/Registration' : 'Password recovery'}}
                 </a>
                 <input type="button" name="register_btn" id="login2_btn"
                     v-if="mode !== 'passwordRequest'"
-                    :value="mode === 'register' ? 'Login' : 'Regisration'" class="btn"
+                    :value="mode === 'register' ? 'Login' : 'Registration'" class="btn"
                     @click="mode = mode === 'register' ? 'login' : 'register'"/>
             </div>
         </div>
