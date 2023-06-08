@@ -345,7 +345,7 @@
                             "type": "object"
                          },
                         "logger": {
-                            "enum": ["LoTW", "eQSL", "HAMLOG"]
+                            "enum": ["LoTW", "eQSL", "HAMLOG", "RDAWARD"]
                         }
                     },
                     "required": ["loginData", "logger"]
