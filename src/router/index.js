@@ -96,9 +96,10 @@ const router = new Router({
           component: CallsignsAdmin
         },
         {
-          path: 'usr_reg',
+          path: 'usr_reg/:defCallsign?',
           name: 'UsrRegAdmin',
-          component: UsrRegAdmin
+          component: UsrRegAdmin,
+          props: (route) => ({defCallsign: route.params.defCallsign})
         },
         {
           path: 'uploads',

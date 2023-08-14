@@ -16,6 +16,7 @@ import {dataPost} from '../api'
 
 export default {
   name: 'UsrRegAdmin',
+  props: ['defCallsign'],
   data () {
     return {
       callsign: null,
@@ -23,6 +24,12 @@ export default {
       email: null,
       email_confirmed: null,
       pending: false
+    }
+  },
+  mounted () {
+    if (this.defCallsign) {
+      this.callsign = this.defCallsign
+      this.post()
     }
   },
   methods: {
