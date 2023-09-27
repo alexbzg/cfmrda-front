@@ -71,7 +71,7 @@ import replaceZerosMixin from '../replace-zeros-mixin'
 
 import RadioBtnsMode from './RadioBtnsMode.vue'
 
-const ROWS_COUNT = 13
+const ROWS_COUNT = 15
 const COLUMNS_COUNT = 7
 
 export default {

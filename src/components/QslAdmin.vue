@@ -78,7 +78,11 @@
                         @click="setImageRotate('right')"
                         title="Повернуть QSL" /><br/>
                     </div>
-                    <img :src="activeImage.src" @click="activeImage = null"
+                    <img 
+                        :src="activeImage.src" 
+                        @click="activeImage = null"
+                        @load="imageLoad"
+                        :title="activeImage.fileSize"
                         :class="{rotate_left: imageRotate === 'left',
                             rotate_right: imageRotate ===  'right'}"/>
                 </td>
@@ -168,6 +172,10 @@ export default {
     showImage (imgData) {
       this.activeImage = imgData
       this.imageRotate = null
+    },
+    imageLoad (evt) {
+      this.activeImage.fileSize = "Размер файла: " + 
+        ~~(performance.getEntriesByName(evt.target.src)[0].transferSize / 1024) + 'Mb'
     }
   },
   computed: {
