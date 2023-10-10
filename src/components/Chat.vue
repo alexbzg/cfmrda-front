@@ -116,6 +116,7 @@ const MSG_SANITIZE_HTML_SETTINGS = {
       img: ['src']
     }
 }
+const RE_URL = new RegExp(`${window.location.protocol}//${window.location.host}/\\S*`, "g")
 
 export default {
   mixins: [replaceZerosMixin],
@@ -178,6 +179,7 @@ export default {
               msg.to.shift()
             }
             msg.text = msg.text.replace(/:(\d\d):/g, '<image src="/images/smiles/$1.gif"/>')
+            msg.text = msg.text.replace(RE_URL, '<a href="$&">$&</a>')
         }
         this.messages = this.chatService.data
       }

@@ -175,7 +175,7 @@ export default {
     },
     imageLoad (evt) {
       this.activeImage.fileSize = "Размер файла: " + 
-        ~~(performance.getEntriesByName(evt.target.src)[0].transferSize / 1024) + 'Mb'
+        ~~(performance.getEntriesByName(evt.target.src)[0].transferSize / 1024) + 'Kb'
     }
   },
   computed: {
