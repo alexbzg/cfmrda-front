@@ -282,52 +282,92 @@
     },
     "required": ["qso", "image"]
 },
-"ann": {
+"announce_post": {
     "type": "object",
-    "oneOf": [
-        {
-            "properties": {
-                "token": {
-                    "type": "string",
-                    "minLength": 8
-                },
-                "new": {
-                    "type": "object",
-                    "properties": {
-                        "text": {
-                            "type": "string",
-                            "minLength": 10
-                        },
-                        "period": {
-                            "type": "string",
-                            "minLength": 5
-                        },
-                        "caption": {
-                            "type": "string",
-                            "minLength": 5
-                        }
-                    },
-                    "required": ["caption", "text", "period"],
-                    "additionalProperties": false
-                }
-            },
-            "required": ["new", "token"],
-            "additionalProperties": false
+    "properties": {
+        "token": {
+            "type": "string",
+            "minLength": 8
         },
-        {
+        "announce": {
+            "type": "object",
             "properties": {
-                "token": {
+                "text": {
                     "type": "string",
-                    "minLength": 8
+                    "minLength": 10
                 },
-                "delete": {
-                    "type": "number"
+                "start": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "end": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "caption": {
+                    "type": "string",
+                    "minLength": 5
                 }
             },
-            "required": ["delete", "token"],
+            "required": ["caption", "text", "period", "start"]
             "additionalProperties": false
         }
-    ]
+    },
+    "required": ["announce", "token"],
+    "additionalProperties": false
+},
+"announce_put": {
+    "type": "object",
+    "properties": {
+        "token": {
+            "type": "string",
+            "minLength": 8
+        },
+        "announce": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "minLength": "5"
+                },
+                "text": {
+                    "type": "string",
+                    "minLength": 10
+                },
+                "start": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "end": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "caption": {
+                    "type": "string",
+                    "minLength": 5
+                }
+            },
+            "required": ["id", "caption", "text", "period", "start"]
+            "additionalProperties": false
+        }
+    },
+    "required": ["announce", "token"],
+    "additionalProperties": false
+},
+"announce_delete": {
+    "type": "object",
+    "properties": {
+        "token": {
+            "type": "string",
+            "minLength": 8
+        },
+        "id": {
+            "type": "string",
+            "minLength": "5"
+        }
+    },
+    "required": ["id", "token"],
+    "additionalProperties": false
 },
 "extLoggers": {
     "type": "object",
