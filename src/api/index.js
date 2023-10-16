@@ -32,6 +32,15 @@ function onError (error) {
   throw e
 }
 
+export function send (URL, data, method = 'POST') {
+  return axios({
+      url: API_URL + URL,
+      data: data,
+      method
+    })
+    .catch(onError)
+}
+
 export function post (URL, data) {
   return axios.post(API_URL + URL, data)
     .catch(onError)
@@ -53,9 +62,15 @@ export function head (URL) {
     .catch(onError)
 }
 
-
 export function dataPost(url, data) {
   return post (url, data)
+    .then(response => {
+      return response.data
+    })
+}
+
+export function dataSend(url, data, method) {
+  return send (url, data, method)
     .then(response => {
       return response.data
     })
@@ -115,10 +130,6 @@ export function uploadADIF (data) {
 
 export function chatPost (data) {
   return dataPost('chat', data)
-}
-
-export function annPost (data) {
-  return dataPost('ann', data)
 }
 
 export function loggersPost (data) {

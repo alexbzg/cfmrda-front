@@ -3479,6 +3479,7 @@ table.anons_block{
 	padding: 0;
 	border: 1px solid #eef;
 	border-collapse: collapse;
+	background-color: #fffff0;
 }
 table.anons_block td{
 	padding: 0;
@@ -3530,6 +3531,9 @@ table.anons_block td.anons_del img{
 table.anons_block td.anons_del:hover img{
 	visibility: visible;
 }
+table.anons_block td.anons_del img.edit{
+	margin-right: 20px;
+}
 
 
 
@@ -3553,16 +3557,27 @@ table.anons_block td.anons_del:hover img{
 	cursor: pointer;
 }
 #anons_note{
-	display: block;
-	margin-top: 20px;
-	color: #c55;
+	display: inline-block;
+	margin: 20px;
+	color: #c00;
 	font-style: italic;
 	font-weight: bold;
 }
 
-table#anons_form{
+
+#add_anons_form{
+	display: inline-block;
 	margin: 20px auto;
+	padding: 0px 20px 20px 20px;
+	background-color: #fffff0;
+	box-shadow: 5px 5px 10px #999;
+	border: 1px solid #ddd;
+}
+
+
+table#anons_form{
 	border-collapse: collapse;
+	margin: 0px auto;
 }
 table#anons_form td{
 	margin: 0;
@@ -3590,7 +3605,7 @@ table#anons_form input#anons_date{
 	font-weight: bold;
 }
 table#anons_form textarea{
-	width: 780px;
+	width: 880px;
 	height: 100px;
 	margin: 20px auto;
 	text-align: left;

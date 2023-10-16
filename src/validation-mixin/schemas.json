@@ -282,7 +282,7 @@
     },
     "required": ["qso", "image"]
 },
-"announce_post": {
+"announce_create": {
     "type": "object",
     "properties": {
         "token": {
@@ -293,8 +293,7 @@
             "type": "object",
             "properties": {
                 "text": {
-                    "type": "string",
-                    "minLength": 10
+                    "type": "string"
                 },
                 "start": {
                     "type": "string",
@@ -309,14 +308,14 @@
                     "minLength": 5
                 }
             },
-            "required": ["caption", "text", "period", "start"]
+            "required": ["caption", "start", "end"],
             "additionalProperties": false
         }
     },
     "required": ["announce", "token"],
     "additionalProperties": false
 },
-"announce_put": {
+"announce_update": {
     "type": "object",
     "properties": {
         "token": {
@@ -328,11 +327,10 @@
             "properties": {
                 "id": {
                     "type": "string",
-                    "minLength": "5"
+                    "minLength": 5
                 },
                 "text": {
-                    "type": "string",
-                    "minLength": 10
+                    "type": "string"
                 },
                 "start": {
                     "type": "string",
@@ -345,9 +343,13 @@
                 "caption": {
                     "type": "string",
                     "minLength": 5
+                },
+                "user": {
+                    "type": "string",
+                    "minLength": 3
                 }
             },
-            "required": ["id", "caption", "text", "period", "start"]
+            "required": ["id", "caption", "start", "end", "user"],
             "additionalProperties": false
         }
     },
@@ -363,7 +365,7 @@
         },
         "id": {
             "type": "string",
-            "minLength": "5"
+            "minLength": 5
         }
     },
     "required": ["id", "token"],

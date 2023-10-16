@@ -2,13 +2,31 @@
     <div class="list">
 
         <div id="anons">
-            <table class="anons_block" v-for="(item, idx) in ann" :key="idx" @click="item.expand = !item.expand">
+            <table class="anons_block" v-for="(item, idx) in announces" :key="idx" @click="item.expand = !item.expand">
                 <tr>
-                  <td class="announcer">{{item.callsign}}<br/><span>{{item.date}}</span></td>
-                  <td class="anons_link">{{item.caption}}<br/><span class="date">{{item.period}}</span></td>
+                  <td class="announcer">
+                    {{item.user}}<br/>
+                    <span>{{item.date}}</span>
+                  </td>
+                  <td class="anons_link">
+                    {{item.caption}}<br/>
+                    <span class="date">
+                        {{item.period}}
+                    </span>
+                  </td>
                   <td class="anons_del">
-                      <img class="delete" src="/images/icon_delete.png" title="Удалить это сообщение" 
-                        v-if="admin" @click.stop="deleteAnn(item)">
+                    <template v-if="(userCallsign === item.user) || admin">
+                      <img 
+                        class="edit" 
+                        src="/images/icon_edit.png" 
+                        title="Изменить это сообщение" 
+                        @click.stop="updateAnnounce(item)"/>
+                      <img 
+                        class="delete" 
+                        src="/images/icon_delete.png" 
+                        title="Удалить это сообщение" 
+                        @click.stop="deleteAnnounce(item.id)"/>
+                    </template>
                   </td>
                 </tr>
                 <tr>
@@ -24,30 +42,57 @@
                 <div id="add_anons_link" @click="showForm = !showForm">Добавить анонс RDA экспедиции</div>
                 <div id="add_anons_form" v-if="showForm">
                     <span id="anons_note">Раздел предназначен <u>только</u> для анонса RDA-экспедиций.</span>
-                    <table id="anons_form">
+                    <form @submit.prevent="sendAnnounce">
+                      <table id="anons_form">
                         <tr>
                             <td>
-                                <input type="text" id="anons_title" v-model="newAnn.caption"
+                                <input required
+                                    minLength="4"
+                                    type="text" 
+                                    id="anons_title" 
+                                    v-model="editAnnounce.caption"
                                     class="no_latinize"/>
                             </td>
                             <td>
-                                <input type="text" id="anons_date" v-model="newAnn.period"
-                                    class="no_latinize">
+                                <input required
+                                    type="date" 
+                                    id="anons_date_start" 
+                                    v-model="editAnnounce.start"
+                                    :min="today()"
+                                    @change="startChange"
+                                    class="no_latinize"/>
+                            </td>
+                            <td>
+                                <input required
+                                    type="date" 
+                                    id="anons_date_end" 
+                                    :min="today()"
+                                    v-model="editAnnounce.end"
+                                    @change="endChange"
+                                    class="no_latinize"/>
                             </td>
                         </tr>
                         <tr>
                             <td class="note">название сообщения</td>
-                            <td class="note">дата экспедиции</td>
+                            <td class="note">начало экспедиции</td>
+                            <td class="note">конец экспедиции</td>
                         </tr>
                         <tr>
-                            <td colspan="2">
-                                <textarea id="anons_text" v-model="newAnn.text" class="no_latinize">
+                            <td colspan="3">
+                                <textarea 
+                                    id="anons_text" 
+                                    v-model="editAnnounce.text" 
+                                    class="no_latinize">
                                 </textarea><br/>
-                                <input type="submit" class="btn" value="Отправить" 
-                                    :disabled="!validated" @click="postAnn()">
+                                <input 
+                                    type="submit" 
+                                    class="btn" 
+                                    value="Отправить" 
+                                    :disabled="!userToken || pending">
                             </td>
                         </tr>
                     </table>
+                  </form>
                 </div>
             </div>
 
@@ -59,61 +104,70 @@
 <script>
 import {mapGetters} from 'vuex'
 
-import {getAnn, annPost} from '../api'
-
-import validationMixin from '../validation-mixin'
+import {get, dataSend} from '../api'
 
 export default {
-  mixins: [validationMixin],
   name: 'Ann',
   data () {
-    const newAnn = { 
-      text: '',
-      period: '',
-      caption: ''
-    }
+    const today = this.today()
     return { 
-      ann: [],
-      showForm: false,
-      newAnn: newAnn,
       pending: false,
-      validationSchema: 'ann',
-      validationData: {
-          new: newAnn,
-          token: this.$store.getters.userToken
+      announces: [],
+      showForm: false,
+      editAnnounce: {
+        caption: '',
+        start: today,
+        end: today,
+        text: ''
       },
       response: null
     }
   },
   mounted () {
-    this.loadAnn()
-    this.validate()
+    this.loadAnnounces()
   },
   computed: {
-    ...mapGetters(['userToken', 'admin']),
-  },
-  watch: {
-    userToken (newVal) {
-      this.validationData.token = newVal
-    }
+    ...mapGetters(['userToken', 'admin', 'userCallsign']),
   },
   methods: {
-    loadAnn () {
-      getAnn()
-        .then(data => {
-          for (const ann of data)
+    today () {
+      return new Date().toISOString().substring(0, 10)
+    },
+    dateStringToLocaleString (s) {
+      return new Date(Date.parse(s)).toLocaleDateString(undefined, 
+                    {day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric'})
+    },
+    loadAnnounces () {
+      get('/json/ann.json')
+        .then(response => {
+          for (const ann of response.data) {
             ann.expand = false
-          this.ann = data
+            if (ann.start === ann.end) 
+                ann.period = this.dateStringToLocaleString(ann.start)
+            else {
+                const period = [ann.start, ann.end].map(s => this.dateStringToLocaleString(s))
+                const period_split = period.map(s => s.split(" ", 3))
+                if (period_split[0][2] !== period_split[1][2])
+                    ann.period = `${period[0]} \u2014 ${period[1]}`
+                else if (period_split[0][1] !== period_split[1][1])
+                    ann.period = `${period_split[0][0]} ${period_split[0][1]} \u2014 ` + 
+                        `${period_split[1][0]} ${period_split[1][1]} ${period_split[0][2]} г.`
+                else 
+                    ann.period = `${period_split[0][0]} \u2014 ${period_split[1][0]} ` + 
+                        `${period_split[0][1]} ${period_split[0][2]} г.`
+            }
+          }
+          this.announces = response.data
         })
     },
-    post (data) {
+    send (data, method) {
       this.pending = true
-      annPost(data)
+      data.token = this.userToken
+      return dataSend('announce', data, method)
         .then(() => {
-          this.newAnn.text = ''
-          this.newAnn.period = ''
-          this.newAnn.caption = ''
-          this.loadAnn()
+          this.loadAnnounces()
         })
         .catch(e => {
           this.response = e.message
@@ -122,12 +176,37 @@ export default {
           this.pending = false
         })
     },
-    postAnn () {
-      this.post(this.validationData)
+    sendAnnounce () {
+      this.send(
+        {announce: this.editAnnounce}, 
+        this.editAnnounce.id ? 'PUT' : 'POST')
+        .then(() => {
+          const today = this.today()
+          this.editAnnounce = {
+            caption: '',
+            start: today,
+            end: today,
+            text: ''
+          }
+          this.editAnnounce.caption = ''
+        })
     },
-    deleteAnn (ann) {
+    deleteAnnounce (id) {
       if (confirm("Вы действительно хотите удалить этот анонс?"))
-        this.post({token: this.userToken, delete: ann.ts})
+        this.send({id}, 'DELETE')
+    },
+    updateAnnounce (announce) {
+      const {id, user, caption, start, end, text} = announce
+      this.editAnnounce = {id, user, caption, start, end, text}
+      this.showForm = true
+    },
+    startChange () {
+      if (this.editAnnounce.end < this.editAnnounce.start)
+        this.editAnnounce.end = this.editAnnounce.start
+    },
+    endChange () {
+      if (this.editAnnounce.end < this.editAnnounce.start)
+        this.editAnnounce.start = this.editAnnounce.end
     }
   }
 }
