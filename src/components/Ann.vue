@@ -6,7 +6,6 @@
                 <tr>
                   <td class="announcer">
                     {{item.user}}<br/>
-                    <span>{{item.date}}</span>
                   </td>
                   <td class="anons_link">
                     {{item.caption}}<br/>
@@ -32,7 +31,7 @@
                 <tr>
                   <td colspan="3">
                     <div class="anons_text" v-show="item.expand">
-                        <pre>{{item.text}}</pre>
+                        <pre v-html="item.text"/>
                     </div>
                   </td>
                 </tr>
@@ -106,6 +105,8 @@ import {mapGetters} from 'vuex'
 
 import {get, dataSend} from '../api'
 
+const RE_TNXQSO_URL = new RegExp(`https://(?:www\.)?tnxqso\.com/\\S*`, "g")
+
 export default {
   name: 'Ann',
   data () {
@@ -144,6 +145,7 @@ export default {
         .then(response => {
           for (const ann of response.data) {
             ann.expand = false
+            ann.text = ann.text.replace(RE_TNXQSO_URL, '<a href="$&">$&</a>')
             if (ann.start === ann.end) 
                 ann.period = this.dateStringToLocaleString(ann.start)
             else {

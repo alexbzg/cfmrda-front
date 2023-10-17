@@ -305,7 +305,7 @@
                 },
                 "caption": {
                     "type": "string",
-                    "minLength": 5
+                    "minLength": 4
                 }
             },
             "required": ["caption", "start", "end"],
@@ -342,7 +342,7 @@
                 },
                 "caption": {
                     "type": "string",
-                    "minLength": 5
+                    "minLength": 4
                 },
                 "user": {
                     "type": "string",
