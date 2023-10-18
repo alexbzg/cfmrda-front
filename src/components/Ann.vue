@@ -105,7 +105,7 @@ import {mapGetters} from 'vuex'
 
 import {get, dataSend} from '../api'
 
-const RE_TNXQSO_URL = new RegExp(`https://(?:www\.)?tnxqso\.com/\\S*`, "g")
+const RE_TNXQSO_URL = new RegExp('https://(?:www\\.)?tnxqso\\.com/\\S*', "g")
 
 export default {
   name: 'Ann',

@@ -15,7 +15,21 @@
             <tr v-for="item in data" :key="item.rda">
                 <td v-if="year === 'total'"
                     class="year">{{item.qso_year}}</td>
-                <td class="rda">{{item.rda}}</td>
+                <td 
+                    class="rda"
+                    @mouseover="year !== 'total' && rdaHover(item)"
+                    @mouseout="year !== 'total' && rdaHoverOut(item)">
+                    {{item.rda}}
+                    <table v-if="item.detail">
+                        <tr 
+                            v-for="band in item.detail"
+                            :key="band[0]"
+                            :class="{enabled: band[1] > 49}">
+                            <td>{{band[0]}}</td>
+                            <td>{{band[1]}}</td>
+                        </tr>
+                    </table>
+                </td>
                 <td class="points">{{item.points}}</td>
                 <td class="mult">{{item.mult}}</td>
                 <td class="total">{{item.total}}</td>
@@ -28,6 +42,9 @@
 import './style.css'
 
 import { get } from './api'
+import { orderedBands } from './ham-radio'
+
+const BANDS = orderedBands()
 
 export default {
   name: 'ActivatorsRatingDetail',
@@ -41,9 +58,33 @@ export default {
   },
   mounted () {
     get(`/aiohttp/activators_rating/${this.year}/${this.activator}`)
-        .then( (rsp) => {
-            this.data = rsp.data
+      .then( (rsp) => {
+        if (this.year !== 'total')
+          for (const item of rsp.data) {
+            item.pending = false
+            item.detail = null
+        }
+        this.data = rsp.data
+      })
+  },
+  methods: {
+    rdaHover (item) {
+      if (!item.detail && !item.pending)
+        item.pending = true
+        get(`/aiohttp/activators_rating/${this.year}/${this.activator}/${item.rda}`)
+          .then( (rsp) => {
+            if (item.pending) {
+              item.detail = []
+              for (const band of BANDS)
+                if (band in rsp.data)
+                  item.detail.push([band, rsp.data[band]])
+            }
         })
+    }, 
+    rdaHoverOut (item) {
+      item.pending = false
+      item.detail = null
+    }
   },
   computed: {
     pointsTotal () {
