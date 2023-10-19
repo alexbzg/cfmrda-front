@@ -334,7 +334,7 @@ import {SET_OLD_CALLSIGNS_ALL} from '../store'
 
 import rankDataMixin from '../rank-data-mixin'
 import replaceZerosMixin from '../replace-zeros-mixin'
-import latinizeMixin from '../latinize-mixin'
+import latinizeMixin, {RUS} from '../latinize-mixin'
 
 import RankTable from './RankTable.vue'
 import RankTableActivators from './RankTableActivators.vue'
@@ -348,6 +348,8 @@ import Ann from './Ann.vue'
 const STORAGE_KEY_CALLSIGN = 'hunter_callsign'
 
 import rdaShort from '../rdaShort.json'
+
+const RE_RUS = new RegExp(`[${RUS + RUS.toLowerCase()}]`, "g")
 
 export default {
   BANDS: orderedBands(),
@@ -594,6 +596,8 @@ export default {
       this.loadHunter()
     },
     callsignChange () {
+      if (RE_RUS.test(this.callsign))
+        return
       this.callsignValid = null
       this.hunterData = null
       this.showDetails = false

@@ -1,5 +1,5 @@
 const LAT = 'QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>[];\',.'
-const RUS = 'ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮхъжэбю'
+export const RUS = 'ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮхъжэбю'
 const ALPH_LENGTH = LAT.length
 
 function latinize (txt) {
