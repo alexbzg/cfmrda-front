@@ -1491,7 +1491,8 @@ table#rda_log{
  	border-collapse: collapse;
 }
 table#rda_log td{
-	padding: 7px 25px;
+	width: 150px;
+	padding: 7px 0;
 	text-align: center;
 	color: #333;
 	border: 1px solid #dfedfd;
@@ -1502,6 +1503,43 @@ table#rda_log td.menu{
 }
 table#rda_log td.call{
 	font-weight: bold;
+}
+
+table#rda_log td.points{
+	text-decoration: underline;
+	cursor: pointer;
+}
+table#rda_log td.show_detail{
+	border-bottom: none;
+	background-color: #fffff0;
+}
+
+table#rda_log td.bands_td{
+	border-top: none;
+	background-color: #fffff0;
+}
+
+table.bands{
+	margin: 20px auto;
+ 	border-collapse: collapse;
+ 	background-color: #fff;
+}
+table#rda_log td table.bands td{
+	width: 30px;
+	padding: 5px 10px;
+	border-color: #ccc;
+}
+table#rda_log td table.bands th{
+	width: 30px;
+	padding: 5px 10px;
+	background-color: #eee;
+	border: 1px solid #ccc;
+	font-size: 14px;
+	font-weight: normal;
+}
+
+table#rda_log td table.bands td.enabled, table#rda_log td table.bands th.enabled{
+	background-color: #63fb7e;
 }
 
 
