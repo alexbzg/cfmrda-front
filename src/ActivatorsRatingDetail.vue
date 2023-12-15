@@ -1,6 +1,6 @@
 <template>
     <div id="app" v-if="data.length" class="list">
-        <b>{{activator}} {{year === 'total' ? 'ALL' : year}}</b><br/>
+        <b>{{activator}} {{year === 'current' ? 2024 : year}}</b><br/>
         {{pointsTotal}} points * {{data.length}} RDA = {{pointsTotal*data.length}}
 
         <table id="rda_log">
@@ -78,12 +78,16 @@ export default {
     return {
       year: params.get('year'),
       activator: params.get('activator'),
+      mode: params.get('mode'),
       showDetail: null,
       data: []
     }
   },
   mounted () {
-    get(`/aiohttp/activators_rating/${this.year}/${this.activator}`)
+    const url = this.year == 'current' ?
+      `/aiohttp/activators_rating/current/detail/${this.activator}/${this.mode}` :
+      `/aiohttp/activators_rating/archive/${this.year}`
+    get(url)
       .then( (rsp) => {
         this.data = rsp.data
       })
@@ -95,8 +99,11 @@ export default {
       else {
         this.showDetail = item
         if (!item.detail && !item.pending) {
+          const url = this.year == 'current' ?
+            `/aiohttp/activators_rating/current/detail/${this.activator}/${this.mode}/${item.rda}` :
+            `/aiohttp/activators_rating/archive/${this.year}/${item.rda}`
           item.pending = true
-          get(`/aiohttp/activators_rating/${this.year}/${this.activator}/${item.rda}`)
+          get(url)
             .then( (rsp) => this.$set(item, 'detail', rsp.data) )
             .finally( () =>  item.pending = false )
         }

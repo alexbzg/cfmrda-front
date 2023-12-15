@@ -1,7 +1,7 @@
 <template>
     <div class="list" v-if="rankDataTop">
 
-        <h4>The CFMRDA rating</h4>
+        <h4>Hunters rating</h4>
 
 
         <div class="rating_menu">
@@ -31,12 +31,6 @@
           <select id="band" v-if="award === 'rating'" v-model="params.band">
             <option value="total">ALL</option>
             <option v-for="_band in $options.BANDS" :key="_band" :value="_band">{{_band}}</option>
-          </select>
-
-          <select id="role" v-if="award === 'rating'" v-model="params.role">
-            <option v-for="_role in ['hunter', 'activator']" :key="_role" :value="_role">
-                {{$options.ROLES[_role]}}
-            </option>
           </select>
 
         </div>

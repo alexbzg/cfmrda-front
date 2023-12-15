@@ -828,7 +828,9 @@ table.select_view td.extreme input{
   color: #333;
 }
 
-
+.rating_menu .rating_features{
+	display: inline-block;
+}
 
 
 
