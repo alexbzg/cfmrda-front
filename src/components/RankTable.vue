@@ -1,7 +1,7 @@
 <template>
     <div class="list" v-if="rankDataTop">
 
-        <h4>Hunters rating</h4>
+        <h4>Hunter's rating</h4>
 
 
         <div class="rating_menu">

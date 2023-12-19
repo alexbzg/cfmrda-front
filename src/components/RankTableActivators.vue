@@ -1,19 +1,23 @@
 <template>
     <div class="list">
 
-       <h4>Activators rating</h4>
+       <h4>Activator's rating</h4>
 
 
        <div class="rating_menu">
-          <select id="activators_rating_year" v-if="years" v-model="year">
-            <option value="current">2024</option>
-            <option v-for="_year in years" :key="_year" :value="_year">
-                {{_year}}
+          <select id="activators_rating_year" 
+            v-if="years.length" 
+            v-model="year">
+            <option 
+                v-for="(entry, idx) in years" 
+                :key="idx" 
+                :value="idx">
+                {{entry.year}}
             </option>
           </select>
           <div 
             class="rating_features"
-            v-if="year === 'current'">
+            v-if="years.length && years[year].ratingType === 'current'">
             <select 
                 id="station_type"
                 v-model="clubs">
@@ -90,7 +94,7 @@ export default {
   data () {
     const ratingSettings = storage.load(STORAGE_KEY_ACTIVATORS_RATING_SETTINGS ) || {}
     return {
-      years: null,
+      years: [],
       year: null,
       mode: ratingSettings.mode || 'TOTAL',
       clubs: ratingSettings.clubs || false,
@@ -100,23 +104,30 @@ export default {
   },
   mounted () {
     get('/aiohttp/activators_rating')
-        .then( (rsp) => {
-            this.years = rsp.data
-            this.year = rsp.data[0]
+        .then( rsp => {
+          ['current', 'legacy'].map( ratingType => {
+            rsp.data[ratingType].map( year => {
+              this.years.push({ year, ratingType })
+            })
+          })
+          this.year = 0
         })
   },
   methods: {
     detailURL (activator) {
-      return `/activatorsRatingDetail.html?year=${this.year}&activator=${activator}&mode=${encodeURIComponent(this.mode)}`
+      const {year, ratingType} = this.years[this.year]
+      return `/activatorsRatingDetail.html?year=${year}&activator=${activator}&mode=${encodeURIComponent(this.mode
+        )}&ratingType=${ratingType}`
     },
     update () {
       storage.save(STORAGE_KEY_ACTIVATORS_RATING_SETTINGS, 
         {mode: this.mode, clubs: this.clubs}, 'local')
       this.data = null
       this.loading = true
-      const url = this.year == 'current' ?
-        `/aiohttp/activators_rating/current/${this.mode}/${this.clubs ? 'clubs' : ''}` :
-        `/aiohttp/activators_rating/archive/${this.year}`
+      const {year, ratingType} = this.years[this.year]
+      const url = ratingType == 'current' ?
+        `/aiohttp/activators_rating/current/${year}/${this.mode}/${this.clubs ? 'clubs' : ''}` :
+        `/aiohttp/activators_rating/legacy/${year}`
       get(url)
         .then( (rsp) => {
             this.data = rsp.data

@@ -1,6 +1,6 @@
 <template>
     <div id="app" v-if="data.length" class="list">
-        <b>{{activator}} {{year === 'current' ? 2024 : year}}</b><br/>
+        <b>{{activator}} {{year}}</b><br/>
         {{pointsTotal}} points * {{data.length}} RDA = {{pointsTotal*data.length}}
 
         <table id="rda_log">
@@ -79,14 +79,15 @@ export default {
       year: params.get('year'),
       activator: params.get('activator'),
       mode: params.get('mode'),
+      ratingType: params.get('ratingType'),
       showDetail: null,
       data: []
     }
   },
   mounted () {
-    const url = this.year == 'current' ?
-      `/aiohttp/activators_rating/current/detail/${this.activator}/${this.mode}` :
-      `/aiohttp/activators_rating/archive/${this.year}`
+    const url = this.ratingType == 'current' ?
+      `/aiohttp/activators_rating/current/detail/${this.year}/${this.activator}/${this.mode}` :
+      `/aiohttp/activators_rating/legacy/${this.year}/${this.activator}`
     get(url)
       .then( (rsp) => {
         this.data = rsp.data
@@ -99,9 +100,9 @@ export default {
       else {
         this.showDetail = item
         if (!item.detail && !item.pending) {
-          const url = this.year == 'current' ?
-            `/aiohttp/activators_rating/current/detail/${this.activator}/${this.mode}/${item.rda}` :
-            `/aiohttp/activators_rating/archive/${this.year}/${item.rda}`
+          const url = this.ratingType == 'current' ?
+            `/aiohttp/activators_rating/current/detail/${this.year}/${this.activator}/${this.mode}/${item.rda}` :
+            `/aiohttp/activators_rating/legacy/${this.year}/${this.activator}/${item.rda}`
           item.pending = true
           get(url)
             .then( (rsp) => this.$set(item, 'detail', rsp.data) )
