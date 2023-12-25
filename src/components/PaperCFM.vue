@@ -21,14 +21,21 @@
                 <td class="qsl_callsign">
                     <input type="text" name="qsl_callsign" id="qsl_callsign" v-model="qso.stationCallsign"
                         v-capitalize
+                        @change="getStationRDAs(qso)"
                         :class="{error: validationErrors['qso.' + idx + '.stationCallsign']}"/>
                 </td>
                 <td class="qsl_rda">
                     <rda-input type="text" name="qsl_rda" id="qsl_rda" v-model="qso.rda"
-                        :class="{error: validationErrors['qso.' + idx + '.rda']}"/>
+                        :class="{
+                            error: validationErrors['qso.' + idx + '.rda'],
+                            wrong: qso.stationRDAs && !qso.stationRDAs.includes(qso.rda)
+                        }"
+                    />
                 </td>
                 <td class="qsl_date">
-                    <datepicker v-model="qso.date" :input-class="{error: !qso.date}" :use-utc="true">
+                    <datepicker v-model="qso.date" :input-class="{error: !qso.date}" :use-utc="true"
+                        @input="getStationRDAs(qso)"
+                    >
                     </datepicker>
                 </td>
                 <td class="qsl_time">
@@ -103,8 +110,14 @@
         <table id="qsl_list" v-if="qslList">
             <tbody v-for="(qso, idx) in qslList" :key="idx">
                 <tr :class="{confirmed: qso.state === true, rejected: qso.state === false}">
-                    <td class="qsl_callsign">{{qso.stationCallsign}}</td>
-                    <td class="qsl_rda">{{qso.rda}}</td>
+                    <td class="qsl_callsign"
+                        @change="getStationRDAs"
+                        >{{qso.stationCallsign}}
+                    </td>
+                    <td class="qsl_rda"
+                        >
+                        {{qso.rda}}
+                    </td>
                     <td class="qsl_date">{{qso.date}}</td>
                     <td class="qsl_time">{{qso.time}}</td>
                     <td class="qsl_band">{{bandWl(qso.band)}}</td>
@@ -154,9 +167,9 @@ import validationMixin from '../validation-mixin'
 import requireLoginMixin from '../require-login-mixin'
 import latinizeMixin from '../latinize-mixin'
 
-import {cfmQslQso} from '../api'
+import {cfmQslQso, dataPost} from '../api'
 import {USER_DATA_ACTION} from '../store'
-import {BANDS_WL, bandWl} from '../ham-radio'
+import {BANDS_WL, bandWl, validCallsignFull} from '../ham-radio'
 
 export default {
   BANDS_WL: BANDS_WL,
@@ -215,6 +228,13 @@ export default {
     loadList() {
       this.post({})
         .then((data) => {this.qslList = data})
+    },
+    async getStationRDAs (qso) {
+      if (!validCallsignFull(qso.stationCallsign) || !qso.date)
+        return
+      qso.stationRDAs = await dataPost('callsign_date_rda',
+        {callsign: qso.stationCallsign,
+        tstamp: qso.date})
     },
     newQso () {
       const prevQso = this.qsl && this.qsl.qso && this.qsl.qso.length ? this.qsl.qso[this.qsl.qso.length - 1] : null

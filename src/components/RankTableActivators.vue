@@ -1,24 +1,24 @@
 <template>
     <div class="list">
 
-       <h4>Activator's rating</h4>
+       <h4>Activator's rating<img src="/images/icon_news.png" style="float: right; width: 40px; margin-top: 0px;" title="В рейтинге участвуют только позывные с дробью" /></h4>
 
 
        <div class="rating_menu">
-          <select id="activators_rating_year" 
-            v-if="years.length" 
+          <select id="activators_rating_year"
+            v-if="years.length"
             v-model="year">
-            <option 
-                v-for="(entry, idx) in years" 
-                :key="idx" 
+            <option
+                v-for="(entry, idx) in years"
+                :key="idx"
                 :value="idx">
                 {{entry.year}}
             </option>
           </select>
-          <div 
+          <div
             class="rating_features"
             v-if="years.length && years[year].ratingType === 'current'">
-            <select 
+            <select
                 id="station_type"
                 v-model="clubs">
                 <option :value="false">
@@ -29,7 +29,7 @@
                 </option>
             </select>
 
-            <select 
+            <select
                 id="rating_mode"
                 v-model="mode">
                 <option
@@ -45,9 +45,9 @@
        <div class="preloader" v-if="loading"><img src="images/spinner3.gif"/></div>
 
        <table class="top_100">
-            <tr v-for="(row, rowIndex) in rows" 
+            <tr v-for="(row, rowIndex) in rows"
                 :key="'topRow' + rowIndex">
-                <td v-for="(item, itemIndex) in row" 
+                <td v-for="(item, itemIndex) in row"
                     :key="'topItem' + rowIndex + '_' + itemIndex">
                     <span class="rank" v-if="item">{{item.act_rank}}.</span>
                     <span class="callsign">
@@ -120,7 +120,7 @@ export default {
         )}&ratingType=${ratingType}`
     },
     update () {
-      storage.save(STORAGE_KEY_ACTIVATORS_RATING_SETTINGS, 
+      storage.save(STORAGE_KEY_ACTIVATORS_RATING_SETTINGS,
         {mode: this.mode, clubs: this.clubs}, 'local')
       this.data = null
       this.loading = true
