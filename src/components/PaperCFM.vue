@@ -27,8 +27,8 @@
                 <td class="qsl_rda">
                     <rda-input type="text" name="qsl_rda" id="qsl_rda" v-model="qso.rda"
                         :class="{
-                            error: validationErrors['qso.' + idx + '.rda'],
-                            wrong: qso.stationRDAs && !qso.stationRDAs.includes(qso.rda)
+                            error: validationErrors['qso.' + idx + '.rda'] || 
+                              (qso.stationRDAs && !qso.stationRDAs.includes(qso.rda))
                         }"
                     />
                 </td>
@@ -115,8 +115,16 @@
                         >{{qso.stationCallsign}}
                     </td>
                     <td class="qsl_rda"
+                        :class="{error: qso.callsignRda && !qso.callsignRda.includes(qso.rda)}"
                         >
-                        {{qso.rda}}
+                        <router-link 
+                            v-if="qso.callsignRda && !qso.callsignRda.includes(qso.rda)"
+                            :to="'/callsignsRda/' + qso.stationCallsign.replace('/', '%2F')" target="_blank">
+                            {{qso.rda}}
+                        </router-link>
+                        <template v-else>
+                            {{qso.rda}}
+                        </template>
                     </td>
                     <td class="qsl_date">{{qso.date}}</td>
                     <td class="qsl_time">{{qso.time}}</td>

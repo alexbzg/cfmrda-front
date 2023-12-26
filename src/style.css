@@ -2208,6 +2208,16 @@ table#qsl_list td.del img{
 	cursor: pointer;
 }
 
+table#qsl_list td.error{
+	background-color: #ffdddd;
+}
+table#qsl_list td.qsl_rda a{
+	color: #000;
+}
+table#qsl_list td.qsl_rda a:hover{
+	color: #009;
+}
+
 
 
 
