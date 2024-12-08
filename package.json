@@ -9,7 +9,7 @@
     "schemas": "node ./exportSchemas.js > /usr/local/cfmrda-dev/cfmrda/schemas.json"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.2",
     "deepmerge": "^3.2.0",
     "insert-text-at-cursor": "^0.3.0",
     "jsen": "^0.6.6",
