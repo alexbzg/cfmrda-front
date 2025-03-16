@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     diploma_href (award, callsign) {
-      return `${location.origin}/files/${AWARD_PREFIXES[award]}_${callsign.toLowerCase()}.pdf`
+      return `${location.origin}/files/${AWARD_PREFIXES[award]}_${callsign.toLowerCase()}.jpg`
     },
     update_rda_hunter () {
       if (this.callsign) {

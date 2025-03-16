@@ -1,7 +1,13 @@
 <template>
     <div class="list">
 
-       <h4>Activator's rating<img src="/images/icon_news.png" style="float: right; width: 40px; margin-top: 0px;" title="В рейтинге участвуют только позывные с дробью" /></h4>
+        <h4>Activator's rating
+            <img src="/images/icon_news.png" 
+                style="float: right; width: 40px; margin-top: 0px;" 
+                title="В рейтинге участвуют только позывные с дробью"
+                onclick="alert('В рейтинге участвуют только позывные с дробью')"
+            />
+        </h4>
 
 
        <div class="rating_menu">

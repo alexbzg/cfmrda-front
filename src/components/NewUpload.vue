@@ -9,7 +9,7 @@
                 :disabled="adif.stationCallsignFieldEnable"/><br/>
 
           <a id="new_rda_list" href="http://rdaward.org/rda_rus.txt" target="_blank">
-            1 января 2020 изменился список RDA. Перед загрузкой ADIF проверьте свой RDA!
+            1 января 2025 изменился список RDA. Перед загрузкой ADIF проверьте свой RDA!
           </a>
 
           <div id="upload_setup_link" @click="showSetup = !showSetup">
