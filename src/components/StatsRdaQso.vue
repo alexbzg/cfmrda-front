@@ -5,9 +5,7 @@
         </radio-btns-mode>
 
         <div id="links_to_rda">
-            <span v-for="group in rdaGroups" :key="group.group" @click="scrollToGroup(group.first)">
-                {{group.group}}
-            </span>
+            <span v-for="group in rdaGroups" :key="group.group" @click="scrollToGroup(group.first)">{{group.group}}</span> 
         </div>
 
         <table id="table_stats">

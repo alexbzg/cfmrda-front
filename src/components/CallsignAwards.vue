@@ -32,11 +32,12 @@ import {mapState} from 'vuex'
 import {head} from '../api'
 
 const AWARD_PREFIXES = {
-  '9 BAND RDA': '9band_rda',
-  '9 BAND EXTREME': '9band_rda_extreme',
-  '5 BAND RDA': '5band_rda',
-  'RDA Challenge': 'rda_challenge',
-  'RDA Hunter': 'rda_hunter'
+  '9BRDA': '9band_rda',
+  'EXTREME': '9band_rda_extreme',
+  '5BRDA': '5band_rda',
+  'Challenge': 'rda_challenge',
+  'Hunter': 'rda_hunter',
+  'Activator': 'rda_activator'
 }
 
 export default {
@@ -44,11 +45,14 @@ export default {
   props: ['callsign'],
   data () {
     return {
-      rda_hunter: null
+      hunter_activator: {
+        Hunter: null,
+        Activator: null
+      }
     }
   },
   mounted() {
-    this.update_rda_hunter()
+    this.update_hunter_activator()
   },
   computed: {
     ...mapState(['issuedAwards']),
@@ -73,8 +77,11 @@ export default {
             })
           }
         }
-        if (this.rda_hunter) {
-            sr.unshift(this.rda_hunter)
+        if (this.hunter_activator.Hunter) {
+            sr.unshift(this.hunter_activator.Hunter)
+        }
+        if (this.hunter_activator.Activator) {
+            sr.push(this.hunter_activator.Activator)
         }
         return sr
       } else {
@@ -86,25 +93,26 @@ export default {
     diploma_href (award, callsign) {
       return `${location.origin}/files/${AWARD_PREFIXES[award]}_${callsign.toLowerCase()}.jpg`
     },
-    update_rda_hunter () {
+    update_hunter_activator () {
       if (this.callsign) {
-        this.rda_hunter = null
-        head(this.diploma_href('RDA Hunter', this.callsign))
-          .then( (rsp) => {
-            this.rda_hunter = {
-              title: 'RDA Hunter',
-              issued: [null, null,
-                new Date(rsp.headers['last-modified']).toLocaleDateString(
-                    "ru", {dateStyle: "long"}).slice(0, -3),
-                null]
-            }
-          })
+        this.hunter_activator = {Hunter: null, Activator: null}
+        for (const award in this.hunter_activator)
+          head(this.diploma_href(award, this.callsign))
+            .then( (rsp) => {
+                this.$set(this.hunter_activator, award, {
+                title: award,
+                issued: [null, null,
+                    new Date(rsp.headers['last-modified']).toLocaleDateString(
+                        "ru", {dateStyle: "long"}).slice(0, -3),
+                    null]
+                })
+            })
       }
     }
   },
   watch: {
     callsign() {
-      this.update_rda_hunter()
+      this.update_hunter_activator()
     }
   }
 }
