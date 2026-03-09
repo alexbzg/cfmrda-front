@@ -32,12 +32,12 @@ import {mapState} from 'vuex'
 import {head} from '../api'
 
 const AWARD_PREFIXES = {
-  '9BRDA': '9band_rda',
-  'EXTREME': '9band_rda_extreme',
-  '5BRDA': '5band_rda',
-  'Challenge': 'rda_challenge',
-  'Hunter': 'rda_hunter',
-  'Activator': 'rda_activator'
+  '9B RDA': '9band_rda',
+  '9B RDA X': '9band_rda_extreme',
+  '5B RDA': '5band_rda',
+  'RDA Challenge': 'rda_challenge',
+  'RDA Hunter': 'rda_hunter',
+  'RDA Activator': 'rda_activator'
 }
 
 export default {
@@ -46,8 +46,8 @@ export default {
   data () {
     return {
       hunter_activator: {
-        Hunter: null,
-        Activator: null
+        'RDA Hunter': null,
+        'RDA Activator': null
       }
     }
   },
@@ -77,11 +77,11 @@ export default {
             })
           }
         }
-        if (this.hunter_activator.Hunter) {
-            sr.unshift(this.hunter_activator.Hunter)
+        if (this.hunter_activator['RDA Hunter']) {
+            sr.unshift(this.hunter_activator['RDA Hunter'])
         }
-        if (this.hunter_activator.Activator) {
-            sr.push(this.hunter_activator.Activator)
+        if (this.hunter_activator['RDA Activator']) {
+            sr.push(this.hunter_activator['RDA Activator'])
         }
         return sr
       } else {
@@ -95,8 +95,8 @@ export default {
     },
     update_hunter_activator () {
       if (this.callsign) {
-        this.hunter_activator = {Hunter: null, Activator: null}
-        for (const award in this.hunter_activator)
+        for (const award in this.hunter_activator) {
+          this.$set(this.hunter_activator, award, null)
           head(this.diploma_href(award, this.callsign))
             .then( (rsp) => {
                 this.$set(this.hunter_activator, award, {
@@ -107,6 +107,7 @@ export default {
                     null]
                 })
             })
+        }
       }
     }
   },
